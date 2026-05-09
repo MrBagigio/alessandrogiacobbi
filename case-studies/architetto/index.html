@@ -90,13 +90,14 @@
 
   <script>
     (function(){
-      // Decode base64 (UTF-8 safe) → blob URL → iframe.src
+      // Decode XOR + base64 (UTF-8 safe) → blob URL → iframe.src
+      var K = 'ALEXG-2026-PORTFOLIO-DEMO';
       fetch('./_data.b64', { cache: 'no-cache' })
         .then(function(r){ if(!r.ok) throw new Error('404'); return r.text(); })
         .then(function(b64){
           var binary = atob(b64.replace(/\s/g,''));
           var bytes = new Uint8Array(binary.length);
-          for (var i=0;i<binary.length;i++) bytes[i] = binary.charCodeAt(i);
+          for (var i=0;i<binary.length;i++) bytes[i] = binary.charCodeAt(i) ^ K.charCodeAt(i % K.length);
           var html = new TextDecoder('utf-8').decode(bytes);
           var blob = new Blob([html], { type: 'text/html;charset=utf-8' });
           var url = URL.createObjectURL(blob);
@@ -114,7 +115,7 @@
           if (loader) loader.textContent = 'Demo non disponibile.';
         });
 
-      // Deterrenti: right-click, Ctrl+S, Ctrl+U, F12, Ctrl+Shift+I/J/C
+      // Deterrenti: right-click, drag, Ctrl+S, Ctrl+U, Ctrl+P, F12, Ctrl+Shift+I/J/C
       document.addEventListener('contextmenu', function(e){ e.preventDefault(); });
       document.addEventListener('dragstart',  function(e){ e.preventDefault(); });
       document.addEventListener('keydown', function(e){

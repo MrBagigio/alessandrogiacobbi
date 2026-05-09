@@ -78,18 +78,18 @@ portfolio_giacobbi/
 
 ## Deploy
 
-### GitHub Pages (raccomandato)
+### GitHub Pages — **LIVE**
+
+- **Repo**: [github.com/MrBagigio/alessandrogiacobbi](https://github.com/MrBagigio/alessandrogiacobbi)
+- **URL pubblico**: [mrbagigio.github.io/alessandrogiacobbi/](https://mrbagigio.github.io/alessandrogiacobbi/)
+- **Branch**: main / root `/`
+- **Deploy**: `git push origin main` → GitHub Actions build automatico
 
 ```bash
-# Repository: github.com/MrBagigio/alessandrogiacobbi
-git init
+# Update + deploy
 git add .
-git commit -m "feat: portfolio v2 modular refactor"
-git remote add origin git@github.com:MrBagigio/alessandrogiacobbi.git
-git push -u origin main
-
-# In Settings → Pages: source = main branch, root /
-# URL pubblico: https://mrbagigio.github.io/alessandrogiacobbi/
+git commit -m "feat: ..."
+git push origin main
 ```
 
 ### Cloudflare Pages (alternativa, più veloce edge)

@@ -291,6 +291,33 @@ section {
   row-gap: calc(var(--grid-gap) * 1.5);
 }
 
+/* ── Web design section CTA (fine sezione 04) ── */
+.webdesign-cta {
+  margin-top: var(--gap-l);
+  padding: var(--gap-m) 0 0;
+  border-top: 1px solid var(--rule);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--gap-m);
+  flex-wrap: wrap;
+}
+
+.webdesign-cta__note {
+  flex: 1;
+  min-width: 280px;
+  font-family: var(--fb);
+  font-size: 0.95rem;
+  line-height: 1.55;
+  color: var(--mute);
+  font-style: italic;
+  max-width: 56ch;
+}
+
+@media (max-width: 767px) {
+  .webdesign-cta { flex-direction: column; align-items: flex-start; }
+}
+
 @media (max-width: 1023px) {
   .work__grid--3 { grid-template-columns: repeat(2, 1fr); }
 }

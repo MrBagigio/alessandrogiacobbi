@@ -5,36 +5,64 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex,nofollow">
   <title>Demo template — Studio Vivere · Alessandro Giacobbi</title>
-  <meta name="description" content="Anteprima statica del demo template per Fisioterapia (tier Boutique). Esempio di stile, non lavoro commissionato.">
+  <meta name="description" content="Anteprima interattiva del demo template per Fisioterapia (tier Boutique). Esempio di stile, non lavoro commissionato.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=PT+Sans:wght@400;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../../assets/css/tokens.css">
   <link rel="stylesheet" href="../../assets/css/base.css">
   <style>
-    body { background: var(--paper); color: var(--ink); font-family: var(--fb); margin: 0; }
+    html, body { margin: 0; padding: 0; }
+    body { background: var(--paper); color: var(--ink); font-family: var(--fb); user-select: none; -webkit-user-select: none; }
     a { color: inherit; text-decoration: none; }
-    .demo-bar { position: sticky; top: 0; z-index: 50; background: var(--paper); border-bottom: 1px solid var(--rule); padding: 0.9rem 1.5rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; backdrop-filter: blur(6px); }
-    .demo-bar__left { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+
+    .demo-bar { position: sticky; top: 0; z-index: 50; background: var(--paper); border-bottom: 1px solid var(--rule); padding: 0.85rem 1.5rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; backdrop-filter: blur(6px); }
+    .demo-bar__left { display: flex; align-items: center; gap: 0.9rem; flex-wrap: wrap; }
     .demo-bar__back { font-family: var(--fm); font-size: var(--fz-meta); letter-spacing: 0.08em; text-transform: uppercase; color: var(--ox); }
     .demo-bar__back:hover { text-decoration: underline; }
     .demo-bar__title { font-family: var(--fd); font-size: 1.05rem; font-weight: 700; color: var(--ink); }
     .demo-bar__tier { font-family: var(--fm); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--paper); background: var(--ox); padding: 0.3rem 0.6rem; }
-    .demo-bar__cta { font-family: var(--fm); font-size: var(--fz-meta); letter-spacing: 0.08em; text-transform: uppercase; color: var(--paper); background: var(--ink); padding: 0.6rem 1rem; transition: background 200ms; }
+    .demo-bar__cta { font-family: var(--fm); font-size: var(--fz-meta); letter-spacing: 0.08em; text-transform: uppercase; color: var(--paper); background: var(--ink); padding: 0.55rem 1rem; transition: background 200ms; }
     .demo-bar__cta:hover { background: var(--ox); }
-    .demo-frame { padding: 0; background: var(--paper2); }
-    .demo-frame__inner { max-width: 1280px; margin: 0 auto; position: relative; }
-    .demo-frame__img { display: block; width: 100%; height: auto; box-shadow: 0 10px 40px -8px rgba(22,19,16,0.18); user-select: none; -webkit-user-drag: none; pointer-events: none; }
-    .demo-frame__watermark { position: absolute; top: 24px; right: 24px; font-family: var(--fm); font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--paper); background: rgba(184,50,63,0.88); padding: 0.4rem 0.8rem; pointer-events: none; z-index: 2; }
+
+    .demo-stage { position: relative; background: #1a1614; padding: 1.2rem; min-height: calc(100vh - 60px); display: flex; flex-direction: column; align-items: center; }
+    .demo-frame { position: relative; width: 100%; max-width: 1280px; aspect-ratio: 16 / 11; background: var(--paper2); box-shadow: 0 16px 60px -10px rgba(0,0,0,0.5); border-radius: 4px; overflow: hidden; }
+    .demo-frame__loader { position: absolute; inset: 0; display: grid; place-items: center; background: var(--paper2); color: var(--mute); font-family: var(--fm); font-size: var(--fz-meta); letter-spacing: 0.1em; text-transform: uppercase; z-index: 2; transition: opacity 400ms; }
+    .demo-frame__loader::after { content: ''; width: 24px; height: 24px; border: 2px solid var(--ox); border-top-color: transparent; border-radius: 50%; animation: spin 1s linear infinite; margin-left: 0.7rem; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .demo-frame__loader.is-hidden { opacity: 0; pointer-events: none; }
+    .demo-frame__iframe { width: 100%; height: 100%; border: 0; display: block; background: var(--paper); }
+
+    /* Watermark overlay diagonale ripetuto sul parent (sopra iframe) */
+    .demo-frame__overlay {
+      position: absolute; inset: 0; pointer-events: none; z-index: 3;
+      background-image: repeating-linear-gradient(
+        -28deg,
+        transparent 0,
+        transparent 320px,
+        rgba(184,50,63,0.05) 320px,
+        rgba(184,50,63,0.05) 322px
+      );
+      mix-blend-mode: multiply;
+    }
+    .demo-frame__watermark { position: absolute; top: 14px; right: 14px; font-family: var(--fm); font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--paper); background: rgba(184,50,63,0.92); padding: 0.4rem 0.8rem; pointer-events: none; z-index: 4; box-shadow: 0 2px 8px rgba(0,0,0,0.3); }
+    .demo-frame__corner { position: absolute; bottom: 14px; left: 14px; font-family: var(--fm); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.5); pointer-events: none; z-index: 4; }
+
     .demo-foot { padding: 4rem 1.5rem; background: var(--ink); color: var(--paper); text-align: center; }
     .demo-foot__title { font-family: var(--fd); font-size: clamp(1.5rem, 3vw, 2.5rem); font-weight: 700; line-height: 1.1; margin: 0 0 1.25rem 0; }
     .demo-foot__title em { font-family: var(--fs, Georgia, serif); font-style: italic; color: var(--ox); font-weight: 400; }
     .demo-foot__cta { display: inline-block; font-family: var(--fm); font-size: var(--fz-mono); letter-spacing: 0.04em; text-transform: uppercase; color: var(--paper); background: var(--ox); padding: 1rem 1.6rem; transition: background 200ms; }
     .demo-foot__cta:hover { background: var(--ox-deep, #8a2530); }
     .demo-foot__note { font-family: var(--fm); font-size: var(--fz-meta); letter-spacing: 0.06em; color: rgba(237,230,214,0.55); margin: 1.75rem auto 0 auto; max-width: 60ch; line-height: 1.55; font-style: italic; }
+
+    @media (max-width: 767px) {
+      .demo-stage { padding: 0.6rem; }
+      .demo-frame { aspect-ratio: 9 / 16; }
+    }
   </style>
 </head>
 <body>
+
   <header class="demo-bar">
     <div class="demo-bar__left">
       <a href="../../#web-design" class="demo-bar__back">&larr; Torna al portfolio</a>
@@ -43,16 +71,60 @@
     </div>
     <a href="../../#contact" class="demo-bar__cta">Parliamone &rarr;</a>
   </header>
-  <main class="demo-frame">
-    <div class="demo-frame__inner">
+
+  <main class="demo-stage">
+    <div class="demo-frame">
       <span class="demo-frame__watermark">Demo &middot; non commissionato</span>
-      <img class="demo-frame__img" src="../../assets/img/case-studies/fisio-full.jpg" alt="Demo template per Fisioterapia (tier Boutique)" loading="eager" oncontextmenu="return false;">
+      <span class="demo-frame__corner">Fisioterapia &middot; Boutique</span>
+      <div class="demo-frame__loader" id="demo-loader">Loading demo</div>
+      <iframe class="demo-frame__iframe" id="demo-iframe" sandbox="allow-scripts allow-popups allow-popups-to-escape-sandbox allow-forms" allowfullscreen referrerpolicy="no-referrer" title="Demo template Studio Vivere"></iframe>
+      <div class="demo-frame__overlay" aria-hidden="true"></div>
     </div>
   </main>
+
   <footer class="demo-foot">
     <h2 class="demo-foot__title">Vuoi un sito cos&igrave;, <em>cucito sulla tua attivit&agrave;?</em></h2>
     <a href="../../#contact" class="demo-foot__cta">Parliamone &rarr;</a>
-    <p class="demo-foot__note">Questo &egrave; uno screenshot di un template di esempio per il settore Fisioterapia (tier Boutique). Non &egrave; un lavoro fatto per un cliente reale.</p>
+    <p class="demo-foot__note">Quello sopra &egrave; un demo interattivo non commissionato. Non &egrave; un lavoro fatto per un cliente reale: &egrave; un esempio di stile per il settore Fisioterapia al tier Boutique.</p>
   </footer>
+
+  <script>
+    (function(){
+      // Decode base64 (UTF-8 safe) → blob URL → iframe.src
+      fetch('./_data.b64', { cache: 'no-cache' })
+        .then(function(r){ if(!r.ok) throw new Error('404'); return r.text(); })
+        .then(function(b64){
+          var binary = atob(b64.replace(/\s/g,''));
+          var bytes = new Uint8Array(binary.length);
+          for (var i=0;i<binary.length;i++) bytes[i] = binary.charCodeAt(i);
+          var html = new TextDecoder('utf-8').decode(bytes);
+          var blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+          var url = URL.createObjectURL(blob);
+          var f = document.getElementById('demo-iframe');
+          f.addEventListener('load', function(){
+            var loader = document.getElementById('demo-loader');
+            if (loader) loader.classList.add('is-hidden');
+            // Revoca URL dopo 60s per scoraggiare estrazione blob URL diretta
+            setTimeout(function(){ try { URL.revokeObjectURL(url); } catch(e){} }, 60000);
+          }, { once: true });
+          f.src = url;
+        })
+        .catch(function(){
+          var loader = document.getElementById('demo-loader');
+          if (loader) loader.textContent = 'Demo non disponibile.';
+        });
+
+      // Deterrenti: right-click, Ctrl+S, Ctrl+U, F12, Ctrl+Shift+I/J/C
+      document.addEventListener('contextmenu', function(e){ e.preventDefault(); });
+      document.addEventListener('dragstart',  function(e){ e.preventDefault(); });
+      document.addEventListener('keydown', function(e){
+        var k = (e.key || '').toLowerCase();
+        if (k === 'f12') { e.preventDefault(); return; }
+        if ((e.ctrlKey || e.metaKey) && !e.shiftKey && (k === 's' || k === 'u' || k === 'p')) { e.preventDefault(); return; }
+        if ((e.ctrlKey || e.metaKey) && e.shiftKey && (k === 'i' || k === 'j' || k === 'c')) { e.preventDefault(); return; }
+      });
+    })();
+  </script>
+
 </body>
 </html>

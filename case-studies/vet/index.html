@@ -1,426 +1,58 @@
 ﻿<!DOCTYPE html>
 <html lang="it">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#F5F8FA" />
-  <!-- audit-100-100 hardening v1 -->
-<meta name="referrer" content="strict-origin-when-cross-origin" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex,nofollow">
-  <meta name="format-detection" content="telephone=no" />
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://images.unsplash.com https://picsum.photos https://fastly.picsum.photos; connect-src 'self'; media-src 'self' https://res.cloudinary.com https://*.bunnycdn.com data: blob:; frame-src https://www.openstreetmap.org; base-uri 'self'; form-action 'self' mailto:" />
-<meta name="description" content="Ambulatorio Veterinario Sant'Angelo — Vicenza. Veterinari iscritti FNOVI. Visite cliniche, vaccinazioni, chirurgia, dentale, diagnostica strumentale. Reperibilità 24h weekend.">
-<title>Ambulatorio Veterinario Sant'Angelo — Vicenza</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"VeterinaryCare","name":"Ambulatorio Veterinario Sant'Angelo","description":"Ambulatorio veterinario boutique a Vicenza con veterinari iscritti FNOVI.","url":"https://santangelo-vet.it","telephone":"[DA VERIFICARE]","priceRange":"€€","address":{"@type":"PostalAddress","streetAddress":"[DA VERIFICARE]","addressLocality":"Vicenza","addressRegion":"VI","addressCountry":"IT"},"areaServed":["Vicenza","Schio","Thiene","Bassano del Grappa"],"makesOffer":[{"@type":"Offer","name":"Medicina interna"},{"@type":"Offer","name":"Chirurgia ambulatoriale"},{"@type":"Offer","name":"Vaccinazioni"},{"@type":"Offer","name":"Diagnostica strumentale"}],"sameAs":["https://www.google.com/business/santangelo-vet","https://www.facebook.com/santangelovet"]}
-</script>
-<style>
-:root{--cream-50:#FAF6EE;--cream-100:#F0E8D5;--sage-300:#B8C5A8;--sage-400:#A8B89C;--sage-700:#3F5238;--sky-blue-500:#5A8FAA;--sky-blue-600:#447590;--ink-900:#1F1B1A;--ink-700:#3A3531;--alabaster-200:#DCD5C7;--white:#FFFFFF;--shadow-soft:0 2px 12px rgba(31,27,26,.08);--radius-sm:8px;--radius-md:10px;--radius-pill:9999px}
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{font-family:'Inter',sans-serif;font-size:16px;line-height:1.6;color:var(--ink-900);background:var(--cream-50);-webkit-font-smoothing:antialiased}
-.container{max-width:1240px;margin:0 auto;padding:0 24px}
-h1,h2,h3,h4{font-family:'Fraunces',serif;font-weight:500;line-height:1.2;color:var(--ink-900)}
-h1{font-size:clamp(40px,5.5vw,72px);font-variation-settings:"opsz" 144;letter-spacing:-.01em}
-h2{font-size:clamp(32px,4vw,52px)}
-h3{font-size:22px;font-weight:600}
-.eyebrow{font-family:'Inter',sans-serif;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--sky-blue-500);display:inline-flex;align-items:center;gap:8px}
-.eyebrow::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--sage-400)}
-.mono{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--ink-700)}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:14px 28px;font-family:'Inter',sans-serif;font-size:14px;font-weight:600;border-radius:var(--radius-pill);border:none;cursor:pointer;text-decoration:none;transition:all .2s;min-height:48px}
-.btn-primary{background:var(--sky-blue-500);color:var(--white)}
-.btn-primary:hover{background:var(--sky-blue-600);transform:scale(1.02)}
-.btn-outline{background:transparent;color:var(--ink-900);border:1px solid var(--ink-900)}
-.btn-outline:hover{background:var(--ink-900);color:var(--white)}
-.verify{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:10px;background:var(--cream-100);color:var(--sky-blue-600);padding:2px 8px;border-radius:3px;border:1px dashed var(--sky-blue-500);text-transform:uppercase}
-nav{position:sticky;top:0;z-index:100;background:rgba(250,246,238,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--cream-100);padding:16px 0}
-nav .nav-inner{display:flex;align-items:center;justify-content:space-between}
-nav .logo{font-family:'Fraunces',serif;font-size:20px;font-weight:600;color:var(--ink-900);text-decoration:none}
-nav ul{display:flex;list-style:none;gap:28px;align-items:center}
-nav ul a{color:var(--ink-700);text-decoration:none;font-size:14px;font-weight:500}
-nav ul a:hover{color:var(--sky-blue-500)}
-nav .menu-toggle{display:none;background:none;border:none;font-size:24px;cursor:pointer}
-.hero{padding:64px 0 80px;display:grid;grid-template-columns:1.2fr 1fr;gap:48px;align-items:center}
-.hero-img{aspect-ratio:4/5;background:linear-gradient(135deg,var(--sage-300) 0%,var(--cream-100) 50%,var(--sky-blue-500) 100%);border-radius:var(--radius-md);position:relative}
-.hero-img::after{content:"FOTO TEAM VET CON ANIMALE · 4:5";position:absolute;bottom:16px;left:16px;font-family:'JetBrains Mono',monospace;font-size:11px;background:rgba(250,246,238,.9);padding:6px 10px;border-radius:3px;color:var(--ink-700)}
-.hero h1{margin:24px 0}
-.hero .subhead{font-size:18px;color:var(--ink-700);margin-bottom:32px;max-width:520px}
-.hero .cta-row{display:flex;gap:16px;flex-wrap:wrap}
-.section{padding:72px 0;opacity:0;transform:translateY(20px);transition:opacity .6s ease,transform .6s ease}
-.section.is-visible{opacity:1;transform:translateY(0)}
-.manifesto{max-width:768px;margin:0 auto;text-align:center}
-.manifesto blockquote{font-family:'Fraunces',serif;font-style:italic;font-size:28px;line-height:1.4}
-.servizi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-top:48px}
-.servizio-tile{background:var(--white);border:1px solid var(--cream-100);border-radius:var(--radius-md);padding:24px;box-shadow:var(--shadow-soft)}
-.servizio-tile .icon{width:40px;height:40px;background:var(--cream-100);border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:12px;color:var(--sky-blue-500);font-size:18px}
-.servizio-tile h3{font-size:17px;margin-bottom:8px}
-.servizio-tile p{font-size:13px;color:var(--ink-700);line-height:1.5}
-.lead-magnet{background:var(--cream-100);padding:56px 32px;border-radius:var(--radius-md);text-align:center;margin:64px 0}
-.lead-magnet h2{margin-bottom:12px}
-.lead-magnet p{color:var(--ink-700);max-width:520px;margin:0 auto 24px}
-.lead-magnet form{display:flex;gap:8px;max-width:480px;margin:0 auto;flex-wrap:wrap;justify-content:center}
-.lead-magnet input,.lead-magnet select{padding:12px 16px;border:1px solid var(--ink-700);border-radius:var(--radius-pill);background:var(--white);font-family:inherit;font-size:14px}
-.lead-magnet input[type="email"]{flex:1;min-width:200px}
-.team-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-top:48px}
-.team-card{background:var(--white);border:1px solid var(--cream-100);border-radius:var(--radius-md);padding:20px;box-shadow:var(--shadow-soft)}
-.team-card .photo{aspect-ratio:4/5;background:linear-gradient(135deg,var(--cream-100),var(--sage-300));border-radius:var(--radius-sm);margin-bottom:16px}
-.team-card h3{font-size:18px;margin-bottom:6px}
-.team-card .role{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--sky-blue-500);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px}
-.team-card .albo{font-size:12px;color:var(--ink-700);margin-bottom:8px}
-.team-card .specs{font-size:12px;color:var(--ink-700);font-style:italic}
-.processo{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;margin-top:48px;position:relative}
-.processo::before{content:"";position:absolute;top:24px;left:0;right:0;height:1px;background:var(--sage-400);z-index:0}
-.processo-step{position:relative;background:var(--cream-50);padding-top:8px;z-index:1}
-.processo-step .num{font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--sky-blue-500);background:var(--cream-50);padding:6px 12px;border:1px solid var(--sage-400);border-radius:50%;display:inline-block;margin-bottom:16px}
-.processo-step h4{font-size:18px;font-weight:600;margin-bottom:8px}
-.processo-step p{font-size:14px;color:var(--ink-700)}
-.emergenza{background:var(--sage-700);color:var(--cream-50);padding:48px 32px;border-radius:var(--radius-md);margin:64px 0}
-.emergenza .badge{display:inline-block;background:var(--sky-blue-500);color:var(--white);padding:4px 16px;border-radius:var(--radius-pill);font-size:12px;font-weight:600;margin-bottom:16px}
-.emergenza h2{color:var(--cream-50);margin-bottom:24px;font-size:36px}
-.emergenza .protocol{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;margin-top:32px}
-.emergenza .protocol-step{background:rgba(255,255,255,.05);padding:20px;border-radius:var(--radius-sm);border:1px solid rgba(255,255,255,.1)}
-.emergenza .protocol-step strong{display:block;font-family:'Fraunces',serif;font-size:24px;color:var(--sky-blue-500);margin-bottom:8px}
-.emergenza .protocol-step p{font-size:14px;color:var(--cream-100);opacity:.9}
-.recensioni{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:48px}
-.recensione-card{background:var(--white);border:1px solid var(--cream-100);border-radius:var(--radius-md);padding:24px;box-shadow:var(--shadow-soft)}
-.recensione-card .stars{color:var(--sky-blue-500);font-size:18px;margin-bottom:12px}
-.recensione-card blockquote{font-family:'Fraunces',serif;font-style:italic;font-size:16px;line-height:1.5;margin-bottom:12px}
-.recensione-card cite{font-style:normal;font-size:13px;font-weight:600;display:block}
-.recensione-card .pet{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--sky-blue-500);text-transform:uppercase;letter-spacing:.05em}
-.recensioni-rating{text-align:center;margin-top:32px;font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--sky-blue-600)}
-.faq-list{margin-top:48px;max-width:768px;margin-left:auto;margin-right:auto}
-.faq-item{border-bottom:1px solid var(--cream-100);padding:20px 0}
-.faq-item summary{cursor:pointer;font-family:'Fraunces',serif;font-style:italic;font-size:20px;font-weight:600;list-style:none;display:flex;justify-content:space-between;align-items:center}
-.faq-item summary::after{content:"+";font-size:24px;color:var(--sky-blue-500);transition:transform .2s}
-.faq-item[open] summary::after{transform:rotate(45deg)}
-.faq-item p{padding-top:12px;color:var(--ink-700)}
-.location-section{display:grid;grid-template-columns:1fr 1fr;gap:48px;margin-top:48px}
-.location-section iframe{width:100%;aspect-ratio:4/3;border:0;border-radius:var(--radius-md)}
-.location-section ul{list-style:none;padding:0}
-.location-section ul li{padding:10px 0;color:var(--ink-700);border-bottom:1px solid var(--cream-100);font-size:14px}
-.location-section ul li strong{color:var(--ink-900)}
-.contact{display:grid;grid-template-columns:1fr 1fr;gap:48px;margin-top:48px}
-.contact-info iframe{width:100%;aspect-ratio:16/10;border:0;border-radius:var(--radius-md)}
-.contact-info ul{list-style:none;margin-top:24px}
-.contact-info ul li{padding:10px 0;color:var(--ink-700);border-bottom:1px solid var(--cream-100);font-size:14px}
-.contact-info ul li strong{display:inline-block;min-width:90px;color:var(--ink-900)}
-.contact-form{background:var(--white);border:1px solid var(--cream-100);border-radius:var(--radius-md);padding:32px;box-shadow:var(--shadow-soft)}
-.contact-form .form-row{margin-bottom:14px}
-.contact-form label{display:block;font-size:11px;font-weight:600;margin-bottom:6px;text-transform:uppercase;letter-spacing:.05em}
-.contact-form input,.contact-form select,.contact-form textarea{width:100%;padding:12px 14px;border:1px solid var(--cream-100);border-radius:var(--radius-sm);font-family:inherit;background:var(--cream-50);font-size:14px}
-.contact-form textarea{min-height:80px;resize:vertical}
-.contact-form .gdpr-row{display:flex;gap:8px;align-items:flex-start;margin-top:12px;font-size:12px}
-.contact-form .gdpr-row input{width:auto;margin-top:2px}
-.contact-form button{width:100%;margin-top:16px}
-footer{background:var(--ink-900);color:var(--cream-50);padding:56px 0 32px;margin-top:64px}
-footer .footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:48px;margin-bottom:40px}
-footer h4{font-family:'Fraunces',serif;font-size:18px;margin-bottom:16px;color:var(--cream-50)}
-footer ul{list-style:none}
-footer ul li{padding:6px 0;font-size:13px;color:var(--cream-100);opacity:.85}
-footer a{color:var(--cream-100);text-decoration:none}
-footer .footer-disclaimer{border-top:1px solid var(--ink-700);padding-top:24px;font-size:12px;color:var(--cream-100);opacity:.7;line-height:1.6}
-footer .social-row{display:flex;gap:12px;margin-top:12px}
-footer .social-row a{width:36px;height:36px;border:1px solid var(--cream-100);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600}
-@media(prefers-reduced-motion:reduce){.section{opacity:1;transform:none;transition:none}}
-@media(max-width:760px){nav ul{display:none}nav.open ul{display:flex;flex-direction:column;position:absolute;top:100%;left:0;right:0;background:var(--cream-50);padding:24px;gap:14px;border-bottom:1px solid var(--cream-100)}nav .menu-toggle{display:block}.hero,.location-section,.contact{grid-template-columns:1fr}.hero-img{order:-1;max-width:480px;margin:0 auto}.servizi-grid,.team-grid,.processo,.emergenza .protocol,.recensioni{grid-template-columns:1fr}.processo::before{display:none}footer .footer-grid{grid-template-columns:1fr;gap:32px}.lead-magnet form{flex-direction:column}}
-
-  /* audit-100-100: a11y prefers-reduced-motion + focus-visible */
-  @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after {
-      animation-duration: 0.01ms !important;
-      animation-iteration-count: 1 !important;
-      transition-duration: 0.01ms !important;
-      scroll-behavior: auto !important;
-    }
-  }
-  :focus-visible { outline: 2px solid currentColor; outline-offset: 3px; border-radius: 2px; }
-  @media (forced-colors: active) {
-    a, button { forced-color-adjust: none; }
-  }
-  
-  /* audit-100-100: skip link a11y WCAG 2.4.1 */
-  .audit-skip-link { position: absolute; left: -9999px; top: 0; background: #000; color: #fff; padding: 12px 16px; z-index: 10000; text-decoration: none; font: bold 14px/1 system-ui, sans-serif; border-radius: 0 0 8px 0; }
-  .audit-skip-link:focus { left: 0; outline: 3px solid #FFD700; outline-offset: 2px; }
-
-  
-  /* audit-100-100 phase-2e: prevent horizontal scroll on desktop */
-  html, body { overflow-x: hidden; max-width: 100vw; }
-  
-  /* Phase 2.I contrast fix */
-  .eyebrow { color: #1F4A5C !important; }
-  .verify { color: #2A5D6F !important; }
-  .btn-primary { background-color: #1F4A5C !important; color: #ffffff !important; }
+  <title>Demo template — Sant'Angelo Vet · Alessandro Giacobbi</title>
+  <meta name="description" content="Anteprima statica del demo template per Veterinaria (tier Boutique). Esempio di stile, non lavoro commissionato.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=PT+Sans:wght@400;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/tokens.css">
+  <link rel="stylesheet" href="../../assets/css/base.css">
+  <style>
+    body { background: var(--paper); color: var(--ink); font-family: var(--fb); margin: 0; }
+    a { color: inherit; text-decoration: none; }
+    .demo-bar { position: sticky; top: 0; z-index: 50; background: var(--paper); border-bottom: 1px solid var(--rule); padding: 0.9rem 1.5rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; backdrop-filter: blur(6px); }
+    .demo-bar__left { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+    .demo-bar__back { font-family: var(--fm); font-size: var(--fz-meta); letter-spacing: 0.08em; text-transform: uppercase; color: var(--ox); }
+    .demo-bar__back:hover { text-decoration: underline; }
+    .demo-bar__title { font-family: var(--fd); font-size: 1.05rem; font-weight: 700; color: var(--ink); }
+    .demo-bar__tier { font-family: var(--fm); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--paper); background: var(--ox); padding: 0.3rem 0.6rem; }
+    .demo-bar__cta { font-family: var(--fm); font-size: var(--fz-meta); letter-spacing: 0.08em; text-transform: uppercase; color: var(--paper); background: var(--ink); padding: 0.6rem 1rem; transition: background 200ms; }
+    .demo-bar__cta:hover { background: var(--ox); }
+    .demo-frame { padding: 0; background: var(--paper2); }
+    .demo-frame__inner { max-width: 1280px; margin: 0 auto; position: relative; }
+    .demo-frame__img { display: block; width: 100%; height: auto; box-shadow: 0 10px 40px -8px rgba(22,19,16,0.18); user-select: none; -webkit-user-drag: none; pointer-events: none; }
+    .demo-frame__watermark { position: absolute; top: 24px; right: 24px; font-family: var(--fm); font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--paper); background: rgba(184,50,63,0.88); padding: 0.4rem 0.8rem; pointer-events: none; z-index: 2; }
+    .demo-foot { padding: 4rem 1.5rem; background: var(--ink); color: var(--paper); text-align: center; }
+    .demo-foot__title { font-family: var(--fd); font-size: clamp(1.5rem, 3vw, 2.5rem); font-weight: 700; line-height: 1.1; margin: 0 0 1.25rem 0; }
+    .demo-foot__title em { font-family: var(--fs, Georgia, serif); font-style: italic; color: var(--ox); font-weight: 400; }
+    .demo-foot__cta { display: inline-block; font-family: var(--fm); font-size: var(--fz-mono); letter-spacing: 0.04em; text-transform: uppercase; color: var(--paper); background: var(--ox); padding: 1rem 1.6rem; transition: background 200ms; }
+    .demo-foot__cta:hover { background: var(--ox-deep, #8a2530); }
+    .demo-foot__note { font-family: var(--fm); font-size: var(--fz-meta); letter-spacing: 0.06em; color: rgba(237,230,214,0.55); margin: 1.75rem auto 0 auto; max-width: 60ch; line-height: 1.55; font-style: italic; }
   </style>
-  <!-- audit-100-100 phase-2c preload-critical -->
-  <!-- audit-100-100 phase-2h landmark+labels -->
-  <!-- audit-100-100 phase-2i contrast-fix -->
 </head>
 <body>
-<main id="main">
-
-<a href="#main" class="audit-skip-link">Salta al contenuto</a>
-<nav id="nav">
-  <div class="container nav-inner">
-    <a href="#" class="logo">Sant'Angelo Vet</a>
-    <ul>
-      <li><a href="#servizi">Servizi</a></li>
-      <li><a href="#vaccinazioni">Vaccinazioni</a></li>
-      <li><a href="#team">Team</a></li>
-      <li><a href="#emergenza">Emergenza</a></li>
-      <li><a href="#contact">Contatti</a></li>
-      <li><a href="#contact" class="btn btn-primary" style="padding:10px 20px;font-size:13px;min-height:auto">Prenota visita</a></li>
-    </ul>
-    <button class="menu-toggle" onclick="document.getElementById('nav').classList.toggle('open')">≡</button>
-  </div>
-</nav>
-
-<section class="hero container">
-  <div class="hero-img"></div>
-  <div>
-    <span class="eyebrow">Ambulatorio veterinario · Vicenza · Dal [ANNO]</span>
-    <h1>La salute dei suoi animali, dal [ANNO].</h1>
-    <p class="subhead">Ambulatorio veterinario boutique a Vicenza, [N°] veterinari iscritti FNOVI Vicenza. Cane, gatto, coniglio, piccoli animali. Prima visita dedicata, percorso terapeutico personalizzato, comunicazione chiara con il proprietario. <span class="verify">[DA VERIFICARE titolari + anno apertura]</span></p>
-    <div class="cta-row">
-      <a href="#contact" class="btn btn-primary">Prenota visita</a>
-      <a href="#servizi" class="btn btn-outline">Scopri i servizi</a>
+  <header class="demo-bar">
+    <div class="demo-bar__left">
+      <a href="../../#web-design" class="demo-bar__back">&larr; Torna al portfolio</a>
+      <span class="demo-bar__title">Demo &middot; Sant'Angelo Vet</span>
+      <span class="demo-bar__tier">Boutique</span>
     </div>
-  </div>
-</section>
-
-<section class="section container manifesto">
-  <blockquote>«Da [ANNO] curiamo la salute di cani, gatti e piccoli animali a Vicenza. Visita prima sempre dedicata, percorso terapeutico personalizzato, comunicazione chiara con il proprietario.»</blockquote>
-  <p class="mono" style="margin-top:16px;color:var(--sky-blue-500)">[DA VERIFICARE manifesto cliente reale]</p>
-</section>
-
-<section id="servizi" class="container section">
-  <span class="eyebrow">I nostri servizi</span>
-  <h2 style="margin-top:8px">Otto specializzazioni in un ambulatorio.</h2>
-  <div class="servizi-grid">
-    <div class="servizio-tile"><div class="icon">◐</div><h3>Medicina interna</h3><p>Anamnesi, esame obiettivo, diagnosi differenziale, piani terapeutici personalizzati per patologie acute e croniche.</p></div>
-    <div class="servizio-tile"><div class="icon">◑</div><h3>Chirurgia ambulatoriale</h3><p>Sterilizzazioni, ortopedica minore, dermatologica, dentale. Sala operatoria attrezzata con anestesia inalatoria.</p></div>
-    <div id="vaccinazioni" class="servizio-tile"><div class="icon">⚆</div><h3>Vaccinazioni</h3><p>Profilassi annuali e triennali secondo protocolli WSAVA. Antirabbico per espatrio + libretto sanitario europeo.</p></div>
-    <div class="servizio-tile"><div class="icon">⚉</div><h3>Dentale</h3><p>Detartrasi ad ultrasuoni, estrazioni, ortodontiche minori. Anestesia controllata con monitoraggio continuo.</p></div>
-    <div class="servizio-tile"><div class="icon">⚇</div><h3>Diagnostica strumentale</h3><p>Ecografia addominale, RX digitale, esami sangue in-loco (chimica clinica, ematologia, elettroliti). Risultati 30 min.</p></div>
-    <div class="servizio-tile"><div class="icon">◈</div><h3>Fisioterapia veterinaria</h3><p>Riabilitazione post-chirurgica, gestione dolore cronico osteoarticolare, mantenimento mobilità anziani. <span class="verify">[DA VERIFICARE]</span></p></div>
-    <div class="servizio-tile"><div class="icon">◉</div><h3>Comportamentalista</h3><p>Consulenze su problemi comportamentali (aggressività, ansia separazione, paure, compulsivi). <span class="verify">[DA VERIFICARE ECVBM]</span></p></div>
-    <div class="servizio-tile"><div class="icon">◓</div><h3>Emergenze 24h</h3><p>Reperibilità telefonica weekend e festivi. Triage telefonico → invio domicilio o ambulatorio entro 30 min.</p></div>
-  </div>
-</section>
-
-<section class="container">
-  <div class="lead-magnet">
-    <span class="eyebrow">Risorsa gratuita</span>
-    <h2>Calendario vaccinazioni cane / gatto.</h2>
-    <p>Curato dai nostri veterinari + reminder email automatico mensile per non dimenticare scadenze. PDF 12 pagine, gratuito.</p>
-    <form onsubmit="event.preventDefault();alert('Demo: integrare endpoint Formspree o SMTP cliente reale');">
-      <input type="email" placeholder="La tua email" required aria-label="La tua email">
-      <select required aria-label="Campo modulo">
-        <option value="">Specie pet…</option>
-        <option>Cane</option>
-        <option>Gatto</option>
-        <option>Coniglio</option>
-        <option>Altro</option>
-      </select>
-      <button type="submit" class="btn btn-primary">Scarica gratis ora</button>
-    </form>
-  </div>
-</section>
-
-<section id="team" class="container section">
-  <span class="eyebrow">I nostri veterinari</span>
-  <h2 style="margin-top:8px">Team iscritto FNOVI Vicenza.</h2>
-  <div class="team-grid">
-    <div class="team-card">
-      <div class="photo"></div>
-      <h3>Dr. [DA VERIFICARE]</h3>
-      <p class="role">Direttore sanitario</p>
-      <p class="albo">Albo FNOVI VI n.[DA VERIFICARE]</p>
-      <p class="specs">Specializzazione ECVS Chirurgia <span class="verify">[DA VERIFICARE]</span></p>
+    <a href="../../#contact" class="demo-bar__cta">Parliamone &rarr;</a>
+  </header>
+  <main class="demo-frame">
+    <div class="demo-frame__inner">
+      <span class="demo-frame__watermark">Demo &middot; non commissionato</span>
+      <img class="demo-frame__img" src="../../assets/img/case-studies/vet-full.jpg" alt="Demo template per Veterinaria (tier Boutique)" loading="eager" oncontextmenu="return false;">
     </div>
-    <div class="team-card">
-      <div class="photo"></div>
-      <h3>Dr.ssa [DA VERIFICARE]</h3>
-      <p class="role">Medicina interna</p>
-      <p class="albo">Albo FNOVI VI n.[DA VERIFICARE]</p>
-      <p class="specs">Master Endocrinologia veterinaria <span class="verify">[DA VERIFICARE]</span></p>
-    </div>
-    <div class="team-card">
-      <div class="photo"></div>
-      <h3>Dr. [DA VERIFICARE]</h3>
-      <p class="role">Dentale + Anestesia</p>
-      <p class="albo">Albo FNOVI VI n.[DA VERIFICARE]</p>
-      <p class="specs">Certificazione FAVD <span class="verify">[DA VERIFICARE]</span></p>
-    </div>
-    <div class="team-card">
-      <div class="photo"></div>
-      <h3>Dr.ssa [DA VERIFICARE]</h3>
-      <p class="role">Comportamento</p>
-      <p class="albo">Albo FNOVI VI n.[DA VERIFICARE]</p>
-      <p class="specs">Certificazione ECVBM <span class="verify">[DA VERIFICARE]</span></p>
-    </div>
-  </div>
-</section>
-
-<section class="container section">
-  <span class="eyebrow">Come lavoriamo</span>
-  <h2 style="margin-top:8px">Quattro fasi, paziente al centro.</h2>
-  <div class="processo">
-    <div class="processo-step"><span class="num">01</span><h3>Prima visita 45 min</h3><p>Anamnesi completa + esame obiettivo + relazione proprietario.</p></div>
-    <div class="processo-step"><span class="num">02</span><h3>Diagnostica</h3><p>Esami sangue/RX/eco se necessari, in-loco, risultati 30 min.</p></div>
-    <div class="processo-step"><span class="num">03</span><h3>Piano terapeutico</h3><p>Terapia + posologia + reminder + follow-up programmato.</p></div>
-    <div class="processo-step"><span class="num">04</span><h3>Follow-up</h3><p>Email automatica per scadenze annuali e triennali.</p></div>
-  </div>
-</section>
-
-<section id="emergenza" class="container">
-  <div class="emergenza">
-    <span class="badge">Emergenze 24h</span>
-    <h2>Reperibilità telefonica weekend e festivi.</h2>
-    <p style="font-size:16px;color:var(--cream-100);max-width:640px">Per emergenze al di fuori degli orari ambulatorio, chiama il numero dedicato. Triage telefonico veterinario di turno → invio domicilio o apertura ambulatorio entro 30 min.</p>
-    <div class="protocol">
-      <div class="protocol-step"><strong>1.</strong><p>Chiama numero emergenze [DA VERIFICARE]</p></div>
-      <div class="protocol-step"><strong>2.</strong><p>Descrivi situazione, sintomi, tempo, specie pet</p></div>
-      <div class="protocol-step"><strong>3.</strong><p>Triage telefonico, valutazione urgenza</p></div>
-      <div class="protocol-step"><strong>4.</strong><p>Invio entro 30 min, costo +€80 maggiorazione notte/festivo</p></div>
-    </div>
-  </div>
-</section>
-
-<section class="container section">
-  <span class="eyebrow">Dicono di noi</span>
-  <h2 style="margin-top:8px">Recensioni Google verificate.</h2>
-  <div class="recensioni">
-    <div class="recensione-card">
-      <div class="stars">★★★★★</div>
-      <blockquote>«[Recensione famiglia con cane Labrador, 25-40 parole — placeholder consenso scritto FNOVI art. 26-28]»</blockquote>
-      <cite>Famiglia Rossi · Vicenza</cite>
-      <span class="pet">Cane · Labrador</span>
-    </div>
-    <div class="recensione-card">
-      <div class="stars">★★★★★</div>
-      <blockquote>«[Recensione coppia gatto sterilizzazione — placeholder consenso scritto]»</blockquote>
-      <cite>Marco &amp; Anna · Schio</cite>
-      <span class="pet">Gatto · Europeo</span>
-    </div>
-    <div class="recensione-card">
-      <div class="stars">★★★★★</div>
-      <blockquote>«[Recensione famiglia coniglio, vaccinazione + visita controllo — placeholder consenso]»</blockquote>
-      <cite>Famiglia Bianchi · Thiene</cite>
-      <span class="pet">Coniglio · Ariete</span>
-    </div>
-  </div>
-  <p class="recensioni-rating">★ 4.8 / 5 su Google · 124 recensioni verificate <span class="verify">[DA VERIFICARE numeri reali cliente]</span></p>
-  <p style="text-align:center;margin-top:16px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--ink-700);font-style:italic">Tutte le recensioni pubblicate con consenso scritto del proprietario, conformi al Codice Deontologico FNOVI art. 26-28.</p>
-</section>
-
-<section class="container section">
-  <span class="eyebrow">Domande frequenti</span>
-  <h2 style="margin-top:8px">Sei domande, risposte concrete.</h2>
-  <div class="faq-list">
-    <details class="faq-item"><summary>Costi visita ordinaria?</summary><p>Visita prima 45 min: €60-80. Visite successive: €40-60. Esami sangue in-loco: €30-50. Tariffario completo nel preventivo prima procedura. NO listino specifico per FNOVI art. 28.</p></details>
-    <details class="faq-item"><summary>Pagamenti?</summary><p>POS Visa/Mastercard/contactless, contanti, bancomat. Bonifico anticipato per chirurgia >€500.</p></details>
-    <details class="faq-item"><summary>Animali esotici?</summary><p>Solo cane / gatto / coniglio / criceto. NO rettili, uccelli, animali esotici complessi (rinvio Clinica Universitaria Padova).</p></details>
-    <details class="faq-item"><summary>Vaccini obbligatori?</summary><p>Antirabbico obbligatorio per espatrio. Cane: cimurro/parvovirus/leptospirosi annuali. Gatto: panleucopenia/calicivirus/herpesvirus annuali. Protocollo WSAVA aggiornato.</p></details>
-    <details class="faq-item"><summary>Microchip e iscrizione anagrafe?</summary><p>Microchip obbligatorio cani (D.M. 28/02/2003), volontario gatti. Iscrizione anagrafe regionale veterinaria entro 60 giorni dal microchip.</p></details>
-    <details class="faq-item"><summary>Cremazione e ritiro salma?</summary><p>Servizio convenzionato con [PARTNER CREMAZIONE DA VERIFICARE], ritiro in ambulatorio o domicilio. Cremazione singola con ceneri restituite o collettiva. Comunichiamo le opzioni con sensibilità.</p></details>
-  </div>
-</section>
-
-<section class="container section">
-  <span class="eyebrow">Dove siamo</span>
-  <h2 style="margin-top:8px">Vicenza, accessibile e con parcheggio.</h2>
-  <div class="location-section">
-    <iframe src="https://www.openstreetmap.org/export/embed.html?bbox=11.5%2C45.5%2C11.6%2C45.6&amp;layer=mapnik" loading="lazy" title="Posizione ambulatorio Vicenza"></iframe>
-    <ul>
-      <li><strong>Indirizzo:</strong> via [DA VERIFICARE], Vicenza <span class="verify">[DA VERIFICARE]</span></li>
-      <li><strong>Parcheggio cliente:</strong> 10 posti privati, gratuiti</li>
-      <li><strong>Accesso disabili:</strong> rampa + ingresso accessibile</li>
-      <li><strong>Servizio raggio:</strong> Vicenza + comuni limitrofi 30 km (Schio, Thiene, Bassano del Grappa)</li>
-    </ul>
-  </div>
-</section>
-
-<section id="contact" class="container section">
-  <span class="eyebrow">Contatti</span>
-  <h2 style="margin-top:8px">Prenota una visita.</h2>
-  <div class="contact">
-    <div class="contact-info">
-      <iframe src="https://www.openstreetmap.org/export/embed.html?bbox=11.5%2C45.5%2C11.6%2C45.6&amp;layer=mapnik" loading="lazy" title="Mappa ambulatorio"></iframe>
-      <ul>
-        <li><strong>Telefono:</strong> +39 [DA VERIFICARE]</li>
-        <li><strong>Emergenza 24h:</strong> +39 [DA VERIFICARE]</li>
-        <li><strong>WhatsApp:</strong> +39 [DA VERIFICARE]</li>
-        <li><strong>Email:</strong> info@santangelo-vet.it <span class="verify">[DA VERIFICARE]</span></li>
-        <li><strong>Google:</strong> Profilo aziendale verificato</li>
-      </ul>
-    </div>
-    <form class="contact-form" onsubmit="event.preventDefault();alert('Demo: integrare endpoint cliente reale');">
-      <div class="form-row"><label>Nome</label><input type="text" required aria-label="Text"></div>
-      <div class="form-row"><label>Email</label><input type="email" required aria-label="Email"></div>
-      <div class="form-row"><label>Telefono</label><input type="tel" aria-label="Tel"></div>
-      <div class="form-row">
-        <label>Specie pet</label>
-        <select required aria-label="Campo modulo">
-          <option value="">Seleziona…</option>
-          <option>Cane</option>
-          <option>Gatto</option>
-          <option>Coniglio</option>
-          <option>Altro</option>
-        </select>
-      </div>
-      <div class="form-row">
-        <label>Tipo visita</label>
-        <select required aria-label="Campo modulo">
-          <option value="">Seleziona…</option>
-          <option>Prima visita</option>
-          <option>Visita di controllo</option>
-          <option>Vaccinazione</option>
-          <option>Emergenza</option>
-        </select>
-      </div>
-      <div class="form-row"><label>Note</label><textarea aria-label="Campo modulo"></textarea></div>
-      <div class="gdpr-row"><input type="checkbox" id="gdpr-vet" required><label for="gdpr-vet" style="margin:0;text-transform:none;letter-spacing:0;font-weight:400">Acconsento al trattamento dei dati personali. <a href="/privacy" style="color:var(--sky-blue-500)">Privacy</a></label></div>
-      <button type="submit" class="btn btn-primary">Invia richiesta</button>
-    </form>
-  </div>
-</section>
-
-</main>
-<footer>
-  <div class="container">
-    <div class="footer-grid">
-      <div>
-        <h3>Sant'Angelo Vet</h3>
-        <p style="font-size:13px;color:var(--cream-100);opacity:.85;line-height:1.6">Ambulatorio veterinario boutique a Vicenza con team FNOVI specializzato.</p>
-        <p class="mono" style="margin-top:12px;color:var(--cream-100);opacity:.7;font-size:11px">P.IVA [DA VERIFICARE] · ATECO 75.00.00</p>
-        <div class="social-row"><a href="#">FB</a><a href="#">IG</a><a href="#">G</a></div>
-      </div>
-      <div>
-        <h3>Albo FNOVI</h3>
-        <ul>
-          <li>Direttore sanitario · n.[DA VERIFICARE]</li>
-          <li>Vet 2 · n.[DA VERIFICARE]</li>
-          <li>Vet 3 · n.[DA VERIFICARE]</li>
-          <li>Vet 4 · n.[DA VERIFICARE]</li>
-        </ul>
-      </div>
-      <div>
-        <h3>Legali</h3>
-        <ul><li><a href="/privacy">Privacy</a></li><li><a href="/cookie">Cookie</a></li><li><a href="/termini">Termini</a></li><li><a href="/note-legali">Note legali</a></li></ul>
-      </div>
-    </div>
-    <p class="footer-disclaimer">Le informazioni hanno scopo informativo. Non sostituiscono visita veterinaria specifica al singolo paziente. L'Ambulatorio è soggetto al Codice Deontologico FNOVI art. 26-28 (Federazione Nazionale Ordine Veterinari Italiani) e alla Vigilanza dell'Ordine dei Medici Veterinari della Provincia di Vicenza. Direttore sanitario: Dr. [DA VERIFICARE], Albo FNOVI VI n.[DA VERIFICARE]. Tutti i veterinari iscritti FNOVI Vicenza.</p>
-  </div>
-</footer>
-
-<script>
-const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('is-visible');obs.unobserve(e.target)}}),{rootMargin:'-50px'});
-document.querySelectorAll('.section').forEach(s=>obs.observe(s));
-</script>
-<!-- VERIFY: Albo FNOVI per ogni vet / specializzazioni certificate ECVS-ECVIM-FAVD-ECVBM / direttore sanitario / numero emergenza 24h / partner cremazione / IG handle / numeri reali / endpoint form / orari / lista esotici accolti -->
-
+  </main>
+  <footer class="demo-foot">
+    <h2 class="demo-foot__title">Vuoi un sito cos&igrave;, <em>cucito sulla tua attivit&agrave;?</em></h2>
+    <a href="../../#contact" class="demo-foot__cta">Parliamone &rarr;</a>
+    <p class="demo-foot__note">Questo &egrave; uno screenshot di un template di esempio per il settore Veterinaria (tier Boutique). Non &egrave; un lavoro fatto per un cliente reale.</p>
+  </footer>
 </body>
 </html>

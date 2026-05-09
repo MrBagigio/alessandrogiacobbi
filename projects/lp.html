@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LP Group — Chameleon Rigging · Alessandro Giacobbi</title>
+  <meta name="description" content="Rigging completo del camaleonte 3D per LP Group: body mech + facial rig + tongue dynamics + tail spline. Maya / Python toolset presso Setpoint Studio.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../assets/css/tokens.css">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/layout.css">
+  <link rel="stylesheet" href="../assets/css/animations.css">
+</head>
+<body>
+
+  <a href="#main" class="skip-link">Salta al contenuto</a>
+  <div class="cursor-dot" aria-hidden="true"></div>
+  <div class="cursor-ring" aria-hidden="true"></div>
+  <div class="scroll-progress" aria-hidden="true"></div>
+
+  <header class="meta-bar">
+    <div class="left"><a href="../index.html">← Portfolio</a></div>
+    <div class="center">LP Group — Chameleon</div>
+    <div class="right">
+      <span class="meta-clock">--:-- CET</span>
+      <a href="../index.html#contact">Contact</a>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <section class="project-hero">
+      <div class="project-hero__inner">
+        <nav class="project-hero__breadcrumb reveal-up">
+          <a href="../index.html">Portfolio</a> &nbsp;/&nbsp; Character Rigging · Brand Commercial
+        </nav>
+        <h1 class="project-hero__title reveal-up">LP Group</h1>
+        <p class="project-hero__client reveal-up">Chameleon character rigging · LP Group · Setpoint Studio</p>
+      </div>
+    </section>
+
+    <section class="project-meta">
+      <div class="project-meta__inner">
+        <div class="project-meta__col">
+          <span class="project-meta__label">Client</span>
+          <span class="project-meta__value">LP Group</span>
+        </div>
+        <div class="project-meta__col">
+          <span class="project-meta__label">Studio</span>
+          <span class="project-meta__value">Setpoint Studio S.r.l.</span>
+        </div>
+        <div class="project-meta__col">
+          <span class="project-meta__label">Discipline</span>
+          <span class="project-meta__value">Rigging TD · Character</span>
+        </div>
+        <div class="project-meta__col">
+          <span class="project-meta__label">Subject</span>
+          <span class="project-meta__value">Chameleon — full creature</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="project-video">
+      <div class="project-video__frame">
+        <div class="showreel__placeholder" data-vimeo-id="PLACEHOLDER" role="button" tabindex="0" aria-label="Riproduci video LP Group">
+          <div class="showreel__play"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="project-content">
+      <div class="project-content__inner">
+
+        <h3 class="project-content__h3 reveal-up">Il progetto</h3>
+        <p class="project-content__p reveal-up">
+          Brand commercial LP Group con character protagonista: un camaleonte 3D fotorealistico
+          animato. Lavoro di rigging end-to-end del creature: body mechanics, sistema facciale,
+          tongue dynamics (lingua proiettile) e spline coda. Il rig è stato consegnato
+          all'animation team Setpoint Studio production-ready, con controlli intuitivi e
+          deformazioni stabili sotto pose estreme.
+        </p>
+
+        <h3 class="project-content__h3 reveal-up">Il mio contributo — rigging completo</h3>
+        <ul class="project-content__role-list reveal-up">
+          <li><strong>Body mech rig</strong> — skeleton quadruped con IK/FK switch + stretchy limbs · controllo digit-by-digit dita prensili (le 5 dita del camaleonte hanno opposable grip caratteristico)</li>
+          <li><strong>Tongue dynamics</strong> — sistema spline a curvatura variabile per la lingua-proiettile, con squash &amp; stretch automatic + curl/uncurl progressivo via slider</li>
+          <li><strong>Tail spline</strong> — coda prensile con FK chain + dynamic overlap secondary, capace di curl-roll su sé stessa</li>
+          <li><strong>Facial rig</strong> — eyes independent (camaleonte ha occhi che ruotano indipendenti 360°), eyelids blendshapes, jaw open + tongue protrude attached</li>
+          <li><strong>Skin shading prep</strong> — UV layout + topology ottimizzata per displacement scales + chromatophores layer (cambio colore via texture animation)</li>
+          <li><strong>Python tools</strong> — auto-rig snippets per accelerare iterazioni revisioni</li>
+        </ul>
+
+        <h3 class="project-content__h3 reveal-up">Sfide tecniche</h3>
+        <p class="project-content__p reveal-up">
+          Il camaleonte ha 3 caratteristiche anatomiche fuori standard quadruped che richiedono
+          custom rigging: occhi independenti (non possono usare aim-constraint condiviso), lingua
+          ballistic projectile (impossibile da animare keyframe puro, deve essere procedural), e
+          dita zygodactyl (2 davanti + 3 dietro su mano, opposable). Ognuna ha richiesto
+          un sub-system dedicato.
+        </p>
+
+        <h3 class="project-content__h3 reveal-up">Tools</h3>
+        <p class="project-content__p reveal-up">
+          Maya · Python · MEL · custom auto-rig toolset · ZBrush (sculpt review) · Substance Painter (shading prep)
+        </p>
+
+      </div>
+    </section>
+
+    <section class="project-stills">
+      <div class="project-stills__inner">
+        <div class="project-stills__grid">
+          <div class="project-still img-reveal reveal-up">
+            <img src="../assets/images/projects/lp/lp-thb.webp" alt="LP Group chameleon — hero render">
+          </div>
+          <div class="project-still img-reveal reveal-up">
+            <div class="project-card__placeholder">Rig viewport — IK/FK demo</div>
+          </div>
+          <div class="project-still project-still--wide img-reveal reveal-up">
+            <div class="project-card__placeholder">Tongue dynamics — projectile slider sweep</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="project-content" style="background: var(--paper2); border-top: 1px solid var(--rule);">
+      <div class="project-content__inner">
+        <h3 class="project-content__h3 reveal-up">Credits</h3>
+        <p class="project-content__p reveal-up">
+          <strong>Studio:</strong> Setpoint Studio S.r.l. ·
+          <strong>Client:</strong> LP Group<br>
+          <strong>Tools:</strong> Maya, Python, MEL, ZBrush, Substance Painter
+        </p>
+      </div>
+    </section>
+
+    <section class="project-next">
+      <div class="project-next__inner">
+        <div>
+          <span class="text-meta">Next project</span>
+          <h3 class="text-h3" style="margin-top: 0.5rem;">CharacterPromptKit</h3>
+        </div>
+        <a href="./characterpromptkit.html" class="btn btn--ox">
+          <span>Vai al progetto</span>
+          <span class="btn-arrow">→</span>
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <div class="footer__inner">
+      <span class="footer__credit">© 2026 Alessandro Giacobbi · <a href="https://www.setpointstudio.com">Setpoint Studio S.r.l.</a> · P.IVA 04403500244</span>
+      <span class="footer__credit"><a href="../index.html">← Tutti i progetti</a></span>
+    </div>
+  </footer>
+
+  <script type="module" src="../assets/js/main.js"></script>
+
+</body>
+</html>

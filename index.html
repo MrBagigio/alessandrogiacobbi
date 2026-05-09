@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alessandro Giacobbi — 3D · VFX · AI Pipeline</title>
+  <meta name="description" content="3D Artist · Product Viz · Character Rigging · AI Pipeline. Lavori CGI per brand pubblicitari italiani. Setpoint Studio.">
+
+  <meta property="og:title" content="Alessandro Giacobbi — Selected work, 2018→2026">
+  <meta property="og:description" content="3D Artist · VFX · AI Pipeline. Lavori CGI per brand pubblicitari italiani.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://mrbagigio.github.io/alessandrogiacobbi/">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": ["Person","ProfessionalService"],
+    "name": "Alessandro Giacobbi",
+    "url": "https://mrbagigio.github.io/alessandrogiacobbi/",
+    "jobTitle": "3D Artist · Product Viz · Character Rigging · AI Pipeline",
+    "address": {"@type":"PostalAddress","streetAddress":"Via Roma 40 Int 2","addressLocality":"Torrebelvicino","addressRegion":"Veneto","postalCode":"36036","addressCountry":"IT"},
+    "areaServed": "IT",
+    "knowsAbout": ["Maya","ZBrush","Substance Painter","Redshift","Arnold","Wrap3D","Character Rigging","Product Visualization","ComfyUI","Stable Diffusion","Flux","LoRA Training","AI Pipeline"],
+    "contactPoint": {"@type":"ContactPoint","email":"alessandro@setpointstudio.com","contactType":"customer service","availableLanguage":["Italian","English"]},
+    "sameAs": ["https://www.linkedin.com/in/alessandrogiacobbi","https://vimeo.com/setpointstudio","https://www.instagram.com/setpointstudio"],
+    "worksFor": {"@type":"Organization","name":"Setpoint Studio S.r.l."}
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- Setpoint Studio brand match: PT Sans (body) + Geist Mono. Display = Big Noodle Titling self-hosted via @font-face -->
+  <link href="https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="./assets/css/tokens.css">
+  <link rel="stylesheet" href="./assets/css/base.css">
+  <link rel="stylesheet" href="./assets/css/components.css">
+  <link rel="stylesheet" href="./assets/css/layout.css">
+  <link rel="stylesheet" href="./assets/css/animations.css">
+</head>
+<body>
+
+  <a href="#main" class="skip-link">Salta al contenuto</a>
+
+  <div class="loader" aria-hidden="true">
+    <div class="loader__content">
+      <div class="loader__spinner"></div>
+      <div class="loader__text">Loading scene</div>
+    </div>
+  </div>
+
+  <div class="cursor-dot" aria-hidden="true"></div>
+  <div class="cursor-ring" aria-hidden="true"></div>
+  <div class="scroll-progress" aria-hidden="true"></div>
+
+  <!-- Asteroid cursor canvas (desktop fine-pointer only) -->
+  <canvas id="asteroid-cursor" class="asteroid-cursor" aria-hidden="true"></canvas>
+
+  <header class="meta-bar">
+    <div class="left">
+      <span class="meta-dot"></span>
+      Available · Q2 2026
+    </div>
+    <div class="center">Alessandro Giacobbi</div>
+    <div class="right">
+      <span class="meta-clock">--:-- CET</span>
+      <a href="#contact">Contact</a>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <!-- HERO -->
+    <section class="hero" aria-label="Intro">
+      <canvas class="hero__canvas" aria-hidden="true"></canvas>
+
+      <div class="hero__inner">
+        <div class="hero__pretitle reveal-up">3D Artist · Veneto, IT</div>
+
+        <h1 class="hero__title">
+          <span class="reveal-mask"><span>Render</span></span>
+          <span class="reveal-mask"><span>che vendono.</span></span><br>
+          <em class="reveal-mask reveal-mask--paper2"><span>Character</span></em>
+          <span class="reveal-mask"><span>che si muovono.</span></span>
+        </h1>
+
+        <p class="hero__sub reveal-up">
+          Faccio product viz fotorealistico e character rigging per brand pubblicitari.
+          Da otto anni dentro Setpoint Studio, in Veneto. Adesso anche AI pipeline su misura
+          (ComfyUI, LoRA training).
+        </p>
+
+        <div class="hero__cta reveal-up">
+          <a href="#work" class="btn btn--ox">
+            <span>Vedi i lavori</span>
+            <span class="btn-arrow">→</span>
+          </a>
+          <a href="#contact" class="btn btn--ghost">
+            <span>Contattami</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="hero__meta">
+        <div class="hero__meta-block">
+          <span class="hero__meta-label">Based</span>
+          <span>Torrebelvicino, IT</span>
+        </div>
+        <div class="hero__meta-block">
+          <span class="hero__meta-label">Studio</span>
+          <span>Setpoint Studio S.r.l.</span>
+        </div>
+        <div class="hero__meta-block">
+          <span class="hero__meta-label">Status</span>
+          <span>Open for projects</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- TRUSTED BY -->
+    <section class="trusted-by" aria-label="Trusted by">
+      <div class="trusted-by__inner">
+        <span class="trusted-by__label">Trusted by</span>
+        <div class="trusted-by__logos">
+          <span class="trusted-by__logo">FITT</span>
+          <span class="trusted-by__sep">·</span>
+          <span class="trusted-by__logo">EHF Champions</span>
+          <span class="trusted-by__sep">·</span>
+          <span class="trusted-by__logo">Opera Prima</span>
+          <span class="trusted-by__sep">·</span>
+          <span class="trusted-by__logo">Setpoint Studio</span>
+          <span class="trusted-by__sep">·</span>
+          <span class="trusted-by__logo">+ via Setpoint</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- TICKER -->
+    <div class="ticker" aria-hidden="true">
+      <div class="ticker__track">
+        <span class="ticker__item">Product Viz</span><span class="ticker__sep">●</span>
+        <span class="ticker__item ticker__item--ox">Character</span><span class="ticker__sep">●</span>
+        <span class="ticker__item">Rigging TD</span><span class="ticker__sep">●</span>
+        <span class="ticker__item ticker__item--ox">CGI Commercials</span><span class="ticker__sep">●</span>
+        <span class="ticker__item">AI Pipeline</span><span class="ticker__sep">●</span>
+        <span class="ticker__item">Product Viz</span><span class="ticker__sep">●</span>
+        <span class="ticker__item ticker__item--ox">Character</span><span class="ticker__sep">●</span>
+        <span class="ticker__item">Rigging TD</span><span class="ticker__sep">●</span>
+        <span class="ticker__item ticker__item--ox">CGI Commercials</span><span class="ticker__sep">●</span>
+        <span class="ticker__item">AI Pipeline</span><span class="ticker__sep">●</span>
+      </div>
+    </div>
+
+    <!-- SHOWREEL -->
+    <section class="showreel" aria-label="Showreel">
+      <div class="showreel__frame">
+        <div class="showreel__placeholder" data-vimeo-id="PLACEHOLDER" role="button" tabindex="0" aria-label="Riproduci showreel">
+          <div class="showreel__play"></div>
+        </div>
+        <div class="showreel__caption">SHOWREEL · 2018→2026 · 02:14</div>
+      </div>
+    </section>
+
+    <!-- MANIFESTO -->
+    <section class="manifesto" aria-label="Manifesto">
+      <div class="manifesto__inner">
+        <p class="manifesto__lead reveal-up">
+          Otto anni a far muovere personaggi e a costruire mondi che <em>non esistono</em> ma
+          sembrano veri. Modello, struttura, illumino. Quando serve, addestro un modello AI a farlo
+          insieme a me. <em>Render, character, pipeline.</em>
+        </p>
+      </div>
+    </section>
+
+    <!-- WORK 01 — 3D · CHARACTER RIGGING -->
+    <section class="work" id="work" aria-labelledby="work-1">
+      <div class="work__inner">
+
+        <header class="section-heading reveal-up">
+          <span class="section-heading__num">01</span>
+          <h2 class="section-heading__title" id="work-1">3D · Character Rigging</h2>
+          <span class="text-meta">Setpoint Studio</span>
+        </header>
+
+        <div class="work__grid work__grid--asym">
+
+          <a href="./projects/lp.html" class="project-card reveal-up">
+            <div class="project-card__media img-reveal">
+              <span class="project-card__index">01</span>
+              <span class="project-card__role">Full creature rig · Body + Tongue + Tail dynamics</span>
+              <img src="./assets/images/projects/lp/lp-thb.webp" alt="LP Group chameleon character rigging">
+            </div>
+            <h3 class="project-card__title">LP — Chameleon</h3>
+            <div class="project-card__meta">
+              <span>LP Group</span><span>Setpoint Studio</span><span>Character Rigging</span>
+            </div>
+          </a>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- WORK 02 — COMFYUI · WORKFLOWS & CUSTOM NODES -->
+    <section class="work" id="comfyui" aria-labelledby="work-2">
+      <div class="work__inner">
+
+        <header class="section-heading reveal-up">
+          <span class="section-heading__num">02</span>
+          <h2 class="section-heading__title" id="work-2">ComfyUI · Workflows &amp; Custom Nodes</h2>
+          <span class="text-meta">2024 → present</span>
+        </header>
+
+        <div class="work__grid work__grid--asym">
+
+          <a href="./projects/characterpromptkit.html" class="project-card reveal-up">
+            <div class="project-card__media img-reveal">
+              <span class="project-card__index">02</span>
+              <span class="project-card__role">9 custom nodes · Python · MIT licensed</span>
+              <div class="project-card__placeholder">CHARACTERPROMPTKIT · ComfyUI custom nodes</div>
+            </div>
+            <h3 class="project-card__title">CharacterPromptKit</h3>
+            <div class="project-card__meta">
+              <span>2025 →</span><span>Open Source · MIT</span><span>9 nodes registered</span>
+            </div>
+          </a>
+
+          <a href="./projects/marty-ai-pipeline.html" class="project-card reveal-up">
+            <div class="project-card__media img-reveal">
+              <span class="project-card__index">03</span>
+              <span class="project-card__role">3-stage pipeline · LoRA training · ArcFace gate</span>
+              <div class="project-card__placeholder">MARTY AI PIPELINE · Qwen Edit 2511 + Z-Image</div>
+            </div>
+            <h3 class="project-card__title">Marty AI Pipeline</h3>
+            <div class="project-card__meta">
+              <span>2025</span><span>Setpoint Studio R&amp;D</span><span>Character training</span>
+            </div>
+          </a>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- WORK 03 — R&D · TOOLING & SAAS -->
+    <section class="work" aria-labelledby="work-3" style="background: var(--paper2); border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule);">
+      <div class="work__inner">
+
+        <header class="section-heading reveal-up">
+          <span class="section-heading__num">03</span>
+          <h2 class="section-heading__title" id="work-3">R&amp;D · Tooling &amp; SaaS</h2>
+          <span class="text-meta">2025 → present</span>
+        </header>
+
+        <div class="work__grid work__grid--asym">
+
+          <a href="./projects/northstar-crm.html" class="project-card reveal-up">
+            <div class="project-card__media img-reveal">
+              <span class="project-card__index">04</span>
+              <span class="project-card__role">Single-file HTML · IndexedDB · 191 unit tests · 91% mutation</span>
+              <div class="project-card__placeholder">NORTHSTAR CRM · Setpoint client manager</div>
+            </div>
+            <h3 class="project-card__title">Northstar CRM</h3>
+            <div class="project-card__meta">
+              <span>2025 →</span><span>Setpoint dogfood</span><span>v5.3.2</span>
+            </div>
+          </a>
+
+          <a href="./projects/hostshield.html" class="project-card reveal-up">
+            <div class="project-card__media img-reveal">
+              <span class="project-card__index">05</span>
+              <span class="project-card__role">Astro · Supabase · Stripe · Cloudflare · Compliance IT</span>
+              <div class="project-card__placeholder">HOSTSHIELD · Italian short-rental compliance SaaS</div>
+            </div>
+            <h3 class="project-card__title">HostShield</h3>
+            <div class="project-card__meta">
+              <span>2026 (beta M5)</span><span>Setpoint Studio</span><span>SaaS €99/mese</span>
+            </div>
+          </a>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- WORK 05 — WEB DESIGN · CASI STUDIO -->
+    <section class="work" id="web-design" aria-labelledby="work-webdesign">
+      <div class="work__inner">
+
+        <header class="section-heading reveal-up">
+          <span class="section-heading__num">04</span>
+          <h2 class="section-heading__title" id="work-webdesign">Web Design — Casi studio</h2>
+          <span class="text-meta">Landing page freelance · €350–€1690</span>
+        </header>
+
+        <div class="work__grid work__grid--3">
+
+          <a href="./case-studies/fisio/" class="project-card reveal-up">
+            <div class="project-card__media img-reveal">
+              <span class="project-card__index">06</span>
+              <span class="project-card__role">Boutique €800 · Fisioterapia premium</span>
+              <img src="./assets/img/case-studies/fisio.jpg" alt="Riabilitart landing page" loading="lazy">
+            </div>
+            <h3 class="project-card__title">Riabilitart</h3>
+            <div class="project-card__meta">
+              <span>Fisioterapia</span><span>Boutique €800</span>
+            </div>
+          </a>
+
+          <a href="./case-studies/cartoleria/" class="project-card reveal-up">
+            <div class="project-card__media img-reveal">
+              <span class="project-card__index">07</span>
+              <span class="project-card__role">Express €350 · Landing rapida artigianale</span>
+              <img src="./assets/img/case-studies/cartoleria.jpg" alt="Cartoleria Maria Elena landing page" loading="lazy">
+            </div>
+            <h3 class="project-card__title">Cartoleria Maria Elena</h3>
+            <div class="project-card__meta">
+              <span>Cartoleria</span><span>Express €350</span>
+            </div>
+          </a>
+
+          <a href="./case-studies/estetica/" class="project-card reveal-up">
+            <div class="project-card__media img-reveal">
+              <span class="project-card__index">08</span>
+              <span class="project-card__role">Custom €600 · Beauty &amp; wellness</span>
+              <img src="./assets/img/case-studies/estetica.jpg" alt="Estetica Lavanda landing page" loading="lazy">
+            </div>
+            <h3 class="project-card__title">Estetica Lavanda</h3>
+            <div class="project-card__meta">
+              <span>Centro Estetico</span><span>Custom €600</span>
+            </div>
+          </a>
+
+          <a href="./case-studies/pm-airbnb/" class="project-card reveal-up">
+            <div class="project-card__media img-reveal">
+              <span class="project-card__index">09</span>
+              <span class="project-card__role">Editorial Premium €1690 · Luxury villa DACH</span>
+              <img src="./assets/img/case-studies/pm-airbnb.jpg" alt="Villa Belvedere landing page" loading="lazy">
+            </div>
+            <h3 class="project-card__title">Villa Belvedere</h3>
+            <div class="project-card__meta">
+              <span>PM Airbnb Luxury</span><span>Editorial Premium €1690</span>
+            </div>
+          </a>
+
+          <a href="./case-studies/wedding/" class="project-card reveal-up">
+            <div class="project-card__media img-reveal">
+              <span class="project-card__index">10</span>
+              <span class="project-card__role">Boutique €800 · Wedding planning</span>
+              <img src="./assets/img/case-studies/wedding.jpg" alt="Sposi del Lago landing page" loading="lazy">
+            </div>
+            <h3 class="project-card__title">Sposi del Lago</h3>
+            <div class="project-card__meta">
+              <span>Wedding</span><span>Boutique €800</span>
+            </div>
+          </a>
+
+          <a href="./case-studies/bnb/" class="project-card reveal-up">
+            <div class="project-card__media img-reveal">
+              <span class="project-card__index">11</span>
+              <span class="project-card__role">Boutique €800 · B&amp;B ospitalità</span>
+              <img src="./assets/img/case-studies/bnb.jpg" alt="Casa di Margherita landing page" loading="lazy">
+            </div>
+            <h3 class="project-card__title">Casa di Margherita</h3>
+            <div class="project-card__meta">
+              <span>B&amp;B</span><span>Boutique €800</span>
+            </div>
+          </a>
+
+          <a href="./case-studies/legale/" class="project-card reveal-up">
+            <div class="project-card__media img-reveal">
+              <span class="project-card__index">12</span>
+              <span class="project-card__role">Boutique €800 · Studio legale premium</span>
+              <img src="./assets/img/case-studies/legale.jpg" alt="Marchetti e Partners landing page" loading="lazy">
+            </div>
+            <h3 class="project-card__title">Marchetti &amp; Partners</h3>
+            <div class="project-card__meta">
+              <span>Studio Legale</span><span>Boutique €800</span>
+            </div>
+          </a>
+
+          <a href="./case-studies/vet/" class="project-card reveal-up">
+            <div class="project-card__media img-reveal">
+              <span class="project-card__index">13</span>
+              <span class="project-card__role">Boutique €800 · Clinica veterinaria</span>
+              <img src="./assets/img/case-studies/vet.jpg" alt="Sant Angelo Vet landing page" loading="lazy">
+            </div>
+            <h3 class="project-card__title">Sant'Angelo Vet</h3>
+            <div class="project-card__meta">
+              <span>Veterinaria</span><span>Boutique €800</span>
+            </div>
+          </a>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- TOOLKIT -->
+    <section class="toolkit" aria-labelledby="toolkit-h">
+      <div class="toolkit__inner">
+
+        <header class="section-heading reveal-up">
+          <span class="section-heading__num">05</span>
+          <h2 class="section-heading__title" id="toolkit-h">Toolkit</h2>
+          <span class="text-meta">Daily-driven</span>
+        </header>
+
+        <div class="toolkit__grid">
+
+          <div class="toolkit__col reveal-up">
+            <div class="toolkit__label">3D · VFX</div>
+            <ul class="tool-grid">
+              <li class="tool-tile"><span class="tool-tile__icon tool-tile__icon--filled">M</span><span class="tool-tile__name">Maya</span></li>
+              <li class="tool-tile"><span class="tool-tile__icon">Z</span><span class="tool-tile__name">ZBrush</span></li>
+              <li class="tool-tile"><span class="tool-tile__icon tool-tile__icon--circle">S</span><span class="tool-tile__name">Substance</span></li>
+              <li class="tool-tile"><span class="tool-tile__icon">W3</span><span class="tool-tile__name">Wrap3D</span></li>
+              <li class="tool-tile"><span class="tool-tile__icon tool-tile__icon--filled">R</span><span class="tool-tile__name">Redshift</span></li>
+              <li class="tool-tile"><span class="tool-tile__icon">A</span><span class="tool-tile__name">Arnold</span></li>
+            </ul>
+          </div>
+
+          <div class="toolkit__col reveal-up">
+            <div class="toolkit__label">AI · Generative</div>
+            <ul class="tool-grid">
+              <li class="tool-tile"><span class="tool-tile__icon tool-tile__icon--circle">C</span><span class="tool-tile__name">ComfyUI</span></li>
+              <li class="tool-tile"><span class="tool-tile__icon">F</span><span class="tool-tile__name">Flux</span></li>
+              <li class="tool-tile"><span class="tool-tile__icon tool-tile__icon--filled">Z</span><span class="tool-tile__name">Z-Image</span></li>
+              <li class="tool-tile"><span class="tool-tile__icon">Q</span><span class="tool-tile__name">Qwen Edit</span></li>
+              <li class="tool-tile"><span class="tool-tile__icon tool-tile__icon--filled tool-tile__icon--circle">L</span><span class="tool-tile__name">LoRA</span></li>
+              <li class="tool-tile"><span class="tool-tile__icon">AI</span><span class="tool-tile__name">ai-toolkit</span></li>
+            </ul>
+          </div>
+
+          <div class="toolkit__col reveal-up">
+            <div class="toolkit__label">Post · Audio</div>
+            <ul class="tool-grid">
+              <li class="tool-tile"><span class="tool-tile__icon tool-tile__icon--filled">N</span><span class="tool-tile__name">Nuke</span></li>
+              <li class="tool-tile"><span class="tool-tile__icon">Pr</span><span class="tool-tile__name">Premiere</span></li>
+              <li class="tool-tile"><span class="tool-tile__icon tool-tile__icon--circle">DV</span><span class="tool-tile__name">DaVinci</span></li>
+              <li class="tool-tile"><span class="tool-tile__icon">FL</span><span class="tool-tile__name">FL Studio</span></li>
+            </ul>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section class="contact" id="contact" aria-labelledby="contact-h">
+      <canvas class="contact__canvas" style="position:absolute; inset:0; z-index:1;" aria-hidden="true"></canvas>
+
+      <div class="contact__inner">
+
+        <div class="contact__pretitle reveal-up">Let&rsquo;s build something</div>
+
+        <h2 class="contact__title" id="contact-h">
+          Hai un brand,<br>
+          <em>un prodotto, una storia.</em><br>
+          Io ho il render.
+        </h2>
+
+        <div class="contact__channels">
+          <div class="reveal-up">
+            <div class="contact__channel-label">Email</div>
+            <a class="contact__channel-value" href="mailto:alessandro@setpointstudio.com">alessandro@setpointstudio.com</a>
+          </div>
+          <div class="reveal-up">
+            <div class="contact__channel-label">Studio</div>
+            <a class="contact__channel-value" href="https://www.setpointstudio.com" target="_blank" rel="noopener">setpointstudio.com →</a>
+          </div>
+          <div class="reveal-up">
+            <div class="contact__channel-label">LinkedIn</div>
+            <a class="contact__channel-value" href="https://www.linkedin.com/in/alessandrogiacobbi" target="_blank" rel="noopener">/alessandrogiacobbi</a>
+          </div>
+          <div class="reveal-up">
+            <div class="contact__channel-label">Instagram</div>
+            <a class="contact__channel-value" href="https://www.instagram.com/setpointstudio" target="_blank" rel="noopener">@setpointstudio</a>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <div class="footer__cta-row">
+      <div class="footer__cta-text">
+        <span class="text-meta">Open for projects · Q2 2026</span>
+        <h3 class="footer__cta-title">
+          Hai un brand, <em>un prodotto, una storia.</em><br>Scrivimi.
+        </h3>
+      </div>
+      <div class="footer__cta-actions">
+        <a href="mailto:alessandro@setpointstudio.com" class="btn btn--ox">
+          <span>alessandro@setpointstudio.com</span>
+          <span class="btn-arrow">→</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="footer__inner">
+      <div class="footer__col">
+        <span class="footer__credit">© 2026 Alessandro Giacobbi</span>
+        <span class="footer__credit"><a href="https://www.setpointstudio.com">Setpoint Studio S.r.l.</a> · P.IVA 04403500244</span>
+        <span class="footer__credit">Torrebelvicino, Veneto, IT</span>
+      </div>
+
+      <div class="footer__col footer__col--social">
+        <span class="text-meta footer__col-label">Social</span>
+        <div class="footer__socials">
+          <a href="https://www.linkedin.com/in/alessandrogiacobbi" target="_blank" rel="noopener" class="footer__social" aria-label="LinkedIn">
+            <span class="footer__social-icon">in</span>
+            <span>LinkedIn</span>
+          </a>
+          <a href="https://www.instagram.com/setpointstudio" target="_blank" rel="noopener" class="footer__social" aria-label="Instagram">
+            <span class="footer__social-icon">IG</span>
+            <span>Instagram</span>
+          </a>
+          <a href="https://vimeo.com/setpointstudio" target="_blank" rel="noopener" class="footer__social" aria-label="Vimeo">
+            <span class="footer__social-icon">V</span>
+            <span>Vimeo</span>
+          </a>
+          <a href="https://github.com/MrBagigio" target="_blank" rel="noopener" class="footer__social" aria-label="GitHub">
+            <span class="footer__social-icon">GH</span>
+            <span>GitHub</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script type="module" src="./assets/js/main.js"></script>
+
+</body>
+</html>

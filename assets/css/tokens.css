@@ -1,0 +1,97 @@
+/**
+ * Design tokens — Alessandro Giacobbi portfolio.
+ * Palette editorial paper-style: cream / ink / oxblood accent.
+ * Type system: 4 fonts → display + serif italic + body + mono.
+ * Brand match Setpoint Studio: Big Noodle Titling + PT Sans.
+ */
+
+/* ── Self-hosted fonts (Big Noodle Titling — same as Setpoint Studio site) ── */
+@font-face {
+  font-family: 'Big Noodle Titling';
+  src: url('../fonts/big_noodle_titling.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Big Noodle Titling Oblique';
+  src: url('../fonts/big_noodle_titling_oblique.ttf') format('truetype');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+:root {
+  /* ── Color ── */
+  --paper:   #EDE6D6;
+  --paper2:  #E5DDC9;
+  --paper3:  #DBD2BC;
+  --ink:     #161310;
+  --ink2:    #2C2823;
+  --ink3:    #4A4338;
+  --mute:    #8A8478;
+  --rule:    #C9C0AC;
+  --ox:      #B8323F;
+  --ox-deep: #8C1F2A;
+  --ox-bg:   rgba(184, 50, 63, 0.08);
+  --ox-line: rgba(184, 50, 63, 0.20);
+  --shadow-soft: 0 12px 40px -8px rgba(22, 19, 16, 0.12);
+  --shadow-deep: 0 24px 80px -12px rgba(22, 19, 16, 0.24);
+
+  /* ── Type — Setpoint Studio brand match ──
+   * Display: Big Noodle Titling (self-hosted, condensed display)
+   * Body:    PT Sans (Google Fonts, neutral readable)
+   * Italic:  Big Noodle Titling Oblique (self-hosted)
+   * Mono:    Geist Mono (Google, tech precise)
+   */
+  --fd: 'Big Noodle Titling', 'Bebas Neue', 'Impact', sans-serif;
+  --fs: 'Big Noodle Titling Oblique', 'Big Noodle Titling', italic, sans-serif;
+  --fb: 'PT Sans', 'Inter', system-ui, -apple-system, sans-serif;
+  --fm: 'Geist Mono', 'JetBrains Mono', ui-monospace, monospace;
+
+  --fz-mega:   clamp(3.5rem, 12vw, 11rem);
+  --fz-h1:     clamp(2.5rem, 7vw, 5.5rem);
+  --fz-h2:     clamp(1.75rem, 4.2vw, 3.25rem);
+  --fz-h3:     clamp(1.25rem, 2.4vw, 1.75rem);
+  --fz-body:   16px;
+  --fz-meta:   11px;
+  --fz-mono:   13px;
+
+  --lh-tight:  0.92;
+  --lh-snug:   1.1;
+  --lh-body:   1.55;
+
+  /* ── Space ── */
+  --gap-xs: 0.5rem;
+  --gap-s:  1rem;
+  --gap-m:  2rem;
+  --gap-l:  4rem;
+  --gap-xl: 8rem;
+  --gap-2xl: 12rem;
+  --pad-side: clamp(1.25rem, 4vw, 3.5rem);
+
+  /* ── Motion ── */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-mech: cubic-bezier(0.65, 0.05, 0.36, 1);
+  --dur-fast: 200ms;
+  --dur-base: 400ms;
+  --dur-slow: 800ms;
+  --dur-cinema: 1400ms;
+
+  /* ── Layout ── */
+  --maxw: 1680px;
+  --content-max: 1280px;
+  --grid-gap: clamp(1rem, 2vw, 2rem);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur-fast: 0ms;
+    --dur-base: 0ms;
+    --dur-slow: 0ms;
+    --dur-cinema: 0ms;
+  }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}

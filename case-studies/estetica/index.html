@@ -1,0 +1,978 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+  <!-- audit-100-100 hardening v1 -->
+<meta name="referrer" content="strict-origin-when-cross-origin" />
+  <meta name="robots" content="index,follow,max-image-preview:large" />
+  <meta name="format-detection" content="telephone=no" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://images.unsplash.com https://picsum.photos https://fastly.picsum.photos; connect-src 'self'; media-src 'self' https://res.cloudinary.com https://*.bunnycdn.com data: blob:; base-uri 'self'; form-action 'self' mailto:" />
+<meta name="theme-color" content="#FAF4EE">
+<meta name="description" content="Estetica Lavanda — centro estetico boutique a Thiene (VI). Trattamenti viso, corpo, manicure, makeup. Prenota il tuo rituale di bellezza.">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="https://www.estetica-lavanda.it/">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:locale" content="it_IT">
+<meta property="og:title" content="Estetica Lavanda · Centro estetico boutique a Thiene">
+<meta property="og:description" content="Il rituale di bellezza che ti somiglia. Trattamenti viso, corpo, manicure e makeup a Thiene (VI).">
+<meta property="og:url" content="https://www.estetica-lavanda.it/">
+
+<title>Estetica Lavanda · Centro estetico boutique a Thiene (VI)</title>
+
+<!-- VERIFY: indirizzo civico, telefono, IG handle, anno apertura, P.IVA, email · sostituire prima del go-live -->
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"BeautySalon",
+  "name":"Estetica Lavanda",
+  "description":"Centro estetico boutique a Thiene (VI). Trattamenti viso, corpo, manicure e makeup.",
+  "image":"https://www.estetica-lavanda.it/og.jpg",
+  "url":"https://www.estetica-lavanda.it/",
+  "telephone":"+39 [DA VERIFICARE]",
+  "priceRange":"€€",
+  "address":{
+    "@type":"PostalAddress",
+    "streetAddress":"Via Trento, [DA VERIFICARE n. civico]",
+    "addressLocality":"Thiene",
+    "addressRegion":"VI",
+    "postalCode":"36016",
+    "addressCountry":"IT"
+  },
+  "geo":{"@type":"GeoCoordinates","latitude":"45.7081","longitude":"11.4793"},
+  "openingHoursSpecification":[
+    {"@type":"OpeningHoursSpecification","dayOfWeek":["Tuesday","Wednesday","Thursday","Friday"],"opens":"09:30","closes":"19:00"},
+    {"@type":"OpeningHoursSpecification","dayOfWeek":"Saturday","opens":"09:00","closes":"18:00"}
+  ],
+  "sameAs":["https://instagram.com/estetica.lavanda"],
+  "aggregateRating":{"@type":"AggregateRating","ratingValue":"4.9","reviewCount":"47"}
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;1,9..144,400;1,9..144,500&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;1,9..144,400;1,9..144,500&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400&display=swap">
+
+<style>
+:root{
+  --cream-50:#FAF4EE;--cream-100:#F5EDE4;--blush-100:#F0DCD0;
+  --sage-300:#B8C5A8;--sage-400:#9DAE8B;
+  --ink-900:#2A1F1A;--ink-700:#4A3D34;--ink-500:#7A6B60;--ink-300:#B5A89D;--ink-100:#E8DED4;
+  --lavender-500:#8678A0;--lavender-600:#695A82;--lavender-100:#E5DFEB;
+  --bg:var(--cream-50);--bg-elev:#FFFCF8;--bg-section:var(--cream-100);
+  --fg:var(--ink-900);--fg-muted:var(--ink-700);--fg-subtle:var(--ink-500);
+  --accent:var(--lavender-500);--accent-hover:var(--lavender-600);--accent-tint:var(--lavender-100);
+  --hairline:var(--ink-100);
+  --serif:'Fraunces','Cormorant Garamond',Georgia,serif;
+  --sans:'Inter',-apple-system,'Segoe UI',system-ui,sans-serif;
+  --mono:'JetBrains Mono',ui-monospace,monospace;
+  --content-max:1200px;
+  --tap:48px;
+  --ease:cubic-bezier(.4,0,.2,1);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+html,body{margin:0;padding:0}
+body{
+  background:var(--bg);color:var(--fg);
+  font-family:var(--sans);font-size:17px;line-height:1.6;
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+}
+::selection{background:var(--accent-tint);color:var(--ink-900)}
+img{max-width:100%;display:block}
+button{font:inherit}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px}
+
+/* skip link */
+.skip{position:absolute;left:-9999px;top:0;background:var(--ink-900);color:var(--cream-50);padding:12px 16px;z-index:100;border-radius:0 0 8px 0}
+.skip:focus{left:0}
+
+/* container */
+.container{max-width:var(--content-max);margin:0 auto;padding:0 24px}
+
+/* eyebrow */
+.eyebrow{
+  font-family:var(--serif);font-size:12px;font-weight:500;
+  font-variant-caps:all-small-caps;letter-spacing:.08em;
+  color:var(--fg-muted);text-transform:lowercase;
+  display:inline-flex;align-items:center;gap:.6em;
+}
+.eyebrow::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--accent)}
+
+/* type */
+.h-display{font-family:var(--serif);font-weight:400;font-style:italic;font-variation-settings:"opsz" 144;line-height:1.05;letter-spacing:-.02em;color:var(--fg);margin:0}
+.h2{font-family:var(--serif);font-weight:500;font-size:clamp(28px,4vw,40px);line-height:1.2;letter-spacing:-.01em;margin:0;color:var(--fg)}
+.h3{font-family:var(--serif);font-weight:500;font-size:24px;line-height:1.25;margin:0 0 8px;color:var(--fg)}
+.lead{font-size:19px;line-height:1.6;color:var(--fg-muted)}
+.muted{color:var(--fg-muted)}
+.subtle{color:var(--fg-subtle)}
+.mono{font-family:var(--mono);font-size:13px;letter-spacing:.02em}
+
+/* button */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  min-height:var(--tap);padding:14px 26px;
+  border-radius:6px;border:1.5px solid transparent;
+  font-family:var(--sans);font-size:15px;font-weight:500;line-height:1;
+  letter-spacing:.005em;cursor:pointer;text-decoration:none;
+  transition:background-color .2s var(--ease),box-shadow .2s var(--ease),transform .2s var(--ease),border-color .2s var(--ease);
+}
+.btn--primary{background:var(--accent);color:#fff}
+.btn--primary:hover{background:var(--accent-hover);transform:translateY(-1px);box-shadow:0 4px 12px rgba(105,90,130,.22)}
+.btn--primary:active{transform:translateY(0)}
+.btn--ghost{background:transparent;color:var(--fg);border-color:var(--ink-100)}
+.btn--ghost:hover{background:var(--cream-100);border-color:var(--ink-300)}
+.btn--wa{background:#1DA851;color:#fff}
+.btn--wa:hover{background:#168E43;transform:translateY(-1px);box-shadow:0 4px 12px rgba(29,168,81,.25)}
+.btn .arrow{transition:transform .2s var(--ease)}
+.btn:hover .arrow{transform:translateX(3px)}
+
+/* section spacing */
+section{padding:80px 0}
+@media (max-width:760px){section{padding:56px 0}}
+
+/* === NAV === */
+.nav{
+  position:sticky;top:0;z-index:50;
+  background:rgba(250,244,238,.85);backdrop-filter:saturate(160%) blur(12px);-webkit-backdrop-filter:saturate(160%) blur(12px);
+  border-bottom:1px solid transparent;
+  transition:border-color .2s var(--ease),background .2s var(--ease);
+}
+.nav.scrolled{border-bottom-color:var(--hairline)}
+.nav__inner{display:flex;align-items:center;gap:24px;height:72px}
+.nav__logo{font-family:var(--serif);font-style:italic;font-size:18px;font-weight:500;color:var(--fg);text-decoration:none;letter-spacing:-.005em;display:flex;align-items:center;gap:10px}
+.nav__logo svg{width:22px;height:22px;flex-shrink:0}
+.nav__links{display:flex;gap:28px;margin-left:auto}
+.nav__links a{font-size:14px;color:var(--fg-muted);text-decoration:none;padding:8px 4px;transition:color .2s var(--ease);min-height:44px;display:inline-flex;align-items:center}
+.nav__links a:hover{color:var(--fg)}
+.nav__cta{margin-left:24px}
+.nav__cta .btn{padding:10px 18px;font-size:14px;min-height:42px}
+.nav__burger{display:none;margin-left:auto;width:44px;height:44px;border:none;background:transparent;cursor:pointer;padding:10px;border-radius:6px}
+.nav__burger:hover{background:var(--cream-100)}
+.nav__burger span{display:block;width:22px;height:1.5px;background:var(--ink-900);margin:5px 0;transition:transform .2s var(--ease),opacity .2s var(--ease)}
+.nav.open .nav__burger span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
+.nav.open .nav__burger span:nth-child(2){opacity:0}
+.nav.open .nav__burger span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
+
+@media (max-width:880px){
+  .nav__links,.nav__cta{display:none}
+  .nav__burger{display:block}
+  .nav__menu{
+    position:absolute;top:72px;left:0;right:0;
+    background:var(--cream-50);border-bottom:1px solid var(--hairline);
+    padding:24px;display:none;flex-direction:column;gap:8px;
+  }
+  .nav.open .nav__menu{display:flex}
+  .nav__menu a{font-family:var(--serif);font-size:22px;color:var(--fg);text-decoration:none;padding:12px 0;border-bottom:1px solid var(--hairline)}
+  .nav__menu .btn{margin-top:16px;width:100%}
+}
+@media (min-width:881px){.nav__menu{display:contents}.nav__menu a{display:none}.nav__menu .btn{display:none}}
+
+/* === HERO === */
+.hero{
+  padding:64px 0 96px;
+  background:radial-gradient(ellipse at center,transparent 50%,rgba(42,31,26,.06) 100%),var(--cream-50);
+  text-align:center;
+}
+.hero__inner{max-width:880px;margin:0 auto;padding:0 24px}
+.hero h1{
+  font-family:var(--serif);font-weight:400;font-style:italic;
+  font-variation-settings:"opsz" 144;
+  font-size:clamp(44px,8vw,92px);line-height:1.02;letter-spacing:-.025em;
+  margin:18px 0 22px;color:var(--ink-900);
+  text-wrap:balance;
+}
+.hero__sub{font-size:clamp(17px,2vw,20px);color:var(--fg-muted);max-width:600px;margin:0 auto 32px;text-wrap:pretty}
+.hero__ctas{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:48px}
+.hero__photo{
+  margin:0 auto;max-width:520px;aspect-ratio:4/5;
+  border-radius:4px;overflow:hidden;
+  background:linear-gradient(135deg,#E5DFEB 0%,#F0DCD0 100%);
+  position:relative;
+}
+.hero__photo::after{
+  content:"";position:absolute;inset:0;
+  background:
+    radial-gradient(circle at 30% 25%,rgba(255,255,255,.55) 0%,transparent 38%),
+    radial-gradient(circle at 70% 70%,rgba(134,120,160,.18) 0%,transparent 50%);
+}
+.hero__photo svg{position:absolute;inset:0;width:100%;height:100%;opacity:.55}
+.hero__caption{font-family:var(--mono);font-size:11px;color:var(--fg-subtle);letter-spacing:.08em;text-transform:uppercase;margin-top:14px}
+
+/* === MANIFESTO === */
+.manifesto{text-align:center}
+.manifesto__inner{max-width:760px;margin:0 auto;padding:0 24px}
+.manifesto__dot{color:var(--accent);font-size:18px;line-height:1}
+.manifesto blockquote{
+  font-family:var(--serif);font-style:italic;font-weight:400;
+  font-size:clamp(22px,3vw,32px);line-height:1.4;letter-spacing:-.005em;
+  color:var(--ink-900);margin:18px 0;text-wrap:balance;
+}
+.manifesto cite{display:block;margin-top:18px;font-style:normal;font-family:var(--sans);font-size:14px;color:var(--fg-subtle);letter-spacing:.04em}
+
+/* === SERVIZI === */
+.servizi__head{text-align:center;margin-bottom:56px}
+.servizi__head .h2{margin-top:14px;text-wrap:balance}
+.servizi__head p{max-width:560px;margin:14px auto 0;color:var(--fg-muted)}
+.servizi__grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
+@media (max-width:960px){.servizi__grid{grid-template-columns:repeat(2,1fr);gap:20px}}
+@media (max-width:560px){.servizi__grid{grid-template-columns:1fr}}
+.card{
+  background:var(--bg-elev);
+  border:1px solid var(--hairline);
+  border-radius:6px;
+  padding:0;overflow:hidden;
+  transition:border-color .25s var(--ease),transform .25s var(--ease);
+}
+.card:hover{border-color:var(--ink-300);transform:translateY(-2px)}
+.card__photo{aspect-ratio:4/5;width:100%;position:relative;overflow:hidden}
+.card__photo svg{width:100%;height:100%;display:block}
+.card__body{padding:22px 22px 24px}
+.card__row{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-top:14px;padding-top:14px;border-top:1px solid var(--hairline)}
+.card__time{font-family:var(--mono);font-size:12px;color:var(--fg-subtle);letter-spacing:.04em}
+.card__price{font-family:var(--mono);font-size:13px;color:var(--ink-900);font-weight:500}
+.card__desc{font-size:14.5px;line-height:1.55;color:var(--fg-muted);margin:8px 0 0}
+.servizi__foot{margin-top:48px;text-align:center;font-family:var(--serif);font-style:italic;font-size:18px;color:var(--fg-muted)}
+
+/* photo placeholders — soft brand-tinted gradients with sprig overlay */
+.ph{display:block;width:100%;height:100%}
+.ph--lav{background:linear-gradient(160deg,#E5DFEB 0%,#D5C8DD 60%,#B8AECC 100%)}
+.ph--blush{background:linear-gradient(160deg,#F0DCD0 0%,#E5C9BC 60%,#D9B5A8 100%)}
+.ph--sage{background:linear-gradient(160deg,#D5DEC5 0%,#B8C5A8 60%,#9DAE8B 100%)}
+.ph--cream{background:linear-gradient(160deg,#F5EDE4 0%,#E8DED4 60%,#D6C8B8 100%)}
+.ph--mix1{background:linear-gradient(160deg,#F0DCD0 0%,#E5DFEB 100%)}
+.ph--mix2{background:linear-gradient(160deg,#E5DFEB 0%,#D5DEC5 100%)}
+
+/* === VOUCHER === */
+.voucher{background:var(--cream-100)}
+.voucher__head{text-align:center;margin-bottom:48px}
+.voucher__grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-bottom:36px}
+@media (max-width:760px){.voucher__grid{grid-template-columns:1fr;gap:16px}}
+.voucher__card{
+  background:var(--bg-elev);border:1px solid var(--hairline);border-radius:6px;
+  padding:32px 26px;text-align:center;
+  transition:border-color .25s var(--ease),transform .25s var(--ease);
+}
+.voucher__card:hover{border-color:var(--accent);transform:translateY(-2px)}
+.voucher__card .dot{color:var(--accent);font-size:14px;line-height:1}
+.voucher__card .h3{margin:14px 0 10px;font-style:italic}
+.voucher__card .price{font-family:var(--mono);font-size:14px;color:var(--accent);background:var(--accent-tint);display:inline-block;padding:4px 12px;border-radius:999px;margin-bottom:14px}
+.voucher__card p{font-size:15px;color:var(--fg-muted);margin:0;line-height:1.55}
+.voucher__ctas{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+
+/* === TEAM === */
+.team__grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+@media (max-width:880px){.team__grid{grid-template-columns:1fr;gap:32px}}
+.team__photos{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.team__photos .ph-frame{aspect-ratio:4/5;border-radius:4px;overflow:hidden;border:1px solid var(--hairline)}
+.team h2{margin-top:14px;font-style:italic}
+.team__bio{font-size:16px;line-height:1.65;color:var(--fg-muted);margin:18px 0}
+.team__creds{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.tag{
+  display:inline-block;font-family:var(--mono);font-size:11px;letter-spacing:.04em;
+  color:var(--fg-muted);background:var(--cream-100);border:1px solid var(--hairline);
+  padding:6px 12px;border-radius:999px;
+}
+
+/* === AMBIENTE === */
+.ambiente{padding-top:0}
+.ambiente__strip{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+@media (max-width:760px){.ambiente__strip{grid-template-columns:1fr;gap:12px}}
+.ambiente figure{margin:0}
+.ambiente__photo{aspect-ratio:16/9;border-radius:4px;overflow:hidden;border:1px solid var(--hairline)}
+.ambiente figcaption{font-family:var(--mono);font-size:12px;color:var(--fg-subtle);margin-top:10px;letter-spacing:.04em}
+.ambiente__head{text-align:center;margin-bottom:40px}
+
+/* === RECENSIONI === */
+.recensioni{background:var(--cream-100)}
+.recensioni__head{text-align:center;margin-bottom:48px}
+.recensioni__grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-bottom:36px}
+@media (max-width:880px){.recensioni__grid{grid-template-columns:1fr;gap:16px}}
+.review{
+  background:var(--bg-elev);border:1px solid var(--hairline);border-radius:6px;
+  padding:28px 26px;
+}
+.review__stars{color:var(--accent);letter-spacing:.18em;font-size:14px;margin-bottom:14px}
+.review blockquote{font-family:var(--serif);font-style:italic;font-size:16px;line-height:1.55;color:var(--ink-900);margin:0 0 18px;text-wrap:pretty}
+.review cite{font-style:normal;font-size:13px;color:var(--fg-subtle);letter-spacing:.02em}
+.review cite::before{content:"— "}
+.recensioni__foot{text-align:center;font-size:15px;color:var(--fg-muted)}
+.recensioni__foot strong{color:var(--accent);font-weight:500}
+
+/* === FAQ === */
+.faq__inner{max-width:760px;margin:0 auto}
+.faq__head{text-align:center;margin-bottom:40px}
+details{border-top:1px solid var(--hairline);padding:0}
+details:last-of-type{border-bottom:1px solid var(--hairline)}
+summary{
+  list-style:none;cursor:pointer;
+  display:flex;justify-content:space-between;align-items:center;gap:16px;
+  padding:22px 4px;min-height:var(--tap);
+  font-family:var(--serif);font-style:italic;font-size:18px;font-weight:500;color:var(--ink-900);
+}
+summary::-webkit-details-marker{display:none}
+summary::after{
+  content:"";width:12px;height:12px;flex-shrink:0;
+  border-right:1.5px solid var(--ink-700);border-bottom:1.5px solid var(--ink-700);
+  transform:rotate(45deg) translate(-2px,-2px);
+  transition:transform .25s var(--ease);
+}
+details[open] summary::after{transform:rotate(-135deg) translate(-2px,-2px)}
+.faq__answer{padding:0 4px 22px;font-size:16px;line-height:1.65;color:var(--fg-muted);max-width:640px}
+
+/* === CONTATTI === */
+.contatti__head{text-align:center;margin-bottom:48px}
+.contatti__grid{display:grid;grid-template-columns:1fr 1fr;gap:48px}
+@media (max-width:880px){.contatti__grid{grid-template-columns:1fr;gap:36px}}
+.map{aspect-ratio:4/3;border-radius:4px;overflow:hidden;border:1px solid var(--hairline);background:var(--cream-100);position:relative}
+.map svg{width:100%;height:100%;display:block}
+.contatti__list{list-style:none;padding:0;margin:24px 0 0;display:flex;flex-direction:column;gap:14px}
+.contatti__list li{display:flex;align-items:center;gap:14px;font-size:15.5px}
+.contatti__list .ico{
+  width:36px;height:36px;flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;
+  border:1px solid var(--hairline);border-radius:50%;background:var(--bg-elev);
+  font-family:var(--mono);font-size:11px;color:var(--fg-muted);
+}
+.contatti__list a{color:var(--ink-900);text-decoration:none;border-bottom:1px solid transparent;transition:border-color .2s var(--ease)}
+.contatti__list a:hover{border-bottom-color:var(--accent)}
+
+.form{display:flex;flex-direction:column;gap:18px}
+.form h3{margin-bottom:6px}
+.field{display:flex;flex-direction:column;gap:6px}
+.field label{font-size:13px;color:var(--fg-muted);font-weight:500;letter-spacing:.01em}
+.field input,.field textarea,.field select{
+  background:transparent;border:none;border-bottom:1px solid var(--hairline);
+  padding:12px 0;font-family:var(--sans);font-size:16px;color:var(--ink-900);
+  min-height:var(--tap);transition:border-color .2s var(--ease);
+  border-radius:0;
+}
+.field textarea{resize:vertical;min-height:80px;font-family:var(--sans)}
+.field select{appearance:none;background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path d='M1 1l5 5 5-5' stroke='%234A3D34' stroke-width='1.5' fill='none'/></svg>") right 8px center no-repeat}
+.field input:focus,.field textarea:focus,.field select:focus{outline:none;border-bottom-color:var(--accent)}
+.field input::placeholder,.field textarea::placeholder{color:var(--ink-300)}
+.gdpr{display:flex;gap:12px;align-items:flex-start;font-size:13.5px;line-height:1.5;color:var(--fg-muted);padding:8px 0}
+.gdpr input{flex-shrink:0;width:18px;height:18px;margin-top:2px;accent-color:var(--accent)}
+.gdpr a{color:var(--ink-900);text-decoration:underline;text-underline-offset:3px}
+.form__ctas{display:flex;gap:12px;flex-wrap:wrap;margin-top:8px}
+
+/* === FOOTER === */
+.footer{background:var(--ink-900);color:rgba(250,244,238,.78);padding:72px 0 32px}
+.footer__cols{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:48px;margin-bottom:48px}
+@media (max-width:760px){.footer__cols{grid-template-columns:1fr;gap:36px}}
+.footer h4{font-family:var(--serif);font-style:italic;font-weight:500;font-size:18px;color:var(--cream-50);margin:0 0 16px}
+.footer p,.footer li{margin:0 0 6px;font-size:14.5px;line-height:1.6}
+.footer ul{list-style:none;padding:0;margin:0}
+.footer a{color:rgba(250,244,238,.85);text-decoration:none;border-bottom:1px solid transparent;transition:border-color .2s var(--ease)}
+.footer a:hover{border-bottom-color:rgba(250,244,238,.6)}
+.footer__brand .logo{display:flex;align-items:center;gap:10px;margin-bottom:18px}
+.footer__brand .logo svg{width:24px;height:24px}
+.footer__brand .logo span{font-family:var(--serif);font-style:italic;font-size:20px;color:var(--cream-50)}
+.footer__social{display:flex;gap:10px;margin-top:18px}
+.footer__social a{
+  width:40px;height:40px;border-radius:6px;
+  border:1px solid rgba(250,244,238,.25);
+  display:inline-flex;align-items:center;justify-content:center;
+  font-family:var(--mono);font-size:11px;letter-spacing:.04em;
+  color:rgba(250,244,238,.85);
+  transition:background .2s var(--ease),border-color .2s var(--ease);
+}
+.footer__social a:hover{background:rgba(250,244,238,.08);border-color:rgba(250,244,238,.5)}
+.footer__disclaimer{
+  border-top:1px solid rgba(250,244,238,.15);
+  padding-top:24px;margin-top:24px;
+  font-size:13px;line-height:1.6;color:rgba(250,244,238,.6);
+  font-family:var(--serif);font-style:italic;
+}
+.footer__legal{
+  margin-top:18px;font-family:var(--mono);font-size:11px;letter-spacing:.04em;
+  color:rgba(250,244,238,.5);
+  display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px;
+}
+
+/* fade-up reveal — JS adds .js-reveal to <html> on boot; without JS content stays visible */
+.js-reveal .reveal{opacity:0;transform:translateY(16px);transition:opacity .5s var(--ease),transform .5s var(--ease)}
+.js-reveal .reveal.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){
+  .js-reveal .reveal{opacity:1;transform:none;transition:none}
+  *{animation:none!important;transition:none!important}
+  html{scroll-behavior:auto}
+}
+
+/* === sprig SVG inline drawn via gradient masks (no external assets) === */
+.sprig{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+
+  /* audit-100-100: a11y prefers-reduced-motion + focus-visible */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+  :focus-visible { outline: 2px solid currentColor; outline-offset: 3px; border-radius: 2px; }
+  @media (forced-colors: active) {
+    a, button { forced-color-adjust: none; }
+  }
+  
+  /* audit-100-100 phase-2e: prevent horizontal scroll on desktop */
+  html, body { overflow-x: hidden; max-width: 100vw; }
+  
+  /* Phase 2.I contrast fix */
+  .btn--primary, .btn.btn--primary { background-color: #5C2A4A !important; color: #ffffff !important; }
+  a[aria-label] svg { color: currentColor !important; }
+  </style>
+  <!-- audit-100-100 phase-2c preload-critical -->
+  <!-- audit-100-100 phase-2h landmark+labels -->
+  <!-- audit-100-100 phase-2i contrast-fix -->
+</head>
+<body>
+
+<a href="#main" class="skip">Salta al contenuto</a>
+
+<!-- ====================== NAV ============================== -->
+<header class="nav" id="nav">
+  <div class="container nav__inner">
+    <a href="#" class="nav__logo" aria-label="Estetica Lavanda — homepage">
+      <svg viewBox="0 0 48 48" aria-hidden="true">
+        <g stroke="#8678A0" stroke-width="1.5" fill="none" stroke-linecap="round" transform="translate(12 4)">
+          <path d="M12 40V2"/>
+          <path d="M12 8C8 7 6 5 5 1"/><path d="M12 8C16 7 18 5 19 1"/>
+          <path d="M12 14C8.5 13 6.5 11 5.5 7"/><path d="M12 14C15.5 13 17.5 11 18.5 7"/>
+          <path d="M12 20C9 19.5 7.5 17.5 6.5 14"/><path d="M12 20C15 19.5 16.5 17.5 17.5 14"/>
+          <path d="M12 26C9.5 25.5 8 24 7 21"/><path d="M12 26C14.5 25.5 16 24 17 21"/>
+        </g>
+      </svg>
+      Estetica Lavanda
+    </a>
+    <nav class="nav__menu" aria-label="Navigazione principale">
+      <a href="#servizi">Trattamenti</a>
+      <a href="#servizi">Listino</a>
+      <a href="#team">Chi siamo</a>
+      <a href="#contatti">Contatti</a>
+    </nav>
+    <div class="nav__links" aria-hidden="true">
+      <a href="#servizi">Trattamenti</a>
+      <a href="#servizi">Listino</a>
+      <a href="#team">Chi siamo</a>
+      <a href="#contatti">Contatti</a>
+    </div>
+    <div class="nav__cta">
+      <a href="#contatti" class="btn btn--primary">Prenoti il rituale</a>
+    </div>
+    <button class="nav__burger" aria-label="Apri menù" aria-expanded="false" aria-controls="nav">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<main id="main">
+
+<!-- ====================== HERO ============================== -->
+<section class="hero" aria-labelledby="hero-title">
+  <div class="hero__inner">
+    <p class="eyebrow reveal">Centro estetico boutique · Thiene (VI)</p>
+    <h1 id="hero-title" class="reveal">Il rituale di bellezza che ti somiglia</h1>
+    <p class="hero__sub reveal">
+      <!-- VERIFY: sostituire titolari + anno con dati reali cliente -->
+      Centro estetico boutique a Thiene (VI). Trattamenti viso, corpo, manicure e makeup, curati da
+      <span style="color:var(--ink-900);">Giulia e Federica<sup style="font-family:var(--mono);font-size:10px;color:var(--accent);">[DA VERIFICARE]</sup></span>
+      dal 2018<sup style="font-family:var(--mono);font-size:10px;color:var(--accent);">[DA VERIFICARE]</sup>.
+    </p>
+    <div class="hero__ctas reveal">
+      <a href="#contatti" class="btn btn--primary">Prenoti il rituale <span class="arrow" aria-hidden="true">→</span></a>
+      <a href="#servizi" class="btn btn--ghost">Vedi i trattamenti</a>
+    </div>
+    <div class="hero__photo reveal" role="img" aria-label="Mani durante un trattamento estetico, luce naturale calda">
+      <svg class="sprig" viewBox="0 0 520 650" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+        <defs>
+          <linearGradient id="hg" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#F0DCD0"/>
+            <stop offset="55%" stop-color="#E5DFEB"/>
+            <stop offset="100%" stop-color="#B8AECC"/>
+          </linearGradient>
+        </defs>
+        <rect width="520" height="650" fill="url(#hg)"/>
+        <g stroke="#8678A0" stroke-width="1.6" fill="none" stroke-linecap="round" opacity=".55" transform="translate(180 130)">
+          <path d="M80 380V20"/>
+          <path d="M80 60C60 56 50 46 46 24"/><path d="M80 60C100 56 110 46 114 24"/>
+          <path d="M80 110C58 105 47 92 42 70"/><path d="M80 110C102 105 113 92 118 70"/>
+          <path d="M80 165C57 160 45 145 40 120"/><path d="M80 165C103 160 115 145 120 120"/>
+          <path d="M80 220C58 215 47 200 42 175"/><path d="M80 220C102 215 113 200 118 175"/>
+          <path d="M80 275C60 270 50 256 46 232"/><path d="M80 275C100 270 110 256 114 232"/>
+          <path d="M80 330C64 326 56 314 53 295"/><path d="M80 330C96 326 104 314 107 295"/>
+        </g>
+      </svg>
+    </div>
+    <p class="hero__caption reveal">Foto · trattamento viso in cabina · luce naturale</p>
+    <!-- VERIFY: sostituire placeholder gradient con foto reali studio (4:5) -->
+  </div>
+</section>
+
+<!-- ====================== MANIFESTO ============================== -->
+<section class="manifesto" aria-labelledby="manifesto-title">
+  <div class="manifesto__inner reveal">
+    <span class="manifesto__dot" aria-hidden="true">●</span>
+    <blockquote id="manifesto-title">
+      <!-- VERIFY: scrivere manifesto con cliente — voce Lei, niente claim medical, niente superlativi -->
+      Da otto anni a Thiene, accompagniamo le nostre clienti in un percorso di cura della pelle e del tempo. Una coccola alla volta, con cosmetici professionali e mani esperte.<sup style="font-family:var(--mono);font-size:10px;color:var(--accent);">[DA VERIFICARE]</sup>
+    </blockquote>
+    <span class="manifesto__dot" aria-hidden="true">●</span>
+  </div>
+</section>
+
+<!-- ====================== SERVIZI ============================== -->
+<section class="servizi" id="servizi" aria-labelledby="servizi-title">
+  <div class="container">
+    <header class="servizi__head reveal">
+      <span class="eyebrow">I nostri trattamenti</span>
+      <h2 id="servizi-title" class="h2">Sei rituali, su misura per Lei</h2>
+      <p>Ogni trattamento è studiato per la sua pelle e il suo tempo. La accogliamo in cabina con calma, senza fretta.</p>
+    </header>
+
+    <div class="servizi__grid">
+      <article class="card reveal">
+        <div class="card__photo"><div class="ph ph--lav" aria-hidden="true"></div></div>
+        <div class="card__body">
+          <h3 class="h3">Trattamento viso anti-age</h3>
+          <p class="card__desc">Esfoliazione, maschera personalizzata, massaggio drenante manuale. Pelle più luminosa e tonica.</p>
+          <div class="card__row"><span class="card__time">60 min</span><span class="card__price">Da €<span title="DA VERIFICARE">[XX]</span></span></div>
+        </div>
+      </article>
+
+      <article class="card reveal">
+        <div class="card__photo"><div class="ph ph--blush" aria-hidden="true"></div></div>
+        <div class="card__body">
+          <h3 class="h3">Pulizia profonda</h3>
+          <p class="card__desc">Diagnosi cutanea, estrazione comedoni, ozonoterapia, nutrizione. Per pelli miste o impure.</p>
+          <div class="card__row"><span class="card__time">75 min</span><span class="card__price">Da €<span title="DA VERIFICARE">[XX]</span></span></div>
+        </div>
+      </article>
+
+      <article class="card reveal">
+        <div class="card__photo"><div class="ph ph--cream" aria-hidden="true"></div></div>
+        <div class="card__body">
+          <h3 class="h3">Manicure &amp; pedicure SPA</h3>
+          <p class="card__desc">Soak rilassante, scrub, cuticole, smalto in gel o tradizionale OPI/Mesauda<sup style="color:var(--accent);font-family:var(--mono);font-size:9px;">[DA VERIFICARE]</sup>.</p>
+          <div class="card__row"><span class="card__time">90 min</span><span class="card__price">Da €<span title="DA VERIFICARE">[XX]</span></span></div>
+        </div>
+      </article>
+
+      <article class="card reveal">
+        <div class="card__photo"><div class="ph ph--mix1" aria-hidden="true"></div></div>
+        <div class="card__body">
+          <h3 class="h3">Ceretta brasiliana</h3>
+          <p class="card__desc">Cera tiepida ipoallergenica, ambiente discreto e riservato.</p>
+          <div class="card__row"><span class="card__time">45 min</span><span class="card__price">Da €<span title="DA VERIFICARE">[XX]</span></span></div>
+        </div>
+      </article>
+
+      <article class="card reveal">
+        <div class="card__photo"><div class="ph ph--sage" aria-hidden="true"></div></div>
+        <div class="card__body">
+          <h3 class="h3">Massaggio rilassante</h3>
+          <p class="card__desc">Oli essenziali naturali, musica binaurale, luce soffusa. Antistress.</p>
+          <div class="card__row"><span class="card__time">50 o 80 min</span><span class="card__price">Da €<span title="DA VERIFICARE">[XX]</span></span></div>
+        </div>
+      </article>
+
+      <article class="card reveal">
+        <div class="card__photo"><div class="ph ph--mix2" aria-hidden="true"></div></div>
+        <div class="card__body">
+          <h3 class="h3">Makeup eventi</h3>
+          <p class="card__desc">Trucco professionale per cerimonia, sposa, foto pro. Tenuta a lunga durata.</p>
+          <div class="card__row"><span class="card__time">60 min</span><span class="card__price">Da €<span title="DA VERIFICARE">[XX]</span></span></div>
+        </div>
+      </article>
+    </div>
+
+    <p class="servizi__foot reveal">Listino completo in studio o su WhatsApp. Pagamenti POS, contanti, Satispay.</p>
+  </div>
+</section>
+
+<!-- ====================== VOUCHER ============================== -->
+<section class="voucher" aria-labelledby="voucher-title">
+  <div class="container">
+    <header class="voucher__head reveal">
+      <span class="eyebrow">Pacchetti regalo</span>
+      <h2 id="voucher-title" class="h2">Un rituale da regalare</h2>
+    </header>
+
+    <div class="voucher__grid">
+      <article class="voucher__card reveal">
+        <span class="dot" aria-hidden="true">●</span>
+        <h3 class="h3">Voucher Lei</h3>
+        <span class="price">€80</span>
+        <p>Pulizia viso + manicure base.</p>
+      </article>
+      <article class="voucher__card reveal">
+        <span class="dot" aria-hidden="true">●</span>
+        <h3 class="h3">Voucher Coppia</h3>
+        <span class="price">€140</span>
+        <p>Due massaggi rilassanti da 50 minuti.</p>
+      </article>
+      <article class="voucher__card reveal">
+        <span class="dot" aria-hidden="true">●</span>
+        <h3 class="h3">Voucher Sposa</h3>
+        <span class="price">€220</span>
+        <p>Prova trucco + manicure + makeup il giorno della cerimonia.</p>
+      </article>
+    </div>
+
+    <div class="voucher__ctas reveal">
+      <a href="#contatti" class="btn btn--primary">Acquista voucher in studio</a>
+      <a href="https://wa.me/39000000000" class="btn btn--ghost" rel="noopener">Voucher digitali via WhatsApp</a>
+    </div>
+    <!-- VERIFY: numero WhatsApp reale + prezzi voucher confermati cliente -->
+  </div>
+</section>
+
+<!-- ====================== TEAM ============================== -->
+<section class="team" id="team" aria-labelledby="team-title">
+  <div class="container">
+    <div class="team__grid">
+      <div class="reveal">
+        <div class="team__photos">
+          <div class="ph-frame"><div class="ph ph--blush" aria-hidden="true" role="img" aria-label="Ritratto Giulia Vencato"></div></div>
+          <div class="ph-frame"><div class="ph ph--lav" aria-hidden="true" role="img" aria-label="Ritratto Federica Roncato"></div></div>
+        </div>
+        <p class="mono subtle" style="margin-top:12px;text-align:center;">Giulia Vencato · Federica Roncato<sup style="color:var(--accent);">[DA VERIFICARE]</sup></p>
+        <!-- VERIFY: nomi e foto reali titolari -->
+      </div>
+
+      <div class="reveal">
+        <span class="eyebrow">Le titolari</span>
+        <h2 id="team-title" class="h2">Due mani, una cura</h2>
+        <p class="team__bio">
+          Le accogliamo nel nostro studio di Via Trento dal 2018<sup style="color:var(--accent);font-family:var(--mono);font-size:10px;">[DA VERIFICARE]</sup>. Crediamo nei gesti precisi, nei tempi giusti e nella cosmetica professionale: ogni rituale viene costruito sulla pelle e sulle abitudini di chi sceglie di affidarsi a noi.
+        </p>
+        <div class="team__creds">
+          <span class="tag">Diploma estetista qualificata</span>
+          <span class="tag">Formazione Comel<sup style="color:var(--accent);">[?]</sup></span>
+          <span class="tag">Aggiornamenti Phyto Sintesi<sup style="color:var(--accent);">[?]</sup></span>
+        </div>
+        <!-- VERIFY: brand cosmetici professionali realmente utilizzati -->
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====================== AMBIENTE ============================== -->
+<section class="ambiente" aria-labelledby="ambiente-title">
+  <div class="container">
+    <header class="ambiente__head reveal">
+      <span class="eyebrow">Lo studio</span>
+      <h2 id="ambiente-title" class="h2">L'ambiente</h2>
+    </header>
+    <div class="ambiente__strip">
+      <figure class="reveal">
+        <div class="ambiente__photo"><div class="ph ph--cream" role="img" aria-label="Ingresso dello studio Estetica Lavanda con insegna dipinta"></div></div>
+        <figcaption>L'ingresso, di mattina</figcaption>
+      </figure>
+      <figure class="reveal">
+        <div class="ambiente__photo"><div class="ph ph--lav" role="img" aria-label="Cabina trattamenti viso con luce calda e tessuti naturali"></div></div>
+        <figcaption>La cabina trattamenti viso</figcaption>
+      </figure>
+      <figure class="reveal">
+        <div class="ambiente__photo"><div class="ph ph--blush" role="img" aria-label="Postazione manicure con luce naturale e smalti allineati"></div></div>
+        <figcaption>La sala manicure</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ====================== RECENSIONI ============================== -->
+<section class="recensioni" aria-labelledby="recensioni-title">
+  <div class="container">
+    <header class="recensioni__head reveal">
+      <span class="eyebrow">Recensioni Google</span>
+      <h2 id="recensioni-title" class="h2">Le parole delle clienti</h2>
+    </header>
+
+    <div class="recensioni__grid">
+      <article class="review reveal">
+        <div class="review__stars" role="img" aria-label="5 stelle su 5">★ ★ ★ ★ ★</div>
+        <blockquote>Ambiente accogliente, mani delicate. Ho fatto la pulizia viso e mi sono sentita a casa: spiegano ogni passaggio e non hanno mai fretta.<sup style="color:var(--accent);font-family:var(--mono);font-size:9px;">[DA VERIFICARE]</sup></blockquote>
+        <cite>Maria T. · Schio</cite>
+      </article>
+      <article class="review reveal">
+        <div class="review__stars" role="img" aria-label="5 stelle su 5">★ ★ ★ ★ ★</div>
+        <blockquote>Manicure SPA impeccabile. Tornerò di sicuro. Consiglio anche solo per la mezz'ora di pace che si respira appena entrata.<sup style="color:var(--accent);font-family:var(--mono);font-size:9px;">[DA VERIFICARE]</sup></blockquote>
+        <cite>Anna R. · Thiene</cite>
+      </article>
+      <article class="review reveal">
+        <div class="review__stars" role="img" aria-label="5 stelle su 5">★ ★ ★ ★ ★</div>
+        <blockquote>Federica mi ha truccata per il matrimonio. Tenuta perfetta tutto il giorno e zero stress. Pelle fresca, luce naturale.<sup style="color:var(--accent);font-family:var(--mono);font-size:9px;">[DA VERIFICARE]</sup></blockquote>
+        <cite>Chiara B. · Bassano del Grappa</cite>
+      </article>
+    </div>
+
+    <p class="recensioni__foot reveal">
+      <strong>★ 4.9 / 5</strong> su Google · 47 recensioni verificate<sup style="color:var(--accent);font-family:var(--mono);font-size:10px;">[DA VERIFICARE]</sup>
+    </p>
+    <!-- VERIFY: rating reale + count reale + consenso scritto cliente per testimonial nominali -->
+  </div>
+</section>
+
+<!-- ====================== FAQ ============================== -->
+<section class="faq" aria-labelledby="faq-title">
+  <div class="container faq__inner">
+    <header class="faq__head reveal">
+      <span class="eyebrow">Domande frequenti</span>
+      <h2 id="faq-title" class="h2">Tutto quello che vorrebbe sapere</h2>
+    </header>
+
+    <details class="reveal">
+      <summary>Devo prenotare in anticipo?</summary>
+      <div class="faq__answer">Sì, le consigliamo di prenotare con qualche giorno di anticipo, soprattutto per i trattamenti del sabato. Per urgenze, ci scriva su WhatsApp: troviamo sempre uno spazio quando possibile.</div>
+    </details>
+    <details class="reveal">
+      <summary>Accettate pagamenti con carta?</summary>
+      <div class="faq__answer">Certamente. Accettiamo POS (carte di credito e debito), contanti e Satispay. Per pagamenti elettronici nessuna commissione aggiuntiva.</div>
+    </details>
+    <details class="reveal">
+      <summary>C'è parcheggio nelle vicinanze?</summary>
+      <div class="faq__answer">Sì, in Via Trento e nelle vie limitrofe trova parcheggi pubblici a strisce bianche e blu. La stazione di Thiene è a circa cinque minuti a piedi.<sup style="color:var(--accent);font-family:var(--mono);font-size:10px;">[DA VERIFICARE]</sup></div>
+    </details>
+    <details class="reveal">
+      <summary>I trattamenti sono adatti alla pelle sensibile?</summary>
+      <div class="faq__answer">In cabina iniziamo sempre con una breve diagnosi cutanea, così possiamo scegliere i prodotti giusti per la sua pelle. Se ha allergie note o usa prodotti specifici, ce lo dica in fase di prenotazione.</div>
+    </details>
+    <details class="reveal">
+      <summary>Qual è la politica di disdetta?</summary>
+      <div class="faq__answer">Le chiediamo gentilmente di avvisarci entro 24 ore in caso di imprevisti, così possiamo riorganizzare l'agenda. Per i trattamenti lunghi (sopra 75 minuti) richiediamo conferma il giorno prima.<sup style="color:var(--accent);font-family:var(--mono);font-size:10px;">[DA VERIFICARE policy]</sup></div>
+    </details>
+    <details class="reveal">
+      <summary>I cosmetici sono professionali e certificati?</summary>
+      <div class="faq__answer">Sì. Lavoriamo solo con linee professionali destinate ai centri estetici, conformi alla normativa europea sui cosmetici (Reg. CE 1223/2009). Le mostriamo i prodotti in cabina, se desidera.</div>
+    </details>
+  </div>
+</section>
+
+<!-- ====================== CONTATTI ============================== -->
+<section class="contatti" id="contatti" aria-labelledby="contatti-title">
+  <div class="container">
+    <header class="contatti__head reveal">
+      <span class="eyebrow">Prenoti il rituale</span>
+      <h2 id="contatti-title" class="h2">Ci scriva, la richiamiamo</h2>
+      <p class="muted" style="max-width:560px;margin:14px auto 0;">Le rispondiamo entro 24 ore, lunedì escluso. Per appuntamenti urgenti, WhatsApp è la via più rapida.</p>
+    </header>
+
+    <div class="contatti__grid">
+      <div class="reveal">
+        <div class="map" role="img" aria-label="Mappa: Via Trento, Thiene (VI)">
+          <svg viewBox="0 0 600 450" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+            <rect width="600" height="450" fill="#F5EDE4"/>
+            <g stroke="#D9CFC4" stroke-width="1.2" fill="none">
+              <path d="M0 90H600M0 180H600M0 270H600M0 360H600"/>
+              <path d="M120 0V450M240 0V450M360 0V450M480 0V450"/>
+            </g>
+            <path d="M-20 240 Q150 180 320 230 T620 200" stroke="#B8C5A8" stroke-width="14" fill="none" opacity=".55"/>
+            <path d="M0 320L600 280" stroke="#E8DED4" stroke-width="22" fill="none"/>
+            <path d="M180 0L260 450" stroke="#E8DED4" stroke-width="22" fill="none"/>
+            <g transform="translate(298 210)">
+              <circle r="22" fill="#8678A0" opacity=".15"/>
+              <circle r="10" fill="#8678A0"/>
+              <circle r="3" fill="#FAF4EE"/>
+            </g>
+            <text x="320" y="200" font-family="Fraunces, serif" font-style="italic" font-size="14" fill="#2A1F1A">Via Trento</text>
+          </svg>
+        </div>
+        <ul class="contatti__list">
+          <li>
+            <span class="ico" aria-hidden="true">tel</span>
+            <span><a href="tel:+390000000000">+39 [DA VERIFICARE]</a><sup style="color:var(--accent);font-family:var(--mono);font-size:10px;">[DA VERIFICARE]</sup></span>
+          </li>
+          <li>
+            <span class="ico" aria-hidden="true">w/a</span>
+            <span><a href="https://wa.me/39000000000" rel="noopener">WhatsApp · risposta rapida</a></span>
+          </li>
+          <li>
+            <span class="ico" aria-hidden="true">@</span>
+            <span><a href="mailto:info@estetica-lavanda.it">info@estetica-lavanda.it</a><sup style="color:var(--accent);font-family:var(--mono);font-size:10px;">[DA VERIFICARE]</sup></span>
+          </li>
+          <li>
+            <span class="ico" aria-hidden="true">IG</span>
+            <span><a href="https://instagram.com/estetica.lavanda" rel="noopener">@estetica.lavanda</a><sup style="color:var(--accent);font-family:var(--mono);font-size:10px;">[DA VERIFICARE]</sup></span>
+          </li>
+          <li>
+            <span class="ico" aria-hidden="true">map</span>
+            <span>Via Trento [n°], 36016 Thiene (VI)<sup style="color:var(--accent);font-family:var(--mono);font-size:10px;">[DA VERIFICARE]</sup></span>
+          </li>
+        </ul>
+      </div>
+
+      <form class="form reveal" novalidate aria-labelledby="form-title">
+        <h3 id="form-title" class="h3" style="font-style:italic;">Richieda un appuntamento</h3>
+        <div class="field">
+          <label for="f-nome">Nome e cognome</label>
+          <input id="f-nome" name="nome" type="text" autocomplete="name" required placeholder="Es. Maria Bianchi">
+        </div>
+        <div class="field">
+          <label for="f-tel">Telefono</label>
+          <input id="f-tel" name="tel" type="tel" autocomplete="tel" required placeholder="+39 …" inputmode="tel">
+        </div>
+        <div class="field">
+          <label for="f-email">Email</label>
+          <input id="f-email" name="email" type="email" autocomplete="email" required placeholder="nome@esempio.it">
+        </div>
+        <div class="field">
+          <label for="f-tratt">Trattamento di interesse</label>
+          <select id="f-tratt" name="trattamento">
+            <option value="">— scelga un trattamento —</option>
+            <option>Trattamento viso anti-age</option>
+            <option>Pulizia profonda</option>
+            <option>Manicure &amp; pedicure SPA</option>
+            <option>Ceretta brasiliana</option>
+            <option>Massaggio rilassante</option>
+            <option>Makeup eventi</option>
+            <option>Voucher regalo</option>
+            <option>Altro / non so ancora</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="f-note">Note (facoltativo)</label>
+          <textarea id="f-note" name="note" rows="3" placeholder="Giorni preferiti, preferenze di orario…"></textarea>
+        </div>
+        <label class="gdpr">
+          <input type="checkbox" name="gdpr" required aria-label="Gdpr">
+          <span>Acconsento al trattamento dei dati personali per essere ricontattata, ai sensi del GDPR (Reg. UE 2016/679). Leggi la <a href="/privacy">privacy policy</a>.</span>
+        </label>
+        <div class="form__ctas">
+          <button type="submit" class="btn btn--primary">Prenoti il rituale <span class="arrow" aria-hidden="true">→</span></button>
+          <a href="https://wa.me/39000000000" class="btn btn--wa" rel="noopener" aria-label="Scrivici su WhatsApp">WhatsApp</a>
+        </div>
+        <p class="mono subtle" style="margin:0;">Non raccogliamo dati relativi alla salute. Solo contatto.</p>
+      </form>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ====================== FOOTER ============================== -->
+<footer class="footer" aria-labelledby="footer-title">
+  <h2 id="footer-title" style="position:absolute;left:-9999px;">Informazioni di contatto</h2>
+  <div class="container">
+    <div class="footer__cols">
+      <div class="footer__brand">
+        <div class="logo">
+          <svg viewBox="0 0 48 48" aria-hidden="true">
+            <g stroke="#E5DFEB" stroke-width="1.5" fill="none" stroke-linecap="round" transform="translate(12 4)">
+              <path d="M12 40V2"/>
+              <path d="M12 8C8 7 6 5 5 1"/><path d="M12 8C16 7 18 5 19 1"/>
+              <path d="M12 14C8.5 13 6.5 11 5.5 7"/><path d="M12 14C15.5 13 17.5 11 18.5 7"/>
+              <path d="M12 20C9 19.5 7.5 17.5 6.5 14"/><path d="M12 20C15 19.5 16.5 17.5 17.5 14"/>
+              <path d="M12 26C9.5 25.5 8 24 7 21"/><path d="M12 26C14.5 25.5 16 24 17 21"/>
+            </g>
+          </svg>
+          <span>Estetica Lavanda</span>
+        </div>
+        <p>Via Trento [n°]<br>36016 Thiene (VI) — Italia<sup style="color:var(--lavender-100);font-family:var(--mono);font-size:10px;">[DA VERIFICARE]</sup></p>
+        <p>P. IVA <span style="font-family:var(--mono);">[DA VERIFICARE]</span></p>
+        <p>Codice ATECO 96.02.02 — Servizi di estetica</p>
+        <div class="footer__social" role="img" aria-label="Profili social">
+          <a href="https://instagram.com/estetica.lavanda" rel="noopener" aria-label="Instagram">IG</a>
+          <a href="#" rel="noopener" aria-label="Facebook">FB</a>
+          <a href="#" rel="noopener" aria-label="Google Business Profile">G</a>
+          <a href="https://wa.me/39000000000" rel="noopener" aria-label="WhatsApp">WA</a>
+        </div>
+      </div>
+
+      <div>
+        <h3>Orari</h3>
+        <ul>
+          <li>Lunedì — chiuso</li>
+          <li>Martedì–Venerdì · 9:30 – 19:00</li>
+          <li>Sabato · 9:00 – 18:00</li>
+          <li>Domenica — chiuso</li>
+        </ul>
+        <p style="margin-top:14px;font-family:var(--mono);font-size:11px;color:rgba(250,244,238,.55);">Su appuntamento</p>
+      </div>
+
+      <div>
+        <h3>Informazioni</h3>
+        <ul>
+          <li><a href="/privacy">Privacy policy</a></li>
+          <li><a href="/cookie">Cookie policy</a></li>
+          <li><a href="/termini">Termini e condizioni</a></li>
+          <li><a href="/note-legali">Note legali</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <p class="footer__disclaimer">
+      I trattamenti estetici non hanno finalità terapeutiche. Per consulenze dermatologiche rivolgersi al medico specialista.
+    </p>
+
+    <div class="footer__legal">
+      <span>© 2026 Estetica Lavanda. Tutti i diritti riservati.</span>
+      <span>Sito realizzato con cura.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  // Sticky-on-scroll border
+  var nav=document.getElementById('nav');
+  var onScroll=function(){
+    if(window.scrollY>8){nav.classList.add('scrolled');}
+    else{nav.classList.remove('scrolled');}
+  };
+  window.addEventListener('scroll',onScroll,{passive:true});onScroll();
+
+  // Hamburger
+  var burger=document.querySelector('.nav__burger');
+  burger.addEventListener('click',function(){
+    var open=nav.classList.toggle('open');
+    burger.setAttribute('aria-expanded',open?'true':'false');
+    burger.setAttribute('aria-label',open?'Chiudi menù':'Apri menù');
+  });
+  // close on link tap (mobile)
+  document.querySelectorAll('.nav__menu a, .nav__menu .btn').forEach(function(a){
+    a.addEventListener('click',function(){
+      nav.classList.remove('open');burger.setAttribute('aria-expanded','false');
+    });
+  });
+
+  // Reveal fade-up. Activate hidden state only now that JS is running.
+  document.documentElement.classList.add('js-reveal');
+  var revealAll=function(){document.querySelectorAll('.reveal').forEach(function(el){el.classList.add('in');});};
+  if('IntersectionObserver' in window){
+    var vh=window.innerHeight||document.documentElement.clientHeight;
+    var els=document.querySelectorAll('.reveal');
+    var io=new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}
+      });
+    },{rootMargin:'0px 0px -8% 0px',threshold:0.08});
+    // Pre-flip anything already in (or above) the viewport so above-the-fold content never sits at opacity 0
+    els.forEach(function(el){
+      var r=el.getBoundingClientRect();
+      if(r.top<vh*0.95){el.classList.add('in');}else{io.observe(el);}
+    });
+    // Safety net: if anything is still hidden after a tick, reveal it.
+    setTimeout(function(){document.querySelectorAll('.reveal:not(.in)').forEach(function(el){var r=el.getBoundingClientRect();if(r.top<(window.innerHeight||0)){el.classList.add('in');}});},150);
+  }else{
+    revealAll();
+  }
+
+  // Form: client-side guard only (no submit handler, no data collected)
+  var form=document.querySelector('.form');
+  if(form){
+    form.addEventListener('submit',function(e){
+      e.preventDefault();
+      // VERIFY: collegare endpoint reale (es. Formspree / Mailchimp / SMTP cliente)
+      alert('Grazie. La ricontattiamo entro 24 ore.');
+    });
+  }
+})();
+</script>
+
+</body>
+</html>

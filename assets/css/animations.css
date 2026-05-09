@@ -1,0 +1,146 @@
+/**
+ * Animations — keyframes + reveal classes (driven by GSAP ScrollTrigger).
+ */
+
+/* ── Reveal up ── */
+.reveal-up {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity var(--dur-slow) var(--ease-out), transform var(--dur-slow) var(--ease-out);
+}
+.reveal-up.is-revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── Reveal mask ── */
+.reveal-mask {
+  display: inline-block;
+  position: relative;
+  overflow: hidden;
+}
+.reveal-mask::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--paper);
+  transform-origin: right;
+  transform: scaleX(1);
+  transition: transform var(--dur-cinema) var(--ease-mech);
+}
+.reveal-mask.is-revealed::after {
+  transform: scaleX(0);
+}
+
+.reveal-mask--ink::after { background: var(--ink); }
+.reveal-mask--paper2::after { background: var(--paper2); }
+
+/* ── Char-by-char reveal ── */
+.char-reveal {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+}
+.char-reveal__inner {
+  display: inline-block;
+  transform: translateY(110%);
+  transition: transform var(--dur-slow) var(--ease-out);
+}
+.char-reveal.is-revealed .char-reveal__inner {
+  transform: translateY(0);
+}
+
+/* ── Image reveal scale-Y ── */
+.img-reveal {
+  position: relative;
+  overflow: hidden;
+}
+.img-reveal::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--ink);
+  z-index: 2;
+  transform-origin: bottom;
+  transform: scaleY(1);
+  transition: transform var(--dur-cinema) var(--ease-mech);
+}
+.img-reveal.is-revealed::before {
+  transform: scaleY(0);
+}
+.img-reveal img,
+.img-reveal video {
+  transform: scale(1.15);
+  transition: transform var(--dur-cinema) var(--ease-out);
+}
+.img-reveal.is-revealed img,
+.img-reveal.is-revealed video {
+  transform: scale(1);
+}
+
+/* ── Loader fade-out ── */
+.loader {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  background: var(--paper);
+  display: grid;
+  place-items: center;
+  pointer-events: all;
+  transition: opacity var(--dur-slow) var(--ease-out);
+}
+
+.loader__content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.loader__spinner {
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--rule);
+  border-top-color: var(--ox);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.loader__text {
+  font-family: var(--fm);
+  font-size: var(--fz-meta);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--mute);
+}
+
+.loader.is-loaded {
+  opacity: 0;
+  pointer-events: none;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── Floating arrow ── */
+@keyframes float-y {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-6px); }
+}
+
+.float-y { animation: float-y 2.4s var(--ease-in-out) infinite; }
+
+/* ── Subtle slide-in for meta-bar ── */
+@keyframes slide-down {
+  from { transform: translateY(-100%); opacity: 0; }
+  to   { transform: translateY(0);     opacity: 1; }
+}
+
+.meta-bar { animation: slide-down 0.8s var(--ease-out) 0.3s both; }
+
+/* ── Hover lift for cards ── */
+.lift {
+  transition: transform var(--dur-base) var(--ease-out);
+}
+.lift:hover { transform: translateY(-4px); }

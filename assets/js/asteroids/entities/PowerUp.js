@@ -1,0 +1,7 @@
+// assets/js/modules/cursors/asteroids/entities/PowerUp.js
+import { CONFIG } from '../config.js';
+export class PowerUp {
+    constructor(x, y) { const POWERUP_TYPES = ['shield', 'tripleShot', 'fireRate', 'bounce', 'laser']; this.type = POWERUP_TYPES[Math.floor(Math.random() * POWERUP_TYPES.length)]; this.x = x; this.y = y; this.radius = CONFIG.POWERUP_RADIUS; this.life = CONFIG.POWERUP_LIFESPAN_FRAMES; this.shouldBeRemoved = false; switch (this.type) { case 'fireRate': this.displayText = 'F'; this.color = '#FFD700'; break; case 'tripleShot': this.displayText = 'T'; this.color = '#FFA500'; break; case 'shield': this.displayText = 'S'; this.color = '#00FFFF'; break; case 'bounce': this.displayText = 'B'; this.color = '#33FF33'; break; case 'laser': this.displayText = 'L'; this.color = '#FF0000'; break; } }
+    update() { if (--this.life <= 0) this.shouldBeRemoved = true; }
+    draw(ctx) { ctx.save(); ctx.translate(this.x, this.y); const alpha = (this.life < 60) ? (this.life / 60) : 1; ctx.globalAlpha = alpha; ctx.strokeStyle = this.color; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.arc(0, 0, this.radius, 0, Math.PI * 2); ctx.stroke(); ctx.fillStyle = this.color; ctx.font = "bold 12px 'Share Tech Mono', monospace"; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(this.displayText, 0, 1); ctx.restore(); }
+}

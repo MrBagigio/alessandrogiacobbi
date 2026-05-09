@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Northstar CRM — Alessandro Giacobbi</title>
+  <meta name="description" content="CRM single-file HTML+IndexedDB per Setpoint Studio. 191 unit test · 52 E2E · 91% mutation kill rate. Built with Claude Opus.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../assets/css/tokens.css">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/layout.css">
+  <link rel="stylesheet" href="../assets/css/animations.css">
+</head>
+<body>
+
+  <a href="#main" class="skip-link">Salta al contenuto</a>
+  <div class="cursor-dot" aria-hidden="true"></div>
+  <div class="cursor-ring" aria-hidden="true"></div>
+  <div class="scroll-progress" aria-hidden="true"></div>
+
+  <header class="meta-bar">
+    <div class="left"><a href="../index.html">← Portfolio</a></div>
+    <div class="center">Northstar CRM</div>
+    <div class="right">
+      <span class="meta-clock">--:-- CET</span>
+      <a href="../index.html#contact">Contact</a>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <section class="project-hero">
+      <div class="project-hero__inner">
+        <nav class="project-hero__breadcrumb reveal-up">
+          <a href="../index.html">Portfolio</a> &nbsp;/&nbsp; R&amp;D · Tooling · Internal
+        </nav>
+        <h1 class="project-hero__title reveal-up">Northstar CRM</h1>
+        <p class="project-hero__client reveal-up">Setpoint client management · v5.3.2 · dogfooding</p>
+      </div>
+    </section>
+
+    <section class="project-meta">
+      <div class="project-meta__inner">
+        <div class="project-meta__col">
+          <span class="project-meta__label">Built</span>
+          <span class="project-meta__value">2025 → 2026</span>
+        </div>
+        <div class="project-meta__col">
+          <span class="project-meta__label">Version</span>
+          <span class="project-meta__value">v5.3.2</span>
+        </div>
+        <div class="project-meta__col">
+          <span class="project-meta__label">Stack</span>
+          <span class="project-meta__value">Single-file HTML + IndexedDB</span>
+        </div>
+        <div class="project-meta__col">
+          <span class="project-meta__label">Tests</span>
+          <span class="project-meta__value">191 unit · 91% mutation</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="project-content">
+      <div class="project-content__inner">
+
+        <h3 class="project-content__h3 reveal-up">Il progetto</h3>
+        <p class="project-content__p reveal-up">
+          CRM custom per gestione lead, deal pipeline, revision client, retainer mensili e
+          forecast revenue di Setpoint Studio S.r.l. Architettura zero-backend: tutto gira nel
+          browser con IndexedDB, single-file HTML con JS+CSS inline, deploy GitHub Pages
+          gratuito, no server, no auth, no costo mensile.
+        </p>
+
+        <h3 class="project-content__h3 reveal-up">Features</h3>
+        <ul class="project-content__role-list reveal-up">
+          <li>Lead intake con scoring intrinseco 7 criteri (PEC/email, sito obsoleto, decision maker, ticket, etc.)</li>
+          <li>Deal pipeline kanban Tier 1/2/3 (Pro €990-2.990 / Local €350-1.200 / SaaS retainer €99/mese)</li>
+          <li>Revision tracking 12 pattern + email scripts pre-built</li>
+          <li>Forecast revenue con math forfettario IT (regime startup 5% / 15% post-2027)</li>
+          <li>Profilo Operatore view (read-only stakeholder mode)</li>
+          <li>Export CSV + JSON backup</li>
+          <li>Offline-first: tutto funziona zero-network</li>
+        </ul>
+
+        <h3 class="project-content__h3 reveal-up">Test Suite</h3>
+        <p class="project-content__p reveal-up">
+          191 unit tests · 52 E2E (Playwright) · 91% mutation kill rate (Stryker) · Hardening
+          H1+H2+H3 da 69% → 91% in 10 round mutation. Anti-regression test audit completo.
+          Reference build per il SaaS HostShield.
+        </p>
+
+        <h3 class="project-content__h3 reveal-up">Repository</h3>
+        <p class="project-content__p reveal-up">
+          GitHub: <code style="background: var(--paper2); padding: 2px 6px; border: 1px solid var(--rule);">MrBagigio/northstar-crm</code> (private)
+        </p>
+
+        <h3 class="project-content__h3 reveal-up">Tech Stack</h3>
+        <p class="project-content__p reveal-up">
+          Vanilla JS · IndexedDB · Vitest · Playwright · Stryker mutation testing · GitHub Pages deploy · Built with Claude Opus 4.7
+        </p>
+
+      </div>
+    </section>
+
+    <section class="project-content" style="background: var(--paper2); border-top: 1px solid var(--rule);">
+      <div class="project-content__inner">
+        <h3 class="project-content__h3 reveal-up">Credits</h3>
+        <p class="project-content__p reveal-up">
+          <strong>Author:</strong> Alessandro Giacobbi · <strong>Studio:</strong> Setpoint Studio S.r.l. · <strong>Years:</strong> 2025 → 2026
+        </p>
+      </div>
+    </section>
+
+    <section class="project-next">
+      <div class="project-next__inner">
+        <div>
+          <span class="text-meta">Next project</span>
+          <h3 class="text-h3" style="margin-top: 0.5rem;">HostShield</h3>
+        </div>
+        <a href="./hostshield.html" class="btn btn--ox">
+          <span>Vai al progetto</span>
+          <span class="btn-arrow">→</span>
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <div class="footer__inner">
+      <span class="footer__credit">© 2026 Alessandro Giacobbi · <a href="https://www.setpointstudio.com">Setpoint Studio S.r.l.</a> · P.IVA 04403500244</span>
+      <span class="footer__credit"><a href="../index.html">← Tutti i progetti</a></span>
+    </div>
+  </footer>
+
+  <script type="module" src="../assets/js/main.js"></script>
+
+</body>
+</html>

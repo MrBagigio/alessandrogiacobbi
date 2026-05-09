@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#FAF6F0" />
+  <link rel="preconnect" href="https://picsum.photos" crossorigin />
+  <link rel="preload" as="image" href="https://picsum.photos/seed/wed-hero-garda/800/1000" fetchpriority="high" />
+  <!-- audit-100-100 hardening v1 -->
+  <link rel="canonical" href="https://example.com/" />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
+  <meta name="robots" content="index,follow,max-image-preview:large" />
+  <meta name="format-detection" content="telephone=no" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://images.unsplash.com https://picsum.photos https://fastly.picsum.photos; connect-src 'self'; media-src 'self' https://res.cloudinary.com https://*.bunnycdn.com data: blob:; frame-src https://www.openstreetmap.org; base-uri 'self'; form-action 'self' mailto:" />
+<meta name="description" content="Sposi del Lago — Wedding Planner Lago di Garda. Matrimoni curati per coppie 28-45 anni in Veneto e Lombardia. Progettazione completa 9-12 mesi, regia giorno evento, scouting location esclusive. Dal [ANNO].">
+<meta property="og:title" content="Sposi del Lago — Wedding Planner Lago di Garda">
+<meta property="og:description" content="Matrimoni curati. Tempo vostro, dettaglio nostro. Wedding planning a Verona/Brescia, dal [ANNO].">
+<meta property="og:type" content="website">
+<title>Sposi del Lago — Wedding Planner Lago di Garda</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WeddingService","name":"Sposi del Lago","description":"Wedding planner Lago di Garda specializzata in matrimoni boutique per coppie 28-45 anni in Veneto e Lombardia.","url":"https://sposidellago.it","telephone":"[DA VERIFICARE]","priceRange":"€€€","address":{"@type":"PostalAddress","streetAddress":"[DA VERIFICARE]","addressLocality":"Verona","addressRegion":"VR","postalCode":"[DA VERIFICARE]","addressCountry":"IT"},"areaServed":["Veneto","Lombardia","Trentino-Alto Adige"],"sameAs":["https://www.instagram.com/sposidellago","https://www.facebook.com/sposidellago"]}
+</script>
+<style>
+:root{--cream-50:#FAF6F0;--cream-100:#F2EAD8;--blush-200:#E8C9C0;--sage-400:#A8B89C;--rose-gold-500:#B97A65;--rose-gold-600:#9A6452;--ink-900:#2A2520;--ink-700:#3D3530;--bronze-300:#D4B89E;--white:#FFFFFF;--shadow-soft:0 2px 12px rgba(42,37,32,.08);--radius-sm:6px;--radius-md:8px}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;font-size:16px;line-height:1.6;color:var(--ink-900);background:var(--cream-50);-webkit-font-smoothing:antialiased}
+.container{max-width:1240px;margin:0 auto;padding:0 24px}
+h1,h2,h3,h4{font-family:'Cormorant Garamond',serif;font-weight:500;line-height:1.15;color:var(--ink-900)}
+h1{font-size:clamp(48px,8vw,104px);font-style:italic;letter-spacing:-.02em}
+h2{font-size:clamp(36px,5vw,64px);font-style:italic;letter-spacing:-.01em}
+h3{font-size:22px;font-weight:600}
+.eyebrow{font-family:'Inter',sans-serif;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--rose-gold-500);display:inline-flex;align-items:center;gap:8px}
+.eyebrow::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--sage-400)}
+.mono{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.02em;color:var(--ink-700)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:16px 32px;font-family:'Inter',sans-serif;font-size:14px;font-weight:600;letter-spacing:.02em;border-radius:var(--radius-sm);border:none;cursor:pointer;text-decoration:none;transition:all .2s ease;min-height:44px}
+.btn-primary{background:var(--rose-gold-500);color:var(--white)}
+.btn-primary:hover{background:var(--rose-gold-600);transform:scale(1.02)}
+.btn-outline{background:transparent;color:var(--ink-900);border:1px solid var(--ink-900)}
+.btn-outline:hover{background:var(--ink-900);color:var(--white)}
+.verify{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:10px;background:var(--cream-100);color:var(--rose-gold-600);padding:2px 8px;border-radius:3px;border:1px dashed var(--rose-gold-500);text-transform:uppercase;letter-spacing:.05em}
+nav{position:sticky;top:0;z-index:100;background:rgba(250,246,240,.94);backdrop-filter:blur(12px);border-bottom:1px solid var(--cream-100);padding:16px 0}
+nav .nav-inner{display:flex;align-items:center;justify-content:space-between}
+nav .logo{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:22px;font-weight:600;color:var(--ink-900);text-decoration:none}
+nav ul{display:flex;list-style:none;gap:32px;align-items:center}
+nav ul a{color:var(--ink-700);text-decoration:none;font-size:14px;font-weight:500;transition:color .2s}
+nav ul a:hover{color:var(--rose-gold-500)}
+nav .menu-toggle{display:none;background:none;border:none;font-size:24px;cursor:pointer}
+.hero{padding:80px 0 100px;display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
+.hero-img{aspect-ratio:4/5;background:linear-gradient(135deg,var(--blush-200) 0%,var(--cream-100) 50%,var(--sage-400) 100%);border-radius:var(--radius-md);position:relative;overflow:hidden}
+.hero-img::after{content:"FOTO COPPIA · DA RICEVERE";position:absolute;bottom:16px;left:16px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--ink-700);background:rgba(250,246,240,.85);padding:6px 10px;border-radius:3px}
+.hero h1{margin:24px 0}
+.hero .subhead{font-size:20px;color:var(--ink-700);margin-bottom:32px;max-width:520px}
+.hero .cta-row{display:flex;gap:16px;flex-wrap:wrap}
+.section{padding:80px 0;opacity:0;transform:translateY(20px);transition:opacity .6s ease,transform .6s ease}
+.section.is-visible{opacity:1;transform:translateY(0)}
+.manifesto{text-align:center;max-width:768px;margin:0 auto;padding:80px 0}
+.manifesto blockquote{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:32px;line-height:1.4;color:var(--ink-900)}
+.portfolio-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:48px}
+.portfolio-grid > div:nth-child(1),.portfolio-grid > div:nth-child(5){grid-column:span 2}
+.portfolio-card{aspect-ratio:4/5;background:linear-gradient(135deg,var(--cream-100),var(--blush-200));border:1px solid var(--cream-100);border-radius:var(--radius-md);position:relative;overflow:hidden}
+.portfolio-card .caption{position:absolute;bottom:12px;left:12px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--ink-900);background:rgba(250,246,240,.9);padding:4px 8px;border-radius:3px}
+.servizi-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;margin-top:48px}
+.servizio-card{background:var(--white);border:1px solid var(--cream-100);border-radius:var(--radius-md);padding:32px;box-shadow:var(--shadow-soft)}
+.servizio-card .icon{width:40px;height:40px;background:var(--cream-100);border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:16px;color:var(--rose-gold-500);font-size:18px}
+.servizio-card h3{margin-bottom:12px}
+.servizio-card p{color:var(--ink-700);font-size:14px}
+.lead-magnet{background:var(--cream-100);padding:64px 32px;border-radius:var(--radius-md);text-align:center;margin:80px 0}
+.lead-magnet h2{margin-bottom:16px}
+.lead-magnet p{color:var(--ink-700);margin-bottom:24px;max-width:520px;margin-left:auto;margin-right:auto}
+.lead-magnet form{display:flex;gap:8px;max-width:420px;margin:0 auto;flex-wrap:wrap;justify-content:center}
+.lead-magnet input[type="email"]{flex:1;min-width:240px;padding:14px 16px;border:1px solid var(--ink-700);border-radius:var(--radius-sm);font-family:'Inter',sans-serif;font-size:14px;background:var(--white)}
+.lead-magnet label{display:block;font-size:12px;color:var(--ink-700);margin-top:12px;text-align:left;max-width:420px;margin-left:auto;margin-right:auto}
+.processo{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;margin-top:48px;position:relative}
+.processo::before{content:"";position:absolute;top:24px;left:0;right:0;height:1px;background:var(--sage-400);z-index:0}
+.processo-step{position:relative;background:var(--cream-50);padding-top:8px;z-index:1}
+.processo-step .num{font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--rose-gold-500);background:var(--cream-50);padding:4px 12px;border:1px solid var(--sage-400);border-radius:50%;display:inline-block;margin-bottom:16px}
+.processo-step h4{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;font-style:italic;margin-bottom:8px}
+.processo-step p{font-size:14px;color:var(--ink-700)}
+.testimonials{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:48px}
+.testimonial-card{background:var(--white);border:1px solid var(--cream-100);border-radius:var(--radius-md);padding:32px;box-shadow:var(--shadow-soft)}
+.testimonial-card .photo{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,var(--blush-200),var(--cream-100));margin-bottom:16px}
+.testimonial-card blockquote{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:18px;line-height:1.5;color:var(--ink-900);margin-bottom:16px}
+.testimonial-card cite{font-style:normal;font-size:14px;font-weight:600;color:var(--ink-700);display:block}
+.testimonial-card .city{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--rose-gold-500);text-transform:uppercase;letter-spacing:.05em}
+.testimonials-disclaimer{text-align:center;margin-top:32px;font-size:12px;color:var(--ink-700);font-style:italic}
+.about{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;margin-top:48px}
+.about-img{aspect-ratio:4/5;background:linear-gradient(135deg,var(--cream-100),var(--blush-200));border-radius:var(--radius-md);position:relative}
+.about-img::after{content:"FOTO TITOLARE · 4:5";position:absolute;bottom:12px;left:12px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--ink-700);background:rgba(250,246,240,.85);padding:4px 8px;border-radius:3px}
+.about-text h3{font-family:'Cormorant Garamond',serif;font-size:32px;font-style:italic;margin-bottom:16px}
+.about-text p{color:var(--ink-700);margin-bottom:16px}
+.about-text .pull-quote{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:24px;color:var(--ink-900);border-left:3px solid var(--rose-gold-500);padding-left:24px;margin-top:24px}
+.faq-list{margin-top:48px;max-width:768px;margin-left:auto;margin-right:auto}
+.faq-item{border-bottom:1px solid var(--cream-100);padding:24px 0}
+.faq-item summary{cursor:pointer;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:22px;font-weight:600;color:var(--ink-900);list-style:none;display:flex;justify-content:space-between;align-items:center}
+.faq-item summary::after{content:"+";font-size:24px;color:var(--rose-gold-500);transition:transform .2s}
+.faq-item[open] summary::after{transform:rotate(45deg)}
+.faq-item p{padding-top:16px;color:var(--ink-700)}
+.contact{display:grid;grid-template-columns:1fr 1fr;gap:48px;margin-top:48px}
+.contact-info iframe{width:100%;aspect-ratio:16/10;border:0;border-radius:var(--radius-md);background:var(--cream-100)}
+.contact-info ul{list-style:none;margin-top:24px}
+.contact-info ul li{padding:12px 0;color:var(--ink-700);border-bottom:1px solid var(--cream-100)}
+.contact-info ul li strong{color:var(--ink-900);display:inline-block;min-width:100px}
+.contact-form{background:var(--white);border:1px solid var(--cream-100);border-radius:var(--radius-md);padding:32px;box-shadow:var(--shadow-soft)}
+.contact-form .form-row{margin-bottom:16px}
+.contact-form label{display:block;font-size:12px;font-weight:600;color:var(--ink-900);margin-bottom:6px;text-transform:uppercase;letter-spacing:.05em}
+.contact-form input,.contact-form select,.contact-form textarea{width:100%;padding:12px 14px;border:1px solid var(--cream-100);border-radius:var(--radius-sm);font-family:'Inter',sans-serif;font-size:14px;background:var(--cream-50)}
+.contact-form textarea{resize:vertical;min-height:96px}
+.contact-form .gdpr-row{display:flex;gap:8px;align-items:flex-start;margin-top:16px;font-size:12px}
+.contact-form .gdpr-row input{width:auto;flex-shrink:0;margin-top:2px}
+.contact-form button{width:100%;margin-top:16px}
+footer{background:var(--ink-900);color:var(--cream-50);padding:64px 0 32px;margin-top:80px}
+footer .footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:48px;margin-bottom:48px}
+footer .footer-col h4{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:20px;color:var(--cream-50);margin-bottom:16px}
+footer .footer-col ul{list-style:none}
+footer .footer-col ul li{padding:6px 0;font-size:14px;color:var(--cream-100);opacity:.85}
+footer .footer-col a{color:var(--cream-100);text-decoration:none;transition:opacity .2s}
+footer .footer-col a:hover{opacity:1}
+footer .footer-disclaimer{border-top:1px solid var(--ink-700);padding-top:32px;font-size:12px;color:var(--cream-100);opacity:.7;line-height:1.6}
+footer .social-row{display:flex;gap:16px;margin-top:16px}
+footer .social-row a{width:36px;height:36px;border:1px solid var(--cream-100);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600}
+@media(prefers-reduced-motion:reduce){.section{opacity:1;transform:none;transition:none}*{animation:none!important;transition:none!important}}
+@media(max-width:760px){nav ul{display:none}nav.open ul{display:flex;flex-direction:column;position:absolute;top:100%;left:0;right:0;background:var(--cream-50);padding:24px;border-bottom:1px solid var(--cream-100);gap:16px}nav .menu-toggle{display:block}.hero,.about,.contact{grid-template-columns:1fr;gap:32px}.hero-img,.about-img{order:-1;max-width:480px;margin:0 auto}.servizi-grid,.portfolio-grid,.testimonials,.processo{grid-template-columns:1fr}.processo::before{display:none}footer .footer-grid{grid-template-columns:1fr;gap:32px}.lead-magnet form{flex-direction:column}}
+
+  /* audit-100-100: a11y prefers-reduced-motion + focus-visible */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+  :focus-visible { outline: 2px solid currentColor; outline-offset: 3px; border-radius: 2px; }
+  @media (forced-colors: active) {
+    a, button { forced-color-adjust: none; }
+  }
+  
+  /* audit-100-100 phase-2d: img overlay placeholder R16 BIBBIA */
+  .hero-img > img.ph-img,
+  .portfolio-card > img.ph-img,
+  .about-img > img.ph-img,
+  .case-photo > img.ph-img,
+  .photo > img.ph-img,
+  .tile > img.ph-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: inherit;
+    z-index: 0;
+  }
+  .portfolio-card > .caption,
+  .case-photo > .label,
+  .tile > .label,
+  .photo + cite,
+  .photo ~ blockquote {
+    position: relative;
+    z-index: 1;
+  }
+  
+  /* audit-100-100: skip link a11y WCAG 2.4.1 */
+  .audit-skip-link { position: absolute; left: -9999px; top: 0; background: #000; color: #fff; padding: 12px 16px; z-index: 10000; text-decoration: none; font: bold 14px/1 system-ui, sans-serif; border-radius: 0 0 8px 0; }
+  .audit-skip-link:focus { left: 0; outline: 3px solid #FFD700; outline-offset: 2px; }
+
+  
+  /* audit-100-100 phase-2e: prevent horizontal scroll on desktop */
+  html, body { overflow-x: hidden; max-width: 100vw; }
+  
+  /* Phase 2.I contrast fix */
+  .eyebrow { color: #6B3A56 !important; }
+  .btn-primary { background-color: #6B3A56 !important; color: #ffffff !important; }
+  </style>
+  <!-- audit-100-100 phase-2d picsum-assets -->
+  <!-- audit-100-100 phase-2c preload-critical -->
+  <!-- audit-100-100 phase-2h landmark+labels -->
+  <!-- audit-100-100 phase-2i contrast-fix -->
+  <!-- audit-100-100 phase-2j webp+cls -->
+</head>
+<body>
+<main id="main">
+
+<a href="#main" class="audit-skip-link">Salta al contenuto</a>
+<!-- ============ NAV ============ -->
+<nav id="nav">
+  <div class="container nav-inner">
+    <a href="#" class="logo">Sposi del Lago</a>
+    <ul>
+      <li><a href="#servizi">Servizi</a></li>
+      <li><a href="#portfolio">Portfolio</a></li>
+      <li><a href="#about">Chi siamo</a></li>
+      <li><a href="#contact">Contatti</a></li>
+      <li><a href="#contact" class="btn btn-primary" style="padding:10px 20px;font-size:13px;min-height:auto">Richiedi consulenza</a></li>
+    </ul>
+    <button class="menu-toggle" onclick="document.getElementById('nav').classList.toggle('open')">≡</button>
+  </div>
+</nav>
+
+<!-- ============ HERO ============ -->
+<section class="hero container">
+  <div class="hero-img"><img src="https://picsum.photos/seed/wed-hero-garda/800/1000?fm=webp" width="800" height="1000" alt="Coppia di sposi al tramonto sul Lago di Garda" class="ph-img" loading="eager" decoding="async" /></div>
+  <div>
+    <span class="eyebrow">Wedding planning · Lago di Garda · Dal [ANNO]</span>
+    <h1>Matrimoni curati. Tempo vostro, dettaglio nostro.</h1>
+    <p class="subhead">Wedding planner in Veneto e Lombardia per coppie 28-45 anni. Progettazione completa 9-12 mesi, regia giorno evento, scouting location esclusive sul Lago di Garda. <span class="verify">[DA VERIFICARE titolari + anno apertura]</span></p>
+    <div class="cta-row">
+      <a href="#contact" class="btn btn-primary">Richiedi consulenza</a>
+      <a href="#lead-magnet" class="btn btn-outline">Scarica la checklist</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MANIFESTO ============ -->
+<section class="manifesto container section">
+  <blockquote>«Da [ANNO] organizziamo matrimoni che restano. Con cura del dettaglio e rispetto del vostro tempo.»</blockquote>
+  <p class="mono" style="margin-top:24px;color:var(--rose-gold-500)">[DA VERIFICARE frase manifesto cliente reale]</p>
+</section>
+
+<!-- ============ PORTFOLIO ============ -->
+<section id="portfolio" class="container section">
+  <span class="eyebrow">Matrimoni curati</span>
+  <h2 style="margin-top:8px">Selezione recente.</h2>
+  <p style="color:var(--ink-700);max-width:520px;margin-top:16px">Sei matrimoni 2023-2024 selezionati. Foto pubblicate con consenso scritto delle coppie. <span class="verify">[ASSET REQUIRED — foto reali]</span></p>
+  <div class="portfolio-grid">
+    <div class="portfolio-card"><img src="https://picsum.photos/seed/wed-villa-cordevigo/800/1000?fm=webp" width="800" height="1000" alt="Matrimonio Villa Cordevigo Sirmione 2024" class="ph-img" loading="lazy" decoding="async" /><span class="caption">2024 · Villa Cordevigo (Sirmione) · 80 invitati</span></div>
+    <div class="portfolio-card"><img src="https://picsum.photos/seed/wed-pratello-lonato/800/1000?fm=webp" width="800" height="1000" alt="Matrimonio agriturismo Pratello Lonato 2023" class="ph-img" loading="lazy" decoding="async" /><span class="caption">2023 · Agriturismo Pratello (Lonato) · 60 invitati</span></div>
+    <div class="portfolio-card"><img src="https://picsum.photos/seed/wed-padernello/800/1000?fm=webp" width="800" height="1000" alt="Matrimonio Castello di Padernello 2024" class="ph-img" loading="lazy" decoding="async" /><span class="caption">2024 · Castello di Padernello · 120 invitati</span></div>
+    <div class="portfolio-card"><img src="https://picsum.photos/seed/wed-calicantus-bardolino/800/1000?fm=webp" width="800" height="1000" alt="Matrimonio Villa Calicantus Bardolino 2023" class="ph-img" loading="lazy" decoding="async" /><span class="caption">2023 · Villa Calicantus (Bardolino) · 45 invitati</span></div>
+    <div class="portfolio-card"><img src="https://picsum.photos/seed/wed-tenuta-berici/800/1000?fm=webp" width="800" height="1000" alt="Matrimonio Tenuta Berici 2024" class="ph-img" loading="lazy" decoding="async" /><span class="caption">2024 · Tenuta Berici · 90 invitati</span></div>
+    <div class="portfolio-card"><img src="https://picsum.photos/seed/wed-loft-verona/800/1000?fm=webp" width="800" height="1000" alt="Elopement Loft Verona 2023" class="ph-img" loading="lazy" decoding="async" /><span class="caption">2023 · Loft Verona · 50 invitati elopement</span></div>
+  </div>
+</section>
+
+<!-- ============ SERVIZI ============ -->
+<section id="servizi" class="container section">
+  <span class="eyebrow">Cosa facciamo</span>
+  <h2 style="margin-top:8px">Quattro modi di lavorare insieme.</h2>
+  <div class="servizi-grid">
+    <div class="servizio-card">
+      <div class="icon">◐</div>
+      <h3>Progettazione completa 9-12 mesi</h3>
+      <p>Brief, definizione budget, ricerca location, contratti fornitori, timeline mensile. Una call ogni mese + dashboard task condivisa.</p>
+    </div>
+    <div class="servizio-card">
+      <div class="icon">◑</div>
+      <h3>Coordinamento giorno-evento</h3>
+      <p>Timing minute-by-minute, gestione fornitori on-site, regia imprevisti. Un assistente dedicato dall'arrivo allo smontaggio.</p>
+    </div>
+    <div class="servizio-card">
+      <div class="icon">◒</div>
+      <h3>Scouting location esclusive</h3>
+      <p>Database 80+ location selezionate Veneto/Lombardia/Trentino. Sopralluogo guidato con coppia entro 30 giorni dal brief.</p>
+    </div>
+    <div class="servizio-card">
+      <div class="icon">◓</div>
+      <h3>Allestimenti curati</h3>
+      <p>Mood board iniziale, selezione fiorista/musica/lighting briefing, supervisione mise-en-place giorno-prima.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ LEAD MAGNET ============ -->
+<section id="lead-magnet" class="container">
+  <div class="lead-magnet">
+    <span class="eyebrow">Pianifica con calma</span>
+    <h2 style="margin-top:8px">Wedding planning checklist 9 mesi prima.</h2>
+    <p>47 task organizzati cronologicamente, dalla scelta della location al saldo del catering. PDF 12 pagine, gratuito, riceverai il link via email entro 1 minuto.</p>
+    <form onsubmit="event.preventDefault();alert('Demo: integrare endpoint Formspree o SMTP cliente reale');">
+      <input type="email" placeholder="La tua email" required aria-label="La tua email">
+      <button type="submit" class="btn btn-primary">Scarica gratis ora</button>
+      <label><input type="checkbox" required aria-label="Checkbox"> Acconsento al trattamento dei dati per ricevere il PDF + 1 follow-up email. <a href="/privacy" style="color:var(--rose-gold-500)">Privacy</a></label>
+    </form>
+  </div>
+</section>
+
+<!-- ============ PROCESSO ============ -->
+<section class="container section">
+  <span class="eyebrow">Come lavoriamo</span>
+  <h2 style="margin-top:8px">Quattro passi, nessuna sorpresa.</h2>
+  <div class="processo">
+    <div class="processo-step"><span class="num">01</span><h3>Primo incontro gratuito</h3><p>Zoom o studio, 45 min. Conosciamo voi e la vostra idea.</p></div>
+    <div class="processo-step"><span class="num">02</span><h3>Brief + budget</h3><p>Proposta scritta entro 7 giorni con budget trasparente.</p></div>
+    <div class="processo-step"><span class="num">03</span><h3>Progettazione 6-9 mesi</h3><p>Call mensile + dashboard task condivisa.</p></div>
+    <div class="processo-step"><span class="num">04</span><h3>Regia giorno-evento</h3><p>Minute-by-minute + 1 assistente dedicato.</p></div>
+  </div>
+</section>
+
+<!-- ============ TESTIMONIAL ============ -->
+<section class="container section">
+  <span class="eyebrow">Dicono di noi</span>
+  <h2 style="margin-top:8px">Sei coppie, sei storie.</h2>
+  <div class="testimonials">
+    <div class="testimonial-card">
+      <div class="photo"></div>
+      <blockquote>«[Testimonial Verona 80 invitati — 25-40 parole, raccolta con consenso scritto Codice Civile art. 96]»</blockquote>
+      <cite>Sara &amp; Marco</cite>
+      <span class="city">Verona</span>
+    </div>
+    <div class="testimonial-card">
+      <div class="photo"></div>
+      <blockquote>«[Testimonial Brescia matrimonio civile — placeholder consenso scritto]»</blockquote>
+      <cite>Giulia &amp; Andrea</cite>
+      <span class="city">Brescia</span>
+    </div>
+    <div class="testimonial-card">
+      <div class="photo"></div>
+      <blockquote>«[Testimonial Mantova destination Padernello — placeholder consenso scritto]»</blockquote>
+      <cite>Chiara &amp; Luca</cite>
+      <span class="city">Mantova</span>
+    </div>
+  </div>
+  <p class="testimonials-disclaimer mono">[DA RACCOGLIERE PRIMA GO-LIVE — testimonial pubblicati con consenso scritto coppie ai sensi Codice Civile art. 96]</p>
+</section>
+
+<!-- ============ ABOUT ============ -->
+<section id="about" class="container section">
+  <span class="eyebrow">Chi siamo</span>
+  <h2 style="margin-top:8px">[Nome titolare].</h2>
+  <div class="about">
+    <div class="about-img"><img src="https://picsum.photos/seed/wed-about-planner/600/750?fm=webp" width="600" height="750" alt="Wedding planner Sposi del Lago, ritratto" class="ph-img" loading="lazy" decoding="async" /></div>
+    <div class="about-text">
+      <h3>«Wedding planner dal [ANNO]»</h3>
+      <p style="font-size:18px">[Bio 80 parole — formazione, anni esperienza, eventuale certificazione AssoEventi/Federmep, approccio personale al lavoro. <span class="verify">[DA VERIFICARE]</span></p>
+      <ul style="list-style:none;padding:0;margin-top:24px">
+        <li class="mono" style="padding:6px 0">▸ <strong style="color:var(--ink-900)">Anni esperienza:</strong> [N] anni</li>
+        <li class="mono" style="padding:6px 0">▸ <strong style="color:var(--ink-900)">Matrimoni gestiti:</strong> [N]+</li>
+        <li class="mono" style="padding:6px 0">▸ <strong style="color:var(--ink-900)">Certificazione:</strong> [DA VERIFICARE AssoEventi/Federmep]</li>
+      </ul>
+      <p class="pull-quote">«Per noi un matrimonio non è un evento, è una storia che curiamo dal primo incontro fino alla luce dell'alba dopo la festa.»</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section class="container section">
+  <span class="eyebrow">Domande frequenti</span>
+  <h2 style="margin-top:8px">Sei domande, risposte chiare.</h2>
+  <div class="faq-list">
+    <details class="faq-item"><summary>Compenso?</summary><p>8-12% del budget evento, con minimo €1500. Pagamenti scaglionati 30/40/30 (acconto firma / 3 mesi prima / saldo 7 giorni post-evento).</p></details>
+    <details class="faq-item"><summary>Esclusivismi fornitori?</summary><p>No, lavoriamo con qualunque fornitore di vostra scelta. Possiamo suggerire la nostra rete o validare quelli che avete già contattato.</p></details>
+    <details class="faq-item"><summary>Politica disdetta?</summary><p>Diritto di recesso 14 giorni dal contratto (Codice del Consumo art. 52). Successivamente, l'acconto del 30% è trattenuto a copertura del lavoro già svolto.</p></details>
+    <details class="faq-item"><summary>Destination wedding fattibili?</summary><p>Sì. Veneto, Lombardia, Trentino default. Toscana e Costiera con sopralluogo +€500 trasferta.</p></details>
+    <details class="faq-item"><summary>Coppie LGBTQ+ welcome?</summary><p>Assolutamente sì. Lavoriamo per ogni coppia che vuole celebrare un matrimonio importante.</p></details>
+    <details class="faq-item"><summary>Lingue parlate?</summary><p>Italiano e inglese di default. Tedesco su richiesta tramite traduttore certificato (audience DACH, +€200 fee).</p></details>
+  </div>
+</section>
+
+<!-- ============ CONTACT ============ -->
+<section id="contact" class="container section">
+  <span class="eyebrow">Parliamone</span>
+  <h2 style="margin-top:8px">Raccontaci la vostra idea.</h2>
+  <div class="contact">
+    <div class="contact-info">
+      <iframe src="https://www.openstreetmap.org/export/embed.html?bbox=10.7%2C45.3%2C11.0%2C45.5&amp;layer=mapnik" loading="lazy" title="Mappa studio"></iframe>
+      <ul>
+        <li><strong>Studio:</strong> via [DA VERIFICARE], Verona/Brescia <span class="verify">[DA VERIFICARE]</span></li>
+        <li><strong>Telefono:</strong> +39 [DA VERIFICARE]</li>
+        <li><strong>Email:</strong> info@sposidellago.it <span class="verify">[DA VERIFICARE dominio]</span></li>
+        <li><strong>Instagram:</strong> @sposidellago <span class="verify">[DA VERIFICARE handle]</span></li>
+      </ul>
+    </div>
+    <form class="contact-form" onsubmit="event.preventDefault();alert('Demo: integrare endpoint Formspree/SMTP cliente reale');">
+      <div class="form-row"><label for="nome">Nome</label><input type="text" id="nome" name="nome" required></div>
+      <div class="form-row"><label for="email">Email</label><input type="email" id="email" name="email" required></div>
+      <div class="form-row"><label for="tel">Telefono</label><input type="tel" id="tel" name="tel"></div>
+      <div class="form-row"><label for="data">Data evento prevista</label><input type="date" id="data" name="data"></div>
+      <div class="form-row">
+        <label for="budget">Budget range</label>
+        <select id="budget" name="budget" required>
+          <option value="">Seleziona…</option>
+          <option>€5-10k</option>
+          <option>€10-25k</option>
+          <option>€25-50k</option>
+          <option>€50k+</option>
+        </select>
+      </div>
+      <div class="form-row"><label for="note">Note</label><textarea id="note" name="note"></textarea></div>
+      <div class="gdpr-row">
+        <input type="checkbox" id="gdpr" required>
+        <label for="gdpr" style="margin:0;text-transform:none;letter-spacing:0;font-weight:400">Acconsento al trattamento dei dati per essere ricontattato. <a href="/privacy" style="color:var(--rose-gold-500)">Privacy</a></label>
+      </div>
+      <button type="submit" class="btn btn-primary">Invia richiesta</button>
+    </form>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+</main>
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h3>Sposi del Lago</h3>
+        <p style="font-size:14px;color:var(--cream-100);opacity:.85;line-height:1.6">Wedding planner sul Lago di Garda. Matrimoni curati per coppie 28-45 anni in Veneto e Lombardia.</p>
+        <p class="mono" style="margin-top:16px;color:var(--cream-100);opacity:.7">P.IVA [DA VERIFICARE] · ATECO 79.90.20</p>
+        <div class="social-row"><a href="#" aria-label="Instagram">IG</a><a href="#" aria-label="Facebook">FB</a><a href="#" aria-label="Pinterest">PIN</a><a href="#" aria-label="WhatsApp">WA</a></div>
+      </div>
+      <div class="footer-col">
+        <h3>Sito</h3>
+        <ul><li><a href="#servizi">Servizi</a></li><li><a href="#portfolio">Portfolio</a></li><li><a href="#about">Chi siamo</a></li><li><a href="#contact">Contatti</a></li></ul>
+      </div>
+      <div class="footer-col">
+        <h3>Legali</h3>
+        <ul><li><a href="/privacy">Privacy policy</a></li><li><a href="/cookie">Cookie policy</a></li><li><a href="/termini">Termini di servizio</a></li><li><a href="/note-legali">Note legali</a></li></ul>
+      </div>
+    </div>
+    <p class="footer-disclaimer">Codice del Consumo art. 50-67. Diritto di recesso 14 giorni dal contratto. Pagamenti scaglionati: 30% acconto firma + 40% 3 mesi prima + 30% saldo 7 giorni post-evento. Informativa precontrattuale completa fornita prima della firma del mandato. Se catering con allergeni, viene fornita dichiarazione informativa dieta speciale agli ospiti su richiesta.</p>
+  </div>
+</footer>
+
+<script>
+const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('is-visible');obs.unobserve(e.target)}}),{rootMargin:'-50px'});
+document.querySelectorAll('.section').forEach(s=>obs.observe(s));
+</script>
+<!-- VERIFY: P.IVA / Albo / nomi titolari / anno apertura / indirizzo studio / telefono / IG handle / 6+ matrimoni con consenso scritto / 3 testimonial con consenso / certificazione AssoEventi-Federmep / endpoint form SMTP-Formspree -->
+
+</body>
+</html>

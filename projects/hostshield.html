@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HostShield SaaS — Alessandro Giacobbi</title>
+  <meta name="description" content="SaaS compliance per affitti brevi italiani: CIN + WCAG + Schema.org + GDPR. Astro · Supabase · Stripe · Cloudflare. Beta M5 2026.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../assets/css/tokens.css">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/layout.css">
+  <link rel="stylesheet" href="../assets/css/animations.css">
+</head>
+<body>
+
+  <a href="#main" class="skip-link">Salta al contenuto</a>
+  <div class="cursor-dot" aria-hidden="true"></div>
+  <div class="cursor-ring" aria-hidden="true"></div>
+  <div class="scroll-progress" aria-hidden="true"></div>
+
+  <header class="meta-bar">
+    <div class="left"><a href="../index.html">← Portfolio</a></div>
+    <div class="center">HostShield SaaS</div>
+    <div class="right">
+      <span class="meta-clock">--:-- CET</span>
+      <a href="../index.html#contact">Contact</a>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <section class="project-hero">
+      <div class="project-hero__inner">
+        <nav class="project-hero__breadcrumb reveal-up">
+          <a href="../index.html">Portfolio</a> &nbsp;/&nbsp; R&amp;D · SaaS · Compliance IT
+        </nav>
+        <h1 class="project-hero__title reveal-up">HostShield</h1>
+        <p class="project-hero__client reveal-up">SaaS compliance affitti brevi · Italy · beta M5 2026</p>
+      </div>
+    </section>
+
+    <section class="project-meta">
+      <div class="project-meta__inner">
+        <div class="project-meta__col">
+          <span class="project-meta__label">Status</span>
+          <span class="project-meta__value">Beta M5 (giu 2026)</span>
+        </div>
+        <div class="project-meta__col">
+          <span class="project-meta__label">Pricing</span>
+          <span class="project-meta__value">€99/mese · €149 white-glove</span>
+        </div>
+        <div class="project-meta__col">
+          <span class="project-meta__label">Niche</span>
+          <span class="project-meta__value">PM Trentino · Veneto laghi</span>
+        </div>
+        <div class="project-meta__col">
+          <span class="project-meta__label">TAM</span>
+          <span class="project-meta__value">~1.500 niche IT</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="project-content">
+      <div class="project-content__inner">
+
+        <h3 class="project-content__h3 reveal-up">Il progetto</h3>
+        <p class="project-content__p reveal-up">
+          Micro-SaaS per property manager italiani di affitti brevi. Audit settimanale automatico
+          su CIN visibilità (D.L. 145/2023, sanzione €800-8.000), WCAG 2.2 AA accessibilità (EAA
+          D.Lgs 82/2022, sanzione €1k-30k), Schema.org Lodging JSON-LD, performance Core Web
+          Vitals, SSL, cookie banner GDPR. Output: PDF report multilingua IT/EN/DE + alert
+          email + widget JS auto-CIN per ogni property.
+        </p>
+
+        <h3 class="project-content__h3 reveal-up">Features</h3>
+        <ul class="project-content__role-list reveal-up">
+          <li>Audit engine Cloudflare Browser Rendering + axe-core (WCAG) + Schema.org parser</li>
+          <li>Multi-tenant Postgres RLS Supabase (org_id JWT claim)</li>
+          <li>36 email templates Resend × 3 lingue (12 IT + 12 EN + 12 DE)</li>
+          <li>PDF report A4 con i18n custom (~280 righe template)</li>
+          <li>Widget JS embeddable (WordPress · Shopify · Wix · Squarespace · custom)</li>
+          <li>Stripe subscription + checkout + tax_id_collection EU VAT</li>
+          <li>Health score customer (5-dim formula) + churn re-engagement automation</li>
+          <li>Audit history pagination + filter + CSV export</li>
+        </ul>
+
+        <h3 class="project-content__h3 reveal-up">Test Suite (in corso)</h3>
+        <p class="project-content__p reveal-up">
+          213 unit tests passing · 14 E2E Playwright + 0 a11y violations · 95.05% line coverage
+          su lib + schemas (target 80% threshold) · Stryker mutation testing in hardening
+          (current 56.57% → target ≥85% SSS-grade)
+        </p>
+
+        <h3 class="project-content__h3 reveal-up">Tech Stack</h3>
+        <p class="project-content__p reveal-up">
+          Astro 4.16 hybrid · React 18 islands · TypeScript strict · Tailwind · shadcn/ui ·
+          Clerk auth multi-org · Supabase Postgres 15 RLS · Stripe · Resend · Cloudflare Pages +
+          Workers + R2 + Browser Rendering · Sentry + PostHog EU · 191 file production code
+        </p>
+
+        <h3 class="project-content__h3 reveal-up">Documentation</h3>
+        <p class="project-content__p reveal-up">
+          10 ADR architecture decisions · RUNBOOK ops single-founder · SECURITY policy + GDPR
+          audit checklist · ARCHITECTURE system overview · 7 articoli help center IT/EN/DE
+        </p>
+
+      </div>
+    </section>
+
+    <section class="project-content" style="background: var(--paper2); border-top: 1px solid var(--rule);">
+      <div class="project-content__inner">
+        <h3 class="project-content__h3 reveal-up">Credits</h3>
+        <p class="project-content__p reveal-up">
+          <strong>Author:</strong> Alessandro Giacobbi · <strong>Studio:</strong> Setpoint Studio S.r.l. · <strong>Year:</strong> 2026<br>
+          <strong>Built with:</strong> Claude Opus 4.7 (4-week build sprint)
+        </p>
+      </div>
+    </section>
+
+    <section class="project-next">
+      <div class="project-next__inner">
+        <div>
+          <span class="text-meta">Back to portfolio</span>
+          <h3 class="text-h3" style="margin-top: 0.5rem;">Vedi tutti i progetti</h3>
+        </div>
+        <a href="../index.html" class="btn btn--ox">
+          <span>Tutti i progetti</span>
+          <span class="btn-arrow">→</span>
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <div class="footer__inner">
+      <span class="footer__credit">© 2026 Alessandro Giacobbi · <a href="https://www.setpointstudio.com">Setpoint Studio S.r.l.</a> · P.IVA 04403500244</span>
+      <span class="footer__credit"><a href="../index.html">← Tutti i progetti</a></span>
+    </div>
+  </footer>
+
+  <script type="module" src="../assets/js/main.js"></script>
+
+</body>
+</html>

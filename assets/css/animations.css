@@ -269,9 +269,26 @@
   will-change: transform;
 }
 
+/* ── Magnetic letters ── */
+[data-magnetic] {
+  cursor: crosshair;
+  display: inline-block;
+}
+[data-magnetic] .mlx__c {
+  display: inline-block;
+  transition: color 200ms;
+  will-change: transform, text-shadow;
+}
+[data-magnetic]:hover .mlx__c { color: var(--ink); }
+
+/* Project card title magnetic - quando hover sulla card intera, evita doppia anim */
+.project-card[data-tilt] [data-magnetic] { cursor: pointer; }
+
 @media (prefers-reduced-motion: reduce) {
   .fx-scramble { color: inherit; opacity: 1; text-shadow: none; }
   .is-glitching, .fx-flicker, .fx-scanline::before { animation: none !important; }
   .fx-scanline, .fx-spotlight::after { display: none !important; }
   .hero__title { transform: none !important; }
+  [data-magnetic] { cursor: default; }
+  [data-magnetic] .mlx__c { transform: none !important; text-shadow: none !important; }
 }

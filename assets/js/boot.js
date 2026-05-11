@@ -1,21 +1,18 @@
 /**
- * boot.js — Tony-Stark-style terminal boot sequence on first load.
+ * boot.js — Terminal typewriter on first load. Faster + tighter than v1.
  *
- * Markup expected:
- *   <div class="loader">
- *     <div class="loader__boot">
- *       <pre class="loader__boot-line" data-boot="> initializing portfolio_v2.6...">
- *       ...
- *     </div>
- *   </div>
+ * Total runtime ~2.0s on average machine (was 4.5s in v1).
+ *  - char delay 9 ms (was 14)
+ *  - line pause 50 ms (was 80)
+ *  - hold-before-fade 280 ms (was 380)
+ *  - 5 lines max
  *
- * On window load, types each line char-by-char, then fades loader out.
- * Skips animation under prefers-reduced-motion (just fades immediately).
+ * Skips animation under prefers-reduced-motion.
  */
 
-const CHAR_DELAY = 14;        // ms per char while typing
-const LINE_PAUSE = 80;        // ms between lines
-const HOLD_BEFORE_FADE = 380; // ms after last line before fade
+const CHAR_DELAY = 9;
+const LINE_PAUSE = 50;
+const HOLD_BEFORE_FADE = 280;
 
 function sleep(ms) { return new Promise((r) => setTimeout(r, ms)); }
 
@@ -40,8 +37,7 @@ export async function runBootSequence() {
   const lines = loader.querySelectorAll('.loader__boot-line');
 
   if (reduced || !lines.length) {
-    // Skip animation — just fade the loader away.
-    await sleep(300);
+    await sleep(220);
     loader.classList.add('is-loaded');
     return;
   }
@@ -51,7 +47,10 @@ export async function runBootSequence() {
     const text = line.dataset.boot || '';
     line.classList.add('is-typing');
     await typewrite(line, text);
-    // Last line gets the blinking cursor
+    // Previous (non-accent) lines get the "ok" → green flash
+    if (i < lines.length - 1 && !line.classList.contains('loader__boot-line--accent')) {
+      line.classList.add('is-done');
+    }
     if (i === lines.length - 1) {
       const cursor = document.createElement('span');
       cursor.className = 'loader__cursor';

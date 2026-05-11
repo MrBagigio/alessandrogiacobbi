@@ -10,6 +10,7 @@ import { initTextFx } from './text-fx.js';
 import { initMagneticAuto } from './magnetic-letters.js';
 import { runBootSequence } from './boot.js';
 import { initRigView } from './rig-view.js';
+import { initInteractions } from './interactions.js';
 // import { AsteroidCursor } from './asteroid-cursor.js'; // disabled — keep file for future
 
 const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -172,6 +173,9 @@ initTextFx();
 
 // 9e. Rig view toggle — Maya-style technical overlay (every page)
 initRigView();
+
+// 9f. Interactions — click ripple + konami easter egg
+initInteractions();
 
 // 10. Char-reveal init — split text content into spans on .char-reveal
 document.querySelectorAll('.char-reveal').forEach((el) => {

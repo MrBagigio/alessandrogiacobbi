@@ -274,15 +274,15 @@
   cursor: crosshair;
   display: inline-block;
 }
+/* Se dentro un link, mantieni cursor pointer (UX) */
+a [data-magnetic], [data-magnetic] a { cursor: pointer; }
+
 [data-magnetic] .mlx__c {
   display: inline-block;
   transition: color 200ms;
   will-change: transform, text-shadow;
 }
 [data-magnetic]:hover .mlx__c { color: var(--ink); }
-
-/* Project card title magnetic - quando hover sulla card intera, evita doppia anim */
-.project-card[data-tilt] [data-magnetic] { cursor: pointer; }
 
 @media (prefers-reduced-motion: reduce) {
   .fx-scramble { color: inherit; opacity: 1; text-shadow: none; }

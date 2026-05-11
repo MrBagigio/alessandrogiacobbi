@@ -236,9 +236,11 @@ export function initMagneticAuto(selectors = DEFAULT_SELECTORS) {
   });
 
   // Click → particle burst su elementi magnetic
+  // Skip se dentro <a> (navigazione cambia pagina, effetto perso) o su <a> stesso
   document.addEventListener('click', (e) => {
     const target = e.target.closest('[data-magnetic]');
     if (!target) return;
+    if (target.closest('a[href]')) return;
     particleBurst(target, e.clientX, e.clientY);
   });
 }

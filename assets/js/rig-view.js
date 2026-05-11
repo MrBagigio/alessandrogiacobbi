@@ -62,9 +62,14 @@ function buildToggle() {
   return btn;
 }
 
-// ── Live HUD: mouse coords, scroll %, viewport, section, FPS ────────────────
+// ── Live HUD + X-ray overlay (grid, crosshair, edge coords) ────────────────
 
 let hudEl = null;
+let overlayEl = null;
+let crossH = null;
+let crossV = null;
+let coordX = null;
+let coordY = null;
 let hudRafId = null;
 let mx = 0;
 let my = 0;
@@ -72,6 +77,35 @@ let lastFrameTs = performance.now();
 let fps = 60;
 let fpsSmoothed = 60;
 let hudVisible = false;
+
+// Build the full-viewport X-ray overlay (CAD grid + sniper-style crosshair).
+// Created once, opacity-toggled via body.rig-view in CSS.
+function buildOverlay() {
+  if (overlayEl) return overlayEl;
+  const o = document.createElement('div');
+  o.className = 'rig-overlay';
+  o.setAttribute('aria-hidden', 'true');
+  o.innerHTML = `
+    <div class="rig-overlay__grid"></div>
+    <div class="rig-overlay__crosshair-h"></div>
+    <div class="rig-overlay__crosshair-v"></div>
+    <div class="rig-overlay__center"></div>
+    <div class="rig-overlay__coord rig-overlay__coord--x">X: 0000</div>
+    <div class="rig-overlay__coord rig-overlay__coord--y">Y: 0000</div>
+    <div class="rig-overlay__corner rig-overlay__corner--tl"></div>
+    <div class="rig-overlay__corner rig-overlay__corner--tr"></div>
+    <div class="rig-overlay__corner rig-overlay__corner--bl"></div>
+    <div class="rig-overlay__corner rig-overlay__corner--br"></div>
+    <div class="rig-overlay__scanline"></div>
+  `;
+  document.body.appendChild(o);
+  overlayEl = o;
+  crossH = o.querySelector('.rig-overlay__crosshair-h');
+  crossV = o.querySelector('.rig-overlay__crosshair-v');
+  coordX = o.querySelector('.rig-overlay__coord--x');
+  coordY = o.querySelector('.rig-overlay__coord--y');
+  return o;
+}
 
 function buildHUD() {
   if (hudEl) return hudEl;
@@ -114,6 +148,18 @@ function tickHUD(now) {
   hudRafId = null;
   if (!hudVisible || !hudEl) return;
 
+  // ── X-ray crosshair (every frame, mouse-tracked) ──
+  if (crossH) crossH.style.transform = `translateY(${my}px)`;
+  if (crossV) crossV.style.transform = `translateX(${mx}px)`;
+  if (coordX) {
+    coordX.textContent = `X: ${String(Math.round(mx)).padStart(4, '0')}`;
+    coordX.style.transform = `translateX(calc(${mx}px - 50%))`;
+  }
+  if (coordY) {
+    coordY.textContent = `Y: ${String(Math.round(my)).padStart(4, '0')}`;
+    coordY.style.transform = `translateY(calc(${my}px - 50%))`;
+  }
+
   // FPS (smoothed)
   const dt = now - lastFrameTs;
   lastFrameTs = now;
@@ -146,7 +192,13 @@ function startHUD() {
   if (hudVisible) return;
   hudVisible = true;
   buildHUD();
+  buildOverlay();
   hudEl?.classList.add('is-visible');
+  // Trigger one-shot scan-in animation on rig view activation
+  overlayEl?.classList.remove('is-scan-in');
+  // Force reflow so the animation restarts even on rapid toggle
+  void overlayEl?.offsetWidth;
+  overlayEl?.classList.add('is-scan-in');
   lastFrameTs = performance.now();
   if (!hudRafId) hudRafId = requestAnimationFrame(tickHUD);
 }
@@ -155,6 +207,7 @@ function stopHUD() {
   hudVisible = false;
   if (hudRafId) { cancelAnimationFrame(hudRafId); hudRafId = null; }
   hudEl?.classList.remove('is-visible');
+  overlayEl?.classList.remove('is-scan-in');
 }
 
 function setActive(active, btn) {

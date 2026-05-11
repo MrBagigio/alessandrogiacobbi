@@ -60,7 +60,6 @@ function build() {
     </span>
   `;
   document.body.insertBefore(strip, document.body.firstChild);
-  document.body.classList.add('has-sys-strip');
   return strip;
 }
 

@@ -9,6 +9,8 @@ const SCRAMBLE_CHARS = '!<>-_\\/[]{}—=+*^?#░▒▓▢▣▤';
 
 export function scramble(el, opts = {}) {
   if (!el || el.dataset.fxDone === '1') return;
+  // Skip se elemento ha magnetic letters (per-char spans), non sovrascrivere
+  if (el.hasAttribute('data-magnetic') || el.dataset.mlxSplit === '1') return;
   // Stash final text (idempotent — sopravvive a re-trigger)
   if (!el.dataset.textFx) el.dataset.textFx = el.textContent.trim();
   const finalText = el.dataset.textFx;

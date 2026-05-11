@@ -157,11 +157,11 @@ if (!reduced && window.matchMedia('(min-width: 1024px)').matches) {
   });
 }
 
-// 9c. Text FX — scramble + glitch (rispetta prefers-reduced-motion)
-initTextFx();
-
-// 9d. Magnetic letters — hover physics su elementi [data-magnetic]
+// 9c. Magnetic letters PRIMA — split text in per-char spans
 initMagneticAuto();
+
+// 9d. Text FX — scramble + glitch (skip elementi data-magnetic per evitare conflitti)
+initTextFx();
 
 // 10. Char-reveal init — split text content into spans on .char-reveal
 document.querySelectorAll('.char-reveal').forEach((el) => {

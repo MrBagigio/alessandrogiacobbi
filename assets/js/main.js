@@ -6,6 +6,7 @@ import { HeroScene } from './scene-hero.js';
 import { BgScene } from './scene-bg.js';
 import { Cursor } from './cursor.js';
 import { initLazyMedia } from './lazy.js';
+import { initTextFx } from './text-fx.js';
 // import { AsteroidCursor } from './asteroid-cursor.js'; // disabled — keep file for future
 
 const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -154,6 +155,9 @@ if (!reduced && window.matchMedia('(min-width: 1024px)').matches) {
     });
   });
 }
+
+// 9c. Text FX — scramble + glitch (rispetta prefers-reduced-motion)
+initTextFx();
 
 // 10. Char-reveal init — split text content into spans on .char-reveal
 document.querySelectorAll('.char-reveal').forEach((el) => {

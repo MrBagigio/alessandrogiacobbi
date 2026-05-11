@@ -144,3 +144,48 @@
   transition: transform var(--dur-base) var(--ease-out);
 }
 .lift:hover { transform: translateY(-4px); }
+
+/* ── Text FX — scramble + glitch ──────────────────────────────────────── */
+
+/* Char temporaneo durante scramble — colore ox, leggermente trasparente */
+.fx-scramble {
+  color: var(--ox);
+  opacity: 0.78;
+  display: inline-block;
+  will-change: contents;
+}
+
+/* Glitch chromatic flicker — brevissimo RGB shift + jitter
+   Tonalità coerenti: ox (rosso brand) + ink (nero) per evitare colori fuori palette */
+@keyframes fx-glitch {
+  0%   { transform: translate(0, 0); text-shadow: none; clip-path: inset(0 0 0 0); }
+  12%  { transform: translate(-1px, 0); text-shadow: 1.5px 0 var(--ox), -1.5px 0 var(--ink); }
+  24%  { transform: translate(1px, -1px); text-shadow: -1.5px 0 var(--ox), 1.5px 0 var(--ink); clip-path: inset(20% 0 60% 0); }
+  36%  { transform: translate(-1px, 1px); text-shadow: 2px 0 var(--ox); clip-path: inset(0 0 0 0); }
+  48%  { transform: translate(0, 0); text-shadow: -1px 0 var(--ox); }
+  60%  { transform: translate(1px, 0); text-shadow: 1px 0.5px var(--ox); clip-path: inset(50% 0 25% 0); }
+  72%  { transform: translate(-0.5px, 0); text-shadow: -1px -0.5px var(--ox); clip-path: inset(0 0 0 0); }
+  100% { transform: translate(0, 0); text-shadow: none; }
+}
+.is-glitching {
+  animation: fx-glitch 320ms steps(1, end);
+  display: inline-block;
+  position: relative;
+}
+
+/* Idle micro-flicker su elementi marcati .fx-flicker — pulsazione lenta */
+@keyframes fx-flicker-idle {
+  0%, 88%, 100% { opacity: 1; }
+  90% { opacity: 0.85; }
+  92% { opacity: 1; }
+  94% { opacity: 0.72; }
+  96% { opacity: 1; }
+}
+.fx-flicker {
+  animation: fx-flicker-idle 5.5s var(--ease-in-out) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fx-scramble { color: inherit; opacity: 1; }
+  .is-glitching, .fx-flicker { animation: none !important; }
+}

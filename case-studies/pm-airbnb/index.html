@@ -12,52 +12,48 @@
   <link rel="stylesheet" href="../../assets/css/tokens.css">
   <link rel="stylesheet" href="../../assets/css/base.css">
   <style>
-    html, body { margin: 0; padding: 0; }
-    body { background: var(--paper); color: var(--ink); font-family: var(--fb); user-select: none; -webkit-user-select: none; }
+    html, body { margin: 0; padding: 0; height: 100%; }
+    body { background: var(--paper); color: var(--ink); font-family: var(--fb); user-select: none; -webkit-user-select: none; display: grid; grid-template-rows: auto 1fr; height: 100vh; overflow: hidden; }
     a { color: inherit; text-decoration: none; }
 
-    .demo-bar { position: sticky; top: 0; z-index: 50; background: var(--paper); border-bottom: 1px solid var(--rule); padding: 0.85rem 1.5rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; backdrop-filter: blur(6px); }
+    .demo-bar { z-index: 50; background: var(--paper); border-bottom: 1px solid var(--rule); padding: 0.7rem 1.5rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
     .demo-bar__left { display: flex; align-items: center; gap: 0.9rem; flex-wrap: wrap; }
     .demo-bar__back { font-family: var(--fm); font-size: var(--fz-meta); letter-spacing: 0.08em; text-transform: uppercase; color: var(--ox); }
     .demo-bar__back:hover { text-decoration: underline; }
-    .demo-bar__title { font-family: var(--fd); font-size: 1.05rem; font-weight: 700; color: var(--ink); }
+    .demo-bar__title { font-family: var(--fd); font-size: 1rem; font-weight: 700; color: var(--ink); }
     .demo-bar__tier { font-family: var(--fm); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--paper); background: var(--ox); padding: 0.3rem 0.6rem; }
+    .demo-bar__sep { color: var(--mute); font-family: var(--fm); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; }
+    .demo-bar__note { font-family: var(--fm); font-size: 10px; letter-spacing: 0.06em; color: var(--mute); font-style: italic; }
     .demo-bar__cta { font-family: var(--fm); font-size: var(--fz-meta); letter-spacing: 0.08em; text-transform: uppercase; color: var(--paper); background: var(--ink); padding: 0.55rem 1rem; transition: background 200ms; }
     .demo-bar__cta:hover { background: var(--ox); }
 
-    .demo-stage { position: relative; background: #1a1614; padding: 1.2rem; min-height: calc(100vh - 60px); display: flex; flex-direction: column; align-items: center; }
-    .demo-frame { position: relative; width: 100%; max-width: 1280px; aspect-ratio: 16 / 11; background: var(--paper2); box-shadow: 0 16px 60px -10px rgba(0,0,0,0.5); border-radius: 4px; overflow: hidden; }
-    .demo-frame__loader { position: absolute; inset: 0; display: grid; place-items: center; background: var(--paper2); color: var(--mute); font-family: var(--fm); font-size: var(--fz-meta); letter-spacing: 0.1em; text-transform: uppercase; z-index: 2; transition: opacity 400ms; }
+    .demo-stage { position: relative; background: var(--paper); overflow: hidden; }
+    .demo-frame { position: relative; width: 100%; height: 100%; overflow: hidden; }
+    .demo-frame__loader { position: absolute; inset: 0; display: grid; place-items: center; background: var(--paper); color: var(--mute); font-family: var(--fm); font-size: var(--fz-meta); letter-spacing: 0.1em; text-transform: uppercase; z-index: 2; transition: opacity 400ms; }
     .demo-frame__loader::after { content: ''; width: 24px; height: 24px; border: 2px solid var(--ox); border-top-color: transparent; border-radius: 50%; animation: spin 1s linear infinite; margin-left: 0.7rem; }
     @keyframes spin { to { transform: rotate(360deg); } }
     .demo-frame__loader.is-hidden { opacity: 0; pointer-events: none; }
     .demo-frame__iframe { width: 100%; height: 100%; border: 0; display: block; background: var(--paper); }
 
-    /* Watermark overlay diagonale ripetuto sul parent (sopra iframe) */
+    /* Watermark overlay diagonale ripetuto sopra l'iframe */
     .demo-frame__overlay {
       position: absolute; inset: 0; pointer-events: none; z-index: 3;
       background-image: repeating-linear-gradient(
         -28deg,
         transparent 0,
-        transparent 320px,
-        rgba(184,50,63,0.05) 320px,
-        rgba(184,50,63,0.05) 322px
+        transparent 360px,
+        rgba(184,50,63,0.04) 360px,
+        rgba(184,50,63,0.04) 362px
       );
       mix-blend-mode: multiply;
     }
-    .demo-frame__watermark { position: absolute; top: 14px; right: 14px; font-family: var(--fm); font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--paper); background: rgba(184,50,63,0.92); padding: 0.4rem 0.8rem; pointer-events: none; z-index: 4; box-shadow: 0 2px 8px rgba(0,0,0,0.3); }
-    .demo-frame__corner { position: absolute; bottom: 14px; left: 14px; font-family: var(--fm); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.5); pointer-events: none; z-index: 4; }
-
-    .demo-foot { padding: 4rem 1.5rem; background: var(--ink); color: var(--paper); text-align: center; }
-    .demo-foot__title { font-family: var(--fd); font-size: clamp(1.5rem, 3vw, 2.5rem); font-weight: 700; line-height: 1.1; margin: 0 0 1.25rem 0; }
-    .demo-foot__title em { font-family: var(--fs, Georgia, serif); font-style: italic; color: var(--ox); font-weight: 400; }
-    .demo-foot__cta { display: inline-block; font-family: var(--fm); font-size: var(--fz-mono); letter-spacing: 0.04em; text-transform: uppercase; color: var(--paper); background: var(--ox); padding: 1rem 1.6rem; transition: background 200ms; }
-    .demo-foot__cta:hover { background: var(--ox-deep, #8a2530); }
-    .demo-foot__note { font-family: var(--fm); font-size: var(--fz-meta); letter-spacing: 0.06em; color: rgba(237,230,214,0.55); margin: 1.75rem auto 0 auto; max-width: 60ch; line-height: 1.55; font-style: italic; }
+    .demo-frame__watermark { position: absolute; top: 14px; right: 14px; font-family: var(--fm); font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--paper); background: rgba(184,50,63,0.85); padding: 0.4rem 0.7rem; pointer-events: none; z-index: 4; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
 
     @media (max-width: 767px) {
-      .demo-stage { padding: 0.6rem; }
-      .demo-frame { aspect-ratio: 9 / 16; }
+      .demo-bar { padding: 0.55rem 0.9rem; gap: 0.5rem; }
+      .demo-bar__title { font-size: 0.92rem; }
+      .demo-bar__note { display: none; }
+      .demo-bar__cta { padding: 0.45rem 0.75rem; }
     }
   </style>
 </head>
@@ -65,28 +61,23 @@
 
   <header class="demo-bar">
     <div class="demo-bar__left">
-      <a href="../../#web-design" class="demo-bar__back">&larr; Torna al portfolio</a>
-      <span class="demo-bar__title">Demo &middot; Villa Belvedere</span>
+      <a href="../../#web-design" class="demo-bar__back">&larr; Portfolio</a>
+      <span class="demo-bar__sep">/</span>
+      <span class="demo-bar__title">Villa Belvedere</span>
       <span class="demo-bar__tier">Editorial Premium</span>
+      <span class="demo-bar__note">Demo &middot; non commissionato</span>
     </div>
     <a href="../../#contact" class="demo-bar__cta">Parliamone &rarr;</a>
   </header>
 
   <main class="demo-stage">
     <div class="demo-frame">
-      <span class="demo-frame__watermark">Demo &middot; non commissionato</span>
-      <span class="demo-frame__corner">PM Airbnb Luxury &middot; Editorial Premium</span>
+      <span class="demo-frame__watermark">Demo &middot; PM Airbnb Luxury</span>
       <div class="demo-frame__loader" id="demo-loader">Loading demo</div>
       <iframe class="demo-frame__iframe" id="demo-iframe" sandbox="allow-scripts allow-popups allow-popups-to-escape-sandbox allow-forms" allowfullscreen referrerpolicy="no-referrer" title="Demo template Villa Belvedere"></iframe>
       <div class="demo-frame__overlay" aria-hidden="true"></div>
     </div>
   </main>
-
-  <footer class="demo-foot">
-    <h2 class="demo-foot__title">Vuoi un sito cos&igrave;, <em>cucito sulla tua attivit&agrave;?</em></h2>
-    <a href="../../#contact" class="demo-foot__cta">Parliamone &rarr;</a>
-    <p class="demo-foot__note">Quello sopra &egrave; un demo interattivo non commissionato. Non &egrave; un lavoro fatto per un cliente reale: &egrave; un esempio di stile per il settore PM Airbnb Luxury al tier Editorial Premium.</p>
-  </footer>
 
   <script>
     (function(){

@@ -3,3 +3,5 @@ _archive/
 *.tmp
 Thumbs.db
 .DS_Store
+node_modules/
+coverage/

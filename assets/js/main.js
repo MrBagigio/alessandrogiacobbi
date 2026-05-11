@@ -8,15 +8,22 @@ import { Cursor } from './cursor.js';
 import { initLazyMedia } from './lazy.js';
 import { initTextFx } from './text-fx.js';
 import { initMagneticAuto } from './magnetic-letters.js';
+import { runBootSequence } from './boot.js';
+import { initRigView } from './rig-view.js';
 // import { AsteroidCursor } from './asteroid-cursor.js'; // disabled — keep file for future
 
 const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-// 1. Loader fade-out
+// 1. Boot sequence — typewriter terminal on landing, simple fade on project pages
 window.addEventListener('load', () => {
-  setTimeout(() => {
-    document.querySelector('.loader')?.classList.add('is-loaded');
-  }, 400);
+  const hasBootMarkup = !!document.querySelector('.loader__boot');
+  if (hasBootMarkup) {
+    runBootSequence();
+  } else {
+    setTimeout(() => {
+      document.querySelector('.loader')?.classList.add('is-loaded');
+    }, 400);
+  }
 });
 
 // 2. Clock in meta-bar
@@ -162,6 +169,9 @@ initMagneticAuto();
 
 // 9d. Text FX — scramble + glitch (skip elementi data-magnetic per evitare conflitti)
 initTextFx();
+
+// 9e. Rig view toggle — Maya-style technical overlay (every page)
+initRigView();
 
 // 10. Char-reveal init — split text content into spans on .char-reveal
 document.querySelectorAll('.char-reveal').forEach((el) => {

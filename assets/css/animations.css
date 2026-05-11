@@ -83,7 +83,7 @@
   position: fixed;
   inset: 0;
   z-index: 10000;
-  background: var(--paper);
+  background: var(--ink);
   display: grid;
   place-items: center;
   pointer-events: all;
@@ -117,6 +117,207 @@
 .loader.is-loaded {
   opacity: 0;
   pointer-events: none;
+}
+
+/* ── Boot sequence (terminal typewriter on first load) ── */
+.loader__boot {
+  font-family: var(--fm);
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--paper);
+  background: var(--ink);
+  padding: 1.5rem 1.75rem;
+  max-width: 540px;
+  width: 90%;
+  border: 1px solid rgba(184, 50, 63, 0.25);
+  box-shadow: 0 0 60px rgba(184, 50, 63, 0.12), inset 0 0 1px rgba(184, 50, 63, 0.4);
+  position: relative;
+}
+.loader__boot::before {
+  content: '● ● ●';
+  position: absolute;
+  top: 0.6rem;
+  left: 0.9rem;
+  font-size: 8px;
+  letter-spacing: 0.4em;
+  color: rgba(237, 230, 214, 0.35);
+}
+.loader__boot::after {
+  content: 'PORTFOLIO.SHELL · v2.6';
+  position: absolute;
+  top: 0.55rem;
+  right: 0.9rem;
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  color: rgba(237, 230, 214, 0.4);
+}
+.loader__boot-line {
+  margin: 0;
+  padding-top: 0.1em;
+  font-family: var(--fm);
+  white-space: pre;
+  color: var(--paper);
+  opacity: 0.3;
+  transition: opacity 200ms;
+  min-height: 1.2em;
+}
+.loader__boot-line:first-of-type { margin-top: 1.2rem; }
+.loader__boot-line.is-typing { opacity: 1; }
+.loader__boot-line--accent { color: var(--ox); }
+.loader__cursor {
+  display: inline-block;
+  width: 0.55em;
+  height: 1em;
+  background: var(--ox);
+  vertical-align: -2px;
+  margin-left: 0.15em;
+  animation: boot-blink 0.65s steps(2) infinite;
+}
+@keyframes boot-blink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+/* ── Rig view — Maya-style technical overlay ──
+   Toggle visible by clicking the rig-toggle button or pressing 'R'.
+   All rules nest under body.rig-view so no perf cost when inactive. */
+.rig-toggle {
+  position: fixed;
+  bottom: 1.25rem;
+  right: 1.25rem;
+  z-index: 9990;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.6rem 0.85rem;
+  background: var(--ink);
+  color: var(--paper);
+  border: 1px solid var(--rule);
+  font-family: var(--fm);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  cursor: pointer;
+  user-select: none;
+  transition: background 200ms, border-color 200ms, transform 200ms;
+}
+.rig-toggle:hover {
+  background: var(--ox);
+  border-color: var(--ox);
+  transform: translateY(-1px);
+}
+.rig-toggle__indicator {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--mute);
+  transition: background 200ms, box-shadow 200ms;
+}
+.rig-toggle__hint {
+  font-size: 9px;
+  opacity: 0.55;
+  margin-left: 0.15rem;
+}
+body.rig-view .rig-toggle__indicator {
+  background: #5BE07E;
+  box-shadow: 0 0 8px #5BE07E, 0 0 14px rgba(91, 224, 126, 0.4);
+}
+
+/* Maya control colors */
+:root {
+  --rig-yellow: #FFD500;
+  --rig-cyan:   #00E5D1;
+  --rig-green:  #5BE07E;
+  --rig-blue:   #5BB3FF;
+  --rig-pink:   #FF6B9D;
+}
+
+body.rig-view [data-rig-label] {
+  position: relative;
+  outline: 1px dashed rgba(255, 213, 0, 0.6);
+  outline-offset: 4px;
+}
+body.rig-view [data-rig-label]::after {
+  content: '[' attr(data-rig-label) ']';
+  position: absolute;
+  top: -16px;
+  left: -2px;
+  font-family: var(--fm);
+  font-size: 9px;
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  color: var(--rig-yellow);
+  text-shadow: 0 0 4px rgba(0, 0, 0, 0.7), 0 1px 0 rgba(0, 0, 0, 0.6);
+  pointer-events: none;
+  z-index: 100;
+  white-space: nowrap;
+  opacity: 0.85;
+}
+
+/* Hero title em → cyan (character control) */
+body.rig-view .hero__title em[data-rig-label] {
+  outline-color: var(--rig-cyan);
+}
+body.rig-view .hero__title em[data-rig-label]::after { color: var(--rig-cyan); }
+
+/* Primary CTA → green (ready) */
+body.rig-view .btn.btn--ox[data-rig-label] {
+  outline-color: var(--rig-green);
+}
+body.rig-view .btn.btn--ox[data-rig-label]::after { color: var(--rig-green); }
+
+/* Project cards → pink (geo node) */
+body.rig-view .project-card[data-rig-label] {
+  outline-color: var(--rig-pink);
+}
+body.rig-view .project-card[data-rig-label]::after { color: var(--rig-pink); }
+
+/* Meta-bar / footer / sections → blue (parent group) */
+body.rig-view .meta-bar[data-rig-label],
+body.rig-view .footer[data-rig-label],
+body.rig-view .section-heading[data-rig-label] {
+  outline-color: var(--rig-blue);
+}
+body.rig-view .meta-bar[data-rig-label]::after,
+body.rig-view .footer[data-rig-label]::after,
+body.rig-view .section-heading[data-rig-label]::after { color: var(--rig-blue); }
+
+/* Crosshair on body in rig view */
+body.rig-view {
+  cursor: crosshair;
+}
+body.rig-view a,
+body.rig-view button,
+body.rig-view .btn { cursor: crosshair; }
+
+/* Tiny coordinate readout (rig HUD) */
+body.rig-view::before {
+  content: 'RIG_VIEW · ACTIVE';
+  position: fixed;
+  top: 1.25rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9985;
+  padding: 4px 10px;
+  background: var(--ink);
+  color: var(--rig-yellow);
+  font-family: var(--fm);
+  font-size: 10px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  border: 1px solid var(--rig-yellow);
+  box-shadow: 0 0 12px rgba(255, 213, 0, 0.25);
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .loader__cursor { animation: none; }
+}
+
+@media (max-width: 640px) {
+  .rig-toggle__hint { display: none; }
+  .rig-toggle { bottom: 0.75rem; right: 0.75rem; padding: 0.5rem 0.65rem; }
+  body.rig-view [data-rig-label]::after { font-size: 8px; top: -13px; }
 }
 
 @keyframes spin {

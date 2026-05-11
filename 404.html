@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>404 — Bone Not Found · Alessandro Giacobbi</title>
+  <meta name="robots" content="noindex">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=PT+Sans:wght@400;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="/alessandrogiacobbi/assets/css/tokens.css">
+
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { min-height: 100vh; background: var(--ink); color: var(--paper); font-family: var(--fb); }
+    body {
+      display: grid;
+      place-items: center;
+      padding: 2rem;
+      overflow: hidden;
+      position: relative;
+    }
+    /* CRT scanline overlay */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background: repeating-linear-gradient(
+        to bottom,
+        transparent 0px, transparent 3px,
+        rgba(184, 50, 63, 0.025) 3px, rgba(184, 50, 63, 0.025) 4px
+      );
+      z-index: 1;
+    }
+    .e404 {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      max-width: 720px;
+    }
+    .e404__ascii {
+      font-family: var(--fm);
+      font-size: clamp(10px, 1.3vw, 13px);
+      line-height: 1.15;
+      color: var(--ox);
+      white-space: pre;
+      margin-bottom: 2.5rem;
+      text-shadow: 0 0 10px rgba(184, 50, 63, 0.45), 0 0 18px rgba(184, 50, 63, 0.2);
+      letter-spacing: -1px;
+      filter: drop-shadow(0 2px 0 rgba(0, 0, 0, 0.4));
+    }
+    .e404__tag {
+      display: inline-block;
+      font-family: var(--fm);
+      font-size: 11px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--ox);
+      border: 1px solid var(--ox-line);
+      padding: 4px 12px;
+      margin-bottom: 1.5rem;
+      background: var(--ox-bg);
+    }
+    .e404__code {
+      font-family: var(--fd);
+      font-size: clamp(5rem, 16vw, 12rem);
+      line-height: 0.9;
+      letter-spacing: 0.05em;
+      color: var(--paper);
+      margin-bottom: 0.5rem;
+      text-shadow:
+        4px 0 var(--ox),
+        -4px 0 #2cb5c3;
+    }
+    .e404__msg {
+      font-family: var(--fm);
+      font-size: clamp(14px, 2vw, 18px);
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--mute);
+      margin-bottom: 2.5rem;
+    }
+    .e404__msg b { color: var(--paper); font-weight: 500; }
+    .e404__diag {
+      font-family: var(--fm);
+      font-size: 11px;
+      color: var(--mute);
+      letter-spacing: 0.1em;
+      margin-bottom: 2.5rem;
+      opacity: 0.7;
+    }
+    .e404__diag span { color: var(--ox); }
+    .e404__cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 1rem 1.6rem;
+      background: var(--ox);
+      color: var(--paper);
+      text-decoration: none;
+      font-family: var(--fm);
+      font-size: 12px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      border: 1px solid var(--ox);
+      transition: background 200ms, transform 200ms, box-shadow 200ms;
+    }
+    .e404__cta:hover {
+      background: var(--ox-deep);
+      transform: translateY(-1px);
+      box-shadow: 0 8px 24px rgba(184, 50, 63, 0.35);
+    }
+    .e404__cta-arrow { transition: transform 200ms; }
+    .e404__cta:hover .e404__cta-arrow { transform: translateX(4px); }
+    @keyframes flicker {
+      0%, 92%, 100% { opacity: 1; }
+      94% { opacity: 0.7; }
+      96% { opacity: 1; }
+      98% { opacity: 0.85; }
+    }
+    .e404__ascii, .e404__code { animation: flicker 4.2s infinite; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .e404__ascii, .e404__code { animation: none; }
+      .e404__code { text-shadow: none; }
+    }
+  </style>
+</head>
+<body>
+  <main class="e404">
+    <pre class="e404__ascii" aria-hidden="true">
+      ___________                        ___________
+     /           \                      /           \
+    |    o   o    |---===\    /===---|    o   o    |
+     \___________/        \  /        \___________/
+                          ╳╲╱╳
+                         ╳ ╲╱ ╳
+                          ╳╱╲╳
+      ___________        /  \        ___________
+     /           \------/    \------/           \
+    |    o   o    |                |    o   o    |
+     \___________/                  \___________/
+                  · · ·  FRACTURED  · · ·</pre>
+
+    <span class="e404__tag">error · 404</span>
+
+    <h1 class="e404__code">404</h1>
+    <p class="e404__msg"><b>Bone</b> Not Found</p>
+
+    <p class="e404__diag">
+      <span>// stack trace:</span> rig_skeleton.findJoint('this_page') returned null<br>
+      <span>// hint:</span> il path richiesto non esiste nel rig — la skinning info è andata persa
+    </p>
+
+    <a href="/alessandrogiacobbi/" class="e404__cta">
+      <span class="e404__cta-arrow">↺</span>
+      <span>Rebuild Rig</span>
+    </a>
+  </main>
+</body>
+</html>

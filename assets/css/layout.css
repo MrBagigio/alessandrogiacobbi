@@ -806,42 +806,6 @@ section {
 }
 .project-split__col--video { position: relative; }
 
-.project-split__overlay {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  gap: 0.2rem;
-  padding: 1.1rem 1rem;
-  background: linear-gradient(to top, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.18) 50%, transparent 100%);
-  pointer-events: none;
-}
-.project-split__overlay-tag {
-  font-family: var(--fm);
-  font-size: 9px;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--ox);
-  background: rgba(184,50,63,0.15);
-  padding: 0.2rem 0.5rem;
-  align-self: flex-start;
-  border: 1px solid rgba(184,50,63,0.4);
-}
-.project-split__overlay-title {
-  font-family: var(--fd);
-  font-size: 1.05rem;
-  font-weight: 700;
-  color: #fff;
-  line-height: 1.2;
-}
-.project-split__overlay-sub {
-  font-family: var(--fm);
-  font-size: 10px;
-  letter-spacing: 0.08em;
-  color: rgba(255,255,255,0.65);
-}
-
 @media (max-width: 767px) {
   .project-split { grid-template-columns: 1fr; }
 }

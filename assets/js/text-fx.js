@@ -154,6 +154,32 @@ export function loopScramble(el, opts = {}) {
 }
 
 /**
+ * globalAmbientGlitch — pesca random un elemento .fx-ambient visibile e glitch.
+ * Crea l'effetto "schermo che vive" senza essere distraente.
+ */
+function globalAmbientGlitch(intervalMin = 2200, intervalMax = 4500) {
+  function tick() {
+    const candidates = [...document.querySelectorAll('.fx-ambient')].filter((el) => {
+      const r = el.getBoundingClientRect();
+      return r.top < window.innerHeight && r.bottom > 0 && r.width > 0;
+    });
+    if (candidates.length) {
+      const pick = candidates[Math.floor(Math.random() * candidates.length)];
+      glitch(pick, 200 + Math.random() * 200);
+    }
+    setTimeout(tick, intervalMin + Math.random() * (intervalMax - intervalMin));
+  }
+  setTimeout(tick, 2000);
+}
+
+/**
+ * markAmbient — aggiunge classe .fx-ambient a tutti gli elementi matched.
+ */
+function markAmbient(selector) {
+  document.querySelectorAll(selector).forEach((el) => el.classList.add('fx-ambient'));
+}
+
+/**
  * Setup: applica fx ai selettori standard del portfolio.
  * Rispetta prefers-reduced-motion.
  */
@@ -161,70 +187,182 @@ export function initTextFx() {
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (reduced) return;
 
-  // 1. Hero pretitle — scramble all'apertura + loop scramble ogni 18-30s
+  // ─── 1. SCRAMBLE ON LOAD / ON REVEAL ───────────────────────────────────
+
+  // Hero pretitle — scramble all'apertura + loop scramble
   const pretitle = document.querySelector('.hero__pretitle');
   if (pretitle) {
     scramble(pretitle, { delay: 450, duration: 850 });
-    loopScramble(pretitle, { minDelay: 18000, maxDelay: 30000, duration: 700 });
+    loopScramble(pretitle, { minDelay: 16000, maxDelay: 28000, duration: 700 });
   }
 
-  // 2. Numerini section heading (01, 02, ...) — glitch on reveal + loop
+  // Hero meta-label (Based/Studio/Status) — scramble staggered
+  document.querySelectorAll('.hero__meta-label').forEach((el, i) => {
+    scramble(el, { delay: 700 + i * 120, duration: 600 });
+    loopGlitch(el, { minDelay: 10000 + i * 1500, maxDelay: 22000, duration: 240 });
+  });
+
+  // Trusted-by label
+  bindOnReveal('.trusted-by__label', (el) => {
+    scramble(el, { duration: 600 });
+  });
+
+  // Section heading titles — scramble on reveal
+  bindOnReveal('.section-heading__title', (el) => {
+    scramble(el, { duration: 800, stableChance: 0.26 });
+  });
+
+  // Toolkit labels — scramble on reveal
+  bindOnReveal('.toolkit__label', (el) => {
+    scramble(el, { duration: 700 });
+  });
+
+  // Showreel CTA title + tag — scramble on reveal
+  bindOnReveal('.showreel__cta-title', (el) => {
+    scramble(el, { duration: 900, stableChance: 0.32 });
+    loopScramble(el, { minDelay: 14000, maxDelay: 26000, duration: 800 });
+  });
+  bindOnReveal('.showreel__tag, .showreel__cta-sub', (el) => {
+    scramble(el, { duration: 600 });
+  });
+
+  // Project card titles — scramble on reveal + loop scramble raro
+  bindOnReveal('.project-card__title', (el) => {
+    scramble(el, { duration: 700 });
+    loopScramble(el, { minDelay: 20000, maxDelay: 40000, duration: 600 });
+  });
+
+  // Project meta (LP Group · Setpoint · Character Rigging) — scramble
+  bindOnReveal('.project-card__meta', (el) => {
+    scramble(el, { duration: 600, stableChance: 0.25 });
+  });
+
+  // Project role label
+  bindOnReveal('.project-card__role', (el) => {
+    scramble(el, { duration: 750 });
+  });
+
+  // LP page: project hero breadcrumb, client, NDA, split eyebrow
+  bindOnReveal('.project-hero__breadcrumb', (el) => {
+    scramble(el, { duration: 700 });
+  });
+  bindOnReveal('.project-hero__client', (el) => {
+    scramble(el, { duration: 850 });
+  });
+  bindOnReveal('.project-hero__nda-tag, .demo-bar__tier', (el) => {
+    scramble(el, { duration: 500 });
+    loopGlitch(el, { minDelay: 6000, maxDelay: 12000, duration: 260 });
+  });
+  bindOnReveal('.project-split-section__eyebrow', (el) => {
+    scramble(el, { duration: 600 });
+    loopGlitch(el, { minDelay: 9000, maxDelay: 18000, duration: 280 });
+  });
+  bindOnReveal('.project-split-section__title', (el) => {
+    scramble(el, { duration: 800 });
+  });
+
+  // Project meta labels (CLIENT, STUDIO, DISCIPLINE, SUBJECT)
+  bindOnReveal('.project-meta__label, .project-credits__label', (el) => {
+    scramble(el, { duration: 500 });
+  });
+
+  // Contact pretitle + channel labels
+  bindOnReveal('.contact__pretitle', (el) => {
+    scramble(el, { duration: 700 });
+    loopGlitch(el, { minDelay: 9000, maxDelay: 18000, duration: 320 });
+  });
+  bindOnReveal('.contact__channel-label', (el) => {
+    scramble(el, { duration: 550 });
+  });
+
+  // Footer cta pretitle + footer credits
+  bindOnReveal('.footer__cta-pretitle, .footer__credit', (el) => {
+    scramble(el, { duration: 600 });
+  });
+
+  // ─── 2. LOOP GLITCH (periodic flicker) ─────────────────────────────────
+
+  // Section num (01-05) — glitch on reveal + loop frequente
   bindOnReveal('.section-heading__num, .project-card__index', (el) => {
     glitch(el, 380);
     loopGlitch(el, { minDelay: 5000, maxDelay: 11000, duration: 280 });
   });
 
-  // 3. Section heading title (3D · Character Rigging, ComfyUI, ...) — loop glitch raro
-  bindOnReveal('.section-heading__title', (el) => {
+  // Section heading title — loop glitch dopo scramble
+  document.querySelectorAll('.section-heading__title').forEach((el) => {
     loopGlitch(el, { minDelay: 11000, maxDelay: 22000, duration: 360 });
   });
 
-  // 4. Hero title "Character" word (em wrapped) — loop glitch ogni 8-16s
+  // Hero <em>Character</em> word — loop glitch (parola brand)
   document.querySelectorAll('.hero__title em').forEach((el) => {
-    loopGlitch(el, { minDelay: 8000, maxDelay: 16000, duration: 380 });
+    loopGlitch(el, { minDelay: 7000, maxDelay: 14000, duration: 380 });
   });
 
-  // 5. Showreel CTA title — scramble on reveal + loop re-scramble
-  bindOnReveal('.showreel__cta-title', (el) => {
-    scramble(el, { duration: 900, stableChance: 0.32 });
-    loopScramble(el, { minDelay: 16000, maxDelay: 28000, duration: 800 });
+  // Hero title masks (Render, che vendono, che si muovono) — loop glitch raro
+  document.querySelectorAll('.hero__title .reveal-mask').forEach((el, i) => {
+    loopGlitch(el, { minDelay: 13000 + i * 1500, maxDelay: 26000, duration: 320 });
   });
 
-  // 6. NDA tag + demo-bar tier (LP page + demo viewer) — scramble + loop glitch
-  bindOnReveal('.project-hero__nda-tag, .demo-bar__tier', (el) => {
-    scramble(el, { duration: 500 });
-    loopGlitch(el, { minDelay: 7000, maxDelay: 13000, duration: 260 });
+  // Project card titles — loop glitch
+  document.querySelectorAll('.project-card__title').forEach((el) => {
+    loopGlitch(el, { minDelay: 11000, maxDelay: 24000, duration: 320 });
   });
 
-  // 7. Hero meta labels — scramble staggered + loop glitch raro
-  document.querySelectorAll('.hero__meta-label').forEach((el, i) => {
-    scramble(el, { delay: 700 + i * 120, duration: 600 });
-    loopGlitch(el, { minDelay: 12000 + i * 2000, maxDelay: 24000, duration: 240 });
+  // Contact title + footer cta-text — loop glitch
+  document.querySelectorAll('.contact__title em, .footer__cta-text em').forEach((el) => {
+    loopGlitch(el, { minDelay: 9000, maxDelay: 19000, duration: 360 });
   });
 
-  // 8. Trusted-by logos — glitch random rotation (uno alla volta ogni 4-8s)
+  // Meta-bar elements (Available, clock)
+  const clock = document.querySelector('.meta-clock');
+  if (clock) loopGlitch(clock, { minDelay: 18000, maxDelay: 32000, duration: 220, onlyInViewport: false });
+
+  const metaLeft = document.querySelector('.meta-bar .left');
+  if (metaLeft) loopGlitch(metaLeft, { minDelay: 16000, maxDelay: 30000, duration: 240, onlyInViewport: false });
+
+  // Trusted-by logos — random one glitches every 4-8s
   const trustedLogos = document.querySelectorAll('.trusted-by__logo');
   if (trustedLogos.length) {
-    setInterval(() => {
+    function trustedLoop() {
       const pick = trustedLogos[Math.floor(Math.random() * trustedLogos.length)];
       glitch(pick, 220);
-    }, 4500 + Math.random() * 3500);
+      setTimeout(trustedLoop, 4500 + Math.random() * 3500);
+    }
+    setTimeout(trustedLoop, 3000);
   }
 
-  // 9. Meta-bar clock — glitch ogni minuto al refresh
-  const clock = document.querySelector('.meta-clock');
-  if (clock) {
-    setInterval(() => glitch(clock, 240), 30000 + Math.random() * 10000);
+  // Tool tiles (Maya, ZBrush, ComfyUI, etc.) — pick random one ogni 3-6s
+  const toolTiles = document.querySelectorAll('.tool-tile');
+  if (toolTiles.length) {
+    function toolLoop() {
+      const visible = [...toolTiles].filter((el) => {
+        const r = el.getBoundingClientRect();
+        return r.top < window.innerHeight && r.bottom > 0;
+      });
+      if (visible.length) {
+        const pick = visible[Math.floor(Math.random() * visible.length)];
+        glitch(pick, 240);
+      }
+      setTimeout(toolLoop, 3500 + Math.random() * 3000);
+    }
+    setTimeout(toolLoop, 5000);
   }
 
-  // 10. Section eyebrow + project-split-section eyebrow (LP page)
-  bindOnReveal('.project-split-section__eyebrow, .project-hero__breadcrumb', (el) => {
-    loopGlitch(el, { minDelay: 9000, maxDelay: 18000, duration: 280 });
-  });
+  // ─── 3. AMBIENT GLITCH — random subset di elementi viventi ────────────
 
-  // 11. Toolkit labels (3D · VFX, AI · Generative, Post · Audio) — scramble on reveal
-  bindOnReveal('.toolkit__label', (el) => {
-    scramble(el, { duration: 700 });
-    loopGlitch(el, { minDelay: 13000, maxDelay: 24000, duration: 260 });
-  });
+  markAmbient([
+    '.section-heading__title',
+    '.project-card__title',
+    '.project-card__meta span',
+    '.project-card__role',
+    '.toolkit__label',
+    '.project-meta__value',
+    '.project-credits__value',
+    '.contact__pretitle',
+    '.footer__cta-pretitle',
+    '.hero__sub',
+    '.manifesto__lead em',
+  ].join(','));
+
+  globalAmbientGlitch(2500, 5500);
 }

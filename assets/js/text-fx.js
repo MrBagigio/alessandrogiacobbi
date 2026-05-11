@@ -348,21 +348,117 @@ export function initTextFx() {
     setTimeout(toolLoop, 5000);
   }
 
-  // ─── 3. AMBIENT GLITCH — random subset di elementi viventi ────────────
+  // ─── 3. AMBIENT GLITCH — random subset di elementi viventi (più frequente) ─
 
   markAmbient([
     '.section-heading__title',
+    '.section-heading__num',
     '.project-card__title',
     '.project-card__meta span',
     '.project-card__role',
+    '.project-card__index',
     '.toolkit__label',
+    '.tool-tile__name',
     '.project-meta__value',
+    '.project-meta__label',
     '.project-credits__value',
+    '.project-credits__label',
     '.contact__pretitle',
+    '.contact__channel-value',
     '.footer__cta-pretitle',
+    '.footer__credit',
     '.hero__sub',
+    '.hero__meta-label',
+    '.hero__pretitle',
     '.manifesto__lead em',
+    '.trusted-by__logo',
+    '.showreel__tag',
+    '.btn',
+    '.demo-bar__title',
   ].join(','));
 
-  globalAmbientGlitch(2500, 5500);
+  // Ambient più frequente: ogni 1.4-3s
+  globalAmbientGlitch(1400, 3000);
+
+  // ─── 4. HOVER SCRAMBLE — passi sopra → re-scramble ─────────────────────
+  document.querySelectorAll(
+    '.project-card__title, .section-heading__title, .toolkit__label, .contact__channel-value, .btn'
+  ).forEach((el) => {
+    el.classList.add('fx-hover-scramble');
+    let cooldown = false;
+    el.addEventListener('mouseenter', () => {
+      if (cooldown) return;
+      cooldown = true;
+      el.dataset.fxDone = '';
+      scramble(el, { duration: 450, stableChance: 0.35 });
+      setTimeout(() => { cooldown = false; }, 600);
+    });
+  });
+
+  // ─── 5. HERO TITLE 3D PARALLAX — mouse → rotateX/Y ────────────────────
+  const heroTitle = document.querySelector('.hero__title');
+  const heroSection = document.querySelector('.hero');
+  if (heroTitle && heroSection && window.matchMedia('(min-width: 1024px)').matches) {
+    let raf;
+    let target = { x: 0, y: 0 };
+    let current = { x: 0, y: 0 };
+    function update() {
+      current.x += (target.x - current.x) * 0.08;
+      current.y += (target.y - current.y) * 0.08;
+      heroTitle.style.setProperty('--hero-rx', `${current.y * -3}deg`);
+      heroTitle.style.setProperty('--hero-ry', `${current.x * 6}deg`);
+      if (Math.abs(target.x - current.x) > 0.001 || Math.abs(target.y - current.y) > 0.001) {
+        raf = requestAnimationFrame(update);
+      } else { raf = null; }
+    }
+    heroSection.addEventListener('mousemove', (e) => {
+      const r = heroSection.getBoundingClientRect();
+      target.x = (e.clientX - r.left) / r.width - 0.5;
+      target.y = (e.clientY - r.top) / r.height - 0.5;
+      if (!raf) raf = requestAnimationFrame(update);
+    });
+    heroSection.addEventListener('mouseleave', () => {
+      target.x = 0; target.y = 0;
+      if (!raf) raf = requestAnimationFrame(update);
+    });
+  }
+
+  // ─── 6. CURSOR SPOTLIGHT — radial light sulle zone scure ──────────────
+  const spotlightSections = document.querySelectorAll('.showreel, .contact, .footer');
+  spotlightSections.forEach((sec) => {
+    sec.classList.add('fx-spotlight');
+    sec.addEventListener('mousemove', (e) => {
+      const r = sec.getBoundingClientRect();
+      const mx = ((e.clientX - r.left) / r.width) * 100;
+      const my = ((e.clientY - r.top) / r.height) * 100;
+      sec.style.setProperty('--mx', `${mx}%`);
+      sec.style.setProperty('--my', `${my}%`);
+      sec.classList.add('is-spotlight-active');
+    });
+    sec.addEventListener('mouseleave', () => {
+      sec.classList.remove('is-spotlight-active');
+    });
+  });
+
+  // ─── 7. CRT SCANLINE SWEEP — overlay fisso che attraversa la pagina ───
+  if (window.matchMedia('(min-width: 768px)').matches) {
+    const scan = document.createElement('div');
+    scan.className = 'fx-scanline';
+    scan.setAttribute('aria-hidden', 'true');
+    document.body.appendChild(scan);
+  }
+
+  // ─── 8. INDEX/NUM massive glitch ogni tanto (BOOM moment) ─────────────
+  function massiveGlitchBurst() {
+    const candidates = [...document.querySelectorAll('.section-heading__num, .project-card__index, .hero__title em, .hero__pretitle')];
+    const visible = candidates.filter((el) => {
+      const r = el.getBoundingClientRect();
+      return r.top < window.innerHeight && r.bottom > 0;
+    });
+    // Pick 2-4 elementi visibili e glitchali insieme (effetto "scossa")
+    const picks = visible.sort(() => Math.random() - 0.5).slice(0, 2 + Math.floor(Math.random() * 3));
+    picks.forEach((el, i) => setTimeout(() => glitch(el, 400), i * 60));
+    setTimeout(massiveGlitchBurst, 18000 + Math.random() * 14000);
+  }
+  setTimeout(massiveGlitchBurst, 8000);
 }

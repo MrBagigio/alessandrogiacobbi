@@ -147,28 +147,30 @@
 
 /* ── Text FX — scramble + glitch ──────────────────────────────────────── */
 
-/* Char temporaneo durante scramble — colore ox, leggermente trasparente */
+/* Char temporaneo durante scramble — colore ox, più contrasto */
 .fx-scramble {
   color: var(--ox);
-  opacity: 0.78;
+  opacity: 0.95;
   display: inline-block;
   will-change: contents;
+  text-shadow: 0 0 6px rgba(184, 50, 63, 0.4);
 }
 
-/* Glitch chromatic flicker — brevissimo RGB shift + jitter
-   Tonalità coerenti: ox (rosso brand) + ink (nero) per evitare colori fuori palette */
+/* Glitch chromatic flicker — RGB shift potenziato + slice */
 @keyframes fx-glitch {
-  0%   { transform: translate(0, 0); text-shadow: none; clip-path: inset(0 0 0 0); }
-  12%  { transform: translate(-1px, 0); text-shadow: 1.5px 0 var(--ox), -1.5px 0 var(--ink); }
-  24%  { transform: translate(1px, -1px); text-shadow: -1.5px 0 var(--ox), 1.5px 0 var(--ink); clip-path: inset(20% 0 60% 0); }
-  36%  { transform: translate(-1px, 1px); text-shadow: 2px 0 var(--ox); clip-path: inset(0 0 0 0); }
-  48%  { transform: translate(0, 0); text-shadow: -1px 0 var(--ox); }
-  60%  { transform: translate(1px, 0); text-shadow: 1px 0.5px var(--ox); clip-path: inset(50% 0 25% 0); }
-  72%  { transform: translate(-0.5px, 0); text-shadow: -1px -0.5px var(--ox); clip-path: inset(0 0 0 0); }
-  100% { transform: translate(0, 0); text-shadow: none; }
+  0%   { transform: translate(0, 0) skewX(0); text-shadow: none; clip-path: inset(0 0 0 0); filter: none; }
+  8%   { transform: translate(-3px, 0) skewX(-2deg); text-shadow: 3px 0 var(--ox), -3px 0 #2cb5c3; clip-path: inset(0 0 0 0); }
+  16%  { transform: translate(3px, -1px) skewX(2deg); text-shadow: -3px 0 var(--ox), 3px 0 #2cb5c3; clip-path: inset(15% 0 55% 0); }
+  24%  { transform: translate(-2px, 2px) skewX(0); text-shadow: 4px 0 var(--ox), -2px 0 #2cb5c3; clip-path: inset(0 0 0 0); filter: brightness(1.15); }
+  32%  { transform: translate(2px, 0); text-shadow: -4px 0 var(--ox); clip-path: inset(45% 0 25% 0); }
+  44%  { transform: translate(0, 0); text-shadow: 2px 0 var(--ox), -2px 0 #2cb5c3; clip-path: inset(0 0 0 0); }
+  56%  { transform: translate(-2px, 0) skewX(1deg); text-shadow: 3px 1px var(--ox); clip-path: inset(60% 0 10% 0); }
+  68%  { transform: translate(1px, -1px); text-shadow: -2px 0 var(--ox); clip-path: inset(0 0 0 0); }
+  80%  { transform: translate(-1px, 0); text-shadow: 1.5px 0 var(--ox); }
+  100% { transform: translate(0, 0) skewX(0); text-shadow: none; clip-path: inset(0 0 0 0); filter: none; }
 }
 .is-glitching {
-  animation: fx-glitch 320ms steps(1, end);
+  animation: fx-glitch 380ms steps(1, end);
   display: inline-block;
   position: relative;
 }
@@ -185,7 +187,91 @@
   animation: fx-flicker-idle 5.5s var(--ease-in-out) infinite;
 }
 
+/* ── CRT scanline sweep ──
+   Linea sottile rossa che attraversa la pagina dall'alto al basso ogni ~12s.
+   Solo desktop, solo se motion ok. */
+@keyframes fx-scanline-sweep {
+  0%   { transform: translateY(-100vh); opacity: 0; }
+  5%   { opacity: 0.6; }
+  60%  { opacity: 0.4; }
+  100% { transform: translateY(100vh); opacity: 0; }
+}
+.fx-scanline {
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+  pointer-events: none;
+  overflow: hidden;
+}
+.fx-scanline::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 2px;
+  background: linear-gradient(to right, transparent 0%, rgba(184,50,63,0.7) 30%, rgba(184,50,63,0.9) 50%, rgba(184,50,63,0.7) 70%, transparent 100%);
+  box-shadow: 0 0 14px rgba(184,50,63,0.5), 0 0 24px rgba(184,50,63,0.25);
+  animation: fx-scanline-sweep 11s linear infinite;
+  animation-delay: 4s;
+}
+.fx-scanline::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0px,
+    transparent 3px,
+    rgba(22, 19, 16, 0.02) 3px,
+    rgba(22, 19, 16, 0.02) 4px
+  );
+  pointer-events: none;
+}
+
+/* ── Cursor spotlight ──
+   Soft radial light segue il cursore sulle zone scure. JS aggiorna --mx/--my. */
+.fx-spotlight {
+  position: relative;
+  isolation: isolate;
+}
+.fx-spotlight::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    circle 380px at var(--mx, 50%) var(--my, 50%),
+    rgba(184, 50, 63, 0.14) 0%,
+    rgba(184, 50, 63, 0.06) 30%,
+    transparent 65%
+  );
+  z-index: 0;
+  transition: opacity 220ms;
+  opacity: 0;
+}
+.fx-spotlight.is-spotlight-active::after { opacity: 1; }
+
+/* ── Hover scramble cursor — sottile sottolineatura ox al passaggio ── */
+.fx-hover-scramble {
+  cursor: default;
+  position: relative;
+  transition: color 200ms;
+}
+.fx-hover-scramble:hover { color: var(--ox); }
+
+/* ── Hero title — depth on mouse parallax (JS injecta CSS var --hero-rx/-ry) ── */
+.hero__title {
+  transform: rotateX(var(--hero-rx, 0deg)) rotateY(var(--hero-ry, 0deg));
+  transition: transform 280ms cubic-bezier(0.16, 1, 0.3, 1);
+  transform-style: preserve-3d;
+  perspective: 1200px;
+  will-change: transform;
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .fx-scramble { color: inherit; opacity: 1; }
-  .is-glitching, .fx-flicker { animation: none !important; }
+  .fx-scramble { color: inherit; opacity: 1; text-shadow: none; }
+  .is-glitching, .fx-flicker, .fx-scanline::before { animation: none !important; }
+  .fx-scanline, .fx-spotlight::after { display: none !important; }
+  .hero__title { transform: none !important; }
 }

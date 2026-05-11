@@ -1,18 +1,26 @@
 /**
- * boot.js — Terminal typewriter on first load. Faster + tighter than v1.
+ * boot.js — Phased CRT power-on → typewriter → CRT shutdown → home.
  *
- * Total runtime ~2.0s on average machine (was 4.5s in v1).
- *  - char delay 9 ms (was 14)
- *  - line pause 50 ms (was 80)
- *  - hold-before-fade 280 ms (was 380)
- *  - 5 lines max
+ * Timeline (≈3.3 s total on a fresh load):
+ *   0     ms   black
+ *   80    ms   .is-on added → power-on line stretches (720 ms) + terminal
+ *              scales in vertically (460 ms, delay 380 ms) + brief flicker
+ *   720   ms   terminal fully visible, typewriter begins
+ *  ~2620  ms   last line types out (5 lines × ~9 ms/char + line pauses)
+ *  +280   ms   hold with blinking cursor
+ *   2900  ms   .is-shutdown added → terminal collapses to a line,
+ *              line flashes WHITE and expands vertically (CRT discharge)
+ *   3460  ms   .is-loaded added → loader fades, page revealed (360 ms)
  *
- * Skips animation under prefers-reduced-motion.
+ * Under prefers-reduced-motion the whole sequence is replaced with a
+ * single 220 ms fade.
  */
 
 const CHAR_DELAY = 9;
 const LINE_PAUSE = 50;
-const HOLD_BEFORE_FADE = 280;
+const HOLD_BEFORE_SHUTDOWN = 280;
+const POWER_ON_HOLD = 720;     // matches loader-poweron-line keyframe duration
+const SHUTDOWN_HOLD = 700;     // covers shutdown collapse + line flash + zoom
 
 function sleep(ms) { return new Promise((r) => setTimeout(r, ms)); }
 
@@ -42,12 +50,21 @@ export async function runBootSequence() {
     return;
   }
 
+  // Hold all reveal animations until the loader fades — so they trigger
+  // synchronously with the shutdown→home transition (CSS override).
+  document.body.classList.add('is-booting');
+
+  // ── Phase 1: CRT power-on ──
+  await sleep(80);                 // brief pure-black moment
+  loader.classList.add('is-on');   // triggers scanline expand + terminal scale-in + flicker
+  await sleep(POWER_ON_HOLD);      // wait until terminal is solid before typing
+
+  // ── Phase 2: Typewriter ──
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
     const text = line.dataset.boot || '';
     line.classList.add('is-typing');
     await typewrite(line, text);
-    // Previous (non-accent) lines get the "ok" → green flash
     if (i < lines.length - 1 && !line.classList.contains('loader__boot-line--accent')) {
       line.classList.add('is-done');
     }
@@ -59,6 +76,14 @@ export async function runBootSequence() {
     await sleep(LINE_PAUSE);
   }
 
-  await sleep(HOLD_BEFORE_FADE);
+  // ── Phase 3: CRT shutdown ──
+  await sleep(HOLD_BEFORE_SHUTDOWN);
+  loader.classList.add('is-shutdown');
+  await sleep(SHUTDOWN_HOLD);
+
+  // Drop the booting gate FIRST so page reveals start their transitions
+  // (their .is-revealed class is already set; the override above suspended them).
+  // Then fade the loader — reveals animate in during the fade overlap.
+  document.body.classList.remove('is-booting');
   loader.classList.add('is-loaded');
 }

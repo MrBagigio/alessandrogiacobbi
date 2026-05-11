@@ -13,6 +13,16 @@
   transform: translateY(0);
 }
 
+/* While the boot loader is running, suspend reveal animations so they
+   fire synchronously with the loader's shutdown → fade. The IO observer
+   still marks elements .is-revealed; these rules pin them visually until
+   body.is-booting is removed (then the transitions take over and they
+   animate in during the loader fade-out). */
+body.is-booting .reveal-up.is-revealed {
+  opacity: 0;
+  transform: translateY(40px);
+}
+
 /* ── Reveal mask ── */
 .reveal-mask {
   display: inline-block;
@@ -31,6 +41,9 @@
 .reveal-mask.is-revealed::after {
   transform: scaleX(0);
 }
+body.is-booting .reveal-mask.is-revealed::after {
+  transform: scaleX(1);
+}
 
 .reveal-mask--ink::after { background: var(--ink); }
 .reveal-mask--paper2::after { background: var(--paper2); }
@@ -48,6 +61,9 @@
 }
 .char-reveal.is-revealed .char-reveal__inner {
   transform: translateY(0);
+}
+body.is-booting .char-reveal.is-revealed .char-reveal__inner {
+  transform: translateY(110%);
 }
 
 /* ── Image reveal scale-Y ── */
@@ -77,17 +93,114 @@
 .img-reveal.is-revealed video {
   transform: scale(1);
 }
+body.is-booting .img-reveal.is-revealed::before { transform: scaleY(1); }
+body.is-booting .img-reveal.is-revealed img,
+body.is-booting .img-reveal.is-revealed video { transform: scale(1.15); }
 
-/* ── Loader fade-out ── */
+/* ── Loader: CRT power-on + boot + shutdown sequence ──
+   Phase 1 (power-on, 0-720ms): black, faint scanline grows from center
+   Phase 2 (booting, 720ms+typewriter): terminal flickers in, types lines
+   Phase 3 (shutdown, post-boot 700ms): terminal collapses to a thin
+     horizontal line, line flashes white, loader fades to reveal page.
+   States set by boot.js: .is-on, .is-shutdown, .is-loaded */
 .loader {
   position: fixed;
   inset: 0;
   z-index: 10000;
-  background: var(--ink);
+  background: #000;
   display: grid;
   place-items: center;
   pointer-events: all;
-  transition: opacity var(--dur-slow) var(--ease-out);
+  transition: opacity 360ms ease-out;
+  overflow: hidden;
+}
+
+/* CRT vignette + scanlines, fade in with the terminal */
+.loader::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      transparent 0, transparent 2px,
+      rgba(184, 50, 63, 0.04) 2px, rgba(184, 50, 63, 0.04) 3px
+    ),
+    radial-gradient(ellipse at center, transparent 40%, rgba(0, 0, 0, 0.6) 100%);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 600ms ease 200ms;
+}
+.loader.is-on::before { opacity: 1; }
+
+/* Power-on horizontal scan-line that "draws" the screen.
+   Sits in the middle, starts at scaleX(0), expands to full width with glow. */
+.loader::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0; right: 0;
+  height: 2px;
+  background: var(--ox);
+  box-shadow: 0 0 20px rgba(184, 50, 63, 0.9), 0 0 40px rgba(184, 50, 63, 0.5);
+  transform: translateY(-50%) scaleX(0);
+  transform-origin: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: none;
+}
+/* Power-on: line shoots out horizontally, terminal flickers in */
+.loader.is-on::after {
+  animation: loader-poweron-line 720ms cubic-bezier(0.5, 0, 0.25, 1) forwards;
+}
+@keyframes loader-poweron-line {
+  0%   { transform: translateY(-50%) scaleX(0);   opacity: 0; }
+  20%  { opacity: 1; }
+  55%  { transform: translateY(-50%) scaleX(1);   opacity: 1; }
+  100% { transform: translateY(-50%) scaleX(1);   opacity: 0; }
+}
+
+/* The terminal box starts collapsed vertically, expands once power-on
+   line has stretched. Then flickers briefly like a real CRT. */
+.loader__boot {
+  opacity: 0;
+  transform: scaleY(0.04);
+  transform-origin: center;
+  transition: opacity 240ms ease-out 500ms,
+              transform 460ms cubic-bezier(0.22, 1, 0.36, 1) 380ms;
+}
+.loader.is-on .loader__boot {
+  opacity: 1;
+  transform: scaleY(1);
+  animation: loader-boot-flicker 0.6s steps(2, end) 950ms;
+}
+@keyframes loader-boot-flicker {
+  0%, 100% { opacity: 1; }
+  16%      { opacity: 0.3; }
+  33%      { opacity: 1; }
+  50%      { opacity: 0.65; }
+  66%      { opacity: 1; }
+  83%      { opacity: 0.85; }
+}
+
+/* Shutdown phase: terminal collapses vertically to a line,
+   horizontal line stretches across, white flash, loader fades */
+.loader.is-shutdown .loader__boot {
+  transition: transform 420ms cubic-bezier(0.65, 0, 0.35, 1),
+              opacity 240ms ease-in 300ms;
+  transform: scaleY(0.02);
+  opacity: 0;
+}
+.loader.is-shutdown::after {
+  animation: loader-shutdown-line 560ms cubic-bezier(0.22, 1, 0.36, 1) 280ms forwards;
+}
+@keyframes loader-shutdown-line {
+  0%   { transform: translateY(-50%) scaleX(0.7); opacity: 0; background: var(--ox); }
+  25%  { transform: translateY(-50%) scaleX(1);   opacity: 1; }
+  60%  { transform: translateY(-50%) scaleX(1);   opacity: 1; background: #FFFFFF;
+         box-shadow: 0 0 40px rgba(255, 255, 255, 0.9), 0 0 80px rgba(255, 255, 255, 0.5); }
+  85%  { transform: translateY(-50%) scaleX(1) scaleY(40); opacity: 1; background: #FFFFFF; }
+  100% { transform: translateY(-50%) scaleX(1) scaleY(60); opacity: 0; background: #FFFFFF; }
 }
 
 .loader__content {

@@ -2,19 +2,19 @@
  * Bootstrap — entry point.
  * Loads GSAP via CDN, initializes scenes, cursor, lazy, scroll triggers.
  */
-import { HeroScene } from './scene-hero.js?v=20260511-xray';
-import { BgScene } from './scene-bg.js?v=20260511-xray';
-import { Cursor } from './cursor.js?v=20260511-xray';
-import { initLazyMedia } from './lazy.js?v=20260511-xray';
-import { initTextFx } from './text-fx.js?v=20260511-xray';
-import { initMagneticAuto } from './magnetic-letters.js?v=20260511-xray';
-import { runBootSequence } from './boot.js?v=20260511-xray';
-import { initRigView } from './rig-view.js?v=20260511-xray';
-import { initInteractions } from './interactions.js?v=20260511-xray';
-import { initTargeting } from './targeting.js?v=20260511-xray';
-import { initJarvis, initSectionScan, ping } from './jarvis.js?v=20260511-xray';
-import { initSysStrip } from './sys-strip.js?v=20260511-xray';
-// import { AsteroidCursor } from './asteroid-cursor.js?v=20260511-xray'; // disabled — keep file for future
+import { HeroScene } from './scene-hero.js?v=20260511-crt';
+import { BgScene } from './scene-bg.js?v=20260511-crt';
+import { Cursor } from './cursor.js?v=20260511-crt';
+import { initLazyMedia } from './lazy.js?v=20260511-crt';
+import { initTextFx } from './text-fx.js?v=20260511-crt';
+import { initMagneticAuto } from './magnetic-letters.js?v=20260511-crt';
+import { runBootSequence } from './boot.js?v=20260511-crt';
+import { initRigView } from './rig-view.js?v=20260511-crt';
+import { initInteractions } from './interactions.js?v=20260511-crt';
+import { initTargeting } from './targeting.js?v=20260511-crt';
+import { initJarvis, initSectionScan, ping } from './jarvis.js?v=20260511-crt';
+import { initSysStrip } from './sys-strip.js?v=20260511-crt';
+// import { AsteroidCursor } from './asteroid-cursor.js?v=20260511-crt'; // disabled — keep file for future
 
 const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 

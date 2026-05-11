@@ -428,6 +428,188 @@ body.rig-view .btn { cursor: crosshair; }
    (toggle is bottom-right, HUD bottom-left — no actual overlap, just visual balance) */
 body.rig-view .rig-toggle { box-shadow: 0 0 12px rgba(91, 224, 126, 0.25); }
 
+/* ── Targeting reticle (Iron Man hover lock) ──
+   A fixed-positioned overlay snaps to hovered interactive elements
+   with 4 corner brackets in oxblood + a "LOCK · {coord}" label.
+   Honors prefers-reduced-motion (JS skips init).                       */
+.rig-target {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+  z-index: 9991;
+  opacity: 0;
+  transition:
+    opacity 180ms var(--ease-out),
+    transform 140ms cubic-bezier(0.22, 1, 0.36, 1),
+    width 140ms cubic-bezier(0.22, 1, 0.36, 1),
+    height 140ms cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform, width, height, opacity;
+}
+.rig-target.is-active { opacity: 1; }
+.rig-target.is-translating { transition: opacity 180ms var(--ease-out); }
+.rig-target__corner {
+  position: absolute;
+  width: var(--bracket-len, 12px);
+  height: var(--bracket-len, 12px);
+  border-color: var(--ox);
+  border-style: solid;
+  filter: drop-shadow(0 0 4px rgba(184, 50, 63, 0.45));
+}
+.rig-target__corner--tl { top: 0;    left: 0;    border-width: 1px 0 0 1px; }
+.rig-target__corner--tr { top: 0;    right: 0;   border-width: 1px 1px 0 0; }
+.rig-target__corner--bl { bottom: 0; left: 0;    border-width: 0 0 1px 1px; }
+.rig-target__corner--br { bottom: 0; right: 0;   border-width: 0 1px 1px 0; }
+
+/* Animated dashed offset on the brackets — subtle "scanning" feel */
+@keyframes rig-target-dash {
+  0% { border-color: var(--ox); }
+  50% { border-color: rgba(184, 50, 63, 0.55); }
+  100% { border-color: var(--ox); }
+}
+.rig-target.is-active .rig-target__corner {
+  animation: rig-target-dash 1.4s linear infinite;
+}
+
+.rig-target__label {
+  position: absolute;
+  top: -16px;
+  right: -1px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  font-family: var(--fm);
+  font-size: 9px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ox);
+  background: var(--ink);
+  padding: 1px 6px;
+  border: 1px solid rgba(184, 50, 63, 0.55);
+  white-space: nowrap;
+  box-shadow: 0 0 8px rgba(184, 50, 63, 0.25);
+}
+.rig-target__tag { color: var(--ox); font-weight: 500; }
+.rig-target__coord {
+  color: rgba(237, 230, 214, 0.75);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.05em;
+}
+.rig-target__coord::before {
+  content: '· ';
+  opacity: 0.6;
+}
+
+/* ── JARVIS pings (top-right ephemeral toasts) ── */
+.jarvis-ping {
+  position: fixed;
+  top: 5.25rem;
+  right: 1.25rem;
+  z-index: 9989;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 6px 12px;
+  background: rgba(22, 19, 16, 0.9);
+  color: var(--paper);
+  border: 1px solid rgba(184, 50, 63, 0.4);
+  font-family: var(--fm);
+  font-size: 10.5px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  opacity: 0;
+  transform: translateX(20px);
+  transition: opacity 240ms var(--ease-out), transform 240ms var(--ease-out);
+  pointer-events: none;
+  box-shadow: 0 0 12px rgba(184, 50, 63, 0.18), 0 8px 24px -10px rgba(0, 0, 0, 0.4);
+}
+.jarvis-ping.is-visible { opacity: 1; transform: translateX(0); }
+.jarvis-ping__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--ox);
+  box-shadow: 0 0 6px rgba(184, 50, 63, 0.6);
+  animation: jarvis-pulse 1.1s ease-in-out infinite;
+}
+.jarvis-ping--ok .jarvis-ping__dot { background: #5BE07E; box-shadow: 0 0 6px rgba(91, 224, 126, 0.55); }
+.jarvis-ping__ts {
+  color: var(--mute);
+  font-size: 9px;
+  letter-spacing: 0.05em;
+  font-variant-numeric: tabular-nums;
+}
+.jarvis-ping__text { color: var(--paper); }
+@keyframes jarvis-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.55; transform: scale(0.7); }
+}
+
+/* Stack additional pings below the first */
+.jarvis-ping + .jarvis-ping { top: 8.5rem; }
+.jarvis-ping + .jarvis-ping + .jarvis-ping { top: 11.75rem; }
+
+/* ── Section scan-in (corner brackets + sweep line on viewport entry) ── */
+.rig-scan-in {
+  position: relative;
+}
+.rig-scan-in::before,
+.rig-scan-in::after {
+  content: '';
+  position: absolute;
+  pointer-events: none;
+}
+/* Sweep line — horizontal scanner that crosses top→bottom */
+.rig-scan-in::before {
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 2px;
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba(184, 50, 63, 0) 10%,
+    rgba(184, 50, 63, 0.85) 50%,
+    rgba(184, 50, 63, 0) 90%,
+    transparent 100%
+  );
+  box-shadow: 0 0 14px rgba(184, 50, 63, 0.55), 0 0 24px rgba(184, 50, 63, 0.25);
+  animation: rig-scan-sweep 1.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  z-index: 50;
+}
+/* Corner brackets that briefly snap in at the section boundaries */
+.rig-scan-in::after {
+  top: 6px;
+  left: 6px;
+  right: 6px;
+  bottom: 6px;
+  background:
+    linear-gradient(to right, var(--ox) 18px, transparent 18px) top left/18px 1px no-repeat,
+    linear-gradient(to bottom, var(--ox) 18px, transparent 18px) top left/1px 18px no-repeat,
+    linear-gradient(to left, var(--ox) 18px, transparent 18px) top right/18px 1px no-repeat,
+    linear-gradient(to bottom, var(--ox) 18px, transparent 18px) top right/1px 18px no-repeat,
+    linear-gradient(to right, var(--ox) 18px, transparent 18px) bottom left/18px 1px no-repeat,
+    linear-gradient(to top, var(--ox) 18px, transparent 18px) bottom left/1px 18px no-repeat,
+    linear-gradient(to left, var(--ox) 18px, transparent 18px) bottom right/18px 1px no-repeat,
+    linear-gradient(to top, var(--ox) 18px, transparent 18px) bottom right/1px 18px no-repeat;
+  opacity: 0;
+  animation: rig-scan-brackets 1.4s ease-out forwards;
+  z-index: 49;
+}
+@keyframes rig-scan-sweep {
+  0%   { transform: translateY(0); opacity: 0; }
+  20%  { opacity: 1; }
+  100% { transform: translateY(100%); opacity: 0; }
+}
+@keyframes rig-scan-brackets {
+  0%   { opacity: 0; transform: scale(0.985); }
+  25%  { opacity: 0.95; transform: scale(1); }
+  75%  { opacity: 0.6; transform: scale(1); }
+  100% { opacity: 0; transform: scale(1); }
+}
+
 /* ── Click ripple (Iron Man HUD pulse) ── */
 .fx-ripple {
   position: absolute;
@@ -516,6 +698,8 @@ body.debug-mode {
   .loader__cursor { animation: none; }
   .fx-ripple { animation: none; opacity: 0; }
   body.debug-mode { animation: none; }
+  .rig-target__corner { animation: none; }
+  .rig-scan-in::before, .rig-scan-in::after { animation: none; display: none; }
 }
 
 @media (max-width: 640px) {

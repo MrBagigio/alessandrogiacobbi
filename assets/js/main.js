@@ -11,6 +11,8 @@ import { initMagneticAuto } from './magnetic-letters.js';
 import { runBootSequence } from './boot.js';
 import { initRigView } from './rig-view.js';
 import { initInteractions } from './interactions.js';
+import { initTargeting } from './targeting.js';
+import { initJarvis, initSectionScan, ping } from './jarvis.js';
 // import { AsteroidCursor } from './asteroid-cursor.js'; // disabled — keep file for future
 
 const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -176,6 +178,25 @@ initRigView();
 
 // 9f. Interactions — click ripple + konami easter egg
 initInteractions();
+
+// 9g. Targeting reticle — corner brackets on hover (Iron Man lock)
+initTargeting();
+
+// 9h. JARVIS pings — ephemeral status toasts on events
+initJarvis();
+
+// 9i. Section scan-in — corner brackets + sweep on viewport entry
+initSectionScan();
+
+// 9j. Cross-module ping wire — rig view toggle fires a JARVIS ping
+let _lastRigState = document.body.classList.contains('rig-view');
+const _rigToggleObserver = new MutationObserver(() => {
+  const active = document.body.classList.contains('rig-view');
+  if (active === _lastRigState) return;
+  _lastRigState = active;
+  ping(active ? 'rig view · engaged' : 'rig view · disengaged', { kind: active ? 'ok' : 'info' });
+});
+_rigToggleObserver.observe(document.body, { attributes: true, attributeFilter: ['class'] });
 
 // 10. Char-reveal init — split text content into spans on .char-reveal
 document.querySelectorAll('.char-reveal').forEach((el) => {

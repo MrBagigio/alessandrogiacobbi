@@ -1,122 +1,2496 @@
-﻿<!DOCTYPE html>
+<!doctype html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="robots" content="noindex,nofollow">
-  <title>Demo template — Studio Tau Architetti · Alessandro Giacobbi</title>
-  <meta name="description" content="Anteprima interattiva del demo template per Architettura (tier Full Suite). Esempio di stile, non lavoro commissionato.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=PT+Sans:wght@400;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../../assets/css/tokens.css">
-  <link rel="stylesheet" href="../../assets/css/base.css">
-  <style>
-    html, body { margin: 0; padding: 0; height: 100%; }
-    body { background: var(--paper); color: var(--ink); font-family: var(--fb); user-select: none; -webkit-user-select: none; display: grid; grid-template-rows: auto 1fr; height: 100vh; overflow: hidden; }
-    a { color: inherit; text-decoration: none; }
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="theme-color" content="#0F0F0E" />
+  <link rel="preconnect" href="https://picsum.photos" crossorigin />
+  <!-- audit-100-100 hardening v1 -->
+<meta name="referrer" content="strict-origin-when-cross-origin" />
+  
+  <meta name="format-detection" content="telephone=no" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://images.unsplash.com https://picsum.photos https://fastly.picsum.photos; connect-src 'self'; media-src 'self' https://res.cloudinary.com https://*.bunnycdn.com data: blob:; base-uri 'self'; form-action 'self' mailto:" />
+<title>Studio Tau Architetti — Studio di architettura, Vicenza</title>
+<meta name="description" content="Studio di architettura residenziale e interior design a Vicenza, dal 2008. Ristrutturazione abitativa, ville unifamiliari, boutique commerciale." />
+<link rel="stylesheet" href="tokens.css" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": ["Organization", "ProfessionalService"],
+  "name": "Studio Studio Tau Architetti",
+  "description": "Studio di architettura residenziale e interior design a Vicenza dal 2008",
+  "foundingDate": "2008",
+  "founder": [
+    { "@type": "Person", "name": "[DA VERIFICARE]", "jobTitle": "Architetto", "memberOf": { "@type": "Organization", "name": "OAPPC Vicenza" } }
+  ],
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "[DA VERIFICARE]",
+    "addressLocality": "Vicenza",
+    "postalCode": "36100",
+    "addressCountry": "IT"
+  },
+  "telephone": "[DA VERIFICARE]",
+  "email": "info@studio-tau-architetti.it",
+  "url": "https://studio-tau-architetti.it",
+  "areaServed": ["Vicenza", "Padova", "Treviso", "Veneto"],
+  "knowsAbout": ["Architettura residenziale", "Interior design", "Ristrutturazione", "CAM Edilizia", "Boutique commerciale"]
+}
+</script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  body { margin: 0; }
+  img { max-width: 100%; display: block; }
+  ul { margin: 0; padding: 0; list-style: none; }
+  button { font: inherit; }
 
-    .demo-bar { z-index: 50; background: var(--paper); border-bottom: 1px solid var(--rule); padding: 0.7rem 1.5rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
-    .demo-bar__left { display: flex; align-items: center; gap: 0.9rem; flex-wrap: wrap; }
-    .demo-bar__back { font-family: var(--fm); font-size: var(--fz-meta); letter-spacing: 0.08em; text-transform: uppercase; color: var(--ox); }
-    .demo-bar__back:hover { text-decoration: underline; }
-    .demo-bar__title { font-family: var(--fd); font-size: 1rem; font-weight: 700; color: var(--ink); }
-    .demo-bar__tier { font-family: var(--fm); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--paper); background: var(--ox); padding: 0.3rem 0.6rem; }
-    .demo-bar__sep { color: var(--mute); font-family: var(--fm); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; }
-    .demo-bar__note { font-family: var(--fm); font-size: 10px; letter-spacing: 0.06em; color: var(--mute); font-style: italic; }
-    .demo-bar__cta { font-family: var(--fm); font-size: var(--fz-meta); letter-spacing: 0.08em; text-transform: uppercase; color: var(--paper); background: var(--ink); padding: 0.55rem 1rem; transition: background 200ms; }
-    .demo-bar__cta:hover { background: var(--ox); }
+  :root {
+    --content-max: 1280px;
+    --section-py: 128px;
+  }
 
-    .demo-stage { position: relative; background: var(--paper); overflow: hidden; }
-    .demo-frame { position: relative; width: 100%; height: 100%; overflow: hidden; }
-    .demo-frame__loader { position: absolute; inset: 0; display: grid; place-items: center; background: var(--paper); color: var(--mute); font-family: var(--fm); font-size: var(--fz-meta); letter-spacing: 0.1em; text-transform: uppercase; z-index: 2; transition: opacity 400ms; }
-    .demo-frame__loader::after { content: ''; width: 24px; height: 24px; border: 2px solid var(--ox); border-top-color: transparent; border-radius: 50%; animation: spin 1s linear infinite; margin-left: 0.7rem; }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    .demo-frame__loader.is-hidden { opacity: 0; pointer-events: none; }
-    .demo-frame__iframe { width: 100%; height: 100%; border: 0; display: block; background: var(--paper); }
+  body {
+    background-image:
+      linear-gradient(to right, rgba(15,15,14,0.04) 0.5px, transparent 0.5px);
+    background-size: 6px 100%;
+  }
 
-    /* Watermark overlay diagonale ripetuto sopra l'iframe */
-    .demo-frame__overlay {
-      position: absolute; inset: 0; pointer-events: none; z-index: 3;
-      background-image: repeating-linear-gradient(
-        -28deg,
-        transparent 0,
-        transparent 360px,
-        rgba(184,50,63,0.04) 360px,
-        rgba(184,50,63,0.04) 362px
-      );
-      mix-blend-mode: multiply;
+  /* ---------- LAYOUT PRIMITIVES ---------- */
+  .section {
+    position: relative;
+    padding: var(--section-py) var(--gutter);
+    border-bottom: var(--hairline) solid var(--border);
+  }
+  .section.alt { background: var(--cream-100); }
+  .section.dense { padding: var(--space-8) var(--gutter); }
+  .wrap { max-width: var(--content-max); margin: 0 auto; }
+
+  /* eyebrow already in tokens, but tighten for hi-fi */
+  .eyebrow {
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    color: var(--ink-700);
+    font-weight: 500;
+  }
+  .eyebrow::before { content: '•'; margin-right: 0.7em; color: var(--ruby-500); }
+
+  /* Section header reused */
+  .section-head {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: var(--space-7);
+    align-items: end;
+    margin-bottom: var(--space-9);
+  }
+  .section-head h2 {
+    font-style: italic;
+    font-weight: 500;
+    margin-top: var(--space-4);
+    max-width: 14ch;
+    text-wrap: balance;
+  }
+  .section-head .head-aside {
+    color: var(--ink-700);
+    font-size: 17px;
+    line-height: 1.6;
+    max-width: 42ch;
+  }
+
+  /* ---------- MEDIA: editorial moodboard placeholders ---------- */
+  /* Each .photo is a tasteful textured plate using brand colours.
+     Real photography swaps in with no markup change. */
+  .photo {
+    position: relative;
+    background:
+      radial-gradient(120% 80% at 80% 20%, rgba(168,133,94,0.18), transparent 60%),
+      radial-gradient(100% 100% at 20% 90%, rgba(43,42,40,0.22), transparent 65%),
+      linear-gradient(160deg, #d8cfbf 0%, #c5b9a3 50%, #a89880 100%);
+    overflow: hidden;
+    border: var(--hairline) solid var(--border);
+  }
+  .photo.dark {
+    background:
+      radial-gradient(120% 80% at 30% 30%, rgba(168,133,94,0.32), transparent 60%),
+      linear-gradient(180deg, #2b2a28 0%, #1a1816 70%, #0f0f0e 100%);
+    color: var(--cream-50);
+  }
+  .photo.warm {
+    background:
+      radial-gradient(120% 80% at 80% 20%, rgba(168,133,94,0.45), transparent 55%),
+      radial-gradient(100% 100% at 20% 90%, rgba(107,31,44,0.18), transparent 60%),
+      linear-gradient(150deg, #e7dccb 0%, #c9b694 50%, #9a7d56 100%);
+  }
+  .photo.cool {
+    background:
+      radial-gradient(120% 80% at 70% 30%, rgba(245,241,234,0.55), transparent 55%),
+      linear-gradient(170deg, #cdc6b8 0%, #b3aa98 60%, #8a8273 100%);
+  }
+  .photo.stone {
+    background:
+      radial-gradient(80% 60% at 30% 30%, rgba(245,241,234,0.35), transparent 55%),
+      linear-gradient(170deg, #c8bda9 0%, #aea283 55%, #6f6651 100%);
+  }
+  .photo.wood {
+    background:
+      linear-gradient(170deg, #b08862 0%, #8c6745 60%, #5a3f27 100%);
+  }
+  .photo.concrete {
+    background:
+      linear-gradient(170deg, #c5bfb1 0%, #a39d8e 60%, #6e6a5e 100%);
+  }
+  .photo .label {
+    position: absolute;
+    inset: auto auto var(--space-4) var(--space-5);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    color: rgba(15,15,14,0.55);
+    text-transform: uppercase;
+  }
+  .photo.dark .label { color: rgba(245,241,234,0.6); }
+  .photo .label small { display: block; opacity: 0.7; font-size: 10px; margin-top: 2px; }
+
+  .ratio-16x10 { aspect-ratio: 16/10; }
+  .ratio-4x5   { aspect-ratio: 4/5; }
+  .ratio-1x1   { aspect-ratio: 1/1; }
+  .ratio-3x2   { aspect-ratio: 3/2; }
+  .ratio-3x4   { aspect-ratio: 3/4; }
+
+  .verify {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--ruby-500);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    background: rgba(107,31,44,0.06);
+    padding: 1px 6px;
+    border: 0.5px solid rgba(107,31,44,0.25);
+    white-space: nowrap;
+  }
+
+  .link { color: var(--ink-900); text-decoration-color: rgba(43,42,40,0.3); }
+  .link:hover { color: var(--ruby-500); text-decoration-color: var(--ruby-500); }
+
+  /* ============================================================
+     NAV
+     ============================================================ */
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(245,241,234,0.92);
+    backdrop-filter: saturate(140%) blur(10px);
+    -webkit-backdrop-filter: saturate(140%) blur(10px);
+    border-bottom: var(--hairline) solid var(--border);
+    transition: background-color var(--dur-fast) var(--ease-out);
+  }
+  .nav-inner {
+    max-width: var(--content-max);
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    padding: 18px var(--gutter);
+    gap: var(--space-6);
+  }
+  .nav-brand {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    text-decoration: none;
+    color: var(--ink-900);
+  }
+  .nav-mono {
+    width: 32px; height: 32px;
+    border: 1px solid var(--ink-900);
+    display: grid; place-items: center;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 22px;
+    font-weight: 500;
+    letter-spacing: 0;
+  }
+  .nav-name {
+    font-family: var(--font-display);
+    font-size: 19px;
+    letter-spacing: -0.005em;
+    font-weight: 500;
+  }
+  .nav-name em { font-style: italic; font-weight: 400; }
+  .nav-menu {
+    display: flex;
+    gap: var(--space-7);
+    justify-content: center;
+  }
+  .nav-menu a {
+    text-decoration: none;
+    font-size: 14px;
+    letter-spacing: 0.005em;
+    color: var(--ink-900);
+    position: relative;
+    padding: 4px 0;
+    transition: color var(--dur-fast) var(--ease-out);
+  }
+  .nav-menu a::after {
+    content: "";
+    position: absolute;
+    left: 0; right: 0; bottom: -2px;
+    height: 1px;
+    background: var(--ruby-500);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform var(--dur-fast) var(--ease-editorial);
+  }
+  .nav-menu a:hover { color: var(--ruby-500); }
+  .nav-menu a:hover::after { transform: scaleX(1); }
+  .nav-cta-wrap { display: flex; justify-content: flex-end; align-items: center; gap: var(--space-5); }
+  .nav-lang {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--ink-700);
+    letter-spacing: 0.04em;
+  }
+  .nav-lang strong { color: var(--ink-900); font-weight: 500; }
+  .nav-lang span { color: rgba(15,15,14,0.35); margin: 0 4px; }
+
+  /* ============================================================
+     HERO
+     ============================================================ */
+  .hero {
+    position: relative;
+    text-align: center;
+    padding: 160px var(--gutter) 140px;
+    overflow: hidden;
+    background-image:
+      linear-gradient(to right, rgba(15,15,14,0.05) 0.5px, transparent 0.5px),
+      linear-gradient(to bottom, rgba(15,15,14,0.05) 0.5px, transparent 0.5px);
+    background-size: 8px 8px, 8px 8px;
+    border-bottom: var(--hairline) solid var(--border);
+  }
+  .hero .eyebrow { display: inline-block; margin-bottom: var(--space-7); }
+  .hero h1 {
+    font-family: var(--font-display);
+    font-size: clamp(56px, 9.5vw, 132px);
+    line-height: 0.98;
+    font-style: italic;
+    font-weight: 400;
+    letter-spacing: -0.022em;
+    max-width: 14ch;
+    margin: 0 auto var(--space-7);
+    color: var(--ink-900);
+    font-variation-settings: "opsz" 96;
+    text-wrap: balance;
+  }
+  .hero h1 .ornament {
+    display: inline-block;
+    width: 0.4em; height: 0.4em;
+    background: var(--ruby-500);
+    border-radius: 50%;
+    vertical-align: 0.2em;
+    margin: 0 0.1em;
+    transform: translateY(-0.1em);
+  }
+  .hero-sub {
+    max-width: 60ch;
+    margin: 0 auto var(--space-8);
+    font-size: 19px;
+    line-height: 1.55;
+    color: var(--ink-700);
+    text-wrap: pretty;
+  }
+  .hero-cta {
+    display: inline-flex;
+    gap: var(--space-5);
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .hero-meta {
+    margin-top: var(--space-9);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-5);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ink-700);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .hero-meta .sep {
+    width: 24px; height: 1px;
+    background: var(--ruby-500);
+    opacity: 0.6;
+  }
+  .hero-scroll {
+    margin-top: var(--space-8);
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-3);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ink-700);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .hero-scroll::after {
+    content: "";
+    width: 1px; height: 36px;
+    background: linear-gradient(var(--ink-900), transparent);
+    animation: scrollPulse 2.4s var(--ease-editorial) infinite;
+  }
+  @keyframes scrollPulse {
+    0%, 100% { transform: scaleY(0.4); transform-origin: top; opacity: 0.4; }
+    50% { transform: scaleY(1); opacity: 1; }
+  }
+
+  /* Hero ornament rule */
+  .hero::before {
+    content: "";
+    position: absolute;
+    top: var(--space-7); left: 50%;
+    transform: translateX(-50%);
+    width: 1px; height: 48px;
+    background: var(--ruby-500);
+    opacity: 0.5;
+  }
+
+  /* ============================================================
+     MANIFESTO
+     ============================================================ */
+  .manifesto {
+    text-align: center;
+    padding: 160px var(--gutter);
+  }
+  .manifesto blockquote {
+    margin: 0 auto;
+    max-width: 24ch;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 400;
+    font-size: clamp(40px, 5.2vw, 72px);
+    line-height: 1.12;
+    color: var(--ink-900);
+    letter-spacing: -0.018em;
+    text-wrap: balance;
+  }
+  .manifesto blockquote em { color: var(--ruby-500); font-style: italic; }
+  .manifesto cite {
+    display: block;
+    margin-top: var(--space-7);
+    font-family: var(--font-mono);
+    font-style: normal;
+    font-size: 11px;
+    color: var(--ink-700);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .manifesto cite::before {
+    content: "—";
+    margin-right: 8px;
+    color: var(--ruby-500);
+  }
+
+  /* ============================================================
+     PORTFOLIO BENTO
+     ============================================================ */
+  .bento {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-auto-rows: 110px;
+    gap: 16px;
+  }
+  .bento-card {
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+    border: var(--hairline) solid var(--border);
+    transition: transform var(--dur-fast) var(--ease-editorial);
+  }
+  .bento-card .scrim {
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg, rgba(15,15,14,0) 40%, rgba(15,15,14,0.55) 100%);
+    opacity: 0;
+    transition: opacity var(--dur-base) var(--ease-editorial);
+    pointer-events: none;
+  }
+  .bento-card:hover .scrim { opacity: 1; }
+  .bento-card .card-body {
+    position: absolute;
+    inset: auto 0 0 0;
+    padding: 20px 22px;
+    transform: translateY(8px);
+    opacity: 0;
+    transition: transform var(--dur-base) var(--ease-editorial), opacity var(--dur-base) var(--ease-editorial);
+    color: var(--cream-50);
+  }
+  .bento-card:hover .card-body { opacity: 1; transform: none; }
+  .bento-card .title {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 500;
+    font-size: 26px;
+    line-height: 1.05;
+    margin-bottom: 6px;
+    text-wrap: balance;
+  }
+  .bento-card .meta {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: rgba(245,241,234,0.8);
+  }
+  .bento-card .arrow {
+    position: absolute;
+    top: 18px; right: 18px;
+    width: 36px; height: 36px;
+    border: 1px solid rgba(245,241,234,0.3);
+    border-radius: 50%;
+    color: var(--cream-50);
+    display: grid; place-items: center;
+    background: rgba(15,15,14,0.35);
+    backdrop-filter: blur(4px);
+    opacity: 0;
+    transform: translate(-4px, 4px);
+    transition: opacity var(--dur-base) var(--ease-editorial), transform var(--dur-base) var(--ease-editorial);
+  }
+  .bento-card:hover .arrow { opacity: 1; transform: none; }
+  .bento-card .always {
+    position: absolute;
+    inset: auto 0 0 0;
+    padding: 16px 22px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: rgba(245,241,234,0.85);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    background: linear-gradient(180deg, transparent, rgba(15,15,14,0.5));
+    transition: opacity var(--dur-base) var(--ease-editorial);
+  }
+  .bento-card:hover .always { opacity: 0; }
+
+  /* asymmetric layout */
+  .b1 { grid-column: span 7; grid-row: span 4; }
+  .b2 { grid-column: span 5; grid-row: span 2; }
+  .b3 { grid-column: span 5; grid-row: span 2; }
+  .b4 { grid-column: span 4; grid-row: span 3; }
+  .b5 { grid-column: span 4; grid-row: span 3; }
+  .b6 { grid-column: span 4; grid-row: span 3; }
+  .b7 { grid-column: span 6; grid-row: span 2; }
+  .b8 { grid-column: span 3; grid-row: span 2; }
+  .b9 { grid-column: span 3; grid-row: span 2; }
+
+  .bento-foot {
+    margin-top: var(--space-7);
+    padding-top: var(--space-5);
+    border-top: var(--hairline) solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+  }
+  .bento-foot .caption {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--ink-700);
+    letter-spacing: 0.04em;
+  }
+
+  /* ============================================================
+     CASE STUDY
+     ============================================================ */
+  .case {
+    display: grid;
+    grid-template-columns: 60% 40%;
+    gap: var(--space-9);
+    align-items: start;
+  }
+  .case-photo { aspect-ratio: 4/5; }
+  .case-info {
+    position: sticky;
+    top: 110px;
+    padding-top: var(--space-2);
+  }
+  .case-info h2 {
+    font-style: italic;
+    font-weight: 500;
+    font-size: clamp(36px, 3.8vw, 56px);
+    line-height: 1.05;
+    margin-bottom: var(--space-7);
+    text-wrap: balance;
+    letter-spacing: -0.015em;
+  }
+  .case-spec {
+    border-top: var(--hairline) solid var(--ink-900);
+    margin-bottom: var(--space-7);
+  }
+  .case-spec dl { margin: 0; }
+  .case-spec dt, .case-spec dd { margin: 0; }
+  .case-spec .row {
+    display: grid;
+    grid-template-columns: 130px 1fr;
+    gap: var(--space-4);
+    padding: 14px 0;
+    border-bottom: var(--hairline) solid var(--border);
+    font-size: 15px;
+  }
+  .case-spec dt {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ink-700);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding-top: 3px;
+  }
+  .case-spec dd { color: var(--ink-900); }
+  .case-para {
+    color: var(--ink-700);
+    margin-bottom: var(--space-7);
+    font-size: 16px;
+    line-height: 1.65;
+  }
+
+  /* ============================================================
+     AUDIENCE
+     ============================================================ */
+  .grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    border-top: var(--hairline) solid var(--ink-900);
+    border-bottom: var(--hairline) solid var(--border);
+  }
+  .aud-card {
+    padding: var(--space-7) var(--space-6) var(--space-7) 0;
+    padding-right: var(--space-6);
+    border-right: var(--hairline) solid var(--border);
+  }
+  .aud-card:last-child { border-right: 0; padding-right: 0; }
+  .aud-card:not(:first-child) { padding-left: var(--space-6); }
+  .aud-icon {
+    width: 36px; height: 36px;
+    border: 1px solid var(--ink-900);
+    border-radius: 50%;
+    display: grid; place-items: center;
+    margin-bottom: var(--space-6);
+    color: var(--ruby-500);
+  }
+  .aud-icon svg { width: 16px; height: 16px; }
+  .aud-card h3 {
+    font-family: var(--font-display);
+    font-size: 30px;
+    font-style: italic;
+    font-weight: 500;
+    margin-bottom: var(--space-5);
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+  }
+  .aud-card p { color: var(--ink-700); font-size: 15px; line-height: 1.6; margin: 0 0 var(--space-6); }
+  .aud-card .meta {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ink-700);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding-top: var(--space-4);
+    border-top: var(--hairline) solid var(--border);
+  }
+  .aud-card .meta strong { color: var(--ink-900); font-weight: 500; }
+
+  /* ============================================================
+     CAPABILITIES
+     ============================================================ */
+  .grid-4 {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    border-top: var(--hairline) solid var(--ink-900);
+    border-left: var(--hairline) solid var(--border);
+  }
+  .cap-card {
+    border-right: var(--hairline) solid var(--border);
+    border-bottom: var(--hairline) solid var(--border);
+    padding: var(--space-7) var(--space-6);
+    transition: background-color var(--dur-fast) var(--ease-out);
+  }
+  .cap-card:hover { background: rgba(168,133,94,0.06); }
+  .cap-card .num {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ruby-500);
+    letter-spacing: 0.06em;
+    margin-bottom: var(--space-7);
+    text-transform: uppercase;
+  }
+  .cap-card h3 {
+    font-family: var(--font-display);
+    font-size: 30px;
+    font-style: italic;
+    font-weight: 500;
+    margin-bottom: var(--space-5);
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+  }
+  .cap-card p {
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--ink-700);
+    margin: 0 0 var(--space-5);
+  }
+  .cap-card ul {
+    font-size: 14px;
+    color: var(--ink-700);
+    padding-top: var(--space-4);
+    border-top: var(--hairline) solid var(--border);
+  }
+  .cap-card li {
+    padding: 8px 0 8px 14px;
+    position: relative;
+    line-height: 1.45;
+  }
+  .cap-card li::before {
+    content: "—";
+    position: absolute;
+    left: 0;
+    color: var(--ruby-500);
+  }
+
+  /* ============================================================
+     PROCESSO
+     ============================================================ */
+  .process {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0;
+    border-top: var(--hairline) solid var(--ink-900);
+  }
+  .step {
+    padding: var(--space-7) var(--space-5) var(--space-7) 0;
+    position: relative;
+    border-right: var(--hairline) solid var(--border);
+  }
+  .step:last-child { border-right: 0; }
+  .step:not(:first-child) { padding-left: var(--space-5); }
+  .step .n {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 400;
+    font-size: 80px;
+    line-height: 0.9;
+    color: var(--ink-900);
+    margin-bottom: var(--space-6);
+    letter-spacing: -0.03em;
+  }
+  .step .n .dot {
+    color: var(--ruby-500);
+  }
+  .step h4 {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-style: italic;
+    font-weight: 500;
+    margin-bottom: var(--space-3);
+    line-height: 1.2;
+  }
+  .step p { font-size: 14px; line-height: 1.6; color: var(--ink-700); margin: 0; }
+  .step .timing {
+    margin-top: var(--space-5);
+    padding-top: var(--space-3);
+    border-top: var(--hairline) solid var(--border);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--ink-700);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  /* ============================================================
+     SOSTENIBILITÀ
+     ============================================================ */
+  .sost-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: var(--space-9);
+    align-items: start;
+  }
+  .sost-grid h2 {
+    font-style: italic;
+    font-weight: 500;
+    max-width: 12ch;
+    margin-bottom: var(--space-7);
+    letter-spacing: -0.015em;
+    text-wrap: balance;
+  }
+  .sost-grid h2 em { color: var(--bronze-400); font-style: italic; }
+  .sost-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-5);
+    margin-bottom: var(--space-8);
+    border-top: var(--hairline) solid var(--ink-900);
+    padding-top: var(--space-6);
+  }
+  .stat-num {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 400;
+    font-size: 88px;
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    color: var(--bronze-400);
+  }
+  .stat-num small { font-size: 36px; color: var(--ink-900); margin-left: 2px; }
+  .stat-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-700);
+    margin-top: var(--space-4);
+    line-height: 1.4;
+  }
+  .sost-para { color: var(--ink-700); font-size: 17px; line-height: 1.6; max-width: 52ch; }
+  .sost-para + .sost-para { margin-top: var(--space-5); }
+  .sost-thumbs {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-4);
+  }
+  .sost-thumbs .lbl {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ink-700);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-top: var(--space-3);
+    line-height: 1.4;
+  }
+  .sost-thumbs .lbl strong { color: var(--ink-900); font-weight: 500; }
+
+  .cam-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: 8px 14px;
+    border: 1px solid var(--bronze-400);
+    color: var(--bronze-400);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: var(--space-6);
+  }
+  .cam-badge .dot { width: 6px; height: 6px; background: var(--bronze-400); border-radius: 50%; }
+
+  /* ============================================================
+     TEAM
+     ============================================================ */
+  .team {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: var(--space-5);
+  }
+  .team article {
+    cursor: pointer;
+  }
+  .team .portrait {
+    transition: filter var(--dur-base) var(--ease-out);
+  }
+  .team article:hover .portrait { filter: brightness(0.95) contrast(1.05); }
+  .team .name {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-style: italic;
+    font-weight: 500;
+    margin-top: var(--space-4);
+    line-height: 1.2;
+  }
+  .team .role {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-700);
+    margin-top: 6px;
+    transition: color var(--dur-fast) var(--ease-out);
+  }
+  .team article:hover .role { color: var(--ruby-500); }
+  .team .bio {
+    font-size: 13px;
+    color: var(--ink-700);
+    margin-top: var(--space-4);
+    line-height: 1.55;
+  }
+
+  /* ============================================================
+     CREDENZIALI
+     ============================================================ */
+  .creds {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    border-top: var(--hairline) solid var(--ink-900);
+    border-bottom: var(--hairline) solid var(--ink-900);
+  }
+  .cred {
+    padding: var(--space-8) var(--space-6);
+    border-right: var(--hairline) solid var(--border);
+  }
+  .cred:last-child { border-right: 0; }
+  .cred .dot {
+    color: var(--ruby-500);
+    font-size: 18px;
+    margin-bottom: var(--space-5);
+    display: inline-block;
+    line-height: 1;
+  }
+  .cred .big {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 400;
+    font-size: 56px;
+    line-height: 0.95;
+    margin-bottom: var(--space-4);
+    letter-spacing: -0.02em;
+    color: var(--ink-900);
+  }
+  .cred .lbl {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ink-700);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    line-height: 1.5;
+  }
+
+  /* ============================================================
+     PUBBLICAZIONI
+     ============================================================ */
+  .pubs {
+    border-top: var(--hairline) solid var(--border);
+    border-bottom: var(--hairline) solid var(--border);
+    padding: var(--space-7) 0;
+    overflow: hidden;
+    position: relative;
+  }
+  .pubs-track {
+    display: flex;
+    gap: var(--space-9);
+    align-items: center;
+    padding: 0 var(--gutter);
+    filter: grayscale(1);
+    opacity: 0.55;
+    animation: pubsScroll 50s linear infinite;
+    width: max-content;
+  }
+  .pubs-track:hover { animation-play-state: paused; }
+  @keyframes pubsScroll {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+  .pub-logo {
+    flex: 0 0 auto;
+    height: 40px;
+    display: grid; place-items: center;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 500;
+    font-size: 26px;
+    color: var(--ink-900);
+    white-space: nowrap;
+    letter-spacing: -0.01em;
+  }
+  .pub-logo.sans { font-family: var(--font-body); font-style: normal; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; font-size: 14px; }
+
+  /* ============================================================
+     TESTIMONIALS
+     ============================================================ */
+  .testi {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    border-top: var(--hairline) solid var(--ink-900);
+    border-bottom: var(--hairline) solid var(--border);
+  }
+  .testi-card {
+    padding: var(--space-7) var(--space-6);
+    border-right: var(--hairline) solid var(--border);
+  }
+  .testi-card:last-child { border-right: 0; }
+  .testi-card .av {
+    width: 56px; height: 56px;
+    border-radius: 50%;
+    margin-bottom: var(--space-6);
+    overflow: hidden;
+  }
+  .testi-card .stars { color: var(--ruby-500); letter-spacing: 4px; font-size: 13px; margin-bottom: var(--space-5); }
+  .testi-card blockquote {
+    margin: 0 0 var(--space-6);
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 19px;
+    font-weight: 400;
+    line-height: 1.4;
+    color: var(--ink-900);
+    text-wrap: pretty;
+    quotes: "«" "»";
+  }
+  .testi-card blockquote::before { content: open-quote; color: var(--ruby-500); margin-right: 2px; }
+  .testi-card blockquote::after { content: close-quote; color: var(--ruby-500); margin-left: 2px; }
+  .testi-card .who {
+    font-size: 14px;
+    color: var(--ink-900);
+    margin-bottom: 4px;
+    font-weight: 500;
+  }
+  .testi-card .what {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ink-700);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  /* ============================================================
+     LEAD MAGNET
+     ============================================================ */
+  .leadmag {
+    display: grid;
+    grid-template-columns: 1fr 0.8fr;
+    gap: var(--space-9);
+    align-items: center;
+  }
+  .leadmag h2 {
+    font-style: italic;
+    font-weight: 500;
+    max-width: 16ch;
+    margin-bottom: var(--space-5);
+    letter-spacing: -0.015em;
+  }
+  .leadmag .pos {
+    color: var(--ink-700);
+    font-size: 17px;
+    line-height: 1.6;
+    margin-bottom: var(--space-7);
+    max-width: 50ch;
+  }
+  .leadmag-form { display: grid; gap: var(--space-5); max-width: 540px; }
+  .field-line {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: var(--space-4);
+    border-bottom: 1px solid var(--ink-900);
+    padding-bottom: 12px;
+    align-items: end;
+  }
+  .field-line input {
+    border: 0;
+    background: transparent;
+    font: inherit;
+    font-size: 17px;
+    padding: 8px 0;
+    color: var(--ink-900);
+    outline: none;
+    width: 100%;
+  }
+  .field-line input::placeholder { color: rgba(15,15,14,0.4); }
+  .check-row {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-3);
+    font-size: 13px;
+    color: var(--ink-700);
+    line-height: 1.55;
+    cursor: pointer;
+  }
+  .check-row input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 16px; height: 16px;
+    border: 1px solid var(--ink-900);
+    border-radius: 2px;
+    flex: 0 0 auto;
+    margin: 2px 0 0 0;
+    cursor: pointer;
+    position: relative;
+    background: transparent;
+  }
+  .check-row input[type="checkbox"]:checked {
+    background: var(--ruby-500);
+    border-color: var(--ruby-500);
+  }
+  .check-row input[type="checkbox"]:checked::after {
+    content: "✓";
+    position: absolute;
+    top: -2px; left: 2px;
+    color: var(--cream-50);
+    font-size: 12px;
+  }
+  .lm-disc {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ink-700);
+    letter-spacing: 0.06em;
+    margin-top: var(--space-6);
+    text-transform: uppercase;
+  }
+  .leadmag-cover {
+    aspect-ratio: 3/4;
+    position: relative;
+  }
+  .leadmag-cover .pdf-tag {
+    position: absolute;
+    top: var(--space-5); left: var(--space-5);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--cream-50);
+    padding: 4px 8px;
+    border: 1px solid var(--cream-50);
+    background: rgba(15,15,14,0.4);
+  }
+  .leadmag-cover .pdf-title {
+    position: absolute;
+    bottom: var(--space-7); left: var(--space-6); right: var(--space-6);
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 500;
+    font-size: 28px;
+    line-height: 1.1;
+    color: var(--cream-50);
+    letter-spacing: -0.01em;
+  }
+  .leadmag-cover .pdf-meta {
+    position: absolute;
+    bottom: var(--space-5); left: var(--space-6);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    color: rgba(245,241,234,0.7);
+    text-transform: uppercase;
+  }
+
+  /* ============================================================
+     FORM CONTATTO
+     ============================================================ */
+  .form-wrap {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: var(--space-9);
+    align-items: start;
+  }
+  .form-wrap h2 {
+    font-style: italic;
+    font-weight: 500;
+    margin-bottom: var(--space-6);
+    letter-spacing: -0.015em;
+  }
+  .form-wrap .lead {
+    color: var(--ink-700);
+    font-size: 17px;
+    line-height: 1.6;
+  }
+  .form-aside {
+    margin-top: var(--space-7);
+    padding-top: var(--space-6);
+    border-top: var(--hairline) solid var(--border);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    line-height: 1.7;
+    color: var(--ink-700);
+    letter-spacing: 0.02em;
+  }
+  .form-aside strong { color: var(--ink-900); display: block; font-weight: 500; margin-bottom: 4px; }
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-7) var(--space-6);
+  }
+  .form-grid .full { grid-column: 1 / -1; }
+  .field { display: grid; gap: var(--space-3); }
+  .field label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ink-700);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .field label .req { color: var(--ruby-500); }
+  .field .ctrl {
+    border: 0;
+    border-bottom: 1px solid var(--ink-900);
+    background: transparent;
+    padding: 10px 0;
+    font: inherit;
+    font-size: 16px;
+    color: var(--ink-900);
+    outline: none;
+    border-radius: 0;
+    width: 100%;
+  }
+  .field .ctrl::placeholder { color: rgba(15,15,14,0.35); }
+  .field .ctrl:focus { border-bottom-color: var(--ruby-500); }
+  .field select.ctrl {
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath fill='none' stroke='%230F0F0E' stroke-width='1' d='M1 1l4 4 4-4'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 4px center;
+    padding-right: 24px;
+    cursor: pointer;
+  }
+  .field textarea.ctrl { min-height: 110px; resize: vertical; line-height: 1.5; }
+  .field-upload {
+    border: 1px dashed rgba(15,15,14,0.3);
+    padding: var(--space-6);
+    text-align: center;
+    color: var(--ink-700);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: border-color var(--dur-fast) var(--ease-out), background-color var(--dur-fast) var(--ease-out);
+  }
+  .field-upload:hover { border-color: var(--ruby-500); background: rgba(107,31,44,0.03); }
+  .field-upload .icon { display: block; font-size: 18px; margin-bottom: 8px; color: var(--ruby-500); }
+  .form-foot {
+    margin-top: var(--space-7);
+    padding-top: var(--space-6);
+    border-top: var(--hairline) solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--space-5);
+    flex-wrap: wrap;
+  }
+  .form-foot .caption {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ink-700);
+    letter-spacing: 0.04em;
+  }
+  .checks-stack { display: grid; gap: var(--space-4); margin-top: var(--space-3); }
+
+  /* ============================================================
+     FAQ
+     ============================================================ */
+  .faq { max-width: 920px; margin: 0 auto; }
+  .faq details {
+    border-top: var(--hairline) solid var(--ink-900);
+    padding: var(--space-6) 0;
+  }
+  .faq details:last-of-type { border-bottom: var(--hairline) solid var(--ink-900); }
+  .faq summary {
+    list-style: none;
+    cursor: pointer;
+    display: grid;
+    grid-template-columns: 40px 1fr 28px;
+    gap: var(--space-5);
+    align-items: center;
+    transition: color var(--dur-fast) var(--ease-out);
+  }
+  .faq summary::-webkit-details-marker { display: none; }
+  .faq summary:hover { color: var(--ruby-500); }
+  .faq summary > .q {
+    font-family: var(--font-display);
+    font-size: 28px;
+    font-style: italic;
+    font-weight: 500;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+  }
+  .faq .qnum {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--ruby-500);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .faq .toggle {
+    width: 28px; height: 28px;
+    border: 1px solid var(--ink-900);
+    border-radius: 50%;
+    display: grid; place-items: center;
+    font-family: var(--font-mono);
+    font-size: 14px;
+    transition: background-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out);
+  }
+  .faq details[open] .toggle { background: var(--ink-900); color: var(--cream-50); }
+  .faq details[open] .toggle::before { content: "−"; }
+  .faq details:not([open]) .toggle::before { content: "+"; }
+  .faq details[open] summary > .q { color: var(--ruby-500); }
+  .faq .ans {
+    margin: var(--space-5) 0 0;
+    margin-left: calc(40px + var(--space-5));
+    color: var(--ink-700);
+    font-size: 16px;
+    line-height: 1.65;
+    max-width: 60ch;
+  }
+
+  /* ============================================================
+     CONTACT + LOCATION
+     ============================================================ */
+  .contact {
+    display: grid;
+    grid-template-columns: 0.9fr 1.2fr;
+    gap: var(--space-9);
+    align-items: start;
+  }
+  .contact h2 {
+    font-style: italic;
+    font-weight: 500;
+    margin-bottom: var(--space-6);
+    letter-spacing: -0.015em;
+  }
+  .contact-info {
+    font-size: 16px;
+    border-top: var(--hairline) solid var(--ink-900);
+    margin-top: var(--space-6);
+  }
+  .info-row {
+    display: grid;
+    grid-template-columns: 110px 1fr;
+    gap: var(--space-4);
+    padding: 14px 0;
+    border-bottom: var(--hairline) solid var(--border);
+  }
+  .info-row dt {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ink-700);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin: 0;
+    padding-top: 3px;
+  }
+  .info-row dd { margin: 0; line-height: 1.55; }
+  .contact-media {
+    display: grid;
+    gap: var(--space-4);
+  }
+  .map-ph {
+    aspect-ratio: 16/10;
+    width: 100%;
+    position: relative;
+    background:
+      linear-gradient(135deg, rgba(15,15,14,0.04) 1px, transparent 1px),
+      linear-gradient(45deg, rgba(15,15,14,0.04) 1px, transparent 1px),
+      linear-gradient(180deg, #e3dccc 0%, #d3c9b3 100%);
+    background-size: 24px 24px, 24px 24px, 100% 100%;
+    border: var(--hairline) solid var(--border);
+  }
+  .map-ph .pin {
+    position: absolute;
+    top: 50%; left: 52%;
+    transform: translate(-50%, -100%);
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    background: var(--ruby-500);
+    box-shadow: 0 0 0 6px rgba(107,31,44,0.18);
+  }
+  .map-ph .pin::after {
+    content: "";
+    position: absolute;
+    bottom: -6px; left: 50%;
+    transform: translateX(-50%) rotate(45deg);
+    width: 10px; height: 10px;
+    background: var(--ruby-500);
+  }
+  .map-ph .label {
+    position: absolute;
+    bottom: 14px; left: 16px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ink-700);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    background: rgba(245,241,234,0.85);
+    padding: 4px 8px;
+  }
+
+  /* ============================================================
+     FOOTER
+     ============================================================ */
+  .footer {
+    background: #1a1816;
+    color: var(--cream-50);
+    padding: 120px var(--gutter) 40px;
+    border: 0;
+  }
+  .footer .wrap { width: 100%; max-width: var(--content-max); }
+  .footer-top {
+    display: grid;
+    grid-template-columns: 1.4fr repeat(4, 1fr);
+    gap: var(--space-7);
+    margin-bottom: var(--space-9);
+    padding-bottom: var(--space-8);
+    border-bottom: 1px solid rgba(245,241,234,0.15);
+  }
+  .footer h4 {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(245,241,234,0.5);
+    margin-bottom: var(--space-5);
+    font-weight: 400;
+  }
+  .footer ul li { padding: 5px 0; font-size: 14px; }
+  .footer ul li a { color: var(--cream-50); text-decoration: none; transition: color var(--dur-fast) var(--ease-out); }
+  .footer ul li a:hover { color: var(--bronze-400); }
+  .footer-brand .wm {
+    font-family: var(--font-display);
+    font-size: 38px;
+    font-style: italic;
+    font-weight: 500;
+    margin-bottom: var(--space-5);
+    letter-spacing: -0.01em;
+  }
+  .footer-brand .wm em { font-weight: 400; }
+  .footer-brand p { color: rgba(245,241,234,0.65); font-size: 14px; line-height: 1.6; max-width: 36ch; }
+  .footer-social {
+    display: flex;
+    gap: var(--space-3);
+    margin-top: var(--space-6);
+  }
+  .soc {
+    width: 40px; height: 40px;
+    border: 1px solid rgba(245,241,234,0.25);
+    display: grid; place-items: center;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--cream-50);
+    text-decoration: none;
+    letter-spacing: 0.04em;
+    transition: border-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+  }
+  .soc:hover { border-color: var(--bronze-400); color: var(--bronze-400); }
+  .footer-legal {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: var(--space-7);
+    align-items: end;
+  }
+  .footer-legal .compliance {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    line-height: 1.8;
+    color: rgba(245,241,234,0.55);
+    letter-spacing: 0.02em;
+  }
+  .footer-legal .compliance strong { color: rgba(245,241,234,0.85); font-weight: 500; }
+  .footer-legal .compliance .verify {
+    background: rgba(168,133,94,0.12);
+    color: var(--bronze-400);
+    border-color: rgba(168,133,94,0.3);
+  }
+  .footer-legal .compliance .disclaimer {
+    margin-top: 16px;
+    color: rgba(245,241,234,0.4);
+    font-size: 10.5px;
+    line-height: 1.7;
+    max-width: 60ch;
+  }
+  .footer-legal .closing {
+    text-align: right;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: rgba(245,241,234,0.5);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    line-height: 1.7;
+  }
+
+  /* ============================================================
+     RESPONSIVE
+     ============================================================ */
+  @media (max-width: 1100px) {
+    .nav-menu { display: none; }
+    .nav-inner { grid-template-columns: 1fr auto; }
+  }
+  @media (max-width: 1024px) {
+    :root { --section-py: 96px; }
+    .hero { padding: 120px var(--gutter) 96px; }
+    .case, .sost-grid, .leadmag, .form-wrap, .contact { grid-template-columns: 1fr; gap: var(--space-7); }
+    .case-info { position: static; }
+    .grid-3, .grid-4, .creds, .testi { grid-template-columns: 1fr 1fr; }
+    .grid-3 .aud-card { border-right: 0; padding-right: 0; padding-left: 0; border-bottom: var(--hairline) solid var(--border); }
+    .grid-3 .aud-card:nth-child(odd) { border-right: var(--hairline) solid var(--border); padding-right: var(--space-6); }
+    .grid-3 .aud-card:nth-child(even) { padding-left: var(--space-6); }
+    .grid-4 .cap-card:nth-child(2n) { border-right: var(--hairline) solid var(--border); }
+    .creds .cred:nth-child(2) { border-right: 0; }
+    .testi .testi-card:nth-child(2) { border-right: 0; }
+    .testi .testi-card:nth-child(odd):not(:last-child) { border-bottom: var(--hairline) solid var(--border); }
+    .process { grid-template-columns: 1fr 1fr; }
+    .step:nth-child(2n) { border-right: 0; }
+    .step:not(:nth-child(-n+2)) { border-top: var(--hairline) solid var(--border); }
+    .team { grid-template-columns: repeat(3, 1fr); }
+    .footer-top { grid-template-columns: 1fr 1fr; }
+    .footer-legal { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 720px) {
+    :root { --section-py: 72px; --gutter: 20px; }
+    .nav-inner { grid-template-columns: 1fr auto; }
+    .nav-menu { display: none; }
+    .hero h1 { font-size: clamp(48px, 12vw, 72px); }
+    .section-head { grid-template-columns: 1fr; }
+    .grid-3, .grid-4, .creds, .testi, .sost-stats, .sost-thumbs { grid-template-columns: 1fr; }
+    .grid-3 .aud-card, .grid-4 .cap-card, .creds .cred, .testi .testi-card { border-right: 0 !important; padding-left: 0 !important; padding-right: 0 !important; padding-top: var(--space-6); padding-bottom: var(--space-6); border-bottom: var(--hairline) solid var(--border); }
+    .grid-4 { border-left: 0; }
+    .process { grid-template-columns: 1fr; }
+    .step { border-right: 0; padding-left: 0; padding-right: 0; }
+    .step:not(:first-child) { border-top: var(--hairline) solid var(--border); padding-left: 0; }
+    .team { grid-template-columns: 1fr 1fr; }
+    .form-grid { grid-template-columns: 1fr; }
+    .bento { grid-auto-rows: 80px; gap: 8px; }
+    .b1, .b2, .b3, .b4, .b5, .b6 { grid-column: span 12; grid-row: span 3; }
+    .b7 { grid-column: span 12; grid-row: span 2; }
+    .b8, .b9 { grid-column: span 6; grid-row: span 2; }
+    .footer-top { grid-template-columns: 1fr; gap: var(--space-6); }
+  }
+
+  /* ============================================================
+     SCROLL REVEAL
+     ============================================================ */
+  .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 600ms cubic-bezier(0.4,0,0.2,1), transform 600ms cubic-bezier(0.4,0,0.2,1);
+    will-change: opacity, transform;
+  }
+  .reveal.is-in { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { opacity: 1; transform: none; }
+    .pubs-track { animation: none; }
+    .hero-scroll::after { animation: none; }
+  }
+
+  /* Print */
+  @media print {
+    .nav, .hero-scroll, .footer-social { display: none; }
+    .section { padding: 40px 20px; break-inside: avoid; }
+  }
+
+  /* audit-100-100: a11y prefers-reduced-motion + focus-visible */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
     }
-    .demo-frame__watermark { position: absolute; top: 14px; right: 14px; font-family: var(--fm); font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--paper); background: rgba(184,50,63,0.85); padding: 0.4rem 0.7rem; pointer-events: none; z-index: 4; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
+  }
+  :focus-visible { outline: 2px solid currentColor; outline-offset: 3px; border-radius: 2px; }
+  @media (forced-colors: active) {
+    a, button { forced-color-adjust: none; }
+  }
+  
+  /* audit-100-100 phase-2d: img overlay placeholder R16 BIBBIA */
+  .hero-img > img.ph-img,
+  .portfolio-card > img.ph-img,
+  .about-img > img.ph-img,
+  .case-photo > img.ph-img,
+  .photo > img.ph-img,
+  .tile > img.ph-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: inherit;
+    z-index: 0;
+  }
+  .portfolio-card > .caption,
+  .case-photo > .label,
+  .tile > .label,
+  .photo + cite,
+  .photo ~ blockquote {
+    position: relative;
+    z-index: 1;
+  }
+  
+  /* phase-2d Architetto: img overlay su .photo + label visibility */
+  .photo { position: relative; overflow: hidden; }
+  .photo > img.ph-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; }
+  .photo > .label { position: relative; z-index: 1; }
+  .photo.portrait > img.ph-img { filter: grayscale(1) contrast(1.05); }
+  
+  /* audit-100-100: skip link a11y WCAG 2.4.1 */
+  .audit-skip-link { position: absolute; left: -9999px; top: 0; background: #000; color: #fff; padding: 12px 16px; z-index: 10000; text-decoration: none; font: bold 14px/1 system-ui, sans-serif; border-radius: 0 0 8px 0; }
+  .audit-skip-link:focus { left: 0; outline: 3px solid #FFD700; outline-offset: 2px; }
 
-    @media (max-width: 767px) {
-      .demo-bar { padding: 0.55rem 0.9rem; gap: 0.5rem; }
-      .demo-bar__title { font-size: 0.92rem; }
-      .demo-bar__note { display: none; }
-      .demo-bar__cta { padding: 0.45rem 0.75rem; }
-    }
+  
+  /* audit-100-100 phase-2e: prevent horizontal scroll on desktop */
+  html, body { overflow-x: hidden; max-width: 100vw; }
+  
+  /* Phase 2.I contrast fix */
+  .eyebrow { color: #4A3520 !important; }
+  .btn-secondary { color: #2A1A0A !important; }
   </style>
+  <!-- audit-100-100 phase-2d picsum-assets -->
+  <!-- audit-100-100 phase-2c preload-critical -->
+  <!-- audit-100-100 phase-2h landmark+labels -->
+  <!-- audit-100-100 phase-2i contrast-fix -->
+  <!-- audit-100-100 phase-2j webp+cls -->
 </head>
 <body>
+<a href="#main" class="audit-skip-link">Salta al contenuto</a>
 
-  <header class="demo-bar">
-    <div class="demo-bar__left">
-      <a href="../../#web-design" class="demo-bar__back">&larr; Portfolio</a>
-      <span class="demo-bar__sep">/</span>
-      <span class="demo-bar__title">Studio Tau Architetti</span>
-      <span class="demo-bar__tier">Full Suite</span>
-      <span class="demo-bar__note">Demo &middot; non commissionato</span>
+<!-- ============================================================
+     1 · NAV
+     ============================================================ -->
+<nav class="nav" data-screen-label="01 Nav" aria-label="Principale">
+  <div class="nav-inner">
+    <a class="nav-brand" href="#">
+      <span class="nav-mono" aria-hidden="true">P</span>
+      <span class="nav-name">Studio Tau <em>Architetti</em></span>
+    </a>
+    <div class="nav-menu" role="menubar">
+      <a href="#studio">Studio</a>
+      <a href="#progetti">Progetti</a>
+      <a href="#processo">Processo</a>
+      <a href="#sostenibilita">Sostenibilità</a>
+      <a href="#contatti">Contatti</a>
     </div>
-    <a href="../../#contact" class="demo-bar__cta">Parliamone &rarr;</a>
-  </header>
-
-  <main class="demo-stage">
-    <div class="demo-frame">
-      <span class="demo-frame__watermark">Demo &middot; Architettura</span>
-      <div class="demo-frame__loader" id="demo-loader">Loading demo</div>
-      <iframe class="demo-frame__iframe" id="demo-iframe" sandbox="allow-scripts allow-popups allow-popups-to-escape-sandbox allow-forms" allowfullscreen referrerpolicy="no-referrer" title="Demo template Studio Tau Architetti"></iframe>
-      <div class="demo-frame__overlay" aria-hidden="true"></div>
+    <div class="nav-cta-wrap">
+      <span class="nav-lang"><strong>IT</strong><span>/</span>EN</span>
+      <a class="btn btn-primary" href="#contatti">Prenoti consulenza</a>
     </div>
-  </main>
+  </div>
+</nav>
 
-  <script>
-    (function(){
-      // Decode XOR + base64 (UTF-8 safe) → blob URL → iframe.src
-      var K = 'ALEXG-2026-PORTFOLIO-DEMO';
-      fetch('./_data.b64', { cache: 'no-cache' })
-        .then(function(r){ if(!r.ok) throw new Error('404'); return r.text(); })
-        .then(function(b64){
-          var binary = atob(b64.replace(/\s/g,''));
-          var bytes = new Uint8Array(binary.length);
-          for (var i=0;i<binary.length;i++) bytes[i] = binary.charCodeAt(i) ^ K.charCodeAt(i % K.length);
-          var html = new TextDecoder('utf-8').decode(bytes);
-          var blob = new Blob([html], { type: 'text/html;charset=utf-8' });
-          var url = URL.createObjectURL(blob);
-          var f = document.getElementById('demo-iframe');
-          f.addEventListener('load', function(){
-            var loader = document.getElementById('demo-loader');
-            if (loader) loader.classList.add('is-hidden');
-            // Revoca URL dopo 60s per scoraggiare estrazione blob URL diretta
-            setTimeout(function(){ try { URL.revokeObjectURL(url); } catch(e){} }, 60000);
-          }, { once: true });
-          f.src = url;
-        })
-        .catch(function(){
-          var loader = document.getElementById('demo-loader');
-          if (loader) loader.textContent = 'Demo non disponibile.';
-        });
+<main id="main">
 
-      // Deterrenti: right-click, drag, Ctrl+S, Ctrl+U, Ctrl+P, F12, Ctrl+Shift+I/J/C
-      document.addEventListener('contextmenu', function(e){ e.preventDefault(); });
-      document.addEventListener('dragstart',  function(e){ e.preventDefault(); });
-      document.addEventListener('keydown', function(e){
-        var k = (e.key || '').toLowerCase();
-        if (k === 'f12') { e.preventDefault(); return; }
-        if ((e.ctrlKey || e.metaKey) && !e.shiftKey && (k === 's' || k === 'u' || k === 'p')) { e.preventDefault(); return; }
-        if ((e.ctrlKey || e.metaKey) && e.shiftKey && (k === 'i' || k === 'j' || k === 'c')) { e.preventDefault(); return; }
+<!-- ============================================================
+     2 · HERO
+     ============================================================ -->
+<section class="hero" data-screen-label="02 Hero">
+  <div class="wrap">
+    <span class="eyebrow">STUDIO ARCHITETTURA + INTERIOR · VICENZA, DAL 2008</span>
+    <h1>Lo spazio domestico come materia di progetto.</h1>
+    <p class="hero-sub">
+      Studio di architettura residenziale e interior design a Vicenza, dal 2008. Ristrutturazione abitativa, ville unifamiliari, boutique commerciale.
+    </p>
+    <div class="hero-cta">
+      <a class="btn btn-primary" href="#contatti">Prenoti consulenza</a>
+      <a class="btn btn-ghost" href="#studio">Scopri lo studio →</a>
+    </div>
+    <div class="hero-meta">
+      <span>Residenziale</span>
+      <span class="sep" aria-hidden="true"></span>
+      <span>Interior</span>
+      <span class="sep" aria-hidden="true"></span>
+      <span>Boutique commerciale</span>
+    </div>
+  </div>
+  <div class="hero-scroll" aria-hidden="true">Scroll</div>
+</section>
+
+<!-- ============================================================
+     3 · MANIFESTO
+     ============================================================ -->
+<section class="manifesto section alt" data-screen-label="03 Manifesto">
+  <blockquote>
+    La casa che progettiamo per <em>Lei</em> è già in parte la sua casa.
+  </blockquote>
+  <cite>Studio Studio Tau Architetti</cite>
+</section>
+
+<!-- ============================================================
+     4 · PORTFOLIO BENTO
+     ============================================================ -->
+<section class="section" id="progetti" data-screen-label="04 Portfolio bento">
+  <div class="wrap">
+    <header class="section-head">
+      <div>
+        <span class="eyebrow">PROGETTI RECENTI</span>
+        <h2>Una selezione di lavori, dal 2020 ad oggi.</h2>
+      </div>
+      <p class="head-aside">
+        Nove progetti pubblicabili. L'archivio completo, con piante e materiali, è disponibile su richiesta dopo un primo incontro.
+      </p>
+    </header>
+
+    
+<div class="bento">
+      <a class="bento-card b1" href="#">
+        <div class="photo warm" style="height:100%"></div>
+        <div class="scrim"></div>
+        <div class="always">VILLA UNIFAMILIARE · COLLI BERICI · 2024</div>
+        <div class="card-body">
+          <div class="title">Villa nei Berici</div>
+          <div class="meta">VILLA UNIFAMILIARE · 2024 · 380 MQ</div>
+        </div>
+        <span class="arrow" aria-hidden="true">↗</span>
+      </a>
+      <a class="bento-card b2" href="#">
+        <div class="photo cool" style="height:100%"></div>
+        <div class="scrim"></div>
+        <div class="always">RISTRUTTURAZIONE · CENTRO STORICO · 2023</div>
+        <div class="card-body">
+          <div class="title">Loft Centro Storico</div>
+          <div class="meta">RISTRUTTURAZIONE · 2023 · 140 MQ</div>
+        </div>
+        <span class="arrow" aria-hidden="true">↗</span>
+      </a>
+      <a class="bento-card b3" href="#">
+        <div class="photo dark" style="height:100%"></div>
+        <div class="scrim"></div>
+        <div class="always" style="color:rgba(245,241,234,0.85)">INTERIOR COMMERCIALE · MILANO · 2024</div>
+        <div class="card-body">
+          <div class="title">Boutique Showroom</div>
+          <div class="meta">INTERIOR COMMERCIALE · 2024 · 220 MQ</div>
+        </div>
+        <span class="arrow" aria-hidden="true">↗</span>
+      </a>
+      <a class="bento-card b4" href="#">
+        <div class="photo stone" style="height:100%"></div>
+        <div class="scrim"></div>
+        <div class="always">RISTRUTTURAZIONE · BASSANO · 2022</div>
+        <div class="card-body">
+          <div class="title">Casa di famiglia, Bassano</div>
+          <div class="meta">RISTRUTTURAZIONE · 2022 · 210 MQ</div>
+        </div>
+        <span class="arrow" aria-hidden="true">↗</span>
+      </a>
+      <a class="bento-card b5" href="#">
+        <div class="photo wood" style="height:100%"></div>
+        <div class="scrim"></div>
+        <div class="always" style="color:rgba(245,241,234,0.85)">INTERIOR · VICENZA SUD · 2023</div>
+        <div class="card-body">
+          <div class="title">Penthouse Vicenza Sud</div>
+          <div class="meta">INTERIOR · 2023 · 165 MQ</div>
+        </div>
+        <span class="arrow" aria-hidden="true">↗</span>
+      </a>
+      <a class="bento-card b6" href="#">
+        <div class="photo concrete" style="height:100%"></div>
+        <div class="scrim"></div>
+        <div class="always">RESTAURO · 1700 · 2021</div>
+        <div class="card-body">
+          <div class="title">Restauro 1700</div>
+          <div class="meta">RESTAURO STORICO · 2021 · 290 MQ</div>
+        </div>
+        <span class="arrow" aria-hidden="true">↗</span>
+      </a>
+      <a class="bento-card b7" href="#">
+        <div class="photo dark" style="height:100%"></div>
+        <div class="scrim"></div>
+        <div class="always" style="color:rgba(245,241,234,0.85)">HOSPITALITY · VICENZA · 2024</div>
+        <div class="card-body">
+          <div class="title">Ristorante Materia</div>
+          <div class="meta">HOSPITALITY · 2024 · 180 MQ</div>
+        </div>
+        <span class="arrow" aria-hidden="true">↗</span>
+      </a>
+      <a class="bento-card b8" href="#">
+        <div class="photo warm" style="height:100%"></div>
+        <div class="scrim"></div>
+        <div class="always">INTERIOR · 2022</div>
+        <div class="card-body">
+          <div class="title">Studio privato</div>
+          <div class="meta">INTERIOR · 2022 · 60 MQ</div>
+        </div>
+        <span class="arrow" aria-hidden="true">↗</span>
+      </a>
+      <a class="bento-card b9" href="#">
+        <div class="photo stone" style="height:100%"></div>
+        <div class="scrim"></div>
+        <div class="always">VILLA · 2020</div>
+        <div class="card-body">
+          <div class="title">Casa di Pietra</div>
+          <div class="meta">VILLA UNIFAMILIARE · 2020 · 240 MQ</div>
+        </div>
+        <span class="arrow" aria-hidden="true">↗</span>
+      </a>
+    </div>
+
+    <div class="bento-foot">
+      <span class="caption">9 di 47 progetti realizzati — l'archivio completo è su richiesta.</span>
+      <a class="btn btn-secondary" href="#">Vedi archivio progetti →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     5 · CASE STUDY
+     ============================================================ -->
+<section class="section alt" data-screen-label="05 Case study">
+  <div class="wrap">
+    <header class="section-head">
+      <div>
+        <span class="eyebrow">PROGETTO IN EVIDENZA</span>
+        <h2>Villa nei Berici.</h2>
+      </div>
+      <p class="head-aside">
+        Una nuova costruzione di 380 mq sulle colline di Vicenza. Pietra di Vicenza, rovere europeo, intonaco a calce. Cantiere chiuso a luglio 2024.
+      </p>
+    </header>
+
+    <div class="case">
+      <div class="photo case-photo warm" role="img" aria-label="Villa nei Berici, vista esterna"><img src="https://picsum.photos/seed/arch-villa-berici-est-sud/800/1000?fm=webp" width="800" height="1000" alt="Villa nei Berici esterno sud, pietra di Vicenza" class="ph-img" loading="lazy" decoding="async" />
+        <span class="label">VILLA-BERICI-001 · ESTERNO SUD<small>Foto cantiere · luglio 2024 · placeholder</small></span>
+      </div>
+      <aside class="case-info">
+        <h2><em>Pietra di Vicenza<br />e rovere europeo.</em></h2>
+        <div class="case-spec">
+          <dl>
+            <div class="row"><dt>Anno</dt><dd>2024</dd></div>
+            <div class="row"><dt>Località</dt><dd>Colli Berici, Vicenza</dd></div>
+            <div class="row"><dt>Superficie</dt><dd>380 mq · lotto 1.200 mq</dd></div>
+            <div class="row"><dt>Tipologia</dt><dd>Villa unifamiliare, nuova costruzione</dd></div>
+            <div class="row"><dt>Materiali</dt><dd>Pietra di Vicenza, rovere europeo, intonaco a calce, infissi in legno-alluminio</dd></div>
+            <div class="row"><dt>Premi</dt><dd><span class="verify">[da confermare]</span></dd></div>
+          </dl>
+        </div>
+        <p class="case-para">
+          La villa nasce per una famiglia veneta che ci ha chiesto una casa silenziosa, di pietra. Abbiamo lavorato due anni sul lotto, scegliendo l'orientamento prima dell'edificio. La pietra di Vicenza arriva da una cava a tre chilometri. Il rovere è europeo, certificato. Gli intonaci sono a calce naturale. Ogni stanza ha una finestra che inquadra un albero diverso del giardino.
+        </p>
+        <a class="btn btn-secondary" href="#">Vedi il caso completo →</a>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     6 · AUDIENCE
+     ============================================================ -->
+<section class="section" data-screen-label="06 Audience">
+  <div class="wrap">
+    <header class="section-head">
+      <div>
+        <span class="eyebrow">PER CHI PROGETTIAMO</span>
+        <h2>Tre territori di lavoro.</h2>
+      </div>
+      <p class="head-aside">
+        Lo studio non lavora con tutti. Selezioniamo i progetti in base al contesto, alla disponibilità di tempo e all'allineamento con la committenza.
+      </p>
+    </header>
+
+    <div class="grid-3">
+      <article class="aud-card">
+        <span class="aud-icon" aria-hidden="true">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.25"><path d="M2 7l6-5 6 5v7H2z"/><path d="M6 14V9h4v5"/></svg>
+        </span>
+        <h3>Ristrutturazione<br />abitativa privata.</h3>
+        <p>Interventi su appartamenti storici, case di famiglia, immobili da recuperare. Lavoriamo soprattutto su patrimonio esistente nel centro di Vicenza e nei comuni di Padova e Treviso. Il progetto parte dal rilievo, dall'ascolto e da un primo studio di fattibilità tecnica.</p>
+        <div class="meta"><strong>FASCIA INDICATIVA</strong> · 80–250 K€</div>
+      </article>
+      <article class="aud-card">
+        <span class="aud-icon" aria-hidden="true">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.25"><rect x="2" y="3" width="12" height="11"/><path d="M2 7h12M8 3v11"/></svg>
+        </span>
+        <h3>Nuova costruzione,<br />villa unifamiliare.</h3>
+        <p>Progettazione ex novo di ville sui Colli Berici, in pianura vicentina e nelle aree pedecollinari. Dal rilievo del lotto al chiavi-in-mano, con attenzione al paesaggio, all'orientamento solare e alla relazione fra edificio e terreno. Tempi medi di progettazione: 12–18 mesi.</p>
+        <div class="meta"><strong>FASCIA INDICATIVA</strong> · 250–500 K€</div>
+      </article>
+      <article class="aud-card">
+        <span class="aud-icon" aria-hidden="true">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.25"><path d="M2 6l1-3h10l1 3M3 6h10v8H3z"/><path d="M6 14V9h4v5"/></svg>
+        </span>
+        <h3>Boutique commerciale,<br />retail e hospitality.</h3>
+        <p>Showroom moda, ristoranti, spazi di rappresentanza per brand italiani e internazionali. Lavoriamo con committenza che cerca un approccio sartoriale, materico, lontano dal retail standardizzato. Tempi serrati: dal concept all'apertura, in genere fra i tre e i sei mesi.</p>
+        <div class="meta"><strong>FASCIA INDICATIVA</strong> · 100–400 K€</div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     7 · CAPABILITIES
+     ============================================================ -->
+<section class="section alt" data-screen-label="07 Capabilities">
+  <div class="wrap">
+    <header class="section-head">
+      <div>
+        <span class="eyebrow">SERVIZI</span>
+        <h2>Cosa facciamo, in concreto.</h2>
+      </div>
+      <p class="head-aside">
+        Quattro aree di lavoro che si intrecciano. Non vendiamo pacchetti separati: ogni progetto le combina in proporzioni diverse.
+      </p>
+    </header>
+
+    <div class="grid-4">
+      <article class="cap-card">
+        <div class="num">01 · ARCHITETTURA</div>
+        <h3>Architettura.</h3>
+        <p>Dal rilievo al collaudo. Progetto preliminare, definitivo, esecutivo, pratiche edilizie e gestione dei rapporti con gli enti.</p>
+        <ul>
+          <li>Progetto preliminare e definitivo</li>
+          <li>Pratiche edilizie e permessi</li>
+          <li>Restauro e recupero</li>
+          <li>Rilievo e diagnosi energetica</li>
+        </ul>
+      </article>
+      <article class="cap-card">
+        <div class="num">02 · INTERIOR</div>
+        <h3>Interior design.</h3>
+        <p>Il progetto degli interni come continuazione dell'architettura. Concept, materiali, arredi su misura, illuminazione, styling.</p>
+        <ul>
+          <li>Concept e space planning</li>
+          <li>Selezione materiali e finiture</li>
+          <li>Disegno arredi su misura</li>
+          <li>Light design e styling</li>
+        </ul>
+      </article>
+      <article class="cap-card">
+        <div class="num">03 · CAM EDILIZIA</div>
+        <h3>Sostenibilità CAM.</h3>
+        <p>Criteri Ambientali Minimi applicati al progetto. Filiera corta, materiali certificati, comfort termico passivo, analisi del ciclo di vita.</p>
+        <ul>
+          <li>CAM Edilizia, materiali certificati</li>
+          <li>Filiera corta, fornitori km 0</li>
+          <li>Analisi del ciclo di vita</li>
+          <li>Comfort termico passivo</li>
+        </ul>
+      </article>
+      <article class="cap-card">
+        <div class="num">04 · CANTIERE</div>
+        <h3>Direzione lavori.</h3>
+        <p>Project management di cantiere, dal computo alla consegna. Selezione delle imprese, controllo qualità, gestione varianti, collaudo finale.</p>
+        <ul>
+          <li>Project management di cantiere</li>
+          <li>Computo metrico e capitolato</li>
+          <li>Selezione e gestione imprese</li>
+          <li>Collaudo e consegna chiavi-in-mano</li>
+        </ul>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     8 · PROCESSO
+     ============================================================ -->
+<section class="section" id="processo" data-screen-label="08 Processo">
+  <div class="wrap">
+    <header class="section-head">
+      <div>
+        <span class="eyebrow">PROCESSO</span>
+        <h2>Cinque tappe, dal sopralluogo alla consegna.</h2>
+      </div>
+      <p class="head-aside">
+        Ogni progetto attraversa queste cinque fasi. La durata cambia con la complessità, ma la sequenza è sempre la stessa.
+      </p>
+    </header>
+
+    <div class="process">
+      <div class="step">
+        <div class="n">01<span class="dot">.</span></div>
+        <h3>Consulenza.</h3>
+        <p>Sopralluogo conoscitivo, rilievo, ascolto della committenza. Una prima ipotesi di intervento, scritta, entro tre settimane.</p>
+        <div class="timing">2–3 SETTIMANE</div>
+      </div>
+      <div class="step">
+        <div class="n">02<span class="dot">.</span></div>
+        <h3>Concept.</h3>
+        <p>Studio di fattibilità tecnica ed economica. Indirizzo materico, prima planimetria, stima di massima dei costi.</p>
+        <div class="timing">4–8 SETTIMANE</div>
+      </div>
+      <div class="step">
+        <div class="n">03<span class="dot">.</span></div>
+        <h3>Esecutivo.</h3>
+        <p>Progetto esecutivo dettagliato, capitolato, computo metrico, pratiche edilizie e gestione dei permessi presso il Comune.</p>
+        <div class="timing">3–6 MESI</div>
+      </div>
+      <div class="step">
+        <div class="n">04<span class="dot">.</span></div>
+        <h3>Cantiere.</h3>
+        <p>Direzione lavori, controllo qualità, gestione delle imprese e dei fornitori, monitoraggio dei costi e dei tempi.</p>
+        <div class="timing">6–18 MESI</div>
+      </div>
+      <div class="step">
+        <div class="n">05<span class="dot">.</span></div>
+        <h3>Consegna.</h3>
+        <p>Collaudo tecnico, consegna chiavi-in-mano, post-occupancy. Una visita di follow-up dopo dodici mesi di vita dello spazio.</p>
+        <div class="timing">FOLLOW-UP +12 MESI</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     9 · SOSTENIBILITÀ
+     ============================================================ -->
+<section class="section" id="sostenibilita" style="background: var(--cream-100);" data-screen-label="09 Sostenibilità">
+  <div class="wrap">
+    <div class="sost-grid">
+      <div>
+        <span class="cam-badge"><span class="dot"></span> CAM EDILIZIA · CERTIFICAZIONE ATTIVA</span>
+        <h2><em>Materia,</em><br />sostenibilità,<br />lentezza.</h2>
+        <p class="sost-para">
+          Lavoriamo sulla filiera corta, sui materiali a km zero, sul legno europeo certificato. Gli intonaci sono a calce naturale, la pietra arriva dalle cave dei Berici, il rovere dai boschi del nord-est.
+        </p>
+        <p class="sost-para">
+          La sostenibilità non è una checklist a fine progetto. È una scelta di partenza che riduce i trasporti, allunga la vita dell'edificio, abbassa i consumi di chi lo abita. Lo chiamiamo lavoro lento.
+        </p>
+      </div>
+      <div>
+        <div class="sost-stats">
+          <div>
+            <div class="stat-num"><span class="verify" style="font-size:11px">XX</span><small>%</small></div>
+            <div class="stat-label">Materiali km 0<br />sui progetti 2023–2024<br /><span class="verify">[da confermare]</span></div>
+          </div>
+          <div>
+            <div class="stat-num">3<small></small></div>
+            <div class="stat-label">Progetti certificati<br />CAM Edilizia<br /><span class="verify">[da confermare]</span></div>
+          </div>
+          <div>
+            <div class="stat-num">18<small></small></div>
+            <div class="stat-label">Anni di esperienza<br />sul territorio veneto</div>
+          </div>
+        </div>
+        <div class="sost-thumbs">
+          <div>
+            <div class="photo stone ratio-4x5">
+              <span class="label">CAM-001<small>Casa di Pietra</small></span>
+            </div>
+            <div class="lbl"><strong>Casa di Pietra</strong><br />2023 · CAM</div>
+          </div>
+          <div>
+            <div class="photo warm ratio-4x5">
+              <span class="label">CAM-002<small>Villa Berici</small></span>
+            </div>
+            <div class="lbl"><strong>Villa Berici</strong><br />2024 · CAM</div>
+          </div>
+          <div>
+            <div class="photo cool ratio-4x5">
+              <span class="label">CAM-003<small>Restauro 1700</small></span>
+            </div>
+            <div class="lbl"><strong>Restauro 1700</strong><br />2021 · CAM</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     10 · TEAM
+     ============================================================ -->
+<section class="section" id="studio" data-screen-label="10 Team">
+  <div class="wrap">
+    <header class="section-head">
+      <div>
+        <span class="eyebrow">STUDIO</span>
+        <h2>Cinque persone,<br />una pratica.</h2>
+      </div>
+      <p class="head-aside">
+        Tre architetti e due interior designer. Lavoriamo dallo stesso spazio dal 2008, in un palazzo del centro storico di Vicenza.
+      </p>
+    </header>
+
+    <div class="team">
+      <article>
+        <div class="photo portrait ratio-4x5 dark"><img src="https://picsum.photos/seed/arch-team-founder/600/750?fm=webp" width="600" height="750" alt="Architetto founder studio, ritratto bianco e nero" class="ph-img" loading="lazy" decoding="async" />
+          <span class="label">RITRATTO 4:5<small>placeholder b/n</small></span>
+        </div>
+        <div class="name"><span class="verify">[Nome]</span></div>
+        <div class="role">Architetto · Founder</div>
+        <p class="bio">Founder dello studio, iscritto OAPPC Vicenza dal 2003. Si occupa principalmente di nuova costruzione e restauro.</p>
+      </article>
+      <article>
+        <div class="photo portrait ratio-4x5 stone"><img src="https://picsum.photos/seed/arch-team-senior/600/750?fm=webp" width="600" height="750" alt="Architetto senior studio, ritratto bianco e nero" class="ph-img" loading="lazy" decoding="async" />
+          <span class="label">RITRATTO 4:5<small>placeholder b/n</small></span>
+        </div>
+        <div class="name"><span class="verify">[Nome]</span></div>
+        <div class="role">Architetto Senior</div>
+        <p class="bio">In studio dal 2012. Segue i progetti di ristrutturazione abitativa privata e i rapporti con gli enti.</p>
+      </article>
+      <article>
+        <div class="photo portrait ratio-4x5 cool"><img src="https://picsum.photos/seed/arch-team-architect3/600/750?fm=webp" width="600" height="750" alt="Architetta CAM Edilizia, ritratto bianco e nero" class="ph-img" loading="lazy" decoding="async" />
+          <span class="label">RITRATTO 4:5<small>placeholder b/n</small></span>
+        </div>
+        <div class="name"><span class="verify">[Nome]</span></div>
+        <div class="role">Architetto</div>
+        <p class="bio">In studio dal 2018. Specializzata in CAM Edilizia, certificazioni energetiche e materiali sostenibili.</p>
+      </article>
+      <article>
+        <div class="photo portrait ratio-4x5 warm"><img src="https://picsum.photos/seed/arch-team-interior/600/750?fm=webp" width="600" height="750" alt="Interior designer studio, ritratto bianco e nero" class="ph-img" loading="lazy" decoding="async" />
+          <span class="label">RITRATTO 4:5<small>placeholder b/n</small></span>
+        </div>
+        <div class="name"><span class="verify">[Nome]</span></div>
+        <div class="role">Interior Designer</div>
+        <p class="bio">In studio dal 2015. Coordina la parte interior dei progetti residenziali e lo styling fotografico finale.</p>
+      </article>
+      <article>
+        <div class="photo portrait ratio-4x5 wood"><img src="https://picsum.photos/seed/arch-team-pm/600/750?fm=webp" width="600" height="750" alt="Project manager studio, ritratto bianco e nero" class="ph-img" loading="lazy" decoding="async" />
+          <span class="label">RITRATTO 4:5<small>placeholder b/n</small></span>
+        </div>
+        <div class="name"><span class="verify">[Nome]</span></div>
+        <div class="role">Interior · Project Manager</div>
+        <p class="bio">In studio dal 2020. Project manager di cantiere, gestisce tempi, costi e fornitori sui progetti commerciali.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     11 · CREDENZIALI
+     ============================================================ -->
+<section class="section dense alt" data-screen-label="11 Credenziali">
+  <div class="wrap">
+    <div class="creds">
+      <div class="cred">
+        <span class="dot">•</span>
+        <div class="big">2008</div>
+        <div class="lbl">Anno di fondazione<br />dello studio</div>
+      </div>
+      <div class="cred">
+        <span class="dot">•</span>
+        <div class="big" style="font-size:36px">OAPPC</div>
+        <div class="lbl">Vicenza n. <span class="verify">[da verificare]</span><br />Iscrizione attiva</div>
+      </div>
+      <div class="cred">
+        <span class="dot">•</span>
+        <div class="big">47</div>
+        <div class="lbl">Progetti realizzati<br /><span class="verify">[da confermare]</span></div>
+      </div>
+      <div class="cred">
+        <span class="dot">•</span>
+        <div class="big">3</div>
+        <div class="lbl">Premi e menzioni<br />di stampa <span class="verify">[placeholder]</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     12 · PUBBLICAZIONI
+     ============================================================ -->
+<section class="section dense" data-screen-label="12 Pubblicazioni">
+  <div class="wrap">
+    <header class="section-head" style="margin-bottom: var(--space-6); align-items: center;">
+      <div>
+        <span class="eyebrow">PUBBLICAZIONI E MENZIONI</span>
+      </div>
+      <span class="verify">[da raccogliere reali]</span>
+    </header>
+  </div>
+  <div class="pubs">
+    <div class="pubs-track">
+      <span class="pub-logo">Living</span>
+      <span class="pub-logo sans">Casa Mia</span>
+      <span class="pub-logo">Domus</span>
+      <span class="pub-logo sans">Wallpaper*</span>
+      <span class="pub-logo">Abitare</span>
+      <span class="pub-logo sans">Elle Decor</span>
+      <span class="pub-logo">Interni</span>
+      <span class="pub-logo sans">AD Italia</span>
+      <!-- duplicate for seamless loop -->
+      <span class="pub-logo">Living</span>
+      <span class="pub-logo sans">Casa Mia</span>
+      <span class="pub-logo">Domus</span>
+      <span class="pub-logo sans">Wallpaper*</span>
+      <span class="pub-logo">Abitare</span>
+      <span class="pub-logo sans">Elle Decor</span>
+      <span class="pub-logo">Interni</span>
+      <span class="pub-logo sans">AD Italia</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     13 · TESTIMONIALS
+     ============================================================ -->
+<section class="section" data-screen-label="13 Testimonials">
+  <div class="wrap">
+    <header class="section-head">
+      <div>
+        <span class="eyebrow">COMMITTENTI</span>
+        <h2>La parola a chi ci ha scelto.</h2>
+      </div>
+      <span class="verify">[da raccogliere con consenso GDPR scritto + autorizzazione foto]</span>
+    </header>
+    <div class="testi">
+      <article class="testi-card">
+        <div class="photo av warm" role="img" aria-label="Ritratto committente"></div>
+        <div class="stars" role="img" aria-label="5 stelle">★★★★★</div>
+        <blockquote>
+          Lo studio ha lavorato sulla nostra casa con un'attenzione al materiale che non avevamo mai visto. La pietra di Vicenza, scelta in cava insieme a noi, oggi è la pelle della villa.
+        </blockquote>
+        <div class="who"><span class="verify">[Nome A]</span></div>
+        <div class="what">Villa Berici · 2024</div>
+      </article>
+      <article class="testi-card">
+        <div class="photo av cool" role="img" aria-label="Ritratto committente"></div>
+        <div class="stars" role="img" aria-label="5 stelle">★★★★★</div>
+        <blockquote>
+          Tempi rispettati, costi nei limiti dichiarati, comunicazione costante in cantiere. La nostra ristrutturazione è arrivata in fondo senza sorprese, cosa rara nel nostro settore.
+        </blockquote>
+        <div class="who"><span class="verify">[Nome B]</span></div>
+        <div class="what">Loft centro storico · 2023</div>
+      </article>
+      <article class="testi-card">
+        <div class="photo av stone" role="img" aria-label="Ritratto committente"></div>
+        <div class="stars" role="img" aria-label="5 stelle">★★★★★</div>
+        <blockquote>
+          Per la nostra boutique cercavamo un approccio sartoriale e contemporaneo, lontano dal retail di catena. Lo studio ha letto il brand e ha tradotto i nostri valori in materia.
+        </blockquote>
+        <div class="who"><span class="verify">[Nome C]</span></div>
+        <div class="what">Boutique showroom · 2024</div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     14 · LEAD MAGNET
+     ============================================================ -->
+<section class="section alt" data-screen-label="14 Lead magnet">
+  <div class="wrap">
+    <div class="leadmag">
+      <div>
+        <span class="eyebrow">GUIDA GRATUITA · PDF</span>
+        <h2>12 materiali sostenibili 2026 per la ristrutturazione.</h2>
+        <p class="pos">
+          Una selezione ragionata di dodici materiali certificati, con schede tecniche, fornitori del nord-est e fasce di prezzo indicative. Ventiquattro pagine, scaricabili in PDF.
+        </p>
+        <form class="leadmag-form" onsubmit="event.preventDefault(); this.querySelector('button').textContent='Inviato ✓';">
+          <div class="field-line">
+            <input type="email" placeholder="Inserisca la sua email" aria-label="Email" required />
+            <button class="btn btn-primary" type="submit">Ricevi la guida</button>
+          </div>
+          <label class="check-row">
+            <input type="checkbox" required aria-label="Checkbox" />
+            <span>Ho letto e accetto l'<a class="link" href="/privacy">informativa privacy</a>. Acconsento al trattamento dei miei dati per ricevere la guida.</span>
+          </label>
+        </form>
+        <p class="lm-disc">PER ARCHITETTI · GEOMETRI · COMMITTENTI · CURIOSI DELLA MATERIA</p>
+      </div>
+      <div class="photo leadmag-cover dark" role="img" aria-label="Copertina PDF guida">
+        <span class="pdf-tag">PDF · 24 PP · 2.4 MB</span>
+        <div class="pdf-title"><em>12 materiali<br />sostenibili</em><br />2026</div>
+        <span class="pdf-meta">Studio Studio Tau Architetti · Edizione 2026</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     15 · FORM CONTATTO
+     ============================================================ -->
+<section class="section" id="contatti" data-screen-label="15 Form contatto">
+  <div class="wrap">
+    <div class="form-wrap">
+      <div>
+        <span class="eyebrow">RICHIESTA PROGETTO</span>
+        <h2>Iniziamo<br /><em>un progetto.</em></h2>
+        <p class="lead">
+          Ci racconti dell'immobile, del contesto, dell'idea iniziale. Ci sentiamo entro 48 ore lavorative per fissare una prima conversazione.
+        </p>
+        <div class="form-aside">
+          <strong>Risposta entro 48 ore lavorative.</strong>
+          La consulenza preliminare di 60 minuti si svolge in studio o in videocall e non comporta impegni successivi.
+        </div>
+      </div>
+
+      <form class="form-grid" onsubmit="event.preventDefault(); alert('Modulo wireframe — non ancora collegato.');">
+        <div class="field">
+          <label>Nome e cognome <span class="req">*</span></label>
+          <input class="ctrl" type="text" required aria-label="Text" />
+        </div>
+        <div class="field">
+          <label>Email <span class="req">*</span></label>
+          <input class="ctrl" type="email" required aria-label="Email" />
+        </div>
+        <div class="field">
+          <label>Telefono</label>
+          <input class="ctrl" type="tel" aria-label="Tel" />
+        </div>
+        <div class="field">
+          <label>Tipologia di intervento <span class="req">*</span></label>
+          <select class="ctrl" required aria-label="Campo modulo">
+            <option value="">Selezioni una tipologia</option>
+            <option>Ristrutturazione abitativa</option>
+            <option>Nuova costruzione · villa</option>
+            <option>Interior commerciale</option>
+            <option>Consulenza preliminare</option>
+          </select>
+        </div>
+        <div class="field full">
+          <label>Range budget indicativo <span class="req">*</span></label>
+          <select class="ctrl" required aria-label="Campo modulo">
+            <option value="">Selezioni una fascia</option>
+            <option>≤ 50.000 €</option>
+            <option>50.000 — 150.000 €</option>
+            <option>150.000 — 300.000 €</option>
+            <option>300.000 — 500.000 €</option>
+            <option>&gt; 500.000 €</option>
+          </select>
+        </div>
+        <div class="field full">
+          <label>Note di progetto</label>
+          <textarea class="ctrl" rows="4" placeholder="Ci racconti dell'immobile, del contesto, dell'idea iniziale." aria-label="Ci racconti dell'immobile, del contesto, dell'idea iniziale."></textarea>
+        </div>
+        <div class="field full">
+          <label>Planimetria existing — opzionale</label>
+          <label class="field-upload">
+            <span class="icon">↑</span>
+            Trascini un file o clicchi per caricare<br />
+            <span style="font-size:10px; opacity:0.7;">PDF · DWG · JPG — max 10 MB</span>
+            <input type="file" accept=".pdf,.dwg,.jpg,.jpeg,.png" hidden aria-label="File" />
+          </label>
+        </div>
+        <div class="full checks-stack">
+          <label class="check-row">
+            <input type="checkbox" required aria-label="Checkbox" />
+            <span><strong>Ho letto e accetto l'informativa privacy.</strong> Consenso al trattamento dei dati per la sola gestione della richiesta — <a class="link" href="/privacy">/privacy</a></span>
+          </label>
+          <label class="check-row">
+            <input type="checkbox" aria-label="Checkbox" />
+            <span>Acconsento, in via separata e facoltativa, all'invio di comunicazioni dello studio (newsletter, eventi, pubblicazioni). Revocabile in qualunque momento.</span>
+          </label>
+        </div>
+        <div class="full form-foot">
+          <span class="caption">I CAMPI CONTRASSEGNATI CON * SONO OBBLIGATORI</span>
+          <button class="btn btn-primary" type="submit">Invia richiesta →</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     16 · FAQ
+     ============================================================ -->
+<section class="section alt" data-screen-label="16 FAQ">
+  <div class="wrap">
+    <header class="section-head" style="grid-template-columns: 1fr; text-align: center; justify-items: center; margin-bottom: var(--space-8);">
+      <div>
+        <span class="eyebrow">DOMANDE FREQUENTI</span>
+        <h2 style="margin: var(--space-4) auto 0; max-width: 18ch;">Le cinque domande<br />che ci fate più spesso.</h2>
+      </div>
+    </header>
+
+    <div class="faq">
+      <details open>
+        <summary>
+          <span class="qnum">01</span>
+          <span class="q"><em>Da dove parte un progetto?</em></span>
+          <span class="toggle" aria-hidden="true"></span>
+        </summary>
+        <p class="ans">
+          Da una conversazione di 60 minuti, in studio o in videocall, gratuita e senza impegno. Le chiediamo dell'immobile, del contesto, del budget di massima. Se c'è un sopralluogo da fare, lo programmiamo nelle settimane successive con una piccola tariffa. Entro tre settimane Le restituiamo una prima ipotesi scritta: cosa pensiamo si possa fare, in quanto tempo, con che ordine di costi. Da lì, decidiamo insieme se firmare un incarico di progettazione.
+        </p>
+      </details>
+      <details>
+        <summary>
+          <span class="qnum">02</span>
+          <span class="q"><em>Quali sono le tempistiche tipiche?</em></span>
+          <span class="toggle" aria-hidden="true"></span>
+        </summary>
+        <p class="ans">
+          Dipende dall'intervento. Una ristrutturazione abitativa richiede in media dai 6 ai 12 mesi di cantiere, dopo 3–6 mesi di progetto e permessi. Una nuova costruzione, con villa unifamiliare, fra i 12 e i 24 mesi di cantiere. Un interior commerciale, dai 3 ai 6 mesi totali. Sono medie reali sui nostri progetti recenti, non promesse: le condivideremo nello specifico in fase di concept, dopo aver visto l'immobile.
+        </p>
+      </details>
+      <details>
+        <summary>
+          <span class="qnum">03</span>
+          <span class="q"><em>Lavorate solo a Vicenza?</em></span>
+          <span class="toggle" aria-hidden="true"></span>
+        </summary>
+        <p class="ans">
+          Il nostro territorio principale è il triangolo Vicenza — Padova — Treviso. È dove possiamo essere in cantiere in 45 minuti e dove conosciamo le imprese, gli artigiani e i fornitori. Per progetti selezionati lavoriamo anche cross-border, in Svizzera, Austria e Germania, dove abbiamo committenti italiani trasferiti. Fuori da queste aree valutiamo caso per caso, soprattutto per interventi commerciali che giustifichino la trasferta.
+        </p>
+      </details>
+      <details>
+        <summary>
+          <span class="qnum">04</span>
+          <span class="q"><em>Come funziona la consulenza preliminare?</em></span>
+          <span class="toggle" aria-hidden="true"></span>
+        </summary>
+        <p class="ans">
+          Sessanta minuti, in studio o video, senza costi e senza impegno. Le chiediamo di portare le informazioni di base: indirizzo dell'immobile, planimetria se ce l'ha, ordine di idea sul budget. Le raccontiamo come lavoriamo, mostriamo progetti simili, discutiamo apertamente cosa è realistico e cosa no. Se c'è un sopralluogo da programmare lo fissiamo in coda, con una piccola tariffa. Da quel momento, ogni passaggio è formalizzato per iscritto.
+        </p>
+      </details>
+      <details>
+        <summary>
+          <span class="qnum">05</span>
+          <span class="q"><em>Cosa significa CAM Edilizia, per chi non è tecnico?</em></span>
+          <span class="toggle" aria-hidden="true"></span>
+        </summary>
+        <p class="ans">
+          CAM sta per Criteri Ambientali Minimi. Sono regole italiane che dicono come scegliere materiali, fornitori e impianti per costruire in modo meno inquinante. Per chi vive lo spazio, in concreto, significa tre cose: aria interna più sana, materiali con tracciabilità verificata, edificio che consuma meno e dura di più. Non è un bollino di marketing: è un insieme di scelte progettuali documentate, che possiamo spiegarLe pezzo per pezzo a metà del progetto.
+        </p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     17 · CONTACT + LOCATION
+     ============================================================ -->
+<section class="section" data-screen-label="17 Contact location">
+  <div class="wrap">
+    <div class="contact">
+      <div>
+        <span class="eyebrow">VIENI A TROVARCI</span>
+        <h2 style="margin-top: var(--space-4);"><em>Lo studio, in centro<br />a Vicenza.</em></h2>
+        <p style="color: var(--ink-700); font-size: 17px; line-height: 1.6;">
+          Riceviamo su appuntamento. Il primo incontro si fissa via mail, telefono o tramite il modulo di richiesta progetto.
+        </p>
+        <dl class="contact-info">
+          <div class="info-row"><dt>Indirizzo</dt><dd><span class="verify">Via [da verificare]</span><br />36100 Vicenza · centro storico</dd></div>
+          <div class="info-row"><dt>Telefono</dt><dd><span class="verify">+39 [da verificare]</span></dd></div>
+          <div class="info-row"><dt>Email</dt><dd><a class="link" href="mailto:info@studio-tau-architetti.it">info@studio-tau-architetti.it</a></dd></div>
+          <div class="info-row"><dt>Orari</dt><dd>Lunedì — Venerdì · 9.00 — 19.00<br />Sabato · su appuntamento</dd></div>
+          <div class="info-row"><dt>OAPPC</dt><dd>Vicenza · n. <span class="verify">[da verificare]</span></dd></div>
+        </dl>
+        <a class="btn btn-primary" href="#contatti" style="margin-top: var(--space-7);">Prenoti consulenza</a>
+      </div>
+      <div class="contact-media">
+        <div class="map-ph" role="img" aria-label="Mappa di Vicenza centro storico, posizione studio">
+          <span class="pin" aria-hidden="true"></span>
+          <span class="label">GOOGLE MAPS · IFRAME · VICENZA CENTRO · placeholder</span>
+        </div>
+        <div class="photo ratio-3x2 cool" role="img" aria-label="Interni dello studio">
+          <span class="label">FOTO STUDIO INTERIOR<small>placeholder</small></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer" data-screen-label="18 Footer">
+  <div class="wrap">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="wm">Studio Tau <em>Architetti</em></div>
+        <p>Studio di architettura e interior design. Vicenza, dal 2008. Residenziale privato, ville unifamiliari, boutique commerciale.</p>
+        <div class="footer-social">
+          <a class="soc" href="#" aria-label="Instagram">IG</a>
+          <a class="soc" href="#" aria-label="LinkedIn">IN</a>
+          <a class="soc" href="#" aria-label="Houzz">HZ</a>
+          <a class="soc" href="#" aria-label="Newsletter">✉</a>
+        </div>
+      </div>
+
+      <div>
+        <h3>Studio</h3>
+        <ul>
+          <li><a href="#studio">Chi siamo</a></li>
+          <li><a href="#studio">Team</a></li>
+          <li><a href="#">Pubblicazioni</a></li>
+          <li><a href="#">Press kit</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Progetti</h3>
+        <ul>
+          <li><a href="#progetti">Residenziale</a></li>
+          <li><a href="#progetti">Ville</a></li>
+          <li><a href="#progetti">Boutique commerciale</a></li>
+          <li><a href="#progetti">Archivio completo</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Processo</h3>
+        <ul>
+          <li><a href="#processo">Come lavoriamo</a></li>
+          <li><a href="#sostenibilita">Sostenibilità · CAM</a></li>
+          <li><a href="#">Materiali · guida PDF</a></li>
+          <li><a href="#contatti">Prenoti consulenza</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Legale</h3>
+        <ul>
+          <li><a href="/privacy">Privacy</a></li>
+          <li><a href="/cookie">Cookie</a></li>
+          <li><a href="/termini">Termini</a></li>
+          <li><a href="#contatti">Contatti</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-legal">
+      <div class="compliance">
+        <strong>STUDIO PELLIZZARI ARCHITETTI S.T.P.</strong>
+        Titolari · <span class="verify">Nomi [da verificare]</span><br />
+        OAPPC Vicenza · n. <span class="verify">[da verificare]</span> &nbsp;·&nbsp; P.IVA <span class="verify">[da verificare]</span><br />
+        Sede legale · <span class="verify">Via [da verificare]</span>, 36100 Vicenza
+        <div class="disclaimer">
+          Le immagini di progetto sono proprietà dei committenti, riprodotte con autorizzazione esplicita ai sensi del GDPR. Tutti i testi e le fotografie pubblicati su questo sito sono riservati. Riproduzione vietata senza consenso scritto.
+        </div>
+      </div>
+      <div class="closing">
+        © 2026 · Studio Studio Tau Architetti<br />
+        IT · EN<br />
+        <span style="opacity:0.5">Sito · v.1.0 · 2026</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Scroll reveal — fade-up, only off-screen sections.
+  (function () {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (!('IntersectionObserver' in window)) return;
+    const vh = window.innerHeight || document.documentElement.clientHeight;
+    const targets = Array.from(document.querySelectorAll('.section, .footer, .hero, .manifesto'));
+    const offscreen = targets.filter(t => {
+      const r = t.getBoundingClientRect();
+      return r.top > vh * 0.85;
+    });
+    offscreen.forEach(t => t.classList.add('reveal'));
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('is-in');
+          io.unobserve(e.target);
+        }
       });
-    })();
-  </script>
+    }, { threshold: 0.06, rootMargin: '0px 0px -60px 0px' });
+    offscreen.forEach(t => io.observe(t));
+  })();
+
+  // Hero parallax — light vertical shift on scroll.
+  (function () {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const hero = document.querySelector('.hero');
+    if (!hero) return;
+    const inner = hero.querySelector('.wrap');
+    if (!inner) return;
+    let raf = null;
+    const update = () => {
+      const y = Math.min(window.scrollY * 0.08, 24);
+      inner.style.transform = `translateY(${-y}px)`;
+      hero.style.backgroundPositionY = `${-y * 0.5}px, ${-y * 0.5}px`;
+      raf = null;
+    };
+    window.addEventListener('scroll', () => {
+      if (raf) return;
+      raf = requestAnimationFrame(update);
+    }, { passive: true });
+  })();
+
+  // Nav background on scroll
+  (function () {
+    const nav = document.querySelector('.nav');
+    if (!nav) return;
+    const onScroll = () => {
+      if (window.scrollY > 24) nav.style.background = 'rgba(245,241,234,0.96)';
+      else nav.style.background = 'rgba(245,241,234,0.92)';
+    };
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+  })();
+</script>
 
 </body>
 </html>

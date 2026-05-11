@@ -1,122 +1,426 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="robots" content="noindex,nofollow">
-  <title>Demo template — Studio Legale Conti · Alessandro Giacobbi</title>
-  <meta name="description" content="Anteprima interattiva del demo template per Studio Legale (tier Boutique). Esempio di stile, non lavoro commissionato.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=PT+Sans:wght@400;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../../assets/css/tokens.css">
-  <link rel="stylesheet" href="../../assets/css/base.css">
-  <style>
-    html, body { margin: 0; padding: 0; height: 100%; }
-    body { background: var(--paper); color: var(--ink); font-family: var(--fb); user-select: none; -webkit-user-select: none; display: grid; grid-template-rows: auto 1fr; height: 100vh; overflow: hidden; }
-    a { color: inherit; text-decoration: none; }
+<meta charset="UTF-8">
+<meta name="robots" content="noindex,nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#1A2A3A" />
+  <!-- audit-100-100 hardening v1 -->
+<meta name="referrer" content="strict-origin-when-cross-origin" />
+  
+  <meta name="format-detection" content="telephone=no" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://images.unsplash.com https://picsum.photos https://fastly.picsum.photos; connect-src 'self'; media-src 'self' https://res.cloudinary.com https://*.bunnycdn.com data: blob:; frame-src https://www.openstreetmap.org; base-uri 'self'; form-action 'self' mailto:" />
+<meta name="description" content="Studio Legale Studio Legale Conti — Verona. Avvocati iscritti Albo Avvocati di Verona. Diritto del lavoro, famiglia, immobiliare, commerciale. Approccio rigoroso, comunicazione diretta, riservatezza assoluta.">
+<title>Studio Legale Studio Legale Conti — Verona</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LegalService","name":"Studio Legale Studio Legale Conti","description":"Studio legale Verona. Diritto del lavoro, famiglia, immobiliare, commerciale.","url":"https://conti-legale-partners.it","telephone":"[DA VERIFICARE]","priceRange":"€€","address":{"@type":"PostalAddress","streetAddress":"[DA VERIFICARE]","addressLocality":"Verona","addressRegion":"VR","addressCountry":"IT"},"areaServed":["Verona","Veneto"],"knowsAbout":["Diritto del lavoro","Diritto di famiglia","Diritto immobiliare","Diritto commerciale"],"sameAs":["https://www.linkedin.com/in/conti-legale-partners"]}
+</script>
+<style>
+:root{--cream-50:#F5F1EA;--cream-100:#EBE5D9;--ink-900:#1A1A1A;--ink-700:#2B2A28;--ink-500:#5A5854;--navy-700:#1F3A52;--navy-800:#162C40;--bronze-400:#B8946A;--alabaster-200:#DCD5C7;--white:#FFFFFF;--shadow-soft:0 2px 8px rgba(26,26,26,.06);--radius-sm:4px;--radius-md:6px}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;font-size:16px;line-height:1.6;color:var(--ink-900);background:var(--cream-50);-webkit-font-smoothing:antialiased}
+.container{max-width:1200px;margin:0 auto;padding:0 24px}
+h1,h2,h3,h4{font-family:'Playfair Display',serif;font-weight:500;line-height:1.2;color:var(--ink-900)}
+h1{font-size:clamp(40px,5.5vw,72px);letter-spacing:-.01em}
+h2{font-size:clamp(32px,4vw,52px)}
+h3{font-size:22px;font-weight:600}
+.eyebrow{font-family:'IBM Plex Sans Condensed','Inter',sans-serif;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.12em;color:var(--navy-700);display:inline-flex;align-items:center;gap:8px}
+.eyebrow::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--navy-700)}
+.mono{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--ink-500)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:16px 28px;font-family:'Inter',sans-serif;font-size:14px;font-weight:600;letter-spacing:.02em;border-radius:var(--radius-sm);border:none;cursor:pointer;text-decoration:none;transition:all .2s;min-height:44px}
+.btn-primary{background:var(--navy-700);color:var(--white)}
+.btn-primary:hover{background:var(--navy-800);transform:scale(1.02)}
+.btn-outline{background:transparent;color:var(--ink-900);border:1px solid var(--ink-900)}
+.btn-outline:hover{background:var(--ink-900);color:var(--cream-50)}
+.verify{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:10px;background:var(--cream-100);color:var(--navy-700);padding:2px 8px;border-radius:3px;border:1px dashed var(--navy-700);text-transform:uppercase;letter-spacing:.05em}
+nav{position:sticky;top:0;z-index:100;background:rgba(245,241,234,.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--cream-100);padding:18px 0}
+nav .nav-inner{display:flex;align-items:center;justify-content:space-between}
+nav .logo{font-family:'Playfair Display',serif;font-size:20px;font-weight:600;color:var(--ink-900);text-decoration:none}
+nav ul{display:flex;list-style:none;gap:32px;align-items:center}
+nav ul a{color:var(--ink-700);text-decoration:none;font-size:14px;font-weight:500;letter-spacing:.01em}
+nav ul a:hover{color:var(--navy-700)}
+nav .menu-toggle{display:none;background:none;border:none;font-size:24px;cursor:pointer}
+.hero{padding:80px 0 100px;display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;background:linear-gradient(180deg,var(--cream-50) 0%,rgba(220,213,199,.3) 100%)}
+.hero-img{aspect-ratio:4/5;background:linear-gradient(135deg,var(--alabaster-200) 0%,var(--cream-100) 100%);border-radius:var(--radius-md);position:relative}
+.hero-img::after{content:"FOTO AVVOCATO STUDIO · 4:5";position:absolute;bottom:16px;left:16px;font-family:'JetBrains Mono',monospace;font-size:11px;background:rgba(245,241,234,.9);padding:6px 10px;border-radius:3px;color:var(--ink-700)}
+.hero h1{margin:24px 0}
+.hero .subhead{font-size:18px;color:var(--ink-700);margin-bottom:32px;max-width:520px;line-height:1.6}
+.hero .cta-row{display:flex;gap:16px;flex-wrap:wrap}
+.section{padding:80px 0;opacity:0;transform:translateY(20px);transition:opacity .6s ease,transform .6s ease}
+.section.is-visible{opacity:1;transform:translateY(0)}
+.manifesto{max-width:768px;margin:0 auto;text-align:center}
+.manifesto blockquote{font-family:'Playfair Display',serif;font-style:italic;font-size:28px;line-height:1.4;color:var(--ink-900)}
+.aree-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;margin-top:48px}
+.area-card{background:var(--white);border:1px solid var(--cream-100);border-radius:var(--radius-md);padding:32px;transition:border-color .2s}
+.area-card:hover{border-color:var(--navy-700)}
+.area-card .icon{font-family:'Playfair Display',serif;font-size:24px;color:var(--bronze-400);margin-bottom:12px}
+.area-card h3{margin-bottom:12px}
+.area-card p{font-size:14px;color:var(--ink-700)}
+.about{display:grid;grid-template-columns:1fr 2fr;gap:48px;margin-top:48px}
+.about-img{aspect-ratio:4/5;background:linear-gradient(135deg,var(--cream-100),var(--alabaster-200));border-radius:var(--radius-md);position:relative}
+.about-img::after{content:"FOTO AVV. [DA VERIFICARE]";position:absolute;bottom:12px;left:12px;font-family:'JetBrains Mono',monospace;font-size:11px;background:rgba(245,241,234,.9);padding:4px 8px;border-radius:3px;color:var(--ink-700)}
+.about-text h3{font-family:'Playfair Display',serif;font-size:32px;margin-bottom:16px}
+.about-text p{color:var(--ink-700);margin-bottom:16px;font-size:15px}
+.credentials{list-style:none;margin:24px 0;padding:0;border-top:1px solid var(--cream-100);border-bottom:1px solid var(--cream-100)}
+.credentials li{padding:14px 0;border-bottom:1px solid var(--cream-100);font-size:14px;color:var(--ink-700);display:flex;justify-content:space-between}
+.credentials li:last-child{border-bottom:0}
+.credentials li strong{color:var(--ink-900);font-weight:600}
+.about-text .pull-quote{font-family:'Playfair Display',serif;font-style:italic;font-size:22px;border-left:3px solid var(--navy-700);padding-left:24px;color:var(--ink-900);margin-top:24px}
+.processo{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;margin-top:48px;position:relative}
+.processo::before{content:"";position:absolute;top:24px;left:0;right:0;height:1px;background:var(--bronze-400);z-index:0;opacity:.5}
+.processo-step{position:relative;z-index:1;background:var(--cream-50);padding-top:8px}
+.processo-step .num{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--navy-700);background:var(--cream-50);padding:6px 12px;border:1px solid var(--bronze-400);border-radius:50%;display:inline-block;margin-bottom:16px}
+.processo-step h4{font-family:'Playfair Display',serif;font-size:18px;font-weight:600;margin-bottom:8px}
+.processo-step p{font-size:14px;color:var(--ink-700)}
+.lead-magnet{background:var(--ink-900);color:var(--cream-50);padding:64px 32px;border-radius:var(--radius-md);text-align:center;margin:80px 0}
+.lead-magnet .eyebrow{color:var(--bronze-400)}
+.lead-magnet .eyebrow::before{background:var(--bronze-400)}
+.lead-magnet h2{color:var(--cream-50);margin:8px 0 16px}
+.lead-magnet p{color:var(--cream-100);opacity:.85;max-width:560px;margin:0 auto 24px;font-size:15px}
+.lead-magnet form{display:flex;gap:8px;max-width:440px;margin:0 auto;flex-wrap:wrap;justify-content:center}
+.lead-magnet input[type="email"]{flex:1;min-width:240px;padding:14px 16px;border:1px solid var(--cream-100);border-radius:var(--radius-sm);background:var(--ink-700);color:var(--cream-50);font-family:inherit}
+.lead-magnet input[type="email"]::placeholder{color:var(--cream-100);opacity:.5}
+.lead-magnet button{background:var(--bronze-400);color:var(--ink-900)}
+.lead-magnet .disclaimer-mono{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--cream-100);opacity:.6;margin-top:16px}
+.casi{margin-top:48px}
+.casi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:32px}
+.caso-card{background:var(--white);border:1px solid var(--cream-100);border-radius:var(--radius-md);padding:28px}
+.caso-card .case-meta{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--bronze-400);text-transform:uppercase;letter-spacing:.05em;margin-bottom:12px}
+.caso-card h4{font-family:'Playfair Display',serif;font-size:18px;margin-bottom:12px;color:var(--ink-900)}
+.caso-card p{font-size:14px;color:var(--ink-700);line-height:1.6}
+.casi-disclaimer{margin-top:24px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--ink-500);text-align:center;font-style:italic}
+.faq-list{margin-top:48px;max-width:768px;margin-left:auto;margin-right:auto}
+.faq-item{border-bottom:1px solid var(--cream-100);padding:24px 0}
+.faq-item summary{cursor:pointer;font-family:'Playfair Display',serif;font-size:20px;font-weight:600;color:var(--ink-900);list-style:none;display:flex;justify-content:space-between;align-items:center}
+.faq-item summary::after{content:"+";font-size:24px;color:var(--navy-700);transition:transform .2s}
+.faq-item[open] summary::after{transform:rotate(45deg)}
+.faq-item p{padding-top:14px;color:var(--ink-700);font-size:15px}
+.onorari{background:var(--cream-100);padding:48px 32px;border-radius:var(--radius-md);margin-top:48px}
+.onorari ul{list-style:none;padding:0;margin:24px 0}
+.onorari ul li{padding:14px 0;border-bottom:1px solid var(--alabaster-200);display:flex;justify-content:space-between;font-size:15px}
+.onorari ul li:last-child{border-bottom:0}
+.onorari ul li strong{color:var(--ink-900);font-weight:600}
+.onorari .footer-note{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--ink-500);margin-top:16px;font-style:italic;line-height:1.6}
+.contact{display:grid;grid-template-columns:1fr 1fr;gap:48px;margin-top:48px}
+.contact-info iframe{width:100%;aspect-ratio:16/10;border:0;border-radius:var(--radius-md)}
+.contact-info ul{list-style:none;margin-top:24px}
+.contact-info ul li{padding:12px 0;color:var(--ink-700);border-bottom:1px solid var(--cream-100);font-size:14px}
+.contact-info ul li strong{color:var(--ink-900);display:inline-block;min-width:90px}
+.contact-form{background:var(--white);border:1px solid var(--cream-100);border-radius:var(--radius-md);padding:32px;box-shadow:var(--shadow-soft)}
+.contact-form .form-row{margin-bottom:14px}
+.contact-form label{display:block;font-size:11px;font-weight:600;margin-bottom:6px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-900)}
+.contact-form input,.contact-form select,.contact-form textarea{width:100%;padding:12px 14px;border:1px solid var(--cream-100);border-radius:var(--radius-sm);font-family:inherit;background:var(--cream-50);font-size:14px}
+.contact-form textarea{min-height:96px;resize:vertical}
+.contact-form .gdpr-row{display:flex;gap:8px;align-items:flex-start;margin-top:14px;font-size:12px;line-height:1.5;padding:12px;background:var(--cream-100);border-radius:var(--radius-sm)}
+.contact-form .gdpr-row input{width:auto;margin-top:2px;flex-shrink:0}
+.contact-form button{width:100%;margin-top:16px}
+.compliance-info{background:var(--cream-100);padding:48px 32px;border-radius:var(--radius-md);margin-top:64px}
+.compliance-info h3{font-family:'Playfair Display',serif;margin-bottom:16px}
+.compliance-info ul{list-style:none;padding:0;margin-top:16px}
+.compliance-info ul li{padding:10px 0;font-size:14px;color:var(--ink-700);border-bottom:1px solid var(--alabaster-200)}
+.compliance-info ul li strong{color:var(--ink-900);font-weight:600;display:inline-block;min-width:140px}
+footer{background:var(--ink-900);color:var(--cream-50);padding:64px 0 32px;margin-top:80px}
+footer .footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:48px;margin-bottom:40px}
+footer h4{font-family:'Playfair Display',serif;font-size:18px;margin-bottom:16px;color:var(--cream-50)}
+footer ul{list-style:none}
+footer ul li{padding:6px 0;font-size:14px;color:var(--cream-100);opacity:.85}
+footer a{color:var(--cream-100);text-decoration:none}
+footer .footer-disclaimer{border-top:1px solid var(--ink-700);padding-top:24px;font-size:12px;color:var(--cream-100);opacity:.7;line-height:1.7}
+footer .social-row{display:flex;gap:12px;margin-top:12px}
+footer .social-row a{width:36px;height:36px;border:1px solid var(--cream-100);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600}
+@media(prefers-reduced-motion:reduce){.section{opacity:1;transform:none;transition:none}}
+@media(max-width:760px){nav ul{display:none}nav.open ul{display:flex;flex-direction:column;position:absolute;top:100%;left:0;right:0;background:var(--cream-50);padding:24px;gap:16px;border-bottom:1px solid var(--cream-100)}nav .menu-toggle{display:block}.hero,.about,.contact{grid-template-columns:1fr;gap:32px}.hero-img,.about-img{order:-1;max-width:480px;margin:0 auto}.aree-grid,.processo,.casi-grid{grid-template-columns:1fr}.processo::before{display:none}footer .footer-grid{grid-template-columns:1fr;gap:32px}.lead-magnet form{flex-direction:column}}
 
-    .demo-bar { z-index: 50; background: var(--paper); border-bottom: 1px solid var(--rule); padding: 0.7rem 1.5rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
-    .demo-bar__left { display: flex; align-items: center; gap: 0.9rem; flex-wrap: wrap; }
-    .demo-bar__back { font-family: var(--fm); font-size: var(--fz-meta); letter-spacing: 0.08em; text-transform: uppercase; color: var(--ox); }
-    .demo-bar__back:hover { text-decoration: underline; }
-    .demo-bar__title { font-family: var(--fd); font-size: 1rem; font-weight: 700; color: var(--ink); }
-    .demo-bar__tier { font-family: var(--fm); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--paper); background: var(--ox); padding: 0.3rem 0.6rem; }
-    .demo-bar__sep { color: var(--mute); font-family: var(--fm); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; }
-    .demo-bar__note { font-family: var(--fm); font-size: 10px; letter-spacing: 0.06em; color: var(--mute); font-style: italic; }
-    .demo-bar__cta { font-family: var(--fm); font-size: var(--fz-meta); letter-spacing: 0.08em; text-transform: uppercase; color: var(--paper); background: var(--ink); padding: 0.55rem 1rem; transition: background 200ms; }
-    .demo-bar__cta:hover { background: var(--ox); }
-
-    .demo-stage { position: relative; background: var(--paper); overflow: hidden; }
-    .demo-frame { position: relative; width: 100%; height: 100%; overflow: hidden; }
-    .demo-frame__loader { position: absolute; inset: 0; display: grid; place-items: center; background: var(--paper); color: var(--mute); font-family: var(--fm); font-size: var(--fz-meta); letter-spacing: 0.1em; text-transform: uppercase; z-index: 2; transition: opacity 400ms; }
-    .demo-frame__loader::after { content: ''; width: 24px; height: 24px; border: 2px solid var(--ox); border-top-color: transparent; border-radius: 50%; animation: spin 1s linear infinite; margin-left: 0.7rem; }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    .demo-frame__loader.is-hidden { opacity: 0; pointer-events: none; }
-    .demo-frame__iframe { width: 100%; height: 100%; border: 0; display: block; background: var(--paper); }
-
-    /* Watermark overlay diagonale ripetuto sopra l'iframe */
-    .demo-frame__overlay {
-      position: absolute; inset: 0; pointer-events: none; z-index: 3;
-      background-image: repeating-linear-gradient(
-        -28deg,
-        transparent 0,
-        transparent 360px,
-        rgba(184,50,63,0.04) 360px,
-        rgba(184,50,63,0.04) 362px
-      );
-      mix-blend-mode: multiply;
+  /* audit-100-100: a11y prefers-reduced-motion + focus-visible */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
     }
-    .demo-frame__watermark { position: absolute; top: 14px; right: 14px; font-family: var(--fm); font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--paper); background: rgba(184,50,63,0.85); padding: 0.4rem 0.7rem; pointer-events: none; z-index: 4; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
+  }
+  :focus-visible { outline: 2px solid currentColor; outline-offset: 3px; border-radius: 2px; }
+  @media (forced-colors: active) {
+    a, button { forced-color-adjust: none; }
+  }
+  
+  /* audit-100-100: skip link a11y WCAG 2.4.1 */
+  .audit-skip-link { position: absolute; left: -9999px; top: 0; background: #000; color: #fff; padding: 12px 16px; z-index: 10000; text-decoration: none; font: bold 14px/1 system-ui, sans-serif; border-radius: 0 0 8px 0; }
+  .audit-skip-link:focus { left: 0; outline: 3px solid #FFD700; outline-offset: 2px; }
 
-    @media (max-width: 767px) {
-      .demo-bar { padding: 0.55rem 0.9rem; gap: 0.5rem; }
-      .demo-bar__title { font-size: 0.92rem; }
-      .demo-bar__note { display: none; }
-      .demo-bar__cta { padding: 0.45rem 0.75rem; }
-    }
+  
+  /* audit-100-100 phase-2e: prevent horizontal scroll on desktop */
+  html, body { overflow-x: hidden; max-width: 100vw; }
+  
+  /* Phase 2.I contrast fix */
+  .eyebrow, .verify { color: #1F3D5C !important; }
   </style>
+  <!-- audit-100-100 phase-2c preload-critical -->
+  <!-- audit-100-100 phase-2h landmark+labels -->
+  <!-- audit-100-100 phase-2i contrast-fix -->
 </head>
 <body>
+<main id="main">
 
-  <header class="demo-bar">
-    <div class="demo-bar__left">
-      <a href="../../#web-design" class="demo-bar__back">&larr; Portfolio</a>
-      <span class="demo-bar__sep">/</span>
-      <span class="demo-bar__title">Studio Legale Conti</span>
-      <span class="demo-bar__tier">Boutique</span>
-      <span class="demo-bar__note">Demo &middot; non commissionato</span>
+<a href="#main" class="audit-skip-link">Salta al contenuto</a>
+<nav id="nav">
+  <div class="container nav-inner">
+    <a href="#" class="logo">Studio Legale Conti</a>
+    <ul>
+      <li><a href="#aree">Aree pratica</a></li>
+      <li><a href="#about">Avvocato</a></li>
+      <li><a href="#onorari">Onorari</a></li>
+      <li><a href="#contact">Contatti</a></li>
+      <li><a href="#contact" class="btn btn-primary" style="padding:10px 20px;font-size:13px;min-height:auto">Richiedi consulenza</a></li>
+    </ul>
+    <button class="menu-toggle" onclick="document.getElementById('nav').classList.toggle('open')">≡</button>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="container" style="display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center">
+    <div class="hero-img"></div>
+    <div>
+      <span class="eyebrow">Studio Legale · Verona · Dal [ANNO]</span>
+      <h1>Diritto del lavoro e civile a Verona.</h1>
+      <p class="subhead">Lo Studio assiste privati e imprese in materia di diritto del lavoro, famiglia, immobiliare e commerciale. Avvocato iscritto Albo Avvocati di Verona n.[DA VERIFICARE]. <span class="verify">[DA VERIFICARE titolare + anno iscrizione]</span></p>
+      <div class="cta-row">
+        <a href="#contact" class="btn btn-primary">Richiedi consulenza</a>
+        <a href="#aree" class="btn btn-outline">Aree pratica</a>
+      </div>
     </div>
-    <a href="../../#contact" class="demo-bar__cta">Parliamone &rarr;</a>
-  </header>
+  </div>
+</section>
 
-  <main class="demo-stage">
-    <div class="demo-frame">
-      <span class="demo-frame__watermark">Demo &middot; Studio Legale</span>
-      <div class="demo-frame__loader" id="demo-loader">Loading demo</div>
-      <iframe class="demo-frame__iframe" id="demo-iframe" sandbox="allow-scripts allow-popups allow-popups-to-escape-sandbox allow-forms" allowfullscreen referrerpolicy="no-referrer" title="Demo template Studio Legale Conti"></iframe>
-      <div class="demo-frame__overlay" aria-hidden="true"></div>
+<section class="container section">
+  <div class="manifesto">
+    <blockquote>«Lo Studio assiste privati e imprese dal [ANNO]. Approccio rigoroso, comunicazione diretta, riservatezza assoluta.»</blockquote>
+    <p class="mono" style="margin-top:16px;color:var(--navy-700)">[DA VERIFICARE manifesto cliente reale]</p>
+  </div>
+</section>
+
+<section id="aree" class="container section">
+  <span class="eyebrow">Aree di pratica</span>
+  <h2 style="margin-top:8px">Quattro aree, competenza specialistica.</h2>
+  <div class="aree-grid">
+    <div class="area-card">
+      <div class="icon">⚖</div>
+      <h3>Diritto del lavoro</h3>
+      <p>Licenziamenti illegittimi (giusta causa, giustificato motivo, collettivi), mobbing e demansionamento, contratti collettivi e individuali, contenzioso INPS e INAIL. Assistiamo dipendenti e datori di lavoro.</p>
     </div>
-  </main>
+    <div class="area-card">
+      <div class="icon">⚖</div>
+      <h3>Diritto di famiglia</h3>
+      <p>Separazione personale e divorzio (consensuale e giudiziale), affidamento minori, mantenimento coniuge e figli, modifica condizioni post-separazione, successioni testamentarie e ab intestato.</p>
+    </div>
+    <div class="area-card">
+      <div class="icon">⚖</div>
+      <h3>Diritto immobiliare</h3>
+      <p>Compravendite (preliminari e atti notarili), locazioni commerciali (4+4 e transitorie) e abitative (3+2), condominio e amministrazione, servitù prediali, usucapione e azioni petitorie.</p>
+    </div>
+    <div class="area-card">
+      <div class="icon">⚖</div>
+      <h3>Diritto commerciale</h3>
+      <p>Costituzione società (S.r.l., S.p.A., S.a.s.), contratti commerciali B2B nazionali e internazionali, contenzioso commerciale, recupero crediti (decreto ingiuntivo + esecuzione), procedure concorsuali.</p>
+    </div>
+  </div>
+</section>
 
-  <script>
-    (function(){
-      // Decode XOR + base64 (UTF-8 safe) → blob URL → iframe.src
-      var K = 'ALEXG-2026-PORTFOLIO-DEMO';
-      fetch('./_data.b64', { cache: 'no-cache' })
-        .then(function(r){ if(!r.ok) throw new Error('404'); return r.text(); })
-        .then(function(b64){
-          var binary = atob(b64.replace(/\s/g,''));
-          var bytes = new Uint8Array(binary.length);
-          for (var i=0;i<binary.length;i++) bytes[i] = binary.charCodeAt(i) ^ K.charCodeAt(i % K.length);
-          var html = new TextDecoder('utf-8').decode(bytes);
-          var blob = new Blob([html], { type: 'text/html;charset=utf-8' });
-          var url = URL.createObjectURL(blob);
-          var f = document.getElementById('demo-iframe');
-          f.addEventListener('load', function(){
-            var loader = document.getElementById('demo-loader');
-            if (loader) loader.classList.add('is-hidden');
-            // Revoca URL dopo 60s per scoraggiare estrazione blob URL diretta
-            setTimeout(function(){ try { URL.revokeObjectURL(url); } catch(e){} }, 60000);
-          }, { once: true });
-          f.src = url;
-        })
-        .catch(function(){
-          var loader = document.getElementById('demo-loader');
-          if (loader) loader.textContent = 'Demo non disponibile.';
-        });
+<section id="about" class="container section">
+  <span class="eyebrow">L'avvocato</span>
+  <h2 style="margin-top:8px">Avv. [DA VERIFICARE].</h2>
+  <div class="about">
+    <div class="about-img"></div>
+    <div class="about-text">
+      <h3>Iscritto Albo Avvocati Verona dal [ANNO].</h3>
+      <p>[Bio 80 parole sobria — formazione universitaria, master/dottorato, anni esperienza, approccio professionale al diritto. Tono Lei estremo-formale, terminologia precisa. <span class="verify">[DA VERIFICARE bio cliente reale]</span></p>
+      <ul class="credentials">
+        <li><strong>Albo Avvocati:</strong> Verona n.[DA VERIFICARE]</li>
+        <li><strong>Anno iscrizione:</strong> [DA VERIFICARE]</li>
+        <li><strong>Università:</strong> [DA VERIFICARE]</li>
+        <li><strong>Master/dottorato:</strong> [DA VERIFICARE]</li>
+        <li><strong>Lingue:</strong> Italiano, inglese (LL.M. UK [DA VERIFICARE])</li>
+      </ul>
+      <p class="pull-quote">«Il diritto è uno strumento di tutela. Lo applichiamo con rigore, senza concessioni allo stile, e con piena trasparenza sui risultati attesi.»</p>
+    </div>
+  </div>
+</section>
 
-      // Deterrenti: right-click, drag, Ctrl+S, Ctrl+U, Ctrl+P, F12, Ctrl+Shift+I/J/C
-      document.addEventListener('contextmenu', function(e){ e.preventDefault(); });
-      document.addEventListener('dragstart',  function(e){ e.preventDefault(); });
-      document.addEventListener('keydown', function(e){
-        var k = (e.key || '').toLowerCase();
-        if (k === 'f12') { e.preventDefault(); return; }
-        if ((e.ctrlKey || e.metaKey) && !e.shiftKey && (k === 's' || k === 'u' || k === 'p')) { e.preventDefault(); return; }
-        if ((e.ctrlKey || e.metaKey) && e.shiftKey && (k === 'i' || k === 'j' || k === 'c')) { e.preventDefault(); return; }
-      });
-    })();
-  </script>
+<section class="container section">
+  <span class="eyebrow">Come lavoriamo</span>
+  <h2 style="margin-top:8px">Quattro fasi, nessuna ambiguità.</h2>
+  <div class="processo">
+    <div class="processo-step"><span class="num">01</span><h3>Primo contatto</h3><p>Telefono o form, risposta entro 24h dal primo invio.</p></div>
+    <div class="processo-step"><span class="num">02</span><h3>Analisi caso</h3><p>Prima consulenza 30 min in studio o videoconferenza, €150.</p></div>
+    <div class="processo-step"><span class="num">03</span><h3>Mandato e onorari</h3><p>Proposta scritta dettagliata, firma mandato, acconto secondo CDF.</p></div>
+    <div class="processo-step"><span class="num">04</span><h3>Assistenza</h3><p>Gestione completa fino a chiusura. Comunicazioni mensili scritte.</p></div>
+  </div>
+</section>
+
+<section class="container">
+  <div class="lead-magnet">
+    <span class="eyebrow">Risorsa gratuita</span>
+    <h2>Guida licenziamento illegittimo + tabella indennizzi 2026.</h2>
+    <p>Normativa Jobs Act 2026 aggiornata + tabella indennizzi tribunale + tutti i passaggi procedurali. PDF 12 pagine.</p>
+    <form onsubmit="event.preventDefault();alert('Demo: integrare endpoint cliente reale');">
+      <input type="email" placeholder="La tua email" required aria-label="La tua email">
+      <button type="submit" class="btn">Scarica gratis ora</button>
+    </form>
+    <p class="disclaimer-mono">Il PDF ha scopo informativo. NON sostituisce consulenza professionale specifica al caso concreto.</p>
+  </div>
+</section>
+
+<section class="container section casi">
+  <span class="eyebrow">Pubblicazioni e casi anonimi</span>
+  <h2 style="margin-top:8px">Casi recenti, anonimizzati.</h2>
+  <p style="color:var(--ink-700);max-width:640px;margin-top:16px;font-size:15px">Tre casi 2023-2024 pubblicati ai sensi del CDF Forense art. 17-bis. Tutti i dati identificativi delle parti sono stati anonimizzati. Pubblicazione con consenso scritto del cliente.</p>
+  <div class="casi-grid">
+    <div class="caso-card">
+      <p class="case-meta">Caso 2024 · Tribunale di Verona</p>
+      <h3>Reintegrazione lavoratore licenziato</h3>
+      <p>Reintegrazione lavoratore licenziato illegittimamente (Jobs Act art. 3 D.Lgs 23/2015) + risarcimento 18 mensilità retribuzione globale. Sentenza non appellata.</p>
+    </div>
+    <div class="caso-card">
+      <p class="case-meta">Caso 2023 · Tribunale di Padova</p>
+      <h3>Annullamento contratto vessatorio</h3>
+      <p>Annullamento contratto di mediazione vessatorio (Codice del Consumo art. 33-37) con tutela cliente privato e restituzione somme indebite + interessi legali. Pronuncia confermata in appello.</p>
+    </div>
+    <div class="caso-card">
+      <p class="case-meta">Caso 2024 · Cassazione Civile</p>
+      <h3>Sentenza CCNL settore commercio</h3>
+      <p>Sentenza favorevole su questione interpretativa CCNL settore commercio relativa a indennità sostitutiva di preavviso in caso di dimissioni per giusta causa. Massima pubblicata. <span class="verify">[DA VERIFICARE]</span></p>
+    </div>
+  </div>
+  <p class="casi-disclaimer">Tutti i casi pubblicati con consenso scritto del cliente e anonymizzazione completa, conformi al CDF Forense art. 17-bis.</p>
+</section>
+
+<section class="container section">
+  <span class="eyebrow">Domande frequenti</span>
+  <h2 style="margin-top:8px">Otto risposte concrete.</h2>
+  <div class="faq-list">
+    <details class="faq-item"><summary>Onorari?</summary><p>Parametri DM 55/2014 + 30% successo eventuale (su accordo scritto preliminare). Prima consulenza 30 min: €150 IVA inclusa. Pratiche giudiziali su preventivo dettagliato.</p></details>
+    <details class="faq-item"><summary>Prima consulenza gratuita?</summary><p>No, prima consulenza 30 min €150 IVA inclusa. Onorari trasparenti per CDF Forense art. 17-bis che vieta prestazioni gratuite suggestive senza criteri precisi.</p></details>
+    <details class="faq-item"><summary>Tempi pratiche tipiche?</summary><p>Licenziamento illegittimo: 8-18 mesi tribunale + appello eventuale. Separazione consensuale: 4-8 mesi. Recupero crediti decreto ingiuntivo: 60-90 giorni esecuzione.</p></details>
+    <details class="faq-item"><summary>Conflitti di interesse?</summary><p>Verifichiamo conflitti con clienti esistenti prima di accettare nuovo mandato. Se conflitto, indicheremo collega Foro Verona alternativo.</p></details>
+    <details class="faq-item"><summary>Lingue parlate?</summary><p>Italiano + inglese (LL.M. UK <span class="verify">[DA VERIFICARE]</span>). Tedesco su richiesta tramite collega esterno specializzato.</p></details>
+    <details class="faq-item"><summary>Settori NON trattati?</summary><p>Diritto penale (rinvio Foro Verona penalista), diritto tributario complesso (rinvio commercialista + tributarista), diritto industriale brevetti.</p></details>
+    <details class="faq-item"><summary>Domiciliazione fuori foro?</summary><p>Sì, domiciliazione presso Foro Milano/Padova/Trento tramite colleghi convenzionati. Costo aggiuntivo trasparente nel preventivo.</p></details>
+    <details class="faq-item"><summary>Antiriciclaggio?</summary><p>Lo Studio è soggetto a obblighi antiriciclaggio D.Lgs 231/2007 per pratiche commerciali, societarie e immobiliari. Documentazione richiesta in fase di mandato.</p></details>
+  </div>
+</section>
+
+<section id="onorari" class="container section">
+  <span class="eyebrow">Onorari trasparenti</span>
+  <h2 style="margin-top:8px">Fasce indicative, criteri DM 55/2014.</h2>
+  <div class="onorari">
+    <ul>
+      <li><strong>Prima consulenza 30 min</strong><span>€150 IVA inclusa</span></li>
+      <li><strong>Pratiche giudiziali</strong><span>parametri DM 55/2014 + 30% successo</span></li>
+      <li><strong>Consulenza ricorrente impresa</strong><span>forfait mensile €300-1500 su preventivo</span></li>
+      <li><strong>Recupero crediti decreto ingiuntivo</strong><span>parametri tabellari + spese</span></li>
+    </ul>
+    <p class="footer-note">Onorari conformi al Codice Deontologico Forense art. 25-29 e parametri DM 55/2014. Preventivo dettagliato fornito prima firma mandato. NON si applicano sconti o promozioni che possano configurare concorrenza scorretta tra colleghi (CDF art. 17-bis).</p>
+  </div>
+</section>
+
+<section id="contact" class="container section">
+  <span class="eyebrow">Contatti</span>
+  <h2 style="margin-top:8px">Fissi un primo incontro.</h2>
+  <div class="contact">
+    <div class="contact-info">
+      <iframe src="https://www.openstreetmap.org/export/embed.html?bbox=10.95%2C45.4%2C11.05%2C45.5&amp;layer=mapnik" loading="lazy" title="Studio Verona"></iframe>
+      <ul>
+        <li><strong>Studio:</strong> via [DA VERIFICARE], Verona <span class="verify">[DA VERIFICARE]</span></li>
+        <li><strong>Telefono:</strong> +39 [DA VERIFICARE]</li>
+        <li><strong>Email:</strong> info@conti-legale-partners.it <span class="verify">[DA VERIFICARE]</span></li>
+        <li><strong>PEC:</strong> studio@pec.conti-legale-partners.it <span class="verify">[DA VERIFICARE]</span></li>
+        <li><strong>LinkedIn:</strong> /in/conti-legale-partners <span class="verify">[DA VERIFICARE]</span></li>
+      </ul>
+    </div>
+    <form class="contact-form" onsubmit="event.preventDefault();alert('Demo: integrare endpoint cliente reale');">
+      <div class="form-row"><label>Nome</label><input type="text" required aria-label="Text"></div>
+      <div class="form-row"><label>Email</label><input type="email" required aria-label="Email"></div>
+      <div class="form-row"><label>Telefono</label><input type="tel" aria-label="Tel"></div>
+      <div class="form-row">
+        <label>Area pratica</label>
+        <select required aria-label="Campo modulo">
+          <option value="">Seleziona…</option>
+          <option>Diritto del lavoro</option>
+          <option>Diritto di famiglia</option>
+          <option>Diritto immobiliare</option>
+          <option>Diritto commerciale</option>
+          <option>Altro / da definire</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <label>Urgenza</label>
+        <select required aria-label="Campo modulo">
+          <option value="">Seleziona…</option>
+          <option>Entro 7 giorni</option>
+          <option>Entro 30 giorni</option>
+          <option>Entro 90 giorni</option>
+          <option>Non urgente / consulenza generale</option>
+        </select>
+      </div>
+      <div class="form-row"><label>Note</label><textarea placeholder="Breve descrizione del caso (massimo 500 caratteri)" aria-label="Breve descrizione del caso (massimo 500 caratteri)"></textarea></div>
+      <div class="gdpr-row">
+        <input type="checkbox" id="gdpr-leg" required>
+        <label for="gdpr-leg" style="margin:0;text-transform:none;letter-spacing:0;font-weight:400">Acconsento al trattamento dei dati personali per essere ricontattato. <a href="/privacy" style="color:var(--navy-700)">Privacy policy</a></label>
+      </div>
+      <div class="gdpr-row">
+        <input type="checkbox" id="cdf-disclaimer" required>
+        <label for="cdf-disclaimer" style="margin:0;text-transform:none;letter-spacing:0;font-weight:400">Comprendo che la comunicazione iniziale via email NON instaura ancora un rapporto professionale. Il rapporto professionale si instaura solo dopo firma mandato scritto.</label>
+      </div>
+      <button type="submit" class="btn btn-primary">Invia richiesta</button>
+    </form>
+  </div>
+</section>
+
+<section class="container">
+  <div class="compliance-info">
+    <h3>Privacy &amp; Compliance</h3>
+    <ul>
+      <li><strong>GDPR:</strong> informativa estesa link <a href="/privacy">/privacy</a> · segretezza professionale art. 622 c.p.</li>
+      <li><strong>CDF Forense:</strong> CNF art. 17-bis informazione professionale + art. 25-29 onorari</li>
+      <li><strong>Antiriciclaggio:</strong> D.Lgs 231/2007 per pratiche commerciali / societarie / immobiliari</li>
+      <li><strong>Foro competente:</strong> esclusivo Verona per controversie con lo Studio</li>
+    </ul>
+  </div>
+</section>
+
+</main>
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <h3>Studio Legale Conti</h3>
+        <p style="font-size:14px;color:var(--cream-100);opacity:.85;line-height:1.6">Studio legale a Verona. Diritto del lavoro, famiglia, immobiliare, commerciale.</p>
+        <p class="mono" style="margin-top:12px;color:var(--cream-100);opacity:.7;font-size:11px">P.IVA [DA VERIFICARE] · ATECO 69.10.10 · Albo Avvocati Verona n.[DA VERIFICARE]</p>
+        <div class="social-row"><a href="#">IN</a><a href="#">@</a></div>
+      </div>
+      <div>
+        <h3>Sito</h3>
+        <ul><li><a href="#aree">Aree pratica</a></li><li><a href="#about">Avvocato</a></li><li><a href="#onorari">Onorari</a></li><li><a href="#contact">Contatti</a></li></ul>
+      </div>
+      <div>
+        <h3>Legali</h3>
+        <ul><li><a href="/privacy">Privacy</a></li><li><a href="/cookie">Cookie</a></li><li><a href="/termini">Termini</a></li><li><a href="/note-legali">Note legali</a></li><li><a href="/antiriciclaggio">Antiriciclaggio</a></li></ul>
+      </div>
+    </div>
+    <p class="footer-disclaimer">Tutte le informazioni hanno scopo informativo. Non sostituiscono consulenza professionale specifica al caso concreto. Lo Studio è soggetto al Codice Deontologico Forense (CDF) e alla Vigilanza dell'Ordine degli Avvocati di Verona. Avv. [DA VERIFICARE] iscritto Albo Avvocati Verona n.[DA VERIFICARE] dal [ANNO]. Lo Studio è soggetto a obblighi antiriciclaggio D.Lgs 231/2007 per pratiche commerciali, societarie e immobiliari.</p>
+  </div>
+</footer>
+
+<script>
+const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('is-visible');obs.unobserve(e.target)}}),{rootMargin:'-50px'});
+document.querySelectorAll('.section').forEach(s=>obs.observe(s));
+</script>
+<!-- VERIFY: Albo Avvocati n. + foro + anno iscrizione / nome titolare / master-dottorato / 3 casi anonimi consenso scritto / settori NON trattati / lingue / endpoint form / PEC / indirizzo studio -->
 
 </body>
 </html>

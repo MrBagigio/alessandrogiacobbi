@@ -1,122 +1,401 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="robots" content="noindex,nofollow">
-  <title>Demo template — Casa di Margherita · Alessandro Giacobbi</title>
-  <meta name="description" content="Anteprima interattiva del demo template per B&B (tier Boutique). Esempio di stile, non lavoro commissionato.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=PT+Sans:wght@400;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../../assets/css/tokens.css">
-  <link rel="stylesheet" href="../../assets/css/base.css">
-  <style>
-    html, body { margin: 0; padding: 0; height: 100%; }
-    body { background: var(--paper); color: var(--ink); font-family: var(--fb); user-select: none; -webkit-user-select: none; display: grid; grid-template-rows: auto 1fr; height: 100vh; overflow: hidden; }
-    a { color: inherit; text-decoration: none; }
+<meta charset="UTF-8">
+<meta name="robots" content="noindex,nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#FAF6EE" />
+  <!-- audit-100-100 hardening v1 -->
+<meta name="referrer" content="strict-origin-when-cross-origin" />
+  
+  <meta name="format-detection" content="telephone=no" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://images.unsplash.com https://picsum.photos https://fastly.picsum.photos; connect-src 'self'; media-src 'self' https://res.cloudinary.com https://*.bunnycdn.com data: blob:; frame-src https://www.openstreetmap.org; base-uri 'self'; form-action 'self' mailto:" />
+<meta name="description" content="Casa di Margherita — Agriturismo boutique sulla collina di Asolo (Treviso). 4 unità tra vigne e olivi, colazione di casa con prodotti dell'azienda, esperienze curate. Dal [ANNO].">
+<meta property="og:title" content="Casa di Margherita — Agriturismo Asolo">
+<title>Casa di Margherita — Agriturismo Asolo (Treviso)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BedAndBreakfast","name":"Casa di Margherita","description":"Agriturismo boutique sulla collina di Asolo, 4 unità con colazione di casa e produzione propria.","url":"https://casadimargherita.it","telephone":"[DA VERIFICARE]","priceRange":"€€","starRating":{"@type":"Rating","ratingValue":"4"},"address":{"@type":"PostalAddress","streetAddress":"[DA VERIFICARE]","addressLocality":"Asolo","addressRegion":"TV","addressCountry":"IT"},"amenityFeature":[{"@type":"LocationFeatureSpecification","name":"WiFi gratuito"},{"@type":"LocationFeatureSpecification","name":"Parcheggio privato"},{"@type":"LocationFeatureSpecification","name":"Animali ammessi"},{"@type":"LocationFeatureSpecification","name":"Colazione inclusa"}],"sameAs":["https://www.instagram.com/casadimargherita","https://www.booking.com/casadimargherita"]}
+</script>
+<style>
+:root{--cream-50:#FAF6EE;--cream-100:#F0E8D5;--sage-300:#B8C5A8;--sage-700:#5A6B3F;--terracotta-400:#C8825A;--terracotta-500:#A86B45;--ink-900:#2A2520;--ink-700:#3D3530;--olive-700:#5A6B3F;--white:#FFFFFF;--shadow-soft:0 2px 12px rgba(42,37,32,.08);--radius-sm:6px;--radius-md:8px}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;font-size:16px;line-height:1.6;color:var(--ink-900);background:var(--cream-50);-webkit-font-smoothing:antialiased}
+.container{max-width:1240px;margin:0 auto;padding:0 24px}
+h1,h2,h3,h4{font-family:'Lora',serif;font-weight:500;line-height:1.2;color:var(--ink-900)}
+h1{font-size:clamp(40px,6vw,80px);font-style:italic;letter-spacing:-.01em}
+h2{font-size:clamp(32px,4vw,52px);font-style:italic}
+h3{font-size:22px;font-weight:600}
+.eyebrow{font-family:'Inter',sans-serif;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--terracotta-400);display:inline-flex;align-items:center;gap:8px}
+.eyebrow::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--sage-300)}
+.mono{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--ink-700)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:16px 32px;font-family:'Inter',sans-serif;font-size:14px;font-weight:600;border-radius:var(--radius-sm);border:none;cursor:pointer;text-decoration:none;transition:all .2s;min-height:44px}
+.btn-primary{background:var(--terracotta-400);color:var(--white)}
+.btn-primary:hover{background:var(--terracotta-500);transform:scale(1.02)}
+.btn-outline{background:transparent;color:var(--ink-900);border:1px solid var(--ink-900)}
+.btn-outline:hover{background:var(--ink-900);color:var(--white)}
+.verify{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:10px;background:var(--cream-100);color:var(--terracotta-500);padding:2px 8px;border-radius:3px;border:1px dashed var(--terracotta-400);text-transform:uppercase}
+nav{position:sticky;top:0;z-index:100;background:rgba(250,246,238,.94);backdrop-filter:blur(12px);border-bottom:1px solid var(--cream-100);padding:16px 0}
+nav .nav-inner{display:flex;align-items:center;justify-content:space-between}
+nav .logo{font-family:'Lora',serif;font-style:italic;font-size:20px;font-weight:600;color:var(--ink-900);text-decoration:none}
+nav ul{display:flex;list-style:none;gap:28px;align-items:center}
+nav ul a{color:var(--ink-700);text-decoration:none;font-size:14px;font-weight:500}
+nav ul a:hover{color:var(--terracotta-400)}
+nav .menu-toggle{display:none;background:none;border:none;font-size:24px;cursor:pointer}
+.hero{padding:64px 0 80px;display:grid;grid-template-columns:1.2fr 1fr;gap:48px;align-items:center}
+.hero-img{aspect-ratio:4/5;background:linear-gradient(135deg,var(--sage-300) 0%,var(--cream-100) 50%,var(--terracotta-400) 100%);border-radius:var(--radius-md);position:relative}
+.hero-img::after{content:"FOTO STAGIONALE COLLINA · DA RICEVERE";position:absolute;bottom:16px;left:16px;font-family:'JetBrains Mono',monospace;font-size:11px;background:rgba(250,246,238,.9);padding:6px 10px;border-radius:3px}
+.hero h1{margin:24px 0}
+.hero .subhead{font-size:18px;color:var(--ink-700);margin-bottom:32px;max-width:520px}
+.hero .cta-row{display:flex;gap:16px;flex-wrap:wrap}
+.section{padding:72px 0;opacity:0;transform:translateY(20px);transition:opacity .6s ease,transform .6s ease}
+.section.is-visible{opacity:1;transform:translateY(0)}
+.manifesto{text-align:center;max-width:720px;margin:0 auto}
+.manifesto blockquote{font-family:'Lora',serif;font-style:italic;font-size:28px;line-height:1.4}
+.camere-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;margin-top:48px}
+.camera-card{background:var(--white);border:1px solid var(--cream-100);border-radius:var(--radius-md);padding:24px;box-shadow:var(--shadow-soft)}
+.camera-card .photo{aspect-ratio:4/3;background:linear-gradient(135deg,var(--cream-100),var(--sage-300));border-radius:var(--radius-sm);margin-bottom:16px}
+.camera-card h3{margin-bottom:8px}
+.camera-card .meta{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--olive-700);margin-bottom:8px}
+.camera-card .price{font-family:'Lora',serif;font-style:italic;font-size:20px;color:var(--terracotta-500);margin-top:12px}
+.camera-card .price small{font-family:'Inter',sans-serif;font-style:normal;font-size:12px;color:var(--ink-700);font-weight:400}
+.servizi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:48px}
+.servizio-tile{background:var(--white);border:1px solid var(--cream-100);border-radius:var(--radius-md);padding:24px;box-shadow:var(--shadow-soft)}
+.servizio-tile .icon{width:36px;height:36px;background:var(--cream-100);border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:12px;color:var(--terracotta-400)}
+.servizio-tile h3{font-size:18px;margin-bottom:8px}
+.servizio-tile p{font-size:14px;color:var(--ink-700)}
+.esperienze-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;margin-top:48px}
+.esperienza-card{background:var(--white);border:1px solid var(--cream-100);border-radius:var(--radius-md);overflow:hidden;box-shadow:var(--shadow-soft)}
+.esperienza-card .photo{aspect-ratio:16/10;background:linear-gradient(135deg,var(--sage-300),var(--cream-100))}
+.esperienza-card .body{padding:20px}
+.esperienza-card h3{margin-bottom:8px}
+.esperienza-card p{font-size:14px;color:var(--ink-700);margin-bottom:8px}
+.esperienza-card .price-tag{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:12px;background:var(--terracotta-400);color:var(--white);padding:4px 10px;border-radius:3px}
+.galleria-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:48px}
+.galleria-grid > div:nth-child(2),.galleria-grid > div:nth-child(5){grid-column:span 2}
+.galleria-tile{aspect-ratio:1;background:linear-gradient(135deg,var(--cream-100),var(--sage-300));border-radius:var(--radius-sm);position:relative;overflow:hidden}
+.galleria-tile .caption{position:absolute;bottom:8px;left:8px;font-family:'JetBrains Mono',monospace;font-size:10px;background:rgba(250,246,238,.9);padding:3px 6px;border-radius:2px;color:var(--ink-900)}
+.lead-magnet{background:var(--cream-100);padding:56px 32px;border-radius:var(--radius-md);text-align:center;margin:64px 0}
+.lead-magnet h2{margin-bottom:12px}
+.lead-magnet p{color:var(--ink-700);max-width:480px;margin:0 auto 24px}
+.lead-magnet form{display:flex;gap:8px;max-width:420px;margin:0 auto;flex-wrap:wrap;justify-content:center}
+.lead-magnet input[type="email"]{flex:1;min-width:240px;padding:12px 16px;border:1px solid var(--ink-700);border-radius:var(--radius-sm);background:var(--white);font-family:inherit}
+.recensioni{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:48px}
+.recensione-card{background:var(--white);border:1px solid var(--cream-100);border-radius:var(--radius-md);padding:24px;box-shadow:var(--shadow-soft)}
+.recensione-card .stars{color:var(--terracotta-400);font-size:18px;margin-bottom:12px}
+.recensione-card blockquote{font-family:'Lora',serif;font-style:italic;font-size:16px;line-height:1.5;color:var(--ink-900);margin-bottom:12px}
+.recensione-card cite{font-style:normal;font-size:13px;font-weight:600}
+.recensioni-rating{text-align:center;margin-top:32px;font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--terracotta-500)}
+.faq-list{margin-top:48px;max-width:720px;margin-left:auto;margin-right:auto}
+.faq-item{border-bottom:1px solid var(--cream-100);padding:20px 0}
+.faq-item summary{cursor:pointer;font-family:'Lora',serif;font-style:italic;font-size:20px;font-weight:600;list-style:none;display:flex;justify-content:space-between;align-items:center}
+.faq-item summary::after{content:"+";font-size:24px;color:var(--terracotta-400);transition:transform .2s}
+.faq-item[open] summary::after{transform:rotate(45deg)}
+.faq-item p{padding-top:12px;color:var(--ink-700)}
+.location-section{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;margin-top:48px}
+.location-section iframe{width:100%;aspect-ratio:4/3;border:0;border-radius:var(--radius-md)}
+.location-section ul{list-style:none;padding:0;margin-top:16px}
+.location-section ul li{padding:8px 0;color:var(--ink-700);border-bottom:1px solid var(--cream-100);font-size:14px}
+.location-section ul li strong{color:var(--ink-900)}
+.contact{display:grid;grid-template-columns:1fr 1fr;gap:48px;margin-top:48px}
+.contact-info iframe{width:100%;aspect-ratio:16/10;border:0;border-radius:var(--radius-md)}
+.contact-info ul{list-style:none;margin-top:24px}
+.contact-info ul li{padding:10px 0;color:var(--ink-700);border-bottom:1px solid var(--cream-100);font-size:14px}
+.contact-info ul li strong{display:inline-block;min-width:90px;color:var(--ink-900)}
+.booking-cta{background:var(--sage-300);padding:24px;border-radius:var(--radius-md);margin-top:24px;font-size:14px}
+.booking-cta strong{color:var(--ink-900);display:block;margin-bottom:8px;font-size:16px}
+.contact-form{background:var(--white);border:1px solid var(--cream-100);border-radius:var(--radius-md);padding:32px;box-shadow:var(--shadow-soft)}
+.contact-form .form-row{margin-bottom:14px}
+.contact-form label{display:block;font-size:11px;font-weight:600;margin-bottom:6px;text-transform:uppercase;letter-spacing:.05em}
+.contact-form input,.contact-form select,.contact-form textarea{width:100%;padding:12px 14px;border:1px solid var(--cream-100);border-radius:var(--radius-sm);font-family:'Inter',sans-serif;background:var(--cream-50);font-size:14px}
+.contact-form textarea{min-height:80px;resize:vertical}
+.contact-form .gdpr-row{display:flex;gap:8px;align-items:flex-start;margin-top:12px;font-size:12px}
+.contact-form .gdpr-row input{width:auto;margin-top:2px}
+.contact-form button{width:100%;margin-top:16px}
+footer{background:var(--ink-900);color:var(--cream-50);padding:56px 0 32px;margin-top:64px}
+footer .footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:48px;margin-bottom:40px}
+footer h4{font-family:'Lora',serif;font-style:italic;font-size:18px;margin-bottom:16px;color:var(--cream-50)}
+footer ul{list-style:none}
+footer ul li{padding:5px 0;font-size:13px;color:var(--cream-100);opacity:.85}
+footer a{color:var(--cream-100);text-decoration:none}
+footer .footer-disclaimer{border-top:1px solid var(--ink-700);padding-top:24px;font-size:11px;color:var(--cream-100);opacity:.7;line-height:1.6}
+footer .social-row{display:flex;gap:12px;margin-top:12px}
+footer .social-row a{width:34px;height:34px;border:1px solid var(--cream-100);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600}
+@media(prefers-reduced-motion:reduce){.section{opacity:1;transform:none;transition:none}}
+@media(max-width:760px){nav ul{display:none}nav.open ul{display:flex;flex-direction:column;position:absolute;top:100%;left:0;right:0;background:var(--cream-50);padding:24px;gap:14px;border-bottom:1px solid var(--cream-100)}nav .menu-toggle{display:block}.hero,.location-section,.contact{grid-template-columns:1fr}.hero-img{order:-1;max-width:480px;margin:0 auto}.camere-grid,.servizi-grid,.esperienze-grid,.galleria-grid,.recensioni{grid-template-columns:1fr}.galleria-grid > div:nth-child(2),.galleria-grid > div:nth-child(5){grid-column:span 1}footer .footer-grid{grid-template-columns:1fr;gap:32px}.lead-magnet form{flex-direction:column}}
 
-    .demo-bar { z-index: 50; background: var(--paper); border-bottom: 1px solid var(--rule); padding: 0.7rem 1.5rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
-    .demo-bar__left { display: flex; align-items: center; gap: 0.9rem; flex-wrap: wrap; }
-    .demo-bar__back { font-family: var(--fm); font-size: var(--fz-meta); letter-spacing: 0.08em; text-transform: uppercase; color: var(--ox); }
-    .demo-bar__back:hover { text-decoration: underline; }
-    .demo-bar__title { font-family: var(--fd); font-size: 1rem; font-weight: 700; color: var(--ink); }
-    .demo-bar__tier { font-family: var(--fm); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--paper); background: var(--ox); padding: 0.3rem 0.6rem; }
-    .demo-bar__sep { color: var(--mute); font-family: var(--fm); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; }
-    .demo-bar__note { font-family: var(--fm); font-size: 10px; letter-spacing: 0.06em; color: var(--mute); font-style: italic; }
-    .demo-bar__cta { font-family: var(--fm); font-size: var(--fz-meta); letter-spacing: 0.08em; text-transform: uppercase; color: var(--paper); background: var(--ink); padding: 0.55rem 1rem; transition: background 200ms; }
-    .demo-bar__cta:hover { background: var(--ox); }
-
-    .demo-stage { position: relative; background: var(--paper); overflow: hidden; }
-    .demo-frame { position: relative; width: 100%; height: 100%; overflow: hidden; }
-    .demo-frame__loader { position: absolute; inset: 0; display: grid; place-items: center; background: var(--paper); color: var(--mute); font-family: var(--fm); font-size: var(--fz-meta); letter-spacing: 0.1em; text-transform: uppercase; z-index: 2; transition: opacity 400ms; }
-    .demo-frame__loader::after { content: ''; width: 24px; height: 24px; border: 2px solid var(--ox); border-top-color: transparent; border-radius: 50%; animation: spin 1s linear infinite; margin-left: 0.7rem; }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    .demo-frame__loader.is-hidden { opacity: 0; pointer-events: none; }
-    .demo-frame__iframe { width: 100%; height: 100%; border: 0; display: block; background: var(--paper); }
-
-    /* Watermark overlay diagonale ripetuto sopra l'iframe */
-    .demo-frame__overlay {
-      position: absolute; inset: 0; pointer-events: none; z-index: 3;
-      background-image: repeating-linear-gradient(
-        -28deg,
-        transparent 0,
-        transparent 360px,
-        rgba(184,50,63,0.04) 360px,
-        rgba(184,50,63,0.04) 362px
-      );
-      mix-blend-mode: multiply;
+  /* audit-100-100: a11y prefers-reduced-motion + focus-visible */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
     }
-    .demo-frame__watermark { position: absolute; top: 14px; right: 14px; font-family: var(--fm); font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--paper); background: rgba(184,50,63,0.85); padding: 0.4rem 0.7rem; pointer-events: none; z-index: 4; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
+  }
+  :focus-visible { outline: 2px solid currentColor; outline-offset: 3px; border-radius: 2px; }
+  @media (forced-colors: active) {
+    a, button { forced-color-adjust: none; }
+  }
+  
+  /* audit-100-100: skip link a11y WCAG 2.4.1 */
+  .audit-skip-link { position: absolute; left: -9999px; top: 0; background: #000; color: #fff; padding: 12px 16px; z-index: 10000; text-decoration: none; font: bold 14px/1 system-ui, sans-serif; border-radius: 0 0 8px 0; }
+  .audit-skip-link:focus { left: 0; outline: 3px solid #FFD700; outline-offset: 2px; }
 
-    @media (max-width: 767px) {
-      .demo-bar { padding: 0.55rem 0.9rem; gap: 0.5rem; }
-      .demo-bar__title { font-size: 0.92rem; }
-      .demo-bar__note { display: none; }
-      .demo-bar__cta { padding: 0.45rem 0.75rem; }
-    }
+  
+  /* audit-100-100 phase-2e: prevent horizontal scroll on desktop */
+  html, body { overflow-x: hidden; max-width: 100vw; }
+  
+  /* Phase 2.I contrast fix */
+  .eyebrow, .verify { color: #6B3A1F !important; }
+  .btn-primary { background-color: #6B3A1F !important; color: #ffffff !important; }
   </style>
+  <!-- audit-100-100 phase-2c preload-critical -->
+  <!-- audit-100-100 phase-2h landmark+labels -->
+  <!-- audit-100-100 phase-2i contrast-fix -->
 </head>
 <body>
+<main id="main">
 
-  <header class="demo-bar">
-    <div class="demo-bar__left">
-      <a href="../../#web-design" class="demo-bar__back">&larr; Portfolio</a>
-      <span class="demo-bar__sep">/</span>
-      <span class="demo-bar__title">Casa di Margherita</span>
-      <span class="demo-bar__tier">Boutique</span>
-      <span class="demo-bar__note">Demo &middot; non commissionato</span>
+<a href="#main" class="audit-skip-link">Salta al contenuto</a>
+<nav id="nav">
+  <div class="container nav-inner">
+    <a href="#" class="logo">Casa di Margherita</a>
+    <ul>
+      <li><a href="#camere">Camere</a></li>
+      <li><a href="#servizi">Servizi</a></li>
+      <li><a href="#esperienze">Esperienze</a></li>
+      <li><a href="#galleria">Galleria</a></li>
+      <li><a href="#contact">Contatti</a></li>
+      <li><a href="#contact" class="btn btn-primary" style="padding:10px 18px;font-size:13px;min-height:auto">Verifica disponibilità</a></li>
+    </ul>
+    <button class="menu-toggle" onclick="document.getElementById('nav').classList.toggle('open')">≡</button>
+  </div>
+</nav>
+
+<section class="hero container">
+  <div class="hero-img"></div>
+  <div>
+    <span class="eyebrow">Agriturismo boutique · Asolo (TV) · Dal [ANNO]</span>
+    <h1>Quattro camere tra vigne, olivi e tempo lento.</h1>
+    <p class="subhead">Quattro unità sulla collina di Asolo, gestite familiarmente. Colazione di casa con prodotti dell'azienda, esperienze curate, parcheggio e WiFi gratuiti. <span class="verify">[DA VERIFICARE titolari + anno apertura]</span></p>
+    <div class="cta-row">
+      <a href="#contact" class="btn btn-primary">Verifica disponibilità</a>
+      <a href="#camere" class="btn btn-outline">Vedi le camere</a>
     </div>
-    <a href="../../#contact" class="demo-bar__cta">Parliamone &rarr;</a>
-  </header>
+  </div>
+</section>
 
-  <main class="demo-stage">
-    <div class="demo-frame">
-      <span class="demo-frame__watermark">Demo &middot; B&B</span>
-      <div class="demo-frame__loader" id="demo-loader">Loading demo</div>
-      <iframe class="demo-frame__iframe" id="demo-iframe" sandbox="allow-scripts allow-popups allow-popups-to-escape-sandbox allow-forms" allowfullscreen referrerpolicy="no-referrer" title="Demo template Casa di Margherita"></iframe>
-      <div class="demo-frame__overlay" aria-hidden="true"></div>
+<section class="section container manifesto">
+  <blockquote>«Da [ANNO] accogliamo ospiti con calore familiare. Camere curate, colazione di casa, Veneto tutto da scoprire.»</blockquote>
+  <p class="mono" style="margin-top:16px;color:var(--terracotta-500)">[DA VERIFICARE manifesto cliente reale]</p>
+</section>
+
+<section id="camere" class="container section">
+  <span class="eyebrow">Le camere</span>
+  <h2 style="margin-top:8px">Quattro unità, ognuna con il suo carattere.</h2>
+  <div class="camere-grid">
+    <div class="camera-card">
+      <div class="photo"></div>
+      <h3>Camera Glicine</h3>
+      <p class="meta">Letto matrimoniale · Vista vigneto · Bagno doccia walk-in · Culla bambino su richiesta</p>
+      <p style="font-size:14px;color:var(--ink-700)">Camera intima al primo piano, vista sul vigneto principale. Bagno con doccia walk-in, finestre con persiane antiche restaurate.</p>
+      <p class="price">Da €120/notte <small>low season</small> · €180/notte <small>high season</small> <span class="verify">[DA VERIFICARE]</span></p>
     </div>
-  </main>
+    <div class="camera-card">
+      <div class="photo"></div>
+      <h3>Camera Olivo</h3>
+      <p class="meta">Letto matrimoniale + 2 letti singoli · 4 posti · Bagno con vasca</p>
+      <p style="font-size:14px;color:var(--ink-700)">Camera famiglie con due ambienti. Bagno con vasca + doccia separata, ingresso indipendente sul giardino.</p>
+      <p class="price">Da €150/notte · €220/notte <span class="verify">[DA VERIFICARE]</span></p>
+    </div>
+    <div class="camera-card">
+      <div class="photo"></div>
+      <h3>Appartamento Vigna</h3>
+      <p class="meta">Bilocale · Fino 4 ospiti · Cucina + camera matrimoniale + bagno</p>
+      <p style="font-size:14px;color:var(--ink-700)">Bilocale indipendente con cucina equipaggiata, ideale soggiorni 4-7 notti. Terrazza privata vista colline.</p>
+      <p class="price">Da €180/notte · €280/notte <span class="verify">[DA VERIFICARE]</span></p>
+    </div>
+    <div class="camera-card">
+      <div class="photo"></div>
+      <h3>Casetta del Pozzo</h3>
+      <p class="meta">Indipendente coppie · 1 BR + 1 BA · Giardino privato</p>
+      <p style="font-size:14px;color:var(--ink-700)">Casetta romantica isolata, ideale per coppie. Giardino privato con tavolo per cena all'aperto e amaca.</p>
+      <p class="price">Da €130/notte · €200/notte <span class="verify">[DA VERIFICARE]</span></p>
+    </div>
+  </div>
+</section>
 
-  <script>
-    (function(){
-      // Decode XOR + base64 (UTF-8 safe) → blob URL → iframe.src
-      var K = 'ALEXG-2026-PORTFOLIO-DEMO';
-      fetch('./_data.b64', { cache: 'no-cache' })
-        .then(function(r){ if(!r.ok) throw new Error('404'); return r.text(); })
-        .then(function(b64){
-          var binary = atob(b64.replace(/\s/g,''));
-          var bytes = new Uint8Array(binary.length);
-          for (var i=0;i<binary.length;i++) bytes[i] = binary.charCodeAt(i) ^ K.charCodeAt(i % K.length);
-          var html = new TextDecoder('utf-8').decode(bytes);
-          var blob = new Blob([html], { type: 'text/html;charset=utf-8' });
-          var url = URL.createObjectURL(blob);
-          var f = document.getElementById('demo-iframe');
-          f.addEventListener('load', function(){
-            var loader = document.getElementById('demo-loader');
-            if (loader) loader.classList.add('is-hidden');
-            // Revoca URL dopo 60s per scoraggiare estrazione blob URL diretta
-            setTimeout(function(){ try { URL.revokeObjectURL(url); } catch(e){} }, 60000);
-          }, { once: true });
-          f.src = url;
-        })
-        .catch(function(){
-          var loader = document.getElementById('demo-loader');
-          if (loader) loader.textContent = 'Demo non disponibile.';
-        });
+<section id="servizi" class="container section">
+  <span class="eyebrow">Servizi inclusi</span>
+  <h2 style="margin-top:8px">Tutto curato, niente surprise.</h2>
+  <div class="servizi-grid">
+    <div class="servizio-tile"><div class="icon">☕</div><h3>Colazione di casa</h3><p>Pane lievitato, marmellate proprie, miele, uova fresche, olio EVO produzione propria. Diete speciali su richiesta 24h prima.</p></div>
+    <div class="servizio-tile"><div class="icon">⚡</div><h3>WiFi gratuito</h3><p>Fibra 100Mbps in tutte le camere e zone comuni. Password fornita al check-in.</p></div>
+    <div class="servizio-tile"><div class="icon">🅿</div><h3>Parcheggio privato</h3><p>6 posti auto privati recintati, gratuiti per ospiti.</p></div>
+    <div class="servizio-tile"><div class="icon">🐕</div><h3>Animali ammessi</h3><p>Cani benvenuti gratuitamente, no taglie max. Solo in camera, non in zona colazione.</p></div>
+    <div class="servizio-tile"><div class="icon">👶</div><h3>Bambini benvenuti</h3><p>Culla gratuita su richiesta, seggiolone, baby park giardino. Under 6 supervisionati in piscina.</p></div>
+    <div class="servizio-tile"><div class="icon">🚗</div><h3>Trasporto stazione</h3><p>Asolo TV o Bassano del Grappa €15/tratta su prenotazione 24h prima. <span class="verify">[DA VERIFICARE]</span></p></div>
+  </div>
+</section>
 
-      // Deterrenti: right-click, drag, Ctrl+S, Ctrl+U, Ctrl+P, F12, Ctrl+Shift+I/J/C
-      document.addEventListener('contextmenu', function(e){ e.preventDefault(); });
-      document.addEventListener('dragstart',  function(e){ e.preventDefault(); });
-      document.addEventListener('keydown', function(e){
-        var k = (e.key || '').toLowerCase();
-        if (k === 'f12') { e.preventDefault(); return; }
-        if ((e.ctrlKey || e.metaKey) && !e.shiftKey && (k === 's' || k === 'u' || k === 'p')) { e.preventDefault(); return; }
-        if ((e.ctrlKey || e.metaKey) && e.shiftKey && (k === 'i' || k === 'j' || k === 'c')) { e.preventDefault(); return; }
-      });
-    })();
-  </script>
+<section id="esperienze" class="container section">
+  <span class="eyebrow">Esperienze curate</span>
+  <h2 style="margin-top:8px">Quattro modi di scoprire il territorio.</h2>
+  <div class="esperienze-grid">
+    <div class="esperienza-card"><div class="photo"></div><div class="body"><h3>Tour cantine prosecco DOCG</h3><p>Sabato mattina 9:30-13:00, 3 cantine partner Asolo Prosecco DOCG, 8-12 partecipanti. Trasporto incluso.</p><span class="price-tag">€40/persona</span></div></div>
+    <div class="esperienza-card"><div class="photo"></div><div class="body"><h3>Cooking class pasta fresca</h3><p>Domenica pomeriggio 14:30-18:00, 4 ricette tradizionali venete, cena finale insieme.</p><span class="price-tag">€60/persona</span></div></div>
+    <div class="esperienza-card"><div class="photo"></div><div class="body"><h3>Escursioni Monte Grappa</h3><p>Primavera/autunno, 4-6h trek, guida AIGAE certificata. Difficoltà E/EE.</p><span class="price-tag">€25/persona</span></div></div>
+    <div class="esperienza-card"><div class="photo"></div><div class="body"><h3>Yoga in giardino estivo</h3><p>Luglio-settembre, mattino sunset, insegnante certificata Yoga Alliance. <span class="verify">[DA VERIFICARE]</span></p><span class="price-tag">€15/persona</span></div></div>
+  </div>
+</section>
+
+<section id="galleria" class="container section">
+  <span class="eyebrow">Galleria stagionale</span>
+  <h2 style="margin-top:8px">Le quattro stagioni della casa.</h2>
+  <p class="mono" style="color:var(--terracotta-500);margin-top:8px">[ASSET REQUIRED — 8 foto stagionali reali cliente, NO stock]</p>
+  <div class="galleria-grid">
+    <div class="galleria-tile"><span class="caption">Primavera · vigne fioritura</span></div>
+    <div class="galleria-tile"><span class="caption">Estate · cena patio</span></div>
+    <div class="galleria-tile"><span class="caption">Primavera · prima colazione esterna</span></div>
+    <div class="galleria-tile"><span class="caption">Estate · piscina tramonto</span></div>
+    <div class="galleria-tile"><span class="caption">Autunno · vendemmia</span></div>
+    <div class="galleria-tile"><span class="caption">Autunno · camera con caminetto</span></div>
+    <div class="galleria-tile"><span class="caption">Inverno · vigna prima neve</span></div>
+    <div class="galleria-tile"><span class="caption">Primavera · giardino</span></div>
+  </div>
+</section>
+
+<section class="container">
+  <div class="lead-magnet">
+    <span class="eyebrow">Pianifica il soggiorno</span>
+    <h2>Top 20 cose da fare ad Asolo + 50 km.</h2>
+    <p>PDF curato dai proprietari: 20 attività + ristoranti + cantine selezionate. Gratuito.</p>
+    <form onsubmit="event.preventDefault();alert('Demo: integrare endpoint Formspree o SMTP cliente reale');">
+      <input type="email" placeholder="La tua email" required aria-label="La tua email">
+      <button type="submit" class="btn btn-primary">Scarica gratis ora</button>
+    </form>
+  </div>
+</section>
+
+<section class="container section">
+  <span class="eyebrow">Dicono di noi</span>
+  <h2 style="margin-top:8px">Recensioni Google verificate.</h2>
+  <div class="recensioni">
+    <div class="recensione-card">
+      <div class="stars">★★★★★</div>
+      <blockquote>«[Recensione famiglia tedesca con bambini, 25-40 parole — placeholder consenso scritto Codice Civile art. 96]»</blockquote>
+      <cite>Famiglia Brunner · Munich (DE)</cite>
+    </div>
+    <div class="recensione-card">
+      <div class="stars">★★★★★</div>
+      <blockquote>«[Recensione coppia italiana weekend romantico — placeholder consenso scritto]»</blockquote>
+      <cite>Marco &amp; Sara · Milano</cite>
+    </div>
+    <div class="recensione-card">
+      <div class="stars">★★★★★</div>
+      <blockquote>«[Recensione gruppo amici cooking class — placeholder consenso scritto]»</blockquote>
+      <cite>Gruppo Bologna · 8 persone</cite>
+    </div>
+  </div>
+  <p class="recensioni-rating">★ 4.9 / 5 su Google · 87 recensioni verificate · Booking.com 9.4/10 <span class="verify">[DA VERIFICARE numeri reali]</span></p>
+</section>
+
+<section class="container section">
+  <span class="eyebrow">Domande frequenti</span>
+  <h2 style="margin-top:8px">Sei domande, risposte concrete.</h2>
+  <div class="faq-list">
+    <details class="faq-item"><summary>Check-in / check-out?</summary><p>Check-in 16:00-20:00 / check-out 10:00. Late check-in su richiesta +€30.</p></details>
+    <details class="faq-item"><summary>Cancellation policy?</summary><p>Gratuita fino 7 giorni prima dell'arrivo. Successivamente trattenuta 1 notte.</p></details>
+    <details class="faq-item"><summary>Animali ammessi?</summary><p>Sì, gratuiti, nessuna taglia massima. Solo in camera, non in zona colazione.</p></details>
+    <details class="faq-item"><summary>Bambini benvenuti?</summary><p>Sì. Culla gratuita, seggiolone tavolo, baby park in giardino. Under 6 in piscina sempre supervisionati.</p></details>
+    <details class="faq-item"><summary>Colazione orari?</summary><p>8:00-10:30 in sala (esterno in estate). Diete speciali (vegan/glutine/lattosio) su richiesta 24h prima.</p></details>
+    <details class="faq-item"><summary>Pagamenti?</summary><p>Bonifico anticipato 30% conferma + saldo al check-in (POS Visa/Mastercard, contanti, bancomat). Booking.com con commissione separata.</p></details>
+  </div>
+</section>
+
+<section class="container section">
+  <span class="eyebrow">Dove siamo</span>
+  <h2 style="margin-top:8px">Sulla collina di Asolo.</h2>
+  <div class="location-section">
+    <iframe src="https://www.openstreetmap.org/export/embed.html?bbox=11.85%2C45.75%2C12.05%2C45.85&amp;layer=mapnik" loading="lazy" title="Mappa Asolo TV"></iframe>
+    <ul>
+      <li><strong>Indirizzo:</strong> via Roveretto, Asolo TV <span class="verify">[DA VERIFICARE]</span></li>
+      <li><strong>Asolo centro storico:</strong> 2 km</li>
+      <li><strong>Bassano del Grappa:</strong> 18 km</li>
+      <li><strong>Venezia:</strong> 65 km</li>
+      <li><strong>Aeroporto Treviso:</strong> 35 km</li>
+      <li><strong>Aeroporto Venezia:</strong> 60 km</li>
+    </ul>
+  </div>
+</section>
+
+<section id="contact" class="container section">
+  <span class="eyebrow">Contattaci</span>
+  <h2 style="margin-top:8px">Verifica disponibilità.</h2>
+  <div class="contact">
+    <div class="contact-info">
+      <iframe src="https://www.openstreetmap.org/export/embed.html?bbox=11.85%2C45.75%2C12.05%2C45.85&amp;layer=mapnik" loading="lazy" title="Posizione studio"></iframe>
+      <ul>
+        <li><strong>Telefono:</strong> +39 [DA VERIFICARE]</li>
+        <li><strong>Email:</strong> info@casadimargherita.it <span class="verify">[DA VERIFICARE dominio]</span></li>
+        <li><strong>WhatsApp:</strong> +39 [DA VERIFICARE]</li>
+        <li><strong>Instagram:</strong> @casadimargherita <span class="verify">[DA VERIFICARE]</span></li>
+      </ul>
+      <div class="booking-cta">
+        <strong>Prenota direttamente</strong>
+        <p>Sul nostro sito 0% commissione vs Booking.com 15-18%. Email/WhatsApp risposta &lt;2h orari ufficio.</p>
+      </div>
+    </div>
+    <form class="contact-form" onsubmit="event.preventDefault();alert('Demo: integrare endpoint Formspree/SMTP cliente reale');">
+      <div class="form-row"><label>Nome</label><input type="text" required aria-label="Text"></div>
+      <div class="form-row"><label>Email</label><input type="email" required aria-label="Email"></div>
+      <div class="form-row"><label>Telefono</label><input type="tel" aria-label="Tel"></div>
+      <div class="form-row"><label>Date check-in/out</label><input type="text" placeholder="es. 15-18 luglio" aria-label="es. 15-18 luglio"></div>
+      <div class="form-row"><label>Ospiti</label><input type="text" placeholder="2 adulti + 1 bambino + 1 cane" aria-label="2 adulti + 1 bambino + 1 cane"></div>
+      <div class="form-row"><label>Note</label><textarea aria-label="Campo modulo"></textarea></div>
+      <div class="gdpr-row"><input type="checkbox" id="gdpr-bnb" required><label for="gdpr-bnb" style="margin:0;text-transform:none;letter-spacing:0;font-weight:400">Acconsento al trattamento dei dati. <a href="/privacy" style="color:var(--terracotta-400)">Privacy</a></label></div>
+      <button type="submit" class="btn btn-primary">Invia richiesta</button>
+    </form>
+  </div>
+</section>
+
+</main>
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <h3>Casa di Margherita</h3>
+        <p style="font-size:13px;color:var(--cream-100);opacity:.85;line-height:1.6">Agriturismo boutique sulla collina di Asolo. Quattro unità gestite familiarmente con colazione di casa e produzione propria.</p>
+        <p class="mono" style="margin-top:12px;color:var(--cream-100);opacity:.7;font-size:11px">P.IVA [DA VERIFICARE] · ATECO 55.20.20 · Agriturismo 4 girasoli Regione Veneto [DA VERIFICARE]</p>
+        <div class="social-row"><a href="#">IG</a><a href="#">FB</a><a href="#">TA</a><a href="#">BK</a></div>
+      </div>
+      <div>
+        <h3>CIN per unità</h3>
+        <ul>
+          <li>Glicine · CIN [DA VERIFICARE]</li>
+          <li>Olivo · CIN [DA VERIFICARE]</li>
+          <li>Vigna · CIN [DA VERIFICARE]</li>
+          <li>Casetta · CIN [DA VERIFICARE]</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Legali</h3>
+        <ul><li><a href="/privacy">Privacy</a></li><li><a href="/cookie">Cookie</a></li><li><a href="/termini">Termini</a></li><li><a href="/note-legali">Note legali</a></li></ul>
+      </div>
+    </div>
+    <p class="footer-disclaimer">CIN per unità ai sensi D.L. 145/2023. Tassa di soggiorno comunale €2,50/persona/notte over 12 anni Comune di Asolo TV [DA VERIFICARE]. Agriturismo classificazione regionale 4 girasoli Regione Veneto. 70%+ ingredienti colazione/cena dall'azienda agricola, certificazione Regione [DA VERIFICARE]. Tariffe soggette a disponibilità e variazioni stagionali. Conferma prenotazione via email entro 24h dal pagamento.</p>
+  </div>
+</footer>
+
+<script>
+const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('is-visible');obs.unobserve(e.target)}}),{rootMargin:'-50px'});
+document.querySelectorAll('.section').forEach(s=>obs.observe(s));
+</script>
+<!-- VERIFY: P.IVA / CIN per 4 unità / classificazione regionale girasoli / orari / cancellation policy / brand cosmetici / IG handle / numero reali / certificazioni vet/yoga / endpoint form -->
 
 </body>
 </html>

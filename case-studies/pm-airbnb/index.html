@@ -1,122 +1,1466 @@
-﻿<!DOCTYPE html>
+<!doctype html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="robots" content="noindex,nofollow">
-  <title>Demo template — Villa Belvedere · Alessandro Giacobbi</title>
-  <meta name="description" content="Anteprima interattiva del demo template per PM Airbnb Luxury (tier Editorial Premium). Esempio di stile, non lavoro commissionato.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=PT+Sans:wght@400;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../../assets/css/tokens.css">
-  <link rel="stylesheet" href="../../assets/css/base.css">
-  <style>
-    html, body { margin: 0; padding: 0; height: 100%; }
-    body { background: var(--paper); color: var(--ink); font-family: var(--fb); user-select: none; -webkit-user-select: none; display: grid; grid-template-rows: auto 1fr; height: 100vh; overflow: hidden; }
-    a { color: inherit; text-decoration: none; }
+<meta charset="utf-8" />
+<title>Villa Belvedere — Lago di Garda · Boutique villa management</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="preconnect" href="https://picsum.photos" crossorigin />
+  <!-- audit-100-100 hardening v1 -->
+<meta name="referrer" content="strict-origin-when-cross-origin" />
+  
+  <meta name="format-detection" content="telephone=no" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://images.unsplash.com https://picsum.photos https://fastly.picsum.photos; connect-src 'self'; media-src 'self' https://res.cloudinary.com https://*.bunnycdn.com data: blob:; base-uri 'self'; form-action 'self' mailto:" />
+<meta name="description" content="Cinque ville sul Lago di Garda. Una promessa di privacy e dettaglio. Boutique villa management — concierge 24/7, chef privato, transfer, esperienze curate." />
+<meta name="theme-color" content="#0A0E14" />
 
-    .demo-bar { z-index: 50; background: var(--paper); border-bottom: 1px solid var(--rule); padding: 0.7rem 1.5rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
-    .demo-bar__left { display: flex; align-items: center; gap: 0.9rem; flex-wrap: wrap; }
-    .demo-bar__back { font-family: var(--fm); font-size: var(--fz-meta); letter-spacing: 0.08em; text-transform: uppercase; color: var(--ox); }
-    .demo-bar__back:hover { text-decoration: underline; }
-    .demo-bar__title { font-family: var(--fd); font-size: 1rem; font-weight: 700; color: var(--ink); }
-    .demo-bar__tier { font-family: var(--fm); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--paper); background: var(--ox); padding: 0.3rem 0.6rem; }
-    .demo-bar__sep { color: var(--mute); font-family: var(--fm); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; }
-    .demo-bar__note { font-family: var(--fm); font-size: 10px; letter-spacing: 0.06em; color: var(--mute); font-style: italic; }
-    .demo-bar__cta { font-family: var(--fm); font-size: var(--fz-meta); letter-spacing: 0.08em; text-transform: uppercase; color: var(--paper); background: var(--ink); padding: 0.55rem 1rem; transition: background 200ms; }
-    .demo-bar__cta:hover { background: var(--ox); }
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;1,6..96,400;1,6..96,500&family=IBM+Plex+Sans+Condensed:wght@500&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
 
-    .demo-stage { position: relative; background: var(--paper); overflow: hidden; }
-    .demo-frame { position: relative; width: 100%; height: 100%; overflow: hidden; }
-    .demo-frame__loader { position: absolute; inset: 0; display: grid; place-items: center; background: var(--paper); color: var(--mute); font-family: var(--fm); font-size: var(--fz-meta); letter-spacing: 0.1em; text-transform: uppercase; z-index: 2; transition: opacity 400ms; }
-    .demo-frame__loader::after { content: ''; width: 24px; height: 24px; border: 2px solid var(--ox); border-top-color: transparent; border-radius: 50%; animation: spin 1s linear infinite; margin-left: 0.7rem; }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    .demo-frame__loader.is-hidden { opacity: 0; pointer-events: none; }
-    .demo-frame__iframe { width: 100%; height: 100%; border: 0; display: block; background: var(--paper); }
-
-    /* Watermark overlay diagonale ripetuto sopra l'iframe */
-    .demo-frame__overlay {
-      position: absolute; inset: 0; pointer-events: none; z-index: 3;
-      background-image: repeating-linear-gradient(
-        -28deg,
-        transparent 0,
-        transparent 360px,
-        rgba(184,50,63,0.04) 360px,
-        rgba(184,50,63,0.04) 362px
-      );
-      mix-blend-mode: multiply;
+<!-- ==========================================================
+     Schema.org · LodgingBusiness + 5× VacationRental array
+     All client-supplied data marked [DA VERIFICARE] (see HTML).
+     ========================================================== -->
+<!-- VERIFY: P.IVA, CIN per villa, GPS, AggregateOffer prices, sameAs URLs -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "LodgingBusiness",
+  "name": "Villa Belvedere — Lago di Garda",
+  "description": "Boutique villa management agency on Lake Garda. Five private villas with concierge, chef and curated experiences.",
+  "url": "https://villabelvedere.example/",
+  "areaServed": {
+    "@type": "Country",
+    "name": "Italia"
+  },
+  "checkinTime": "16:00",
+  "checkoutTime": "10:00",
+  "petsAllowed": false,
+  "priceRange": "€€€€",
+  "sameAs": [
+    "[DA VERIFICARE Instagram URL]",
+    "[DA VERIFICARE Facebook URL]",
+    "[DA VERIFICARE LinkedIn URL]",
+    "[DA VERIFICARE Vimeo URL]"
+  ],
+  "containsPlace": [
+    {
+      "@type": "VacationRental",
+      "name": "Villa Cipresso",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Sirmione",
+        "addressRegion": "BS",
+        "addressCountry": "IT"
+      },
+      "numberOfRooms": 4,
+      "occupancy": {
+        "@type": "QuantitativeValue",
+        "value": 8
+      },
+      "floorSize": {
+        "@type": "QuantitativeValue",
+        "value": 320,
+        "unitCode": "MTK"
+      },
+      "identifier": "CIN [DA VERIFICARE]",
+      "petsAllowed": false
+    },
+    {
+      "@type": "VacationRental",
+      "name": "Villa Lavanda",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Gardone Riviera",
+        "addressRegion": "BS",
+        "addressCountry": "IT"
+      },
+      "numberOfRooms": 6,
+      "occupancy": {
+        "@type": "QuantitativeValue",
+        "value": 12
+      },
+      "floorSize": {
+        "@type": "QuantitativeValue",
+        "value": 480,
+        "unitCode": "MTK"
+      },
+      "identifier": "CIN [DA VERIFICARE]",
+      "petsAllowed": false
+    },
+    {
+      "@type": "VacationRental",
+      "name": "Villa Limonaia",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Limone sul Garda",
+        "addressRegion": "BS",
+        "addressCountry": "IT"
+      },
+      "numberOfRooms": 3,
+      "occupancy": {
+        "@type": "QuantitativeValue",
+        "value": 6
+      },
+      "floorSize": {
+        "@type": "QuantitativeValue",
+        "value": 240,
+        "unitCode": "MTK"
+      },
+      "identifier": "CIN [DA VERIFICARE]",
+      "petsAllowed": false
+    },
+    {
+      "@type": "VacationRental",
+      "name": "Villa Olivo",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Torri del Benaco",
+        "addressRegion": "VR",
+        "addressCountry": "IT"
+      },
+      "numberOfRooms": 5,
+      "occupancy": {
+        "@type": "QuantitativeValue",
+        "value": 10
+      },
+      "floorSize": {
+        "@type": "QuantitativeValue",
+        "value": 410,
+        "unitCode": "MTK"
+      },
+      "identifier": "CIN [DA VERIFICARE]",
+      "petsAllowed": false
+    },
+    {
+      "@type": "VacationRental",
+      "name": "Villa Vento",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Salò",
+        "addressRegion": "BS",
+        "addressCountry": "IT"
+      },
+      "numberOfRooms": 4,
+      "occupancy": {
+        "@type": "QuantitativeValue",
+        "value": 8
+      },
+      "floorSize": {
+        "@type": "QuantitativeValue",
+        "value": 360,
+        "unitCode": "MTK"
+      },
+      "identifier": "CIN [DA VERIFICARE]",
+      "petsAllowed": false
     }
-    .demo-frame__watermark { position: absolute; top: 14px; right: 14px; font-family: var(--fm); font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--paper); background: rgba(184,50,63,0.85); padding: 0.4rem 0.7rem; pointer-events: none; z-index: 4; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
+  ],
+  "makesOffer": {
+    "@type": "AggregateOffer",
+    "priceCurrency": "EUR",
+    "lowPrice": "[DA VERIFICARE]",
+    "highPrice": "[DA VERIFICARE]",
+    "offerCount": 5
+  },
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "[DA VERIFICARE]",
+    "addressLocality": "Bardolino",
+    "addressRegion": "VR",
+    "postalCode": "37011",
+    "addressCountry": "IT"
+  }
+}
+</script>
 
-    @media (max-width: 767px) {
-      .demo-bar { padding: 0.55rem 0.9rem; gap: 0.5rem; }
-      .demo-bar__title { font-size: 0.92rem; }
-      .demo-bar__note { display: none; }
-      .demo-bar__cta { padding: 0.45rem 0.75rem; }
+<style>
+/* ===========================================================
+   Villa Belvedere — Editorial Premium tier hi-fi
+   Tokens lifted from the design system (colors_and_type.css).
+   =========================================================== */
+:root{
+  --midnight-950:#0A0E14;--midnight-900:#0F131A;
+  --ink-900:#14181F;--ink-800:#1C2129;--ink-700:#262B34;
+  --cream-50:#F5EFE2;--cream-100:#EDE6D6;
+  --alabaster-100:#E8E2D4;--alabaster-200:#D6CFBF;
+  --bronze-300:#D1A876;--bronze-400:#C19660;--bronze-500:#A87E48;
+  --lake-400:#3A7395;--lake-500:#2A5F7A;--lake-700:#163E55;--lake-900:#0C2434;
+
+  --bg:var(--midnight-950);--bg-raised:var(--midnight-900);
+  --surface:var(--ink-900);--surface-elev:var(--ink-800);
+
+  --fg:var(--cream-50);--fg-muted:var(--cream-100);
+  --fg-subtle:rgba(245,239,226,.62);--fg-faint:rgba(245,239,226,.38);
+
+  --border-faint:rgba(232,226,212,.08);
+  --border-subtle:rgba(232,226,212,.14);
+  --border-strong:rgba(232,226,212,.28);
+
+  --glass-bg:rgba(245,239,226,.06);
+  --glass-border:rgba(245,239,226,.10);
+  --glass-blur:blur(24px) saturate(120%);
+
+  --font-display:'Bodoni Moda','Didot',Georgia,serif;
+  --font-body:'Inter',-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif;
+  --font-eyebrow:'IBM Plex Sans Condensed','Inter',sans-serif;
+  --font-mono:'JetBrains Mono','SF Mono',Menlo,monospace;
+
+  --container:1280px;--gutter:32px;--section-y:128px;
+  --ease-out:cubic-bezier(.2,.6,.2,1);
+  --dur-base:240ms;--dur-slow:420ms;--dur-cinematic:900ms;
+  --shadow-md:0 12px 32px rgba(0,0,0,.5);
+  --shadow-rim:inset 0 1px 0 rgba(245,239,226,.04);
+}
+
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);color:var(--fg);
+  font-family:var(--font-body);font-size:17px;line-height:1.55;
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+  overflow-x:hidden;
+}
+img,svg{max-width:100%;display:block}
+a{color:var(--fg);text-decoration:none;border-bottom:1px solid var(--border-strong);
+  transition:color var(--dur-base) var(--ease-out),border-color var(--dur-base) var(--ease-out)}
+a:hover{color:var(--bronze-400);border-color:var(--bronze-400)}
+::selection{background:var(--bronze-400);color:var(--midnight-950)}
+
+/* a11y */
+.sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
+:focus-visible{outline:2px solid var(--bronze-400);outline-offset:3px;border-radius:2px}
+
+/* film-grain */
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:1;
+  opacity:.04;mix-blend-mode:overlay;
+  background-image:radial-gradient(rgba(245,239,226,.6) 1px,transparent 1px);
+  background-size:3px 3px;
+}
+
+.wrap{max-width:var(--container);margin:0 auto;padding:0 var(--gutter)}
+section{position:relative}
+
+/* type */
+h1,h2,h3{margin:0;font-family:var(--font-display);font-style:italic;font-weight:400;letter-spacing:-.015em;text-wrap:balance;color:var(--fg)}
+.h-hero{font-size:clamp(48px,9.2vw,128px);line-height:1.02;letter-spacing:-.02em}
+h2{font-size:clamp(36px,5.2vw,64px);line-height:1.08;letter-spacing:-.01em}
+h3{font-size:clamp(22px,2.4vw,28px);line-height:1.16}
+p{margin:0 0 1em;color:var(--fg-muted);text-wrap:pretty}
+.lead{font-size:clamp(17px,1.6vw,20px);line-height:1.55;color:var(--fg)}
+
+.eyebrow{
+  font-family:var(--font-eyebrow);font-weight:500;font-size:13px;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--fg-subtle);
+  display:inline-flex;align-items:center;gap:10px;
+}
+.eyebrow::before{
+  content:"";width:6px;height:6px;border-radius:50%;background:var(--lake-500);
+}
+.mono{font-family:var(--font-mono);font-size:12px;letter-spacing:.02em;color:var(--fg-subtle);line-height:1.45}
+
+.flag{
+  display:inline-block;font-family:var(--font-mono);font-size:10px;
+  color:var(--bronze-400);letter-spacing:.06em;
+  border:1px dashed var(--bronze-400);padding:1px 6px;border-radius:2px;
+  text-transform:uppercase;margin-left:6px;vertical-align:middle;
+}
+
+/* buttons */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:10px;
+  height:56px;padding:0 28px;border-radius:4px;
+  font-family:var(--font-body);font-size:15px;font-weight:500;letter-spacing:.02em;
+  cursor:pointer;border:1px solid transparent;
+  transition:background-color var(--dur-base) var(--ease-out),
+             color var(--dur-base) var(--ease-out),
+             border-color var(--dur-base) var(--ease-out),
+             transform var(--dur-base) var(--ease-out);
+  white-space:nowrap;text-decoration:none;
+}
+.btn:hover{transform:scale(1.015)}
+.btn-sm{height:44px;padding:0 18px;font-size:13px}
+.btn-primary{background:var(--bronze-400);color:var(--midnight-950);border-color:var(--bronze-400)}
+.btn-primary:hover{background:var(--cream-50);border-color:var(--cream-50);color:var(--midnight-950)}
+.btn-outline{background:transparent;color:var(--cream-50);border-color:var(--alabaster-100)}
+.btn-outline:hover{background:var(--cream-50);color:var(--midnight-950);border-color:var(--cream-50)}
+.btn-ghost{background:transparent;color:var(--fg-muted);border-color:var(--border-strong)}
+.btn-ghost:hover{color:var(--bronze-400);border-color:var(--bronze-400);background:transparent;transform:none}
+
+/* card primitives */
+.card{background:var(--surface);border:1px solid var(--border-subtle);border-radius:8px;box-shadow:var(--shadow-rim);transition:border-color var(--dur-base) var(--ease-out),transform var(--dur-base) var(--ease-out)}
+.card:hover{border-color:var(--border-strong)}
+.card-glass{background:var(--glass-bg);border:1px solid var(--glass-border);backdrop-filter:var(--glass-blur);-webkit-backdrop-filter:var(--glass-blur);border-radius:8px}
+
+/* inputs */
+.input,.textarea,.select{
+  width:100%;height:48px;padding:0 14px;background:transparent;
+  border:1px solid var(--border-subtle);border-bottom:1px solid var(--border-strong);
+  border-radius:4px;color:var(--fg);font-family:var(--font-body);font-size:15px;
+  transition:border-color var(--dur-base) var(--ease-out);
+}
+.input:focus,.textarea:focus,.select:focus{outline:none;border-color:var(--bronze-400)}
+.textarea{height:auto;padding:14px;min-height:96px;resize:vertical}
+.input::placeholder,.textarea::placeholder{color:var(--fg-faint)}
+label{font-family:var(--font-mono);font-size:11px;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--fg-subtle);display:block;margin-bottom:6px}
+
+/* reveal motion */
+.reveal{opacity:0;transform:translateY(20px);transition:opacity var(--dur-cinematic) var(--ease-out),transform var(--dur-cinematic) var(--ease-out)}
+.reveal.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){
+  .reveal{opacity:1;transform:none;transition:none}
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important}
+}
+
+/* =========================================================
+   01 NAV
+   ========================================================= */
+.nav{
+  position:fixed;top:0;left:0;right:0;z-index:50;
+  display:flex;align-items:center;gap:32px;
+  padding:18px var(--gutter);
+  background:transparent;
+  transition:background-color var(--dur-base) var(--ease-out),
+             backdrop-filter var(--dur-base) var(--ease-out),
+             border-color var(--dur-base) var(--ease-out),
+             padding var(--dur-base) var(--ease-out);
+  border-bottom:1px solid transparent;
+}
+.nav.scrolled{
+  background:rgba(10,14,20,.78);
+  backdrop-filter:blur(16px) saturate(120%);
+  -webkit-backdrop-filter:blur(16px) saturate(120%);
+  border-bottom-color:var(--border-faint);
+  padding:12px var(--gutter);
+}
+.nav-logo{font-family:var(--font-display);font-style:italic;font-size:18px;color:var(--cream-50);letter-spacing:.04em;border:0;flex:0 0 auto}
+.nav-logo:hover{color:var(--cream-50)}
+.nav-links{display:flex;gap:28px;flex:1;justify-content:center}
+.nav-links a{font-family:var(--font-body);font-size:14px;letter-spacing:.02em;color:var(--cream-50);border:0;position:relative;padding:6px 0}
+.nav-links a::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1px;background:var(--bronze-400);transform:scaleX(0);transform-origin:left;transition:transform var(--dur-base) var(--ease-out)}
+.nav-links a:hover{color:var(--bronze-400)}
+.nav-links a:hover::after{transform:scaleX(1)}
+.lang{display:inline-flex;border:1px solid var(--border-subtle);border-radius:2px;overflow:hidden;font-family:var(--font-mono);font-size:11px;letter-spacing:.1em}
+.lang button{background:transparent;color:var(--fg-subtle);border:0;border-right:1px solid var(--border-subtle);padding:6px 10px;cursor:pointer;font:inherit;letter-spacing:inherit;transition:background-color var(--dur-base),color var(--dur-base)}
+.lang button:last-child{border-right:0}
+.lang button.on{background:var(--bronze-400);color:var(--midnight-950)}
+.lang button:hover:not(.on){color:var(--cream-50)}
+.nav-cta{flex:0 0 auto}
+.hamburger{display:none;background:transparent;border:1px solid var(--border-subtle);border-radius:4px;width:44px;height:44px;color:var(--cream-50);cursor:pointer;padding:0;align-items:center;justify-content:center}
+.hamburger svg{width:18px;height:18px}
+@media (max-width:860px){
+  .nav-links,.nav-cta,.lang{display:none}
+  .hamburger{display:inline-flex}
+  .nav-mobile.open .nav-links,
+  .nav-mobile.open .lang,
+  .nav-mobile.open .nav-cta{display:flex}
+  .nav-mobile.open{
+    flex-wrap:wrap;align-items:flex-start;
+    background:var(--midnight-950);
+    border-bottom-color:var(--border-faint);
+    backdrop-filter:none;
+  }
+  .nav-mobile.open .nav-links{flex-direction:column;width:100%;gap:0;padding-top:20px;justify-content:flex-start}
+  .nav-mobile.open .nav-links a{padding:14px 0;border-bottom:1px solid var(--border-faint);font-size:18px}
+  .nav-mobile.open .lang{margin-top:18px}
+  .nav-mobile.open .nav-cta{margin-top:14px;width:100%}
+  .nav-mobile.open .nav-cta .btn{width:100%}
+}
+
+/* =========================================================
+   02 HERO
+   ========================================================= */
+.hero{
+  position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center;
+  padding:120px var(--gutter) 80px;overflow:hidden;
+  background:var(--midnight-950);
+}
+.hero-bg{
+  position:absolute;inset:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 70% 50% at 50% 70%, rgba(193,150,96,.18) 0%, transparent 60%),
+    radial-gradient(ellipse 90% 60% at 50% 90%, rgba(42,95,122,.30) 0%, transparent 65%),
+    linear-gradient(180deg, #050810 0%, #0A0E14 50%, #0C2434 100%);
+}
+.hero-water{
+  position:absolute;left:0;right:0;bottom:0;height:38vh;
+  background:
+    radial-gradient(ellipse 60% 100% at 50% 0%, rgba(255,220,170,.20) 0%, transparent 55%),
+    linear-gradient(180deg, transparent 0%, rgba(12,36,52,.6) 50%, rgba(5,10,18,.95) 100%);
+  filter:blur(1px);
+}
+/* Particles — pure CSS dots, no WebGL (Editorial tier) */
+.hero-particles{position:absolute;inset:0;pointer-events:none;mask-image:radial-gradient(ellipse 80% 70% at 50% 60%,black 30%,transparent 100%)}
+.hero-particles span{
+  position:absolute;width:2px;height:2px;border-radius:50%;
+  background:var(--bronze-300);opacity:.7;
+  animation:drift 14s linear infinite;
+}
+.hero-particles span:nth-child(odd){background:var(--lake-400);opacity:.55}
+.hero-particles span:nth-child(3n){background:var(--cream-50);opacity:.4;width:1.5px;height:1.5px}
+@keyframes drift{
+  0%{transform:translate3d(0,0,0);opacity:0}
+  20%{opacity:.7}
+  100%{transform:translate3d(-30px,-80px,0);opacity:0}
+}
+@media (prefers-reduced-motion:reduce){.hero-particles span{animation:none;opacity:.5}}
+
+.hero-content{position:relative;z-index:2;text-align:center;max-width:1080px;margin:0 auto;display:flex;flex-direction:column;gap:32px;align-items:center}
+.hero h1{margin-top:8px}
+.hero .lead{max-width:640px;color:var(--fg-muted)}
+.hero-ctas{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-top:8px}
+.hero-langnote{font-family:var(--font-mono);font-size:11px;color:var(--fg-faint);letter-spacing:.1em;text-transform:uppercase}
+.hero-langnote span{color:var(--fg-subtle)}
+
+.scroll-ind{position:absolute;left:50%;bottom:24px;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;z-index:2}
+.scroll-ind .mono{font-size:10px;letter-spacing:.16em;text-transform:uppercase}
+.scroll-ind i{display:block;width:1px;height:40px;background:linear-gradient(to bottom,var(--bronze-400),transparent);animation:scrolltick 2.4s var(--ease-out) infinite}
+@keyframes scrolltick{0%{transform:scaleY(0);transform-origin:top}60%{transform:scaleY(1);transform-origin:top}61%{transform:scaleY(1);transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+
+/* =========================================================
+   Generic section
+   ========================================================= */
+.sec{padding:var(--section-y) 0}
+.sec-head{display:flex;flex-direction:column;gap:14px;max-width:760px;margin-bottom:56px}
+.sec-head h2{margin:0}
+.sec-num{font-family:var(--font-mono);font-size:11px;letter-spacing:.18em;color:var(--fg-faint);text-transform:uppercase}
+.lang-row{display:flex;gap:18px;flex-wrap:wrap;font-family:var(--font-mono);font-size:11px;letter-spacing:.06em;color:var(--fg-faint);text-transform:uppercase}
+.lang-row b{color:var(--fg-subtle);font-weight:500;margin-right:4px}
+
+/* =========================================================
+   03 3D Tour — placeholder elegante (Editorial tier honesty)
+   ========================================================= */
+.tour-stage{
+  position:relative;height:80vh;min-height:520px;
+  background:
+    radial-gradient(ellipse 60% 40% at 50% 50%, rgba(42,95,122,.4) 0%, transparent 60%),
+    radial-gradient(ellipse 90% 50% at 50% 100%, rgba(12,36,52,.85) 0%, transparent 70%),
+    linear-gradient(180deg, var(--ink-900) 0%, var(--midnight-900) 50%, var(--lake-900) 100%);
+  border:1px solid var(--border-subtle);border-radius:8px;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;
+}
+.tour-stage::before{
+  content:"";position:absolute;inset:0;
+  background-image:radial-gradient(rgba(245,239,226,.6) 1px,transparent 1px);
+  background-size:3px 3px;opacity:.04;mix-blend-mode:overlay;pointer-events:none;
+}
+.tour-orbit{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
+.tour-orbit svg{width:min(620px,80%);height:auto;opacity:.85;filter:drop-shadow(0 0 40px rgba(193,150,96,.15))}
+.tour-card{
+  position:relative;z-index:2;max-width:560px;text-align:center;padding:40px;
+  background:var(--glass-bg);border:1px solid var(--glass-border);
+  backdrop-filter:var(--glass-blur);-webkit-backdrop-filter:var(--glass-blur);
+  border-radius:8px;
+}
+.tour-card .eyebrow{justify-content:center;margin-bottom:14px}
+.tour-card h3{font-size:32px;margin:0 0 14px}
+.tour-card p{color:var(--fg-muted);font-size:15px;line-height:1.6;margin:0 0 20px}
+.tour-cap{
+  position:absolute;left:50%;bottom:18px;transform:translateX(-50%);
+  font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;color:var(--fg-faint);
+  text-transform:uppercase;text-align:center;max-width:90%;
+}
+
+/* =========================================================
+   04 Portfolio — bento 5 ville
+   ========================================================= */
+.bento{
+  display:grid;grid-template-columns:repeat(6,1fr);
+  grid-auto-rows:200px;gap:14px;
+}
+.villa{
+  position:relative;overflow:hidden;border-radius:8px;
+  border:1px solid var(--border-subtle);
+  background:var(--surface-elev);
+  display:flex;flex-direction:column;justify-content:flex-end;
+  padding:20px;
+  transition:border-color var(--dur-base) var(--ease-out),transform var(--dur-base) var(--ease-out);
+  isolation:isolate;
+}
+.villa:hover{border-color:var(--border-strong);transform:translateY(-2px)}
+.villa::before{
+  content:"";position:absolute;inset:0;z-index:0;
+  background:linear-gradient(135deg, rgba(42,95,122,.35), rgba(22,62,85,.15) 50%, rgba(10,14,20,.85));
+  transition:background var(--dur-cinematic) var(--ease-out);
+}
+.villa::after{
+  content:"";position:absolute;inset:0;z-index:0;
+  background-image:
+    radial-gradient(ellipse at 30% 30%, rgba(193,150,96,.18), transparent 50%),
+    radial-gradient(ellipse at 70% 70%, rgba(42,95,122,.22), transparent 60%);
+  opacity:.7;mix-blend-mode:screen;
+}
+.villa>*{position:relative;z-index:1}
+.villa h3{font-size:clamp(24px,2.6vw,32px);margin:0 0 10px}
+.villa-meta{font-family:var(--font-mono);font-size:11px;letter-spacing:.06em;color:var(--cream-100);text-transform:uppercase}
+.villa-cin{font-family:var(--font-mono);font-size:10px;color:var(--fg-faint);margin-top:6px}
+.villa-loc{position:absolute;top:18px;left:18px;z-index:1;font-family:var(--font-mono);font-size:10px;letter-spacing:.14em;color:var(--cream-50);text-transform:uppercase}
+.villa-loc::before{content:"●";color:var(--bronze-400);margin-right:6px;font-size:8px;vertical-align:middle}
+
+.villa.large{grid-column:span 4;grid-row:span 2}
+.villa.med{grid-column:span 2;grid-row:span 2}
+.villa.small{grid-column:span 2;grid-row:span 2}
+.villa.wide{grid-column:span 3;grid-row:span 2}
+
+@media (max-width:860px){
+  .bento{grid-template-columns:1fr;grid-auto-rows:240px}
+  .villa.large,.villa.med,.villa.small,.villa.wide{grid-column:span 1;grid-row:span 1}
+}
+
+/* =========================================================
+   05 Servizi — 4-col bento
+   ========================================================= */
+.serv-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.serv{padding:32px 28px;background:var(--surface);border:1px solid var(--border-subtle);border-radius:8px;display:flex;flex-direction:column;gap:14px;min-height:240px}
+.serv-icon{width:36px;height:36px;color:var(--bronze-400)}
+.serv-icon svg{width:100%;height:100%;stroke:currentColor;fill:none;stroke-width:1.4}
+.serv h3{font-size:22px}
+.serv p{font-size:14px;color:var(--fg-muted);margin:0;line-height:1.55}
+@media (max-width:860px){.serv-grid{grid-template-columns:1fr}}
+
+/* =========================================================
+   06 Esperienze — 6-tile placeholder
+   ========================================================= */
+.exp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.exp{
+  position:relative;aspect-ratio:4/5;border-radius:8px;overflow:hidden;
+  border:1px solid var(--border-subtle);
+  background:linear-gradient(135deg,var(--lake-700),var(--lake-900) 60%,var(--midnight-950));
+  display:flex;flex-direction:column;justify-content:flex-end;padding:24px;
+  isolation:isolate;
+}
+.exp::before{
+  content:"";position:absolute;inset:0;z-index:0;
+  background:
+    radial-gradient(ellipse at 30% 30%, rgba(193,150,96,.20), transparent 55%),
+    radial-gradient(ellipse at 70% 80%, rgba(42,95,122,.30), transparent 60%);
+}
+.exp::after{
+  content:"";position:absolute;inset:0;z-index:0;
+  background-image:radial-gradient(rgba(245,239,226,.4) 1px,transparent 1px);
+  background-size:4px 4px;opacity:.05;
+}
+.exp>*{position:relative;z-index:1}
+.exp h3{font-size:24px;color:var(--cream-50);margin:0 0 8px}
+.exp-tri{font-family:var(--font-mono);font-size:11px;letter-spacing:.06em;color:var(--fg-subtle);line-height:1.7}
+.exp-tri b{color:var(--bronze-400);font-weight:500;margin-right:6px}
+.exp-tag{position:absolute;top:18px;left:18px;z-index:1;font-family:var(--font-mono);font-size:10px;letter-spacing:.14em;color:var(--fg-faint);text-transform:uppercase}
+@media (max-width:860px){.exp-grid{grid-template-columns:1fr}}
+
+/* =========================================================
+   07 Processo
+   ========================================================= */
+.proc{display:grid;grid-template-columns:repeat(4,1fr);gap:32px;position:relative}
+.proc::before{
+  content:"";position:absolute;left:0;right:0;top:38px;height:1px;
+  background:linear-gradient(to right,transparent,var(--bronze-500) 10%,var(--bronze-500) 90%,transparent);
+  z-index:0;
+}
+.step{position:relative;z-index:1;display:flex;flex-direction:column;gap:14px;background:var(--midnight-950);padding-top:0;padding-right:18px}
+.step-num{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:76px;height:76px;border-radius:50%;
+  background:var(--midnight-950);border:1px solid var(--bronze-400);
+  font-family:var(--font-display);font-style:italic;font-size:30px;color:var(--bronze-400);
+}
+.step h3{font-size:20px}
+.step p{font-size:14px;color:var(--fg-muted);margin:0;line-height:1.55}
+@media (max-width:860px){
+  .proc{grid-template-columns:1fr;gap:24px}
+  .proc::before{display:none}
+  .step{flex-direction:row;align-items:flex-start;gap:18px}
+  .step-num{flex:0 0 60px;width:60px;height:60px;font-size:24px}
+  .step-body{flex:1}
+}
+
+/* =========================================================
+   08 Testimonial
+   ========================================================= */
+.testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.testi{padding:32px;background:var(--surface);border:1px solid var(--border-subtle);border-radius:8px;display:flex;flex-direction:column;gap:18px}
+.testi-portrait{
+  width:64px;height:64px;border-radius:50%;
+  background:linear-gradient(135deg,var(--ink-700),var(--ink-800));
+  border:1px solid var(--border-subtle);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-display);font-style:italic;font-size:20px;color:var(--fg-faint);
+}
+.testi blockquote{margin:0;font-family:var(--font-display);font-style:italic;font-size:20px;line-height:1.4;color:var(--cream-50)}
+.testi-attr{font-family:var(--font-mono);font-size:11px;letter-spacing:.06em;color:var(--fg-subtle);text-transform:uppercase}
+.testi-attr b{color:var(--cream-50);font-weight:500}
+.testi-foot{font-family:var(--font-mono);font-size:11px;color:var(--fg-faint);text-align:center;margin-top:32px;letter-spacing:.04em}
+@media (max-width:860px){.testi-grid{grid-template-columns:1fr}}
+
+/* =========================================================
+   09 Stagione — calendar 12 mesi
+   ========================================================= */
+.cal{display:grid;grid-template-columns:repeat(12,1fr);gap:6px}
+.cal-month{
+  position:relative;padding:14px 10px;min-height:120px;
+  background:var(--surface);border:1px solid var(--border-subtle);border-radius:4px;
+  display:flex;flex-direction:column;gap:8px;
+}
+.cal-month .m{font-family:var(--font-mono);font-size:11px;letter-spacing:.08em;color:var(--fg-muted);text-transform:uppercase}
+.cal-month .t{font-family:var(--font-mono);font-size:10px;color:var(--fg-faint);margin-top:auto}
+.cal-month .b{display:inline-block;font-family:var(--font-mono);font-size:9px;letter-spacing:.08em;text-transform:uppercase;padding:2px 6px;border-radius:2px;align-self:flex-start}
+.cal-month.peak .b{background:var(--bronze-400);color:var(--midnight-950)}
+.cal-month.shoulder .b{border:1px solid var(--lake-400);color:var(--lake-400)}
+.cal-month.low .b{border:1px solid var(--border-strong);color:var(--fg-subtle)}
+@media (max-width:860px){.cal{grid-template-columns:repeat(3,1fr)}}
+@media (max-width:480px){.cal{grid-template-columns:repeat(2,1fr)}}
+
+.events{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px;font-family:var(--font-mono);font-size:11px;letter-spacing:.04em;color:var(--fg-subtle)}
+.events span{padding:6px 12px;border:1px solid var(--border-subtle);border-radius:2px}
+
+/* =========================================================
+   10 Sostenibilità
+   ========================================================= */
+.sus-badges{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:32px}
+.badge{padding:24px;background:var(--surface);border:1px solid var(--border-subtle);border-radius:8px;display:flex;flex-direction:column;gap:10px;text-align:center;align-items:center}
+.badge-icon{width:32px;height:32px;color:var(--bronze-400)}
+.badge-icon svg{width:100%;height:100%;stroke:currentColor;fill:none;stroke-width:1.4}
+.badge h4{font-family:var(--font-display);font-style:italic;font-weight:400;font-size:18px;color:var(--cream-50);margin:0}
+.badge p{font-family:var(--font-mono);font-size:11px;color:var(--fg-subtle);margin:0;letter-spacing:.04em}
+.sus-stats{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+.stat{padding:48px 32px;background:var(--surface);border:1px solid var(--border-subtle);border-radius:8px;text-align:center}
+.stat .n{font-family:var(--font-display);font-style:italic;font-size:clamp(48px,6vw,80px);color:var(--bronze-400);line-height:1;letter-spacing:-.02em;display:block;margin-bottom:14px}
+.stat .l{font-family:var(--font-mono);font-size:12px;letter-spacing:.08em;color:var(--fg-subtle);text-transform:uppercase}
+@media (max-width:860px){.sus-badges,.sus-stats{grid-template-columns:1fr 1fr}}
+
+/* =========================================================
+   11 Press
+   ========================================================= */
+.press-strip{display:grid;grid-template-columns:repeat(6,1fr);gap:14px;align-items:center}
+.press-logo{
+  height:72px;display:flex;align-items:center;justify-content:center;
+  border:1px solid var(--border-faint);border-radius:4px;
+  font-family:var(--font-display);font-style:italic;font-size:18px;color:var(--alabaster-200);
+  opacity:.55;filter:grayscale(1);transition:opacity var(--dur-base),filter var(--dur-base);
+  text-align:center;padding:0 8px;
+}
+.press-logo:hover{opacity:1;filter:grayscale(0)}
+@media (max-width:860px){.press-strip{grid-template-columns:repeat(2,1fr)}}
+
+/* =========================================================
+   12 FAQ accordion
+   ========================================================= */
+.faq{max-width:880px;margin:0 auto}
+.faq details{
+  border-top:1px solid var(--border-subtle);
+  padding:0;
+}
+.faq details:last-child{border-bottom:1px solid var(--border-subtle)}
+.faq summary{
+  list-style:none;cursor:pointer;
+  padding:24px 40px 24px 0;position:relative;
+  font-family:var(--font-display);font-style:italic;font-weight:400;font-size:clamp(20px,2vw,24px);
+  color:var(--cream-50);
+  transition:color var(--dur-base) var(--ease-out);
+}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{
+  content:"";position:absolute;right:0;top:50%;width:14px;height:14px;
+  transform:translateY(-50%) rotate(0);
+  background-image:linear-gradient(currentColor,currentColor),linear-gradient(currentColor,currentColor);
+  background-size:100% 1px,1px 100%;background-position:center,center;background-repeat:no-repeat;
+  transition:transform var(--dur-base) var(--ease-out);
+  color:var(--bronze-400);
+}
+.faq details[open] summary::after{transform:translateY(-50%) rotate(45deg)}
+.faq summary:hover{color:var(--bronze-400)}
+.faq-body{padding:0 0 28px;color:var(--fg-muted);font-size:15px;line-height:1.6;max-width:680px}
+.faq-body .mono{margin-top:8px;display:block}
+
+/* =========================================================
+   13 Inquiry
+   ========================================================= */
+.inq{display:grid;grid-template-columns:1fr 1fr;gap:32px}
+.inq-map{
+  position:relative;min-height:560px;border-radius:8px;overflow:hidden;
+  background:linear-gradient(180deg,var(--lake-900) 0%,var(--midnight-950) 100%);
+  border:1px solid var(--border-subtle);
+}
+.inq-map svg{position:absolute;inset:0;width:100%;height:100%}
+.inq-pin{
+  position:absolute;width:12px;height:12px;border-radius:50%;background:var(--bronze-400);
+  box-shadow:0 0 0 5px rgba(193,150,96,.20);
+  cursor:pointer;
+  transition:transform var(--dur-base) var(--ease-out);
+}
+.inq-pin:hover{transform:scale(1.4)}
+.inq-pin .lbl{
+  position:absolute;left:18px;top:-2px;white-space:nowrap;
+  font-family:var(--font-mono);font-size:10px;letter-spacing:.08em;color:var(--cream-50);
+  text-transform:uppercase;background:rgba(10,14,20,.8);padding:3px 8px;border-radius:2px;
+  border:1px solid var(--border-subtle);
+  opacity:0;transition:opacity var(--dur-base);
+}
+.inq-pin:hover .lbl{opacity:1}
+.inq-contacts{
+  position:absolute;left:24px;bottom:24px;right:24px;z-index:2;
+  background:var(--glass-bg);border:1px solid var(--glass-border);
+  backdrop-filter:var(--glass-blur);-webkit-backdrop-filter:var(--glass-blur);
+  border-radius:8px;padding:18px;
+  display:flex;flex-direction:column;gap:8px;
+  font-family:var(--font-mono);font-size:11px;letter-spacing:.04em;color:var(--fg-subtle);
+}
+.inq-contacts b{color:var(--cream-50);font-weight:500;display:inline-block;width:90px}
+.inq-form{padding:32px;background:var(--surface);border:1px solid var(--border-subtle);border-radius:8px}
+.inq-form h3{font-size:24px;margin-bottom:24px}
+.field-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+.field{display:flex;flex-direction:column}
+.field-full{grid-column:1/-1}
+.gdpr{
+  display:flex;gap:10px;align-items:flex-start;margin:18px 0;
+  padding:14px;border:1px dashed var(--border-subtle);border-radius:4px;
+  font-size:13px;color:var(--fg-muted);line-height:1.5;
+}
+.gdpr input[type="checkbox"]{margin-top:3px;flex:0 0 auto;accent-color:var(--bronze-400);width:16px;height:16px}
+.gdpr a{color:var(--bronze-400);border-bottom-color:var(--bronze-400)}
+.inq-form .btn-primary{width:100%}
+@media (max-width:860px){
+  .inq{grid-template-columns:1fr}
+  .field-grid{grid-template-columns:1fr}
+}
+
+/* =========================================================
+   14 Footer
+   ========================================================= */
+.foot{background:var(--ink-900);border-top:1px solid var(--border-subtle);padding:64px 0 32px;margin-top:96px}
+.foot-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1.2fr;gap:48px;margin-bottom:48px}
+.foot h4{font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;color:var(--fg-subtle);text-transform:uppercase;margin:0 0 16px;font-weight:500;font-style:normal}
+.foot-logo{font-family:var(--font-display);font-style:italic;font-size:22px;color:var(--cream-50);display:block;margin-bottom:14px}
+.foot p{font-size:14px;color:var(--fg-muted);margin:0 0 8px}
+.foot ul{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:8px}
+.foot ul a{font-family:var(--font-mono);font-size:12px;letter-spacing:.04em;color:var(--fg-muted);border:0}
+.foot ul a:hover{color:var(--bronze-400)}
+.cin-list{font-family:var(--font-mono);font-size:11px;color:var(--fg-subtle);line-height:1.9;letter-spacing:.04em}
+.cin-list b{color:var(--cream-50);font-weight:500}
+.social{display:flex;gap:8px;margin-top:14px}
+.social a{
+  width:36px;height:36px;border:1px solid var(--border-subtle);border-radius:4px;
+  display:inline-flex;align-items:center;justify-content:center;color:var(--fg-muted);
+  font-family:var(--font-mono);font-size:11px;letter-spacing:.04em;
+  transition:border-color var(--dur-base),color var(--dur-base);
+}
+.social a:hover{border-color:var(--bronze-400);color:var(--bronze-400)}
+.foot-disclaimer{
+  border-top:1px solid var(--border-subtle);padding-top:24px;
+  font-family:var(--font-mono);font-size:11px;color:var(--fg-faint);line-height:1.7;letter-spacing:.02em;
+}
+.foot-bottom{
+  display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
+  margin-top:24px;padding-top:24px;border-top:1px solid var(--border-faint);
+  font-family:var(--font-mono);font-size:11px;color:var(--fg-faint);
+}
+@media (max-width:860px){
+  .foot-grid{grid-template-columns:1fr;gap:32px}
+}
+
+  /* audit-100-100: a11y prefers-reduced-motion + focus-visible */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
     }
+  }
+  :focus-visible { outline: 2px solid currentColor; outline-offset: 3px; border-radius: 2px; }
+  @media (forced-colors: active) {
+    a, button { forced-color-adjust: none; }
+  }
+  
+  /* audit-100-100 phase-2d: img overlay placeholder R16 BIBBIA */
+  .hero-img > img.ph-img,
+  .portfolio-card > img.ph-img,
+  .about-img > img.ph-img,
+  .case-photo > img.ph-img,
+  .photo > img.ph-img,
+  .tile > img.ph-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: inherit;
+    z-index: 0;
+  }
+  .portfolio-card > .caption,
+  .case-photo > .label,
+  .tile > .label,
+  .photo + cite,
+  .photo ~ blockquote {
+    position: relative;
+    z-index: 1;
+  }
+  
+  /* phase-2d PM Airbnb: img overlay su article.exp */
+  .exp { position: relative; }
+  .exp > img.ph-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; opacity: 0.55; border-radius: inherit; }
+  .exp > .exp-tag, .exp > h3, .exp > p { position: relative; z-index: 1; }
+  
+  /* audit-100-100 phase-2e: prevent horizontal scroll on desktop */
+  html, body { overflow-x: hidden; max-width: 100vw; }
+  
+  /* Phase 2.I contrast fix */
+  .eyebrow, .sec-num { color: #C49860 !important; }
+  .verify, .flag { color: #B8753A !important; }
   </style>
+  <!-- audit-100-100 phase-2d picsum-assets -->
+  <!-- audit-100-100 phase-2c preload-critical -->
+  <!-- audit-100-100 phase-2h landmark+labels -->
+  <!-- audit-100-100 phase-2i contrast-fix -->
+  <!-- audit-100-100 phase-2j webp+cls -->
 </head>
 <body>
 
-  <header class="demo-bar">
-    <div class="demo-bar__left">
-      <a href="../../#web-design" class="demo-bar__back">&larr; Portfolio</a>
-      <span class="demo-bar__sep">/</span>
-      <span class="demo-bar__title">Villa Belvedere</span>
-      <span class="demo-bar__tier">Editorial Premium</span>
-      <span class="demo-bar__note">Demo &middot; non commissionato</span>
+<a href="#main" class="sr">Salta al contenuto</a>
+
+<!-- ==========================================================
+     01 · NAV
+     ========================================================== -->
+<header class="nav nav-mobile" id="nav">
+  <a href="#top" class="nav-logo" aria-label="Villa Belvedere — home">VILLA BELVEDERE</a>
+  <nav class="nav-links" aria-label="Primary">
+    <a href="#ville">Le Ville</a>
+    <a href="#servizi">Servizi</a>
+    <a href="#esperienze">Esperienze</a>
+    <a href="#contatti">Contatti</a>
+  </nav>
+  <div class="lang" role="group" aria-label="Lingua / Language / Sprache">
+    <button class="on" data-lang="it" aria-pressed="true">IT</button>
+    <button data-lang="en" aria-pressed="false">EN</button>
+    <button data-lang="de" aria-pressed="false">DE</button>
+  </div>
+  <a href="#ville" class="btn btn-sm btn-primary nav-cta">Scopri le ville</a>
+  <button class="hamburger" aria-label="Apri menu" aria-controls="nav" aria-expanded="false" id="hamburger">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+  </button>
+</header>
+
+<main id="main">
+
+<!-- ==========================================================
+     02 · HERO
+     ========================================================== -->
+<section class="hero" id="top" aria-labelledby="hero-h">
+  <div class="hero-bg" aria-hidden="true"></div>
+  <div class="hero-water" aria-hidden="true"></div>
+  <div class="hero-particles" aria-hidden="true" id="particles"></div>
+
+  <div class="hero-content">
+    <span class="eyebrow">Boutique Villa Management · Lago di Garda</span>
+    <h1 class="h-hero" id="hero-h">Cinque ville sul Lago di Garda. Una promessa di privacy e dettaglio.</h1>
+    <p class="lead">Cinque dimore selezionate fra Sirmione, Gardone Riviera, Limone, Torri del Benaco e Salò. Concierge dedicato, chef privato, esperienze su misura.</p>
+    <div class="hero-ctas">
+      <a href="#ville" class="btn btn-primary">Scopri le ville</a>
+      <a href="#contatti" class="btn btn-outline">Inquiry diretto</a>
     </div>
-    <a href="../../#contact" class="demo-bar__cta">Parliamone &rarr;</a>
-  </header>
+    <div class="hero-langnote"><span>IT</span> attiva &nbsp;·&nbsp; EN &middot; Five villas on Lake Garda &nbsp;·&nbsp; DE &middot; Fünf Villen am Gardasee</div>
+  </div>
 
-  <main class="demo-stage">
-    <div class="demo-frame">
-      <span class="demo-frame__watermark">Demo &middot; PM Airbnb Luxury</span>
-      <div class="demo-frame__loader" id="demo-loader">Loading demo</div>
-      <iframe class="demo-frame__iframe" id="demo-iframe" sandbox="allow-scripts allow-popups allow-popups-to-escape-sandbox allow-forms" allowfullscreen referrerpolicy="no-referrer" title="Demo template Villa Belvedere"></iframe>
-      <div class="demo-frame__overlay" aria-hidden="true"></div>
+  <div class="scroll-ind" aria-hidden="true">
+    <span class="mono">scorri</span>
+    <i></i>
+  </div>
+</section>
+
+<!-- ==========================================================
+     03 · 3D TOUR — Editorial-tier honest placeholder
+     ========================================================== -->
+<section class="sec" id="tour" aria-labelledby="tour-h">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="sec-num">03 · Virtual tour</span>
+      <h2 id="tour-h">Una panoramica del lago, prima di salire a bordo.</h2>
+      <div class="lang-row"><span><b>EN</b> A view of the lake, before you board.</span><span><b>DE</b> Ein Blick auf den See, bevor Sie an Bord gehen.</span></div>
     </div>
-  </main>
 
-  <script>
-    (function(){
-      // Decode XOR + base64 (UTF-8 safe) → blob URL → iframe.src
-      var K = 'ALEXG-2026-PORTFOLIO-DEMO';
-      fetch('./_data.b64', { cache: 'no-cache' })
-        .then(function(r){ if(!r.ok) throw new Error('404'); return r.text(); })
-        .then(function(b64){
-          var binary = atob(b64.replace(/\s/g,''));
-          var bytes = new Uint8Array(binary.length);
-          for (var i=0;i<binary.length;i++) bytes[i] = binary.charCodeAt(i) ^ K.charCodeAt(i % K.length);
-          var html = new TextDecoder('utf-8').decode(bytes);
-          var blob = new Blob([html], { type: 'text/html;charset=utf-8' });
-          var url = URL.createObjectURL(blob);
-          var f = document.getElementById('demo-iframe');
-          f.addEventListener('load', function(){
-            var loader = document.getElementById('demo-loader');
-            if (loader) loader.classList.add('is-hidden');
-            // Revoca URL dopo 60s per scoraggiare estrazione blob URL diretta
-            setTimeout(function(){ try { URL.revokeObjectURL(url); } catch(e){} }, 60000);
-          }, { once: true });
-          f.src = url;
-        })
-        .catch(function(){
-          var loader = document.getElementById('demo-loader');
-          if (loader) loader.textContent = 'Demo non disponibile.';
-        });
+    <div class="tour-stage reveal">
+      <div class="tour-orbit" aria-hidden="true">
+        <!-- Stylized lake silhouette with 5 hotspots, no Spline iframe -->
+        <svg viewBox="0 0 800 480" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Mappa stilizzata Lago di Garda con cinque ville">
+          <defs>
+            <radialGradient id="lk" cx="50%" cy="50%" r="60%">
+              <stop offset="0%" stop-color="#3A7395" stop-opacity=".55"/>
+              <stop offset="60%" stop-color="#163E55" stop-opacity=".35"/>
+              <stop offset="100%" stop-color="#0C2434" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
+          <!-- lake silhouette -->
+          <path d="M340 60 C 380 50 430 70 460 110 C 490 150 480 220 470 280 C 460 340 440 400 380 430 C 320 450 250 430 220 380 C 200 320 220 260 240 200 C 260 140 290 80 340 60 Z"
+                fill="url(#lk)" stroke="#2A5F7A" stroke-opacity=".4" stroke-width="1"/>
+          <!-- horizon strokes -->
+          <line x1="80"  y1="200" x2="200" y2="200" stroke="#E8E2D4" stroke-opacity=".08"/>
+          <line x1="500" y1="200" x2="720" y2="200" stroke="#E8E2D4" stroke-opacity=".08"/>
+          <line x1="80"  y1="280" x2="180" y2="280" stroke="#E8E2D4" stroke-opacity=".05"/>
+          <line x1="520" y1="280" x2="720" y2="280" stroke="#E8E2D4" stroke-opacity=".05"/>
+          <!-- hotspots -->
+          <g fill="#C19660">
+            <circle cx="345" cy="100" r="5"/><text x="355" y="103" font-family="JetBrains Mono" font-size="10" fill="#F5EFE2" letter-spacing=".1em">LIMONE</text>
+            <circle cx="270" cy="220" r="5"/><text x="280" y="223" font-family="JetBrains Mono" font-size="10" fill="#F5EFE2" letter-spacing=".1em">SALÒ</text>
+            <circle cx="320" cy="260" r="5"/><text x="330" y="263" font-family="JetBrains Mono" font-size="10" fill="#F5EFE2" letter-spacing=".1em">GARDONE</text>
+            <circle cx="445" cy="220" r="5"/><text x="455" y="223" font-family="JetBrains Mono" font-size="10" fill="#F5EFE2" letter-spacing=".1em">TORRI</text>
+            <circle cx="380" cy="395" r="5"/><text x="390" y="398" font-family="JetBrains Mono" font-size="10" fill="#F5EFE2" letter-spacing=".1em">SIRMIONE</text>
+          </g>
+        </svg>
+      </div>
 
-      // Deterrenti: right-click, drag, Ctrl+S, Ctrl+U, Ctrl+P, F12, Ctrl+Shift+I/J/C
-      document.addEventListener('contextmenu', function(e){ e.preventDefault(); });
-      document.addEventListener('dragstart',  function(e){ e.preventDefault(); });
-      document.addEventListener('keydown', function(e){
-        var k = (e.key || '').toLowerCase();
-        if (k === 'f12') { e.preventDefault(); return; }
-        if ((e.ctrlKey || e.metaKey) && !e.shiftKey && (k === 's' || k === 'u' || k === 'p')) { e.preventDefault(); return; }
-        if ((e.ctrlKey || e.metaKey) && e.shiftKey && (k === 'i' || k === 'j' || k === 'c')) { e.preventDefault(); return; }
+      <div class="tour-card">
+        <span class="eyebrow">Tour 3D · Disponibile su upgrade</span>
+        <h3>Tour 3D virtuale — su richiesta.</h3>
+        <p>Il tour 3D interattivo delle cinque ville è disponibile come <em>upgrade</em> al tier <strong>3D Premium</strong>. Costruiamo una scena Spline custom (5 ville, hotspot navigabili, fly-through del lago) con uno specialist Spline dedicato. Quote su misura.</p>
+        <a href="#contatti" class="btn btn-outline btn-sm">Richiedi upgrade 3D</a>
+      </div>
+
+      <div class="tour-cap">
+        IT · Tour 3D disponibile su upgrade tier 3D Premium &nbsp;·&nbsp; EN · 3D tour available on premium upgrade &nbsp;·&nbsp; DE · 3D-Tour als Premium-Upgrade verfügbar
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==========================================================
+     04 · PORTFOLIO 5 VILLE
+     ========================================================== -->
+<section class="sec" id="ville" aria-labelledby="ville-h">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="sec-num">04 · Le cinque ville</span>
+      <h2 id="ville-h">Cinque dimore. Cinque microclimi. Una stessa cura.</h2>
+      <div class="lang-row"><span><b>EN</b> Five homes, five microclimates, one standard.</span><span><b>DE</b> Fünf Häuser, fünf Mikroklimata, ein Anspruch.</span></div>
+    </div>
+
+    <div class="bento reveal">
+      <article class="villa large">
+        <span class="villa-loc">Sirmione · BS</span>
+        <h3>Villa Cipresso</h3>
+        <p class="villa-meta">4 BR · 4 BA · 320 m² · 8 ospiti</p>
+        <p class="villa-cin">CIN <span class="flag">DA VERIFICARE</span></p>
+        <!-- VERIFY: CIN Villa Cipresso -->
+      </article>
+      <article class="villa med">
+        <span class="villa-loc">Gardone Riviera · BS</span>
+        <h3>Villa Lavanda</h3>
+        <p class="villa-meta">6 BR · 6 BA · 480 m²</p>
+        <p class="villa-cin">CIN <span class="flag">DA VERIFICARE</span></p>
+        <!-- VERIFY: CIN Villa Lavanda -->
+      </article>
+      <article class="villa small">
+        <span class="villa-loc">Limone sul Garda · BS</span>
+        <h3>Villa Limonaia</h3>
+        <p class="villa-meta">3 BR · 3 BA · 240 m²</p>
+        <p class="villa-cin">CIN <span class="flag">DA VERIFICARE</span></p>
+        <!-- VERIFY: CIN Villa Limonaia -->
+      </article>
+      <article class="villa wide">
+        <span class="villa-loc">Torri del Benaco · VR</span>
+        <h3>Villa Olivo</h3>
+        <p class="villa-meta">5 BR · 5 BA · 410 m²</p>
+        <p class="villa-cin">CIN <span class="flag">DA VERIFICARE</span></p>
+        <!-- VERIFY: CIN Villa Olivo -->
+      </article>
+      <article class="villa wide">
+        <span class="villa-loc">Salò · BS</span>
+        <h3>Villa Vento</h3>
+        <p class="villa-meta">4 BR · 4 BA · 360 m²</p>
+        <p class="villa-cin">CIN <span class="flag">DA VERIFICARE</span></p>
+        <!-- VERIFY: CIN Villa Vento -->
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ==========================================================
+     05 · SERVIZI
+     ========================================================== -->
+<section class="sec" id="servizi" aria-labelledby="serv-h">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="sec-num">05 · Servizi</span>
+      <h2 id="serv-h">Quattro servizi inclusi. Nessun extra nascosto.</h2>
+      <div class="lang-row"><span><b>EN</b> Four included services. No hidden extras.</span><span><b>DE</b> Vier inklusive Leistungen. Keine versteckten Kosten.</span></div>
+    </div>
+
+    <div class="serv-grid reveal">
+      <div class="serv">
+        <span class="serv-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M4 13a8 8 0 0 1 16 0v4a3 3 0 0 1-3 3h-1v-7h4M4 13v4a3 3 0 0 0 3 3h1v-7H4"/></svg>
+        </span>
+        <h3>Concierge 24/7</h3>
+        <p>Numero italiano dedicato, WhatsApp Business e email con risposta entro due ore.</p>
+      </div>
+      <div class="serv">
+        <span class="serv-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M6 11a3 3 0 1 1 3 3v8h6v-8a3 3 0 1 1 3-3M9 22h6"/></svg>
+        </span>
+        <h3>Chef privato on-demand</h3>
+        <p>Cucina del territorio Garda DOC; restrizioni alimentari accolte senza supplemento.</p>
+      </div>
+      <div class="serv">
+        <span class="serv-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M3 14l2-6h14l2 6v5h-3v-2H6v2H3v-5z"/><circle cx="7" cy="17" r="1.5"/><circle cx="17" cy="17" r="1.5"/></svg>
+        </span>
+        <h3>Transfer aeroporti</h3>
+        <p>Verona Catullo, Bergamo Orio, Milano Linate. Mercedes V-Class o Tesla Model X.</p>
+      </div>
+      <div class="serv">
+        <span class="serv-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3v18M3 12h18M5 8c4 4 10 4 14 0M5 16c4-4 10-4 14 0"/></svg>
+        </span>
+        <h3>Esperienze curate</h3>
+        <p>Vela sul Garda, e-bike in Riviera, degustazioni Bardolino DOC, tour culturali.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==========================================================
+     06 · ESPERIENZE — placeholder eleganti
+     ========================================================== -->
+<section class="sec" id="esperienze" aria-labelledby="esp-h">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="sec-num">06 · Esperienze · <span style="color:var(--bronze-400)">[ASSET REQUIRED]</span></span>
+      <h2 id="esp-h">Sei modi di stare sul lago.</h2>
+      <div class="lang-row"><span><b>EN</b> Six ways to be on the lake.</span><span><b>DE</b> Sechs Arten, am See zu sein.</span></div>
+    </div>
+
+    <div class="exp-grid reveal">
+      <article class="exp"><img src="https://picsum.photos/seed/pm-vela-garda/800/1000?fm=webp" width="800" height="1000" alt="Vela sul Lago di Garda, regata locale" class="ph-img" loading="lazy" decoding="async" /><span class="exp-tag">01 · Outdoor</span><h3>Vela Garda</h3><p class="exp-tri"><b>EN</b>Lake Garda Sailing<br/><b>DE</b>Segeln Gardasee</p></article>
+      <article class="exp"><img src="https://picsum.photos/seed/pm-ebike-riviera/800/1000?fm=webp" width="800" height="1000" alt="E-bike tour Riviera del Garda" class="ph-img" loading="lazy" decoding="async" /><span class="exp-tag">02 · Outdoor</span><h3>E-bike Riviera</h3><p class="exp-tri"><b>EN</b>Riviera E-bike<br/><b>DE</b>E-Bike Riviera</p></article>
+      <article class="exp"><img src="https://picsum.photos/seed/pm-bardolino-wine/800/1000?fm=webp" width="800" height="1000" alt="Degustazione Bardolino DOC, cantina veronese" class="ph-img" loading="lazy" decoding="async" /><span class="exp-tag">03 · Tavola</span><h3>Degustazione Bardolino DOC</h3><p class="exp-tri"><b>EN</b>Wine Tasting<br/><b>DE</b>Weinverkostung</p></article>
+      <article class="exp"><img src="https://picsum.photos/seed/pm-cultura-tour/800/1000?fm=webp" width="800" height="1000" alt="Tour culturale castelli del Garda" class="ph-img" loading="lazy" decoding="async" /><span class="exp-tag">04 · Cultura</span><h3>Tour culturale</h3><p class="exp-tri"><b>EN</b>Cultural Tour<br/><b>DE</b>Kulturtour</p></article>
+      <article class="exp"><img src="https://picsum.photos/seed/pm-spa-privata/800/1000?fm=webp" width="800" height="1000" alt="Spa privata villa lusso, dettaglio" class="ph-img" loading="lazy" decoding="async" /><span class="exp-tag">05 · Wellness</span><h3>Spa privata</h3><p class="exp-tri"><b>EN</b>Private Spa<br/><b>DE</b>Privater Spa</p></article>
+      <article class="exp"><img src="https://picsum.photos/seed/pm-yacht-charter/800/1000?fm=webp" width="800" height="1000" alt="Yacht charter Lago di Garda" class="ph-img" loading="lazy" decoding="async" /><span class="exp-tag">06 · Acqua</span><h3>Yacht charter</h3><p class="exp-tri"><b>EN</b>Yacht Charter<br/><b>DE</b>Yachtcharter</p></article>
+    </div>
+    <p class="mono" style="margin-top:24px">[ASSET REQUIRED] · 6 hi-res 4:5 photos commissioned, raw + edited <span class="flag">DA VERIFICARE</span></p>
+  </div>
+</section>
+
+<!-- ==========================================================
+     07 · PROCESSO
+     ========================================================== -->
+<section class="sec" aria-labelledby="proc-h">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="sec-num">07 · Processo</span>
+      <h2 id="proc-h">Dalla richiesta al benvenuto, in quattro passi.</h2>
+      <div class="lang-row"><span><b>EN</b> From inquiry to welcome, in four steps.</span><span><b>DE</b> Von der Anfrage bis zum Empfang, in vier Schritten.</span></div>
+    </div>
+
+    <div class="proc reveal">
+      <div class="step"><div class="step-num">01</div><div class="step-body"><h3>Inquiry</h3><p>Compila il form qualificato con date, ospiti e villa preferita.</p></div></div>
+      <div class="step"><div class="step-num">02</div><div class="step-body"><h3>Custom proposal</h3><p>Riceverai una proposta su misura entro 24 ore via email, con PDF brief.</p></div></div>
+      <div class="step"><div class="step-num">03</div><div class="step-body"><h3>Booking &amp; deposit</h3><p>30% di acconto a conferma, 70% saldo trenta giorni prima del check-in.</p></div></div>
+      <div class="step"><div class="step-num">04</div><div class="step-body"><h3>Welcome on arrival</h3><p>Concierge in villa al vostro arrivo, welcome basket Garda DOC.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ==========================================================
+     08 · TESTIMONIAL
+     ========================================================== -->
+<section class="sec" aria-labelledby="testi-h">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="sec-num">08 · Testimonial · <span style="color:var(--bronze-400)">[ASSET REQUIRED]</span></span>
+      <h2 id="testi-h">Le voci di chi è già stato ospite.</h2>
+      <div class="lang-row"><span><b>EN</b> Voices from past guests.</span><span><b>DE</b> Stimmen früherer Gäste.</span></div>
+    </div>
+
+    <div class="testi-grid reveal">
+      <article class="testi">
+        <div class="testi-portrait" aria-hidden="true">MW</div>
+        <blockquote>&laquo; [TESTIMONIAL Munich corporate retreat — 25–40 parole · contenuto in attesa di consenso scritto cliente] &raquo;</blockquote>
+        <div class="testi-attr"><b>Markus W.</b> · Munich (DE)</div>
+        <span class="flag">CONSENSO SCRITTO RICHIESTO PRE GO-LIVE</span>
+        <!-- VERIFY: written consent Markus W. -->
+      </article>
+      <article class="testi">
+        <div class="testi-portrait" aria-hidden="true">SJ</div>
+        <blockquote>&laquo; [TESTIMONIAL honeymoon — 25–40 parole · contenuto in attesa di consenso scritto cliente] &raquo;</blockquote>
+        <div class="testi-attr"><b>Sarah &amp; James</b> · London (UK)</div>
+        <span class="flag">CONSENSO SCRITTO RICHIESTO PRE GO-LIVE</span>
+        <!-- VERIFY: written consent Sarah & James -->
+      </article>
+      <article class="testi">
+        <div class="testi-portrait" aria-hidden="true">RK</div>
+        <blockquote>&laquo; [TESTIMONIAL family vacation — 25–40 parole · contenuto in attesa di consenso scritto cliente] &raquo;</blockquote>
+        <div class="testi-attr"><b>Robert K.</b> · Manhattan (US)</div>
+        <span class="flag">CONSENSO SCRITTO RICHIESTO PRE GO-LIVE</span>
+        <!-- VERIFY: written consent Robert K. -->
+      </article>
+    </div>
+    <p class="testi-foot">Tutti i testimonial sono pubblicati con consenso scritto · All testimonials published with written consent · Alle Testimonials mit schriftlicher Einwilligung veröffentlicht.</p>
+  </div>
+</section>
+
+<!-- ==========================================================
+     09 · STAGIONE & MOMENTI
+     ========================================================== -->
+<section class="sec" aria-labelledby="cal-h">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="sec-num">09 · Stagione &amp; momenti · <span style="color:var(--bronze-400)">[ASSET REQUIRED]</span></span>
+      <h2 id="cal-h">Quando il lago si racconta meglio.</h2>
+      <div class="lang-row"><span><b>EN</b> When the lake tells its best story.</span><span><b>DE</b> Wenn der See sich am schönsten zeigt.</span></div>
+    </div>
+
+    <div class="cal reveal">
+      <div class="cal-month low"><span class="m">Gen</span><span class="b">Low</span><span class="t">3°/8°C</span></div>
+      <div class="cal-month low"><span class="m">Feb</span><span class="b">Low</span><span class="t">4°/10°C</span></div>
+      <div class="cal-month shoulder"><span class="m">Mar</span><span class="b">Shoulder</span><span class="t">7°/14°C</span></div>
+      <div class="cal-month shoulder"><span class="m">Apr</span><span class="b">Shoulder</span><span class="t">10°/18°C</span></div>
+      <div class="cal-month peak"><span class="m">Mag</span><span class="b">Peak</span><span class="t">14°/22°C</span></div>
+      <div class="cal-month peak"><span class="m">Giu</span><span class="b">Peak</span><span class="t">18°/27°C</span></div>
+      <div class="cal-month peak"><span class="m">Lug</span><span class="b">Peak</span><span class="t">21°/30°C</span></div>
+      <div class="cal-month peak"><span class="m">Ago</span><span class="b">Peak</span><span class="t">21°/30°C</span></div>
+      <div class="cal-month peak"><span class="m">Set</span><span class="b">Peak</span><span class="t">17°/25°C</span></div>
+      <div class="cal-month shoulder"><span class="m">Ott</span><span class="b">Shoulder</span><span class="t">12°/19°C</span></div>
+      <div class="cal-month low"><span class="m">Nov</span><span class="b">Low</span><span class="t">7°/13°C</span></div>
+      <div class="cal-month low"><span class="m">Dic</span><span class="b">Low</span><span class="t">4°/9°C</span></div>
+    </div>
+
+    <div class="events">
+      <span>● Festival del Vittoriale (Gardone) <span class="flag">DA VERIFICARE</span></span>
+      <span>● Garda Trentino <span class="flag">DA VERIFICARE</span></span>
+      <span>● Settimane Musicali di Sirmione <span class="flag">DA VERIFICARE</span></span>
+    </div>
+    <!-- VERIFY: event names, exact dates, sources -->
+  </div>
+</section>
+
+<!-- ==========================================================
+     10 · SOSTENIBILITÀ
+     ========================================================== -->
+<section class="sec" aria-labelledby="sus-h">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="sec-num">10 · Sostenibilità · <span style="color:var(--bronze-400)">[ASSET REQUIRED]</span></span>
+      <h2 id="sus-h">Lusso che lascia il lago come lo trova.</h2>
+      <div class="lang-row"><span><b>EN</b> Luxury that leaves the lake as it found it.</span><span><b>DE</b> Luxus, der den See so lässt, wie er ihn vorfindet.</span></div>
+    </div>
+
+    <div class="sus-badges reveal">
+      <div class="badge">
+        <span class="badge-icon"><svg viewBox="0 0 24 24"><path d="M13 2L4 14h7l-1 8 9-12h-7l1-8z"/></svg></span>
+        <h4>Energy Class A+</h4>
+        <p>Tutte le ville</p>
+      </div>
+      <div class="badge">
+        <span class="badge-icon"><svg viewBox="0 0 24 24"><path d="M5 17V7a2 2 0 0 1 2-2h7l4 4v8a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2zM10 12h4M12 9v6"/></svg></span>
+        <h4>EV Charging</h4>
+        <p>Tesla wallbox in ogni villa</p>
+      </div>
+      <div class="badge">
+        <span class="badge-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M5 5l14 14"/></svg></span>
+        <h4>Zero plastica</h4>
+        <p>Acqua filtrata in vetro</p>
+      </div>
+      <div class="badge">
+        <span class="badge-icon"><svg viewBox="0 0 24 24"><path d="M4 19h16M6 19V9l6-5 6 5v10M9 19v-6h6v6"/></svg></span>
+        <h4>Carta riciclata 100%</h4>
+        <p>Stampa &amp; toiletry</p>
+      </div>
+    </div>
+
+    <div class="sus-stats reveal">
+      <div class="stat">
+        <span class="n">[NUM]</span>
+        <span class="l">kg CO₂ risparmiati / anno <span class="flag">DA VERIFICARE</span></span>
+      </div>
+      <div class="stat">
+        <span class="n">[NUM%]</span>
+        <span class="l">Energia rinnovabile <span class="flag">DA VERIFICARE</span></span>
+      </div>
+    </div>
+    <!-- VERIFY: CO2 figure, renewable %, A+ certification per villa -->
+  </div>
+</section>
+
+<!-- ==========================================================
+     11 · PRESS
+     ========================================================== -->
+<section class="sec" aria-labelledby="press-h">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="sec-num">11 · Press &amp; Partner · <span style="color:var(--bronze-400)">[ASSET REQUIRED]</span></span>
+      <h2 id="press-h">Press coverage &amp; partner esclusivi</h2>
+      <div class="lang-row"><span><b>EN</b> Featured in</span><span><b>DE</b> Bekannt aus</span></div>
+    </div>
+
+    <div class="press-strip reveal">
+      <div class="press-logo">Condé Nast Traveller</div>
+      <div class="press-logo">The Times</div>
+      <div class="press-logo">Forbes</div>
+      <div class="press-logo">FAZ</div>
+      <div class="press-logo">Lavazza</div>
+      <div class="press-logo">Bvlgari Hotels</div>
+    </div>
+    <p class="mono" style="margin-top:24px">Logo strip placeholder · pubblicare solo dopo conferma scritta partnership · <span class="flag">DA VERIFICARE</span></p>
+    <!-- VERIFY: partnership/press coverage in writing before go-live; otherwise remove section -->
+  </div>
+</section>
+
+<!-- ==========================================================
+     12 · FAQ
+     ========================================================== -->
+<section class="sec" aria-labelledby="faq-h">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="sec-num">12 · FAQ · <span style="color:var(--bronze-400)">[ASSET REQUIRED]</span></span>
+      <h2 id="faq-h">Domande frequenti.</h2>
+      <div class="lang-row"><span><b>EN</b> Frequently asked questions</span><span><b>DE</b> Häufige Fragen</span></div>
+    </div>
+
+    <div class="faq reveal">
+      <details>
+        <summary>Cancellation policy?</summary>
+        <div class="faq-body"><p>[Risposta · IT/EN/DE — policy esatta in attesa di conferma cliente]</p><span class="mono"><span class="flag">DA VERIFICARE</span> — testo policy ufficiale</span></div>
+      </details>
+      <details>
+        <summary>Min stay 3 notti — qualche eccezione?</summary>
+        <div class="faq-body"><p>Sì, in bassa stagione e per ponti specifici. Contattare concierge per disponibilità su misura.</p></div>
+      </details>
+      <details>
+        <summary>Animali ammessi?</summary>
+        <div class="faq-body"><p>No. Per ragioni di tutela arredi e ospiti successivi, le ville non accolgono animali domestici.</p></div>
+      </details>
+      <details>
+        <summary>Bambini benvenuti?</summary>
+        <div class="faq-body"><p>Sì, tutte le ville sono family-friendly. Su richiesta forniamo culla, seggiolone e baby-monitor.</p></div>
+      </details>
+      <details>
+        <summary>Smoking policy?</summary>
+        <div class="faq-body"><p>Vietato fumare negli interni. Consentito in aree esterne dedicate, con posacenere fornito.</p></div>
+      </details>
+      <details>
+        <summary>Eventi &amp; wedding allowed?</summary>
+        <div class="faq-body"><p>[Risposta · IT/EN/DE — su richiesta, soggetto a regolamento comunale e supplemento]</p><span class="mono"><span class="flag">DA VERIFICARE</span> — capacità max e fee per villa</span></div>
+      </details>
+      <details>
+        <summary>Yacht charter incluso?</summary>
+        <div class="faq-body"><p>No, lo yacht charter è un'esperienza opzionale prenotabile in fase di proposta o tramite concierge.</p></div>
+      </details>
+      <details>
+        <summary>Tassa di soggiorno?</summary>
+        <div class="faq-body"><p>La tassa di soggiorno comunale è a carico ospite, secondo regolamento del Comune di pertinenza per ciascuna villa.</p><span class="mono"><span class="flag">DA VERIFICARE per villa</span> — importo per Sirmione, Gardone Riviera, Limone, Torri del Benaco, Salò</span></div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ==========================================================
+     13 · INQUIRY
+     ========================================================== -->
+<section class="sec" id="contatti" aria-labelledby="inq-h">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="sec-num">13 · Inquiry</span>
+      <h2 id="inq-h">Una richiesta. Una proposta su misura entro 24h.</h2>
+      <div class="lang-row"><span><b>EN</b> One inquiry. A bespoke proposal in 24 hours.</span><span><b>DE</b> Eine Anfrage. Ein massgeschneidertes Angebot in 24 Stunden.</span></div>
+    </div>
+
+    <div class="inq reveal">
+      <div class="inq-map" role="img" aria-label="Mappa stilizzata delle cinque ville sul Lago di Garda">
+        <svg viewBox="0 0 400 600" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+          <defs>
+            <radialGradient id="lkm" cx="50%" cy="50%" r="60%">
+              <stop offset="0%" stop-color="#3A7395" stop-opacity=".5"/>
+              <stop offset="60%" stop-color="#163E55" stop-opacity=".35"/>
+              <stop offset="100%" stop-color="#0C2434" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
+          <path d="M180 40 C 220 30 260 60 270 110 C 280 170 270 230 260 290 C 250 360 240 430 200 490 C 160 540 110 530 90 470 C 80 400 100 320 120 240 C 140 160 150 80 180 40 Z"
+                fill="url(#lkm)" stroke="#2A5F7A" stroke-opacity=".4"/>
+          <line x1="40" y1="200" x2="100" y2="200" stroke="#E8E2D4" stroke-opacity=".08"/>
+          <line x1="280" y1="280" x2="360" y2="280" stroke="#E8E2D4" stroke-opacity=".08"/>
+        </svg>
+        <button class="inq-pin" style="top:12%;left:46%" aria-label="Villa Limonaia · Limone"><span class="lbl">Villa Limonaia · Limone</span></button>
+        <button class="inq-pin" style="top:36%;left:30%" aria-label="Villa Vento · Salò"><span class="lbl">Villa Vento · Salò</span></button>
+        <button class="inq-pin" style="top:46%;left:42%" aria-label="Villa Lavanda · Gardone Riviera"><span class="lbl">Villa Lavanda · Gardone</span></button>
+        <button class="inq-pin" style="top:54%;left:58%" aria-label="Villa Olivo · Torri del Benaco"><span class="lbl">Villa Olivo · Torri del Benaco</span></button>
+        <button class="inq-pin" style="top:80%;left:48%" aria-label="Villa Cipresso · Sirmione"><span class="lbl">Villa Cipresso · Sirmione</span></button>
+
+        <div class="inq-contacts">
+          <span><b>P.IVA</b> <span class="flag">DA VERIFICARE</span></span>
+          <span><b>Email</b> hello@villabelvedere.example <span class="flag">DA VERIFICARE</span></span>
+          <span><b>WhatsApp</b> +39 [DA VERIFICARE]</span>
+          <span><b>Social</b> IG · FB · LinkedIn · Vimeo</span>
+        </div>
+        <!-- VERIFY: P.IVA, contact email, WhatsApp number, social handles -->
+      </div>
+
+      <form class="inq-form" novalidate aria-labelledby="inq-h">
+        <h3>Form inquiry · 8 campi</h3>
+        <div class="field-grid">
+          <div class="field"><label for="f-nome">Nome *</label><input class="input" id="f-nome" name="nome" required autocomplete="name" /></div>
+          <div class="field"><label for="f-email">Email *</label><input class="input" id="f-email" type="email" name="email" required autocomplete="email" /></div>
+          <div class="field"><label for="f-tel">Telefono</label><input class="input" id="f-tel" type="tel" name="tel" autocomplete="tel" placeholder="+39 …" /></div>
+          <div class="field">
+            <label for="f-villa">Villa preferita</label>
+            <select class="select input" id="f-villa" name="villa">
+              <option value="">Consigliami la villa giusta</option>
+              <option>Villa Cipresso — Sirmione</option>
+              <option>Villa Lavanda — Gardone Riviera</option>
+              <option>Villa Limonaia — Limone sul Garda</option>
+              <option>Villa Olivo — Torri del Benaco</option>
+              <option>Villa Vento — Salò</option>
+            </select>
+          </div>
+          <div class="field"><label for="f-in">Check-in</label><input class="input" id="f-in" type="date" name="checkin" /></div>
+          <div class="field"><label for="f-out">Check-out</label><input class="input" id="f-out" type="date" name="checkout" /></div>
+          <div class="field"><label for="f-osp">Ospiti</label><input class="input" id="f-osp" type="number" min="1" max="20" name="ospiti" placeholder="2" /></div>
+          <div class="field field-full"><label for="f-note">Note</label><textarea class="textarea input" id="f-note" name="note" placeholder="Occasione, esigenze, preferenze culinarie…"></textarea></div>
+        </div>
+
+        <label class="gdpr">
+          <input type="checkbox" name="gdpr" required aria-label="Gdpr" />
+          <span>Ho letto e accetto la <a href="#privacy">Privacy Policy</a>. Acconsento al trattamento dei miei dati per ricevere una proposta personalizzata. <em>Consenso esplicito GDPR · non pre-flaggato.</em></span>
+        </label>
+
+        <button type="submit" class="btn btn-primary">Invia richiesta</button>
+        <p class="mono" style="margin-top:14px">Risposta entro 24h · IT · Reply within 24h · EN · Antwort innerhalb 24 Std · DE</p>
+      </form>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ==========================================================
+     14 · FOOTER
+     ========================================================== -->
+<footer class="foot" id="privacy">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <span class="foot-logo">Villa Belvedere</span>
+        <p>Boutique villa management · Lago di Garda</p>
+        <p class="mono">P.IVA <span class="flag">DA VERIFICARE</span></p>
+        <p class="mono">ATECO 55.20.51 / 79.11.00</p>
+        <!-- VERIFY: P.IVA -->
+      </div>
+      <div>
+        <h4>CIN per villa</h4>
+        <div class="cin-list">
+          <div><b>Cipresso</b> CIN <span class="flag">DA VERIFICARE</span></div>
+          <div><b>Lavanda</b> CIN <span class="flag">DA VERIFICARE</span></div>
+          <div><b>Limonaia</b> CIN <span class="flag">DA VERIFICARE</span></div>
+          <div><b>Olivo</b> CIN <span class="flag">DA VERIFICARE</span></div>
+          <div><b>Vento</b> CIN <span class="flag">DA VERIFICARE</span></div>
+        </div>
+        <!-- VERIFY: 5 CIN identifiers, mandatory per legge italiana 2024 -->
+      </div>
+      <div>
+        <h4>Sitemap</h4>
+        <ul>
+          <li><a href="#esperienze">Esperienze</a></li>
+          <li><a href="#ville">Le Ville</a></li>
+          <li><a href="#servizi">Servizi</a></li>
+          <li><a href="#contatti">Contatti</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="#privacy">Privacy Policy</a></li>
+          <li><a href="#cookie">Cookie Policy</a></li>
+          <li><a href="#termini">Termini &amp; Condizioni</a></li>
+          <li><a href="#legali">Note legali</a></li>
+        </ul>
+        <div class="social" role="img" aria-label="Social">
+          <a href="#ig" aria-label="Instagram">IG</a>
+          <a href="#fb" aria-label="Facebook">FB</a>
+          <a href="#li" aria-label="LinkedIn">in</a>
+          <a href="#vi" aria-label="Vimeo">Vi</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="foot-disclaimer">
+      Le ville sono soggette ad approvazione finale dopo verifica disponibilità. CIN comunicato in conferma prenotazione. Tassa di soggiorno comunale a carico ospite secondo regolamento Comune di <span class="flag">DA VERIFICARE per villa</span>. P.IVA <span class="flag">DA VERIFICARE</span>. ATECO 55.20.51 / 79.11.00.
+    </div>
+
+    <div class="foot-bottom">
+      <span>© 2026 Villa Belvedere · Tutti i diritti riservati</span>
+      <span>IT · EN · DE</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  // Nav scroll state
+  var nav = document.getElementById('nav');
+  var onScroll = function(){
+    if (window.scrollY > 60) nav.classList.add('scrolled');
+    else nav.classList.remove('scrolled');
+  };
+  window.addEventListener('scroll', onScroll, { passive:true });
+  onScroll();
+
+  // Hamburger toggle
+  var burger = document.getElementById('hamburger');
+  burger.addEventListener('click', function(){
+    var open = nav.classList.toggle('open');
+    burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+    burger.setAttribute('aria-label', open ? 'Chiudi menu' : 'Apri menu');
+  });
+  // Close mobile menu after link click
+  document.querySelectorAll('.nav-links a').forEach(function(a){
+    a.addEventListener('click', function(){
+      if (nav.classList.contains('open')) {
+        nav.classList.remove('open');
+        burger.setAttribute('aria-expanded','false');
+      }
+    });
+  });
+
+  // Lang toggle (visual only — copy is multi-lang side-by-side per brief)
+  document.querySelectorAll('.lang button').forEach(function(b){
+    b.addEventListener('click', function(){
+      document.querySelectorAll('.lang button').forEach(function(x){
+        x.classList.remove('on'); x.setAttribute('aria-pressed','false');
       });
-    })();
-  </script>
+      b.classList.add('on'); b.setAttribute('aria-pressed','true');
+      document.documentElement.lang = b.getAttribute('data-lang');
+    });
+  });
+
+  // Reveal on scroll (respect prefers-reduced-motion)
+  var rm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var els = document.querySelectorAll('.reveal');
+  if (rm || !('IntersectionObserver' in window)) {
+    els.forEach(function(e){ e.classList.add('in'); });
+  } else {
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); }
+      });
+    }, { rootMargin: '0px 0px -10% 0px', threshold: .12 });
+    els.forEach(function(e){ io.observe(e); });
+  }
+
+  // Hero particles (CSS-only animation; just generate dots)
+  var pf = document.getElementById('particles');
+  if (pf && !rm) {
+    var n = 28;
+    for (var i = 0; i < n; i++) {
+      var s = document.createElement('span');
+      s.style.left = (Math.random()*100) + '%';
+      s.style.top  = (40 + Math.random()*55) + '%';
+      s.style.animationDelay = (Math.random()*14) + 's';
+      s.style.animationDuration = (10 + Math.random()*10) + 's';
+      pf.appendChild(s);
+    }
+  }
+})();
+</script>
 
 </body>
 </html>

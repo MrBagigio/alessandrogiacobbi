@@ -13,6 +13,7 @@ import { initRigView } from './rig-view.js';
 import { initInteractions } from './interactions.js';
 import { initTargeting } from './targeting.js';
 import { initJarvis, initSectionScan, ping } from './jarvis.js';
+import { initSysStrip } from './sys-strip.js';
 // import { AsteroidCursor } from './asteroid-cursor.js'; // disabled — keep file for future
 
 const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -187,6 +188,9 @@ initJarvis();
 
 // 9i. Section scan-in — corner brackets + sweep on viewport entry
 initSectionScan();
+
+// 9k. System telemetry strip — top-of-page live HUD (THE "Stark mode" signal)
+initSysStrip();
 
 // 9j. Cross-module ping wire — rig view toggle fires a JARVIS ping
 let _lastRigState = document.body.classList.contains('rig-view');

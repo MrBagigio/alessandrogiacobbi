@@ -428,6 +428,130 @@ body.rig-view .btn { cursor: crosshair; }
    (toggle is bottom-right, HUD bottom-left — no actual overlap, just visual balance) */
 body.rig-view .rig-toggle { box-shadow: 0 0 12px rgba(91, 224, 126, 0.25); }
 
+/* ── System telemetry strip (top-of-page tactical bar) ──
+   Live flight-HUD diagnostic. Pushes meta-bar down by 26 px.
+   Hidden under prefers-reduced-motion via JS guard. */
+.sys-strip {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 9993;
+  height: 26px;
+  background: var(--ink);
+  border-bottom: 1px solid rgba(184, 50, 63, 0.4);
+  color: var(--paper);
+  font-family: var(--fm);
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  display: flex;
+  align-items: center;
+  padding: 0 0.85rem;
+  white-space: nowrap;
+  overflow: hidden;
+  pointer-events: none; /* never blocks clicks on hero/meta-bar */
+  /* Subtle scanline shimmer in the background */
+  background-image: repeating-linear-gradient(
+    to bottom,
+    rgba(184, 50, 63, 0.025) 0,
+    rgba(184, 50, 63, 0.025) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+}
+/* Push meta-bar and scroll-progress down to make room for the strip */
+body.has-sys-strip .meta-bar { top: 26px; }
+body.has-sys-strip .scroll-progress { top: 26px; }
+
+.sys-strip__module {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55em;
+  padding: 0 0.85rem;
+  border-right: 1px solid rgba(237, 230, 214, 0.07);
+}
+.sys-strip__module:first-child { padding-left: 0; }
+.sys-strip__module--clock {
+  margin-left: auto;
+  border-right: none;
+  padding-right: 0;
+}
+.sys-strip__k {
+  color: var(--mute);
+  font-size: 8.5px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+}
+.sys-strip__v {
+  color: var(--paper);
+  font-variant-numeric: tabular-nums;
+  font-size: 10.5px;
+  font-weight: 500;
+  min-width: 2.4em;
+}
+.sys-strip__v--ok   { color: #5BE07E; }
+.sys-strip__v--warn { color: var(--ox); text-shadow: 0 0 6px rgba(184, 50, 63, 0.45); }
+.sys-strip__v--ox   { color: var(--ox); }
+
+.sys-strip__module--clock .sys-strip__v {
+  color: var(--ox);
+  text-shadow: 0 0 8px rgba(184, 50, 63, 0.35);
+  font-size: 11px;
+  letter-spacing: 0.05em;
+}
+
+.sys-strip__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #5BE07E;
+  box-shadow: 0 0 6px #5BE07E, 0 0 11px rgba(91, 224, 126, 0.4);
+  animation: sys-strip-pulse 1.4s ease-in-out infinite;
+}
+@keyframes sys-strip-pulse {
+  0%, 100% { opacity: 1;    transform: scale(1); }
+  50%      { opacity: 0.35; transform: scale(0.55); }
+}
+
+/* When rig view is on the strip turns crimson-themed */
+body.rig-view .sys-strip {
+  border-bottom-color: var(--ox);
+  background-image:
+    linear-gradient(to right, transparent 0%, rgba(184, 50, 63, 0.06) 100%),
+    repeating-linear-gradient(
+      to bottom,
+      rgba(184, 50, 63, 0.04) 0,
+      rgba(184, 50, 63, 0.04) 1px,
+      transparent 1px,
+      transparent 3px
+    );
+}
+body.rig-view .sys-strip__dot {
+  background: var(--ox);
+  box-shadow: 0 0 7px var(--ox), 0 0 14px rgba(184, 50, 63, 0.5);
+}
+
+/* When debug-mode (konami) is on the strip looks "hacked" */
+body.debug-mode .sys-strip {
+  animation: sys-strip-glitch 0.3s steps(2) 6;
+}
+@keyframes sys-strip-glitch {
+  0%, 100% { transform: translateX(0); }
+  50%      { transform: translateX(2px); filter: hue-rotate(45deg); }
+}
+
+@media (max-width: 1023px) {
+  .sys-strip__module--sec { display: none; }
+}
+@media (max-width: 640px) {
+  .sys-strip { font-size: 9px; height: 22px; padding: 0 0.6rem; }
+  body.has-sys-strip .meta-bar { top: 22px; }
+  body.has-sys-strip .scroll-progress { top: 22px; }
+  .sys-strip__k { font-size: 7.5px; letter-spacing: 0.18em; }
+  .sys-strip__v { font-size: 9.5px; }
+  .sys-strip__module--clock .sys-strip__v { font-size: 10px; }
+}
+
 /* ── Targeting reticle (Iron Man hover lock) ──
    A fixed-positioned overlay snaps to hovered interactive elements
    with 4 corner brackets in oxblood + a "LOCK · {coord}" label.

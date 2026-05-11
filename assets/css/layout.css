@@ -212,18 +212,66 @@ section {
   transition: border-color var(--dur-base);
 }
 
-.showreel__placeholder::after {
-  content: 'SHOWREEL · ASSET LOADING';
-  position: absolute;
-  bottom: 36px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-family: var(--fm);
-  font-size: 9px;
-  letter-spacing: 0.25em;
-  color: rgba(237, 230, 214, 0.45);
-  text-transform: uppercase;
+.showreel__placeholder::after { display: none; }
+
+.showreel__placeholder--cta {
+  text-decoration: none;
+  color: inherit;
 }
+.showreel__inner-cta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.85rem;
+  padding: 2rem;
+  max-width: 560px;
+  z-index: 2;
+  position: relative;
+}
+.showreel__tag {
+  font-family: var(--fm);
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ox);
+  border: 1px solid rgba(184,50,63,0.4);
+  padding: 0.25rem 0.75rem;
+  background: rgba(184,50,63,0.08);
+}
+.showreel__cta-title {
+  font-family: var(--fd);
+  font-size: clamp(1.5rem, 3.5vw, 2.5rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--paper);
+  line-height: 1.15;
+  margin-top: 0.3rem;
+}
+.showreel__cta-sub {
+  font-family: var(--fb);
+  font-size: var(--fz-body);
+  color: rgba(237, 230, 214, 0.6);
+  line-height: 1.5;
+  max-width: 440px;
+}
+.showreel__cta-btn {
+  margin-top: 0.5rem;
+  font-family: var(--fm);
+  font-size: var(--fz-meta);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--paper);
+  background: var(--ox);
+  padding: 0.85rem 1.4rem;
+  transition: background 200ms, transform 200ms;
+  display: inline-block;
+}
+.showreel__placeholder--cta:hover .showreel__cta-btn {
+  background: var(--ox-deep, #8e2a37);
+  transform: translateY(-2px);
+}
+.showreel__placeholder--cta:hover::before { border-color: rgba(184, 50, 63, 0.55); }
 
 .showreel__placeholder:hover::before { border-color: rgba(184, 50, 63, 0.55); }
 
@@ -266,7 +314,7 @@ section {
 
 /* ── Sections — Selected Work ── */
 .work {
-  padding: var(--gap-xl) 0;
+  padding: var(--gap-l) 0;
 }
 
 .work__inner {
@@ -285,6 +333,14 @@ section {
 .work__grid--asym .project-card:nth-child(odd) {
   margin-top: clamp(2rem, 6vw, 4rem);
 }
+
+/* Single-card grid: spans both columns, centered */
+.work__grid--single {
+  grid-template-columns: 1fr;
+  max-width: 720px;
+  margin: 0 auto;
+}
+.work__grid--single .project-card { margin-top: 0; }
 
 .work__grid--3 {
   grid-template-columns: repeat(3, 1fr);

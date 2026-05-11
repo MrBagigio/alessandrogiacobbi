@@ -541,7 +541,7 @@
   .trusted-by__sep { display: none; }
 }
 
-/* ── Section heading (sticky on scroll) ── */
+/* ── Section heading (static — sticky rimosso 2026-05-11 per overlay bug tra sezioni) ── */
 .section-heading {
   display: flex;
   align-items: baseline;
@@ -550,11 +550,6 @@
   margin-bottom: var(--gap-l);
   padding: 1rem 0;
   border-bottom: 1px solid var(--rule);
-  position: sticky;
-  top: 56px; /* below meta-bar */
-  background: var(--paper);
-  z-index: 10;
-  backdrop-filter: blur(6px);
 }
 
 /* When section has paper2 bg, sticky heading must match */

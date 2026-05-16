@@ -1000,7 +1000,8 @@ section {
   opacity: 0.55;
 }
 
-/* Mobile — eyebrow wraps cleanly if the label is long, divider stays short */
+/* Mobile — eyebrow wraps cleanly if the label is long, divider stays short.
+   Also tone down the chapter NN / 06 footer (hidden — visual noise on small) */
 @media (max-width: 599px) {
   .project-split-section__eyebrow {
     flex-wrap: wrap;
@@ -1013,6 +1014,26 @@ section {
   }
   .project-split-section__divider {
     width: 18px;
+  }
+  [data-chapter]::after {
+    display: none;
+  }
+  /* Tighter vertical rhythm on mobile — 128px section-pad is way too much */
+  .project-split-section,
+  .project-team {
+    padding-top: 2.5rem;
+    padding-bottom: 3rem;
+  }
+  .project-content {
+    padding-top: 2.5rem;
+    padding-bottom: 3rem;
+  }
+  .project-content__inner > .project-split-section__head {
+    margin-bottom: 0.75rem;
+  }
+  .project-meta__inner {
+    padding-top: 1.25rem;
+    padding-bottom: 1.25rem;
   }
 }
 .project-split-section__title {
@@ -1366,7 +1387,10 @@ a.project-credits__value:hover { color: var(--ox); }
   }
 }
 
-/* Mobile HUD readouts — scale down and tighten positions on narrow tiles */
+/* Mobile HUD — simplified: drop the noisy details (diag line + frame counter),
+   keep only the essentials so the small tile doesn't read as overlapping text.
+   Surviving readouts: REC (top-left), filename (top-right), TC (bottom-right),
+   caption (bottom-left). */
 @media (max-width: 599px) {
   .project-still--hud::before,
   .project-still--hud::after {
@@ -1377,7 +1401,7 @@ a.project-credits__value:hover { color: var(--ox); }
 
   .project-still__hud-rec {
     top: 9px;
-    left: 30px;
+    left: 28px;
     font-size: 8px;
   }
   .project-still__hud-rec::before {
@@ -1385,36 +1409,33 @@ a.project-credits__value:hover { color: var(--ox); }
   }
   .project-still__hud-file {
     top: 10px;
-    right: 12px;
+    right: 10px;
     font-size: 8px;
+    max-width: 55%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .project-still__hud-tc {
+    bottom: 10px;
+    right: 28px;        /* clears the smaller BR bracket */
+    font-size: 9px;
+    padding: 0.1rem 0.4rem;
+  }
+  .project-still__caption {
+    bottom: 0.45rem;
+    left: 0.45rem;
+    font-size: 8px;
+    padding: 0.15rem 0.45rem;
     max-width: 50%;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
   }
-  .project-still__hud-diag {
-    bottom: 32px;
-    left: 10px;
-    font-size: 8px;
-    padding: 0.12rem 0.4rem;
-    max-width: calc(50% - 18px);
-  }
-  .project-still__hud-tc {
-    bottom: 32px;
-    right: 12px;
-    font-size: 9px;
-    padding: 0.12rem 0.4rem;
-  }
+  /* Hide noisy readouts on mobile */
+  .project-still__hud-diag,
   .project-still__hud-frame {
-    bottom: 10px;
-    right: 30px;
-    font-size: 7.5px;
-  }
-  .project-still__caption {
-    bottom: 0.5rem;
-    left: 0.5rem;
-    font-size: 8px;
-    padding: 0.18rem 0.45rem;
+    display: none;
   }
 }
 

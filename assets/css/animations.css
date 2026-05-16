@@ -594,12 +594,7 @@ body.rig-view .project-card[data-rig-label]::after {
   border-color: rgba(255, 107, 157, 0.45);
 }
 
-body.rig-view {
-  cursor: crosshair;
-}
-body.rig-view a,
-body.rig-view button,
-body.rig-view .btn { cursor: crosshair; }
+/* rig-view cursor handled by the full-viewport crosshair overlay — no native cursor needed */
 
 /* ── LIVE HUD (bottom-left) ── */
 .rig-hud {

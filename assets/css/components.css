@@ -151,6 +151,12 @@
 }
 
 /* ── Magnetic cursor (fallback when asteroids disabled) ── */
+
+/* Hide the native OS cursor wherever the custom one is active */
+@media (pointer: fine) and (min-width: 1024px) {
+  *, *::before, *::after { cursor: none !important; }
+}
+
 .cursor-dot,
 .cursor-ring {
   position: fixed;

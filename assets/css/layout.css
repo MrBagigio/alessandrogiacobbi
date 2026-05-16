@@ -1008,6 +1008,91 @@ a.project-credits__value:hover { color: var(--ox); }
   pointer-events: none;
 }
 
+/* ── Vimeo / video embed — 16:9 hero player ── */
+.project-film__embed {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  background: var(--ink);
+  overflow: hidden;
+  border: 1px solid var(--rule);
+}
+.project-film__embed iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+}
+
+/* ── Team credits — editorial row layout (label | names) ── */
+.project-team {
+  background: var(--paper);
+  padding: var(--gap-l) 0 var(--gap-xl);
+}
+.project-team__inner {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 0 var(--pad-side);
+}
+.project-team__list {
+  list-style: none;
+  margin: var(--gap-m) 0 0;
+  padding: 0;
+  border-top: 1px solid var(--rule);
+}
+.project-team__row {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: var(--gap-m);
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--rule);
+  align-items: baseline;
+}
+.project-team__role {
+  font-family: var(--fm);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ox);
+}
+.project-team__name {
+  font-family: var(--fb);
+  font-size: var(--fz-body);
+  color: var(--ink);
+  line-height: 1.5;
+}
+.project-team__name a {
+  color: var(--ink);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: color 180ms, border-color 180ms;
+}
+.project-team__name a:hover {
+  color: var(--ox);
+  border-bottom-color: var(--ox);
+}
+.project-team__tag {
+  display: inline-block;
+  font-family: var(--fm);
+  font-size: 9px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ox);
+  background: var(--ox-bg);
+  padding: 0.12rem 0.45rem;
+  margin-left: 0.35rem;
+  vertical-align: 2px;
+  border-radius: 2px;
+}
+@media (max-width: 767px) {
+  .project-team__row {
+    grid-template-columns: 1fr;
+    gap: 0.35rem;
+    padding: 0.85rem 0;
+  }
+}
+
 .project-video__frame--placeholder {
   display: grid;
   place-items: center;

@@ -980,16 +980,16 @@ section {
   align-items: center;
   gap: 0.7rem;
 }
-/* Chapter number prefix — bigger, bolder, oxblood block */
+/* Chapter number prefix — oxblood pill, transparent so no brown tint on paper */
 .project-split-section__num {
   font-family: var(--fm);
   font-size: 11px;
-  font-weight: 500;
+  font-weight: 600;
   color: var(--ox);
   letter-spacing: 0.04em;
-  padding: 0.15rem 0.45rem;
-  background: var(--ox-bg);
-  border: 1px solid rgba(184, 50, 63, 0.4);
+  padding: 0.15rem 0.5rem 0.18rem;
+  background: transparent;
+  border: 1px solid var(--ox);
   border-radius: 1px;
   line-height: 1;
 }
@@ -1089,12 +1089,20 @@ a.project-credits__value:hover { color: var(--ox); }
 .project-still--video { position: relative; overflow: hidden; }
 .project-still--video video { width: 100%; height: 100%; object-fit: cover; display: block; }
 
-/* ── HUD overlay (Maya viewport / VFX-monitor aesthetic) ──
-   Adds 4 corner brackets + filename/take readouts + pulsing REC dot
-   on top of any .project-still--hud item. Pure CSS via attr() + ::before/::after
-   on internal layer divs (no JS). */
+/* ──────────────────────────────────────────────────────────────────────
+   HUD OVERLAY — Maya-viewport / VFX-monitor aesthetic.
+   Layout (zones never overlap):
 
-/* Layer 1: 4 corner brackets, painted with mix-blend so they read on any clip */
+      ┌─[ REC ●  ............................. file.ma  │ ← top zone (y:14)
+      │                                                  │
+      │                  ← SCRUB →   (hover-only)        │ ← centre zone
+      │                                                  │
+      │ DIAG: <preset>           00:00:05:23   ← TC     │ ← mid-bottom (y:bot+42)
+      │ Caption                  f.0144  ────────── ]─┘ │ ← bottom (y:bot+14)
+   Corner brackets stay at TL (10,10) and BR (10,10).
+   ────────────────────────────────────────────────────────────────────── */
+
+/* ── Corner brackets (TL + BR) ── */
 .project-still--hud::before,
 .project-still--hud::after {
   content: "";
@@ -1116,58 +1124,31 @@ a.project-credits__value:hover { color: var(--ox); }
   border-right: 1.5px solid var(--paper);
 }
 
-/* Layer 2: HUD readouts via attr() on the still itself.
-   We use a single span-less approach: paint filename + take as data-content
-   in two helper layers added by CSS-only is not possible without children,
-   so we render filename top-right via the still's own `data-hud-file`
-   attribute through a generated content stack on .project-still__caption
-   sibling node.
-
-   Cleanest: render filename + take as background-image SVG using
-   url(data:) — overkill. Instead: add the readouts on the existing
-   .project-still__caption box-shadow stack? Also too hacky.
-
-   Simplest working solution: render filename label via the still's
-   wrapper background overlay (gradient text doesn't work). We'll
-   accept that without children the readouts can't show text, so just
-   render the REC pulsing dot and corner brackets — which already gives
-   the "live monitor" feel. Filename + take are conveyed by the
-   .project-still__caption already at bottom-left. */
-
-/* REC dot — top-right, oxblood, pulsing */
-.project-still--hud {
-  /* expose a fixed-position dot via outline-style? Use box-shadow stack on ::before? */
-}
-
-/* The 4 brackets are enough to give "viewport monitor" character.
-   For richer HUD (filename + take + TC), we add child <span> readouts:
-   .project-still__hud-file (top-right) and .project-still__hud-rec (top-left). */
-
+/* Shared readout typography */
+.project-still__hud-rec,
 .project-still__hud-file,
-.project-still__hud-rec {
+.project-still__hud-tc,
+.project-still__hud-frame,
+.project-still__hud-diag {
   position: absolute;
   z-index: 4;
   font-family: var(--fm);
-  font-size: 9px;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
+  letter-spacing: 0.14em;
   color: var(--paper);
   pointer-events: none;
-  text-shadow: 0 1px 2px rgba(0,0,0,0.6);
+  text-shadow: 0 1px 2px rgba(0,0,0,0.7);
+  white-space: nowrap;
 }
-.project-still__hud-file {
-  top: 14px;
-  right: 16px;
-  opacity: 0.85;
-}
+
+/* ── TOP-LEFT zone: REC dot, inline after the corner bracket ── */
 .project-still__hud-rec {
-  top: 14px;
-  left: 38px;            /* sits to the right of the TL bracket */
+  top: 13px;
+  left: 42px;             /* clears the 22px TL bracket (10+22+10) */
+  font-size: 9px;
+  text-transform: uppercase;
   display: flex;
   align-items: center;
-  gap: 0.35rem;
-  color: var(--paper);
-  opacity: 0.95;
+  gap: 0.45rem;
 }
 .project-still__hud-rec::before {
   content: "";
@@ -1182,83 +1163,74 @@ a.project-credits__value:hover { color: var(--ox); }
   50%      { opacity: 0.35; transform: scale(0.85); }
 }
 
-/* Take label — bottom-right, monospace, subtle */
-.project-still__hud-take {
-  position: absolute;
-  bottom: 14px;
+/* ── TOP-RIGHT zone: filename ── */
+.project-still__hud-file {
+  top: 14px;
   right: 16px;
-  z-index: 4;
-  font-family: var(--fm);
   font-size: 9px;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--paper);
-  opacity: 0.75;
-  text-shadow: 0 1px 2px rgba(0,0,0,0.6);
-  pointer-events: none;
+  text-transform: lowercase;
+  letter-spacing: 0.08em;
+  opacity: 0.82;
 }
 
-/* ── LIVE TC + FRAME + DIAG (JS-driven) ── */
-.project-still__hud-tc,
-.project-still__hud-frame {
-  position: absolute;
-  z-index: 4;
-  font-family: var(--fm);
-  font-variant-numeric: tabular-nums;
-  font-feature-settings: 'tnum';
-  letter-spacing: 0.04em;
-  color: var(--paper);
-  pointer-events: none;
-  text-shadow: 0 1px 2px rgba(0,0,0,0.7);
-  white-space: nowrap;
-}
-.project-still__hud-tc {
-  bottom: 36px;
-  right: 14px;
-  font-size: 11px;
-  font-weight: 500;
-  background: rgba(0,0,0,0.42);
-  padding: 0.15rem 0.45rem;
-  border-left: 2px solid var(--ox);
-  letter-spacing: 0.06em;
-}
-.project-still__hud-frame {
-  bottom: 14px;
-  right: 14px;
-  font-size: 9px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  opacity: 0.78;
-}
-/* Diagnostic line — bottom of frame, animates by content change */
+/* ── BOTTOM-LEFT zone (above caption): diagnostic line ── */
 .project-still__hud-diag {
-  position: absolute;
-  z-index: 4;
+  bottom: 42px;
   left: 14px;
-  top: 14px;
-  font-family: var(--fm);
   font-size: 9px;
-  letter-spacing: 0.12em;
   text-transform: lowercase;
+  letter-spacing: 0.08em;
   color: var(--ox);
-  background: rgba(0,0,0,0.42);
+  background: rgba(0, 0, 0, 0.42);
   padding: 0.18rem 0.5rem;
   border-radius: 1px;
-  pointer-events: none;
-  text-shadow: 0 1px 2px rgba(0,0,0,0.7);
-  max-width: 70%;
+  max-width: calc(50% - 24px);
   overflow: hidden;
   text-overflow: ellipsis;
-  white-space: nowrap;
-  /* subtle blink-on-change via opacity transition */
   transition: opacity 220ms ease;
 }
 
-/* Subtle CRT scanline overlay on hud videos */
-.project-still--hud > video {
-  position: relative;
-  z-index: 1;
+/* ── BOTTOM-RIGHT zone: TC (above) and frame counter (below) ── */
+.project-still__hud-tc {
+  bottom: 42px;
+  right: 16px;
+  font-size: 11px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum';
+  letter-spacing: 0.06em;
+  background: rgba(0, 0, 0, 0.42);
+  padding: 0.18rem 0.5rem;
+  border-left: 2px solid var(--ox);
 }
+.project-still__hud-frame {
+  bottom: 14px;
+  right: 42px;            /* clears the 22px BR bracket */
+  font-size: 9px;
+  text-transform: uppercase;
+  font-variant-numeric: tabular-nums;
+  opacity: 0.78;
+}
+
+/* Static "take" label used on the sound-design tile (which has no frame
+   counter, so we can safely park it bottom-right). */
+.project-still__hud-take {
+  position: absolute;
+  z-index: 4;
+  bottom: 14px;
+  right: 42px;
+  font-family: var(--fm);
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--paper);
+  opacity: 0.78;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7);
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+/* Subtle veneer on hud media — no scanline (kept clean) */
 .project-still--hud > video,
 .project-still--hud > img {
   filter: contrast(1.03) saturate(0.97);
@@ -1447,11 +1419,11 @@ a.project-credits__value:hover { color: var(--ox); }
 .project-bts-monitors .project-still--hud .project-still__hud-hint {
   position: absolute;
   z-index: 5;
-  bottom: 50%;
+  top: 50%;
   left: 50%;
-  transform: translate(-50%, 50%);
-  padding: 0.4rem 0.85rem;
-  background: rgba(0,0,0,0.7);
+  transform: translate(-50%, -50%);
+  padding: 0.45rem 0.95rem;
+  background: rgba(0, 0, 0, 0.78);
   color: var(--paper);
   font-family: var(--fm);
   font-size: 10px;
@@ -1460,7 +1432,7 @@ a.project-credits__value:hover { color: var(--ox); }
   pointer-events: none;
   opacity: 0;
   transition: opacity 220ms ease;
-  border: 1px solid rgba(184,50,63,0.5);
+  border: 1px solid rgba(184, 50, 63, 0.55);
   white-space: nowrap;
 }
 .project-bts-monitors .project-still--hud:hover .project-still__hud-hint {

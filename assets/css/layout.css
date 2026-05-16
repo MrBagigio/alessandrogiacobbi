@@ -766,6 +766,14 @@ section {
   gap: var(--gap-m);
 }
 
+/* Section-head inside the narrow content column — parent already provides
+   max-width and horizontal padding, so cancel the head's own constraints. */
+.project-content__inner > .project-split-section__head {
+  max-width: none;
+  padding: 0;
+  margin: 0 0 var(--gap-s);
+}
+
 .project-content__h3 {
   font-family: var(--fd);
   font-size: var(--fz-h3);
@@ -889,6 +897,70 @@ section {
 .project-split-section {
   padding: var(--gap-l) 0 var(--gap-xl);
   background: var(--paper);
+  position: relative;
+}
+
+/* Required for the ::before/::after chapter marks to anchor to the section */
+[data-chapter] {
+  position: relative;
+}
+
+/* Chapter-stamp footer — bottom-right counter "01 / 06"
+   on EVERY section that carries data-chapter. Tiny, fixed-position-ish via
+   absolute placement at the section's bottom-right corner. */
+[data-chapter]::after {
+  content: attr(data-chapter) " / " attr(data-chapter-total);
+  position: absolute;
+  bottom: 1.25rem;
+  right: var(--pad-side);
+  font-family: var(--fm);
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  color: var(--mute);
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+/* Thin oxblood rule along the TOP of each chaptered section — visual divider */
+[data-chapter]::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: var(--pad-side);
+  right: var(--pad-side);
+  height: 1px;
+  background: linear-gradient(to right,
+    rgba(184, 50, 63, 0.45) 0%,
+    rgba(184, 50, 63, 0.1) 60%,
+    transparent 100%);
+  pointer-events: none;
+}
+
+/* ── DARK variant — "monitor room" feel for X-ray + BTS sections.
+   Inverts colors so the videos pop and the section reads as a cinema/console. ── */
+.project-split-section--dark {
+  background: var(--ink);
+  color: var(--paper);
+}
+.project-split-section--dark .project-split-section__title {
+  color: var(--paper);
+}
+.project-split-section--dark .project-split-section__sub {
+  color: rgba(240, 235, 227, 0.65);
+}
+.project-split-section--dark .project-split-section__num {
+  background: rgba(184, 50, 63, 0.18);
+  border-color: rgba(184, 50, 63, 0.55);
+  color: var(--ox);
+}
+.project-split-section--dark[data-chapter]::after {
+  color: rgba(240, 235, 227, 0.45);
+}
+.project-split-section--dark[data-chapter]::before {
+  background: linear-gradient(to right,
+    rgba(184, 50, 63, 0.7) 0%,
+    rgba(184, 50, 63, 0.2) 60%,
+    transparent 100%);
 }
 .project-split-section__head {
   max-width: var(--maxw);
@@ -904,6 +976,28 @@ section {
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--ox);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+/* Chapter number prefix — bigger, bolder, oxblood block */
+.project-split-section__num {
+  font-family: var(--fm);
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--ox);
+  letter-spacing: 0.04em;
+  padding: 0.15rem 0.45rem;
+  background: var(--ox-bg);
+  border: 1px solid rgba(184, 50, 63, 0.4);
+  border-radius: 1px;
+  line-height: 1;
+}
+.project-split-section__divider {
+  width: 28px;
+  height: 1px;
+  background: var(--ox);
+  opacity: 0.55;
 }
 .project-split-section__title {
   font-family: var(--fd);

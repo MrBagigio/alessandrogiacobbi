@@ -100,12 +100,14 @@ function scheduleGlitch(item, now) {
 }
 
 /* Fire a glitch on one item: 50% chance whole-monitor signal drop,
-   otherwise just an RGB-shift on a single HUD readout. */
-function fireGlitch(item) {
+   otherwise just an RGB-shift on a single HUD readout.
+   Pass `forceWhole = true` to always trigger the whole-monitor variant
+   (used on hover-in for the "you touched me" signal). */
+function fireGlitch(item, forceWhole) {
   if (item._glitching) return;
   item._glitching = true;
   const targets = [item.tcEl, item.frameEl, item.diagEl, item.fileEl].filter(Boolean);
-  const wholeMonitor = Math.random() < 0.5 && targets.length > 0;
+  const wholeMonitor = forceWhole || (Math.random() < 0.5 && targets.length > 0);
 
   if (wholeMonitor) {
     item.el.classList.add('is-monitor-glitch');
@@ -127,12 +129,15 @@ function fireGlitch(item) {
 
 /* Wire the "scrub on mousemove" interaction onto one monitor. The horizontal
    mouse position inside the tile maps to video.currentTime — turns the tile
-   into a live diagnostic monitor the user can shuttle through. */
+   into a live diagnostic monitor the user can shuttle through.
+   On entry we also fire a brief signal-drop glitch so the card reacts. */
 function wireScrub(item) {
   const { el, video } = item;
   const onEnter = () => {
     video.pause();
     el.classList.add('is-scrubbing');
+    // Intentional "signal drop" FX on hover-in — matches the random glitches
+    fireGlitch(item, /* whole */ true);
   };
   const onLeave = () => {
     el.classList.remove('is-scrubbing');

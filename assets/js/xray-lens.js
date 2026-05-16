@@ -19,9 +19,12 @@
  *   --lens-r             — lens radius (px), 0 when not hovering, full when active
  */
 
-const DEFAULT_LENS_RADIUS = 170;
-const DRIFT_TOLERANCE = 0.12;     // seconds of drift before resync
-const DRIFT_CHECK_INTERVAL = 500; // ms
+/* Lens radius scales with container width so it never swallows the whole
+   frame on small screens (and never feels tiny on ultra-wide). */
+function lensRadiusFor(el) {
+  const w = el.getBoundingClientRect().width;
+  return Math.round(Math.max(70, Math.min(190, w * 0.16)));
+}
 
 export function initXrayLens() {
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -38,18 +41,21 @@ export function initXrayLens() {
     el.style.setProperty('--lens-y', '50%');
     el.style.setProperty('--lens-r', '0px');
 
-    // ── Sync rig.currentTime to geo.currentTime if drift exceeds tolerance ──
-    const syncCheck = () => {
+    // ── One-shot sync at start: align rig to geo when both have metadata.
+    // No interval-based drift correction — seeking causes visible stutter on
+    // the rig layer. Both videos autoplay+loop with identical 5s duration,
+    // so they stay in practical sync without runtime resync. ──
+    const alignOnce = () => {
       if (!geo.duration || !rig.duration) return;
-      const drift = Math.abs(rig.currentTime - geo.currentTime);
-      if (drift > DRIFT_TOLERANCE) {
-        try { rig.currentTime = geo.currentTime; } catch (_) { /* no-op */ }
-      }
+      try { rig.currentTime = geo.currentTime; } catch (_) { /* no-op */ }
     };
-    setInterval(syncCheck, DRIFT_CHECK_INTERVAL);
-    geo.addEventListener('seeked', syncCheck);
-    geo.addEventListener('play', syncCheck);
+    if (geo.readyState >= 1 && rig.readyState >= 1) alignOnce();
+    else {
+      geo.addEventListener('loadedmetadata', alignOnce, { once: true });
+      rig.addEventListener('loadedmetadata', alignOnce, { once: true });
+    }
     geo.addEventListener('pause', () => { rig.pause(); });
+    geo.addEventListener('play', () => { rig.play().catch(() => {}); });
 
     // ── Lens follows the mouse ──
     let lensActive = false;
@@ -73,7 +79,7 @@ export function initXrayLens() {
       if (!lensActive) {
         lensActive = true;
         el.classList.add('is-xray-active');
-        el.style.setProperty('--lens-r', `${DEFAULT_LENS_RADIUS}px`);
+        el.style.setProperty('--lens-r', `${lensRadiusFor(el)}px`);
       }
     });
 
@@ -94,7 +100,7 @@ export function initXrayLens() {
       if (!lensActive) {
         lensActive = true;
         el.classList.add('is-xray-active');
-        el.style.setProperty('--lens-r', `${DEFAULT_LENS_RADIUS}px`);
+        el.style.setProperty('--lens-r', `${lensRadiusFor(el)}px`);
       } else {
         lensActive = false;
         el.classList.remove('is-xray-active');

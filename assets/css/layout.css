@@ -999,6 +999,22 @@ section {
   background: var(--ox);
   opacity: 0.55;
 }
+
+/* Mobile — eyebrow wraps cleanly if the label is long, divider stays short */
+@media (max-width: 599px) {
+  .project-split-section__eyebrow {
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    font-size: 9px;
+  }
+  .project-split-section__num {
+    font-size: 10px;
+    padding: 0.1rem 0.35rem 0.12rem;
+  }
+  .project-split-section__divider {
+    width: 18px;
+  }
+}
 .project-split-section__title {
   font-family: var(--fd);
   font-size: clamp(1.5rem, 3vw, 2rem);
@@ -1245,6 +1261,8 @@ a.project-credits__value:hover { color: var(--ox); }
 .project-xray {
   position: relative;
   width: 100%;
+  max-width: 1280px;            /* slightly smaller than full container */
+  margin: 0 auto;
   aspect-ratio: 16 / 9;
   background: var(--ink2);
   overflow: hidden;
@@ -1265,14 +1283,17 @@ a.project-credits__value:hover { color: var(--ox); }
 .project-xray__layer--geo { z-index: 1; }
 .project-xray__layer--rig {
   z-index: 2;
-  /* The clip-path circle is the lens — radius and centre live in CSS vars. */
-  clip-path: circle(var(--lens-r) at var(--lens-x) var(--lens-y));
-  -webkit-clip-path: circle(var(--lens-r) at var(--lens-x) var(--lens-y));
-  /* No transition on clip-path coords (would lag the cursor) — radius gets one. */
+  /* Soft-edged lens: radial gradient mask fades from opaque inner core
+     to transparent outer ring (last 35% of radius is the feather). */
+  -webkit-mask-image: radial-gradient(circle var(--lens-r) at var(--lens-x) var(--lens-y),
+                       #000 0%, #000 65%, transparent 100%);
+          mask-image: radial-gradient(circle var(--lens-r) at var(--lens-x) var(--lens-y),
+                       #000 0%, #000 65%, transparent 100%);
 }
-/* Smooth expand/collapse of lens radius on enter/leave */
+/* Smooth expand/collapse of lens radius on enter/leave (the mask transitions
+   on the rendered image; coords still tracked instantly via the CSS vars) */
 .project-xray:not(.is-xray-active) .project-xray__layer--rig {
-  transition: clip-path 260ms ease-out, -webkit-clip-path 260ms ease-out;
+  transition: -webkit-mask-image 260ms ease-out, mask-image 260ms ease-out;
 }
 
 /* ── Reticle ring around the lens ── */
@@ -1327,6 +1348,74 @@ a.project-credits__value:hover { color: var(--ox); }
 }
 .project-xray.is-xray-active .project-xray__hint {
   opacity: 0;
+}
+
+/* Mobile xray adjustments — no max-width cap (use full width), smaller hint */
+@media (max-width: 767px) {
+  .project-xray {
+    max-width: none;
+  }
+  .project-xray__hint {
+    font-size: 9px;
+    padding: 0.4rem 0.7rem;
+    letter-spacing: 0.18em;
+  }
+  .project-xray::before,
+  .project-xray::after {
+    width: 16px; height: 16px;
+  }
+}
+
+/* Mobile HUD readouts — scale down and tighten positions on narrow tiles */
+@media (max-width: 599px) {
+  .project-still--hud::before,
+  .project-still--hud::after {
+    width: 14px; height: 14px;
+  }
+  .project-still--hud::before { top: 8px; left: 8px; }
+  .project-still--hud::after  { bottom: 8px; right: 8px; }
+
+  .project-still__hud-rec {
+    top: 9px;
+    left: 30px;
+    font-size: 8px;
+  }
+  .project-still__hud-rec::before {
+    width: 5px; height: 5px;
+  }
+  .project-still__hud-file {
+    top: 10px;
+    right: 12px;
+    font-size: 8px;
+    max-width: 50%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .project-still__hud-diag {
+    bottom: 32px;
+    left: 10px;
+    font-size: 8px;
+    padding: 0.12rem 0.4rem;
+    max-width: calc(50% - 18px);
+  }
+  .project-still__hud-tc {
+    bottom: 32px;
+    right: 12px;
+    font-size: 9px;
+    padding: 0.12rem 0.4rem;
+  }
+  .project-still__hud-frame {
+    bottom: 10px;
+    right: 30px;
+    font-size: 7.5px;
+  }
+  .project-still__caption {
+    bottom: 0.5rem;
+    left: 0.5rem;
+    font-size: 8px;
+    padding: 0.18rem 0.45rem;
+  }
 }
 
 /* ── Reuse HUD overlay readouts (REC, file, TC, frame, diag) inside the xray

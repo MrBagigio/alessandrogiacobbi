@@ -66,6 +66,14 @@ const PRESETS = {
     'ambient · sub-bus B',
     'export · 48kHz/24bit',
   ],
+  xray: [
+    'layer · geo',
+    'lens · reveal rig',
+    'orbit · 360°',
+    'controls: 247 ctrl',
+    'jnt_chain · skeleton',
+    'overlay · technical',
+  ],
 };
 
 function pad(n, w) {
@@ -153,29 +161,35 @@ function wireScrub(item) {
 
 export function initVideoHud() {
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const containers = document.querySelectorAll('.project-still--hud');
+  // Both regular monitors and the xray container carry HUD readouts.
+  // Scrub interaction only applies to .project-still--hud (the xray uses
+  // its own lens interaction in xray-lens.js).
+  const containers = document.querySelectorAll('.project-still--hud, .project-xray');
   if (!containers.length) return;
 
   const items = [];
   containers.forEach((el) => {
-    const video = el.querySelector('video');
+    // For the xray container, the timecode tracks the geo layer (the bottom video).
+    const video = el.classList.contains('project-xray')
+      ? el.querySelector('.project-xray__layer--geo')
+      : el.querySelector('video');
     if (!video) return;
     const tcEl = el.querySelector('[data-tc]');
     const frameEl = el.querySelector('[data-frame]');
     const diagEl = el.querySelector('[data-diag]');
     const fileEl = el.querySelector('.project-still__hud-file');
-    const type = el.dataset.hudType || 'clay';
+    const type = el.dataset.hudType || (el.classList.contains('project-xray') ? 'xray' : 'clay');
     const messages = PRESETS[type] || PRESETS.clay;
     const startNow = performance.now();
-    const it = { el, video, tcEl, frameEl, diagEl, fileEl, messages, nextGlitchAt: 0 };
+    const isXray = el.classList.contains('project-xray');
+    const it = { el, video, tcEl, frameEl, diagEl, fileEl, messages, isXray, nextGlitchAt: 0 };
     scheduleGlitch(it, startNow);
     items.push(it);
 
-    // Wire interactive scrub on monitors that have video (skips the
-    // sound-design <img> tile that also carries .project-still--hud).
-    if (video.tagName === 'VIDEO') {
+    // Wire interactive scrub only on .project-still--hud monitors —
+    // the xray container has its own lens interaction.
+    if (!isXray && video.tagName === 'VIDEO') {
       wireScrub(it);
-      // Add hint label dynamically
       if (!el.querySelector('.project-still__hud-hint')) {
         const hint = document.createElement('span');
         hint.className = 'project-still__hud-hint';

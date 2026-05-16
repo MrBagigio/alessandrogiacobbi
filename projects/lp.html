@@ -13,7 +13,7 @@
   <link rel="stylesheet" href="../assets/css/tokens.css">
   <link rel="stylesheet" href="../assets/css/base.css">
   <link rel="stylesheet" href="../assets/css/components.css?v=20260512-cur">
-  <link rel="stylesheet" href="../assets/css/layout.css?v=20260516-scrub">
+  <link rel="stylesheet" href="../assets/css/layout.css?v=20260516-xray">
   <link rel="stylesheet" href="../assets/css/animations.css?v=20260516-glitch">
 </head>
 <body>
@@ -128,6 +128,30 @@
           Maya · Python · MEL · custom auto-rig toolset · ZBrush (sculpt review) · Substance Painter (shading prep)
         </p>
 
+      </div>
+    </section>
+
+    <!-- ── X-ray turnaround (geo + rig dual-layer) ── -->
+    <section class="project-split-section">
+      <div class="project-split-section__head">
+        <span class="project-split-section__eyebrow">Geo &harr; Rig &middot; X-ray</span>
+        <h2 class="project-split-section__title">Turnaround &mdash; geometry vs rig</h2>
+        <p class="project-split-section__sub">Stessa rotazione 360&deg;, due passaggi della pipeline: a sinistra il modello pulito, a destra lo stesso character con il rig visibile. Muovi il cursore sul video: dove passi vedrai i controlli del rig sotto al guscio.</p>
+      </div>
+      <div class="project-stills__inner">
+        <div class="project-xray reveal-up">
+          <video class="project-xray__layer--geo" src="../assets/video/lp-turnaround-geo.mp4" autoplay loop muted playsinline aria-label="Turnaround geo &mdash; modello pulito"></video>
+          <video class="project-xray__layer--rig" src="../assets/video/lp-turnaround-rig.mp4" autoplay loop muted playsinline aria-hidden="true"></video>
+          <div class="project-xray__reticle" aria-hidden="true"></div>
+          <span class="project-xray__hint" aria-hidden="true">Move to reveal &middot; X-RAY</span>
+
+          <span class="project-still__hud-rec fx-flicker" aria-hidden="true">REC</span>
+          <span class="project-still__hud-file" aria-hidden="true">lp_turnaround_v05.ma</span>
+          <span class="project-still__hud-tc" data-tc aria-hidden="true">00:00:00:00</span>
+          <span class="project-still__hud-frame" data-frame aria-hidden="true">f.0001</span>
+          <span class="project-still__hud-diag fx-flicker" data-diag aria-hidden="true">layer · geo</span>
+          <span class="project-still__caption">Turnaround &middot; geo / rig overlay</span>
+        </div>
       </div>
     </section>
 
@@ -308,7 +332,7 @@
     </div>
   </footer>
 
-  <script type="module" src="../assets/js/main.js?v=20260516-scrub"></script>
+  <script type="module" src="../assets/js/main.js?v=20260516-xray"></script>
 
 </body>
 </html>

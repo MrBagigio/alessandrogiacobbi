@@ -14,7 +14,8 @@ import { initInteractions } from './interactions.js?v=20260511-crt';
 import { initTargeting } from './targeting.js?v=20260511-crt';
 import { initJarvis, initSectionScan, ping } from './jarvis.js?v=20260511-crt';
 import { initSysStrip } from './sys-strip.js?v=20260511-crt';
-import { initVideoHud } from './video-hud.js?v=20260516-scrub';
+import { initVideoHud } from './video-hud.js?v=20260516-xray';
+import { initXrayLens } from './xray-lens.js?v=20260516-xray';
 // import { AsteroidCursor } from './asteroid-cursor.js?v=20260511-crt'; // disabled — keep file for future
 
 const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -195,6 +196,9 @@ initSysStrip();
 
 // 9l. Per-clip video HUD readouts (TC / frame / diagnostic line)
 initVideoHud();
+
+// 9m. X-ray lens — dual-video reveal interaction on .project-xray containers
+initXrayLens();
 
 // 9j. Cross-module ping wire — rig view toggle fires a JARVIS ping
 let _lastRigState = document.body.classList.contains('rig-view');

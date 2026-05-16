@@ -1170,6 +1170,132 @@ a.project-credits__value:hover { color: var(--ox); }
   filter: contrast(1.03) saturate(0.97);
 }
 
+/* ────────────────────────────────────────────────────────────────────────
+   X-RAY DUAL-VIDEO LENS
+   Two stacked, time-synced videos: geo on bottom (visible by default),
+   rig on top (revealed inside a circular lens that follows the cursor).
+   JS module: xray-lens.js  —  drives --lens-x, --lens-y, --lens-r vars.
+   ──────────────────────────────────────────────────────────────────────── */
+.project-xray {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: var(--ink2);
+  overflow: hidden;
+  cursor: none;
+  --lens-x: 50%;
+  --lens-y: 50%;
+  --lens-r: 0px;
+}
+.project-xray__layer--geo,
+.project-xray__layer--rig {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.project-xray__layer--geo { z-index: 1; }
+.project-xray__layer--rig {
+  z-index: 2;
+  /* The clip-path circle is the lens — radius and centre live in CSS vars. */
+  clip-path: circle(var(--lens-r) at var(--lens-x) var(--lens-y));
+  -webkit-clip-path: circle(var(--lens-r) at var(--lens-x) var(--lens-y));
+  /* No transition on clip-path coords (would lag the cursor) — radius gets one. */
+}
+/* Smooth expand/collapse of lens radius on enter/leave */
+.project-xray:not(.is-xray-active) .project-xray__layer--rig {
+  transition: clip-path 260ms ease-out, -webkit-clip-path 260ms ease-out;
+}
+
+/* ── Reticle ring around the lens ── */
+.project-xray__reticle {
+  position: absolute;
+  z-index: 3;
+  pointer-events: none;
+  left: var(--lens-x);
+  top: var(--lens-y);
+  width: calc(var(--lens-r) * 2 + 8px);
+  height: calc(var(--lens-r) * 2 + 8px);
+  transform: translate(-50%, -50%);
+  border: 1.5px dashed var(--ox);
+  border-radius: 50%;
+  opacity: 0;
+  transition: opacity 200ms;
+  mix-blend-mode: difference;
+}
+.project-xray.is-xray-active .project-xray__reticle {
+  opacity: 0.9;
+}
+/* Tiny crosshair centred on the cursor (the "target") */
+.project-xray__reticle::before,
+.project-xray__reticle::after {
+  content: "";
+  position: absolute;
+  left: 50%; top: 50%;
+  background: var(--ox);
+  transform: translate(-50%, -50%);
+}
+.project-xray__reticle::before { width: 14px; height: 1px; }
+.project-xray__reticle::after  { width: 1px;  height: 14px; }
+
+/* ── Hint label: "MOVE TO REVEAL · X-RAY" — fades out on first interaction ── */
+.project-xray__hint {
+  position: absolute;
+  z-index: 4;
+  bottom: 38px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 0.55rem 1rem;
+  background: rgba(0,0,0,0.72);
+  color: var(--paper);
+  font-family: var(--fm);
+  font-size: 10px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  pointer-events: none;
+  border: 1px solid rgba(184,50,63,0.55);
+  transition: opacity 280ms ease;
+  white-space: nowrap;
+}
+.project-xray.is-xray-active .project-xray__hint {
+  opacity: 0;
+}
+
+/* ── Reuse HUD overlay readouts (REC, file, TC, frame, diag) inside the xray
+   container by replicating the same corner-bracket + label positioning that
+   .project-still--hud provides. ── */
+.project-xray::before,
+.project-xray::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+  z-index: 4;
+  mix-blend-mode: difference;
+  opacity: 0.9;
+  width: 22px; height: 22px;
+}
+.project-xray::before {
+  top: 10px; left: 10px;
+  border-top: 1.5px solid var(--paper);
+  border-left: 1.5px solid var(--paper);
+}
+.project-xray::after {
+  bottom: 10px; right: 10px;
+  border-bottom: 1.5px solid var(--paper);
+  border-right: 1.5px solid var(--paper);
+}
+/* Same HUD readout look as bts monitors */
+.project-xray .project-still__hud-rec,
+.project-xray .project-still__hud-file,
+.project-xray .project-still__hud-tc,
+.project-xray .project-still__hud-frame,
+.project-xray .project-still__hud-diag,
+.project-xray .project-still__caption {
+  z-index: 4;
+}
+
 /* ── BTS monitor grid — auto-fit, bigger tiles. 2-col on most desktops,
    3-col only on ultra-wide (≥2100px), 1-col mobile. ── */
 .project-bts-monitors {

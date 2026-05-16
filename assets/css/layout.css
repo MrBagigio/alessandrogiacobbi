@@ -994,6 +994,124 @@ a.project-credits__value:hover { color: var(--ox); }
 
 .project-still--video { position: relative; overflow: hidden; }
 .project-still--video video { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+/* ── HUD overlay (Maya viewport / VFX-monitor aesthetic) ──
+   Adds 4 corner brackets + filename/take readouts + pulsing REC dot
+   on top of any .project-still--hud item. Pure CSS via attr() + ::before/::after
+   on internal layer divs (no JS). */
+
+/* Layer 1: 4 corner brackets, painted with mix-blend so they read on any clip */
+.project-still--hud::before,
+.project-still--hud::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+  z-index: 3;
+  mix-blend-mode: difference;
+  opacity: 0.9;
+  width: 22px; height: 22px;
+}
+.project-still--hud::before {
+  top: 10px; left: 10px;
+  border-top: 1.5px solid var(--paper);
+  border-left: 1.5px solid var(--paper);
+}
+.project-still--hud::after {
+  bottom: 10px; right: 10px;
+  border-bottom: 1.5px solid var(--paper);
+  border-right: 1.5px solid var(--paper);
+}
+
+/* Layer 2: HUD readouts via attr() on the still itself.
+   We use a single span-less approach: paint filename + take as data-content
+   in two helper layers added by CSS-only is not possible without children,
+   so we render filename top-right via the still's own `data-hud-file`
+   attribute through a generated content stack on .project-still__caption
+   sibling node.
+
+   Cleanest: render filename + take as background-image SVG using
+   url(data:) — overkill. Instead: add the readouts on the existing
+   .project-still__caption box-shadow stack? Also too hacky.
+
+   Simplest working solution: render filename label via the still's
+   wrapper background overlay (gradient text doesn't work). We'll
+   accept that without children the readouts can't show text, so just
+   render the REC pulsing dot and corner brackets — which already gives
+   the "live monitor" feel. Filename + take are conveyed by the
+   .project-still__caption already at bottom-left. */
+
+/* REC dot — top-right, oxblood, pulsing */
+.project-still--hud {
+  /* expose a fixed-position dot via outline-style? Use box-shadow stack on ::before? */
+}
+
+/* The 4 brackets are enough to give "viewport monitor" character.
+   For richer HUD (filename + take + TC), we add child <span> readouts:
+   .project-still__hud-file (top-right) and .project-still__hud-rec (top-left). */
+
+.project-still__hud-file,
+.project-still__hud-rec {
+  position: absolute;
+  z-index: 4;
+  font-family: var(--fm);
+  font-size: 9px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--paper);
+  pointer-events: none;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.6);
+}
+.project-still__hud-file {
+  top: 14px;
+  right: 16px;
+  opacity: 0.85;
+}
+.project-still__hud-rec {
+  top: 14px;
+  left: 38px;            /* sits to the right of the TL bracket */
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: var(--paper);
+  opacity: 0.95;
+}
+.project-still__hud-rec::before {
+  content: "";
+  width: 7px; height: 7px;
+  background: var(--ox);
+  border-radius: 50%;
+  box-shadow: 0 0 6px var(--ox);
+  animation: rec-pulse 1.4s ease-in-out infinite;
+}
+@keyframes rec-pulse {
+  0%, 100% { opacity: 1;   transform: scale(1); }
+  50%      { opacity: 0.35; transform: scale(0.85); }
+}
+
+/* Take label — bottom-right, monospace, subtle */
+.project-still__hud-take {
+  position: absolute;
+  bottom: 14px;
+  right: 16px;
+  z-index: 4;
+  font-family: var(--fm);
+  font-size: 9px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--paper);
+  opacity: 0.75;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.6);
+  pointer-events: none;
+}
+
+/* Scanline veneer — very subtle, only on hud variants */
+.project-still--hud > video {
+  filter: contrast(1.02);
+}
+.project-still--hud::before,
+.project-still--hud::after {
+  /* brackets defined above */
+}
 .project-still__caption {
   position: absolute;
   bottom: 0.75rem;

@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LP Group — Chameleon Rigging · Alessandro Giacobbi</title>
-  <meta name="description" content="Rigging completo del camaleonte 3D per LP Group: body mech + facial rig + tongue dynamics + tail spline. Maya / Python toolset presso Setpoint Studio.">
+  <title>LP Group — Chameleon Rigging + Animation · Alessandro Giacobbi</title>
+  <meta name="description" content="Rigging + animation del camaleonte 3D per LP Group: body mech + facial rig + tongue dynamics + tail spline + character animation. Maya / Python toolset presso SETPOINTSTUDIO.">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,7 +13,7 @@
   <link rel="stylesheet" href="../assets/css/tokens.css">
   <link rel="stylesheet" href="../assets/css/base.css">
   <link rel="stylesheet" href="../assets/css/components.css?v=20260512-cur">
-  <link rel="stylesheet" href="../assets/css/layout.css?v=20260512-team">
+  <link rel="stylesheet" href="../assets/css/layout.css?v=20260512-hud">
   <link rel="stylesheet" href="../assets/css/animations.css?v=20260512-cur">
 </head>
 <body>
@@ -38,13 +38,13 @@
       <div class="project-hero__bg" aria-hidden="true"></div>
       <div class="project-hero__inner">
         <nav class="project-hero__breadcrumb reveal-up">
-          <a href="../index.html">Portfolio</a> &nbsp;/&nbsp; Character Rigging · Brand Commercial
+          <a href="../index.html">Portfolio</a> &nbsp;/&nbsp; Character Rigging + Animation · Brand Commercial
         </nav>
         <h1 class="project-hero__title reveal-up">LP Group</h1>
-        <p class="project-hero__client reveal-up">Chameleon character rigging · LP Group · Setpoint Studio</p>
+        <p class="project-hero__client reveal-up">Chameleon rigging + animation · LP Group · SETPOINTSTUDIO</p>
         <p class="project-hero__nda reveal-up">
           <span class="project-hero__nda-tag fx-flicker">2024</span>
-          Spot finale + rig breakdown + clay render &middot; realizzato in team presso Setpoint Studio
+          Spot finale + rig breakdown + clay render &middot; realizzato in team presso SETPOINTSTUDIO
         </p>
       </div>
     </section>
@@ -57,11 +57,11 @@
         </div>
         <div class="project-meta__col">
           <span class="project-meta__label">Studio</span>
-          <span class="project-meta__value">Setpoint Studio S.r.l.</span>
+          <span class="project-meta__value">SETPOINTSTUDIO S.r.l.</span>
         </div>
         <div class="project-meta__col">
           <span class="project-meta__label">Discipline</span>
-          <span class="project-meta__value">Rigging TD · Character</span>
+          <span class="project-meta__value">Rigging + Animation · Character</span>
         </div>
         <div class="project-meta__col">
           <span class="project-meta__label">Subject</span>
@@ -75,7 +75,7 @@
       <div class="project-split-section__head">
         <span class="project-split-section__eyebrow">Spot finale</span>
         <h2 class="project-split-section__title">LP Group &mdash; commercial film</h2>
-        <p class="project-split-section__sub">Spot completato, regia Setpoint Studio. Rigging end-to-end del camaleonte &mdash; il mio contributo &mdash; integrato con concept, modelling, lookdev e sound design del team.</p>
+        <p class="project-split-section__sub">Spot completato, regia SETPOINTSTUDIO. Rigging + character animation del camaleonte &mdash; il mio contributo &mdash; integrato con concept, modelling, lookdev e sound design del team.</p>
       </div>
       <div class="project-stills__inner">
         <div class="project-film__embed reveal-up">
@@ -97,13 +97,13 @@
         <h3 class="project-content__h3 reveal-up">Il progetto</h3>
         <p class="project-content__p reveal-up">
           Brand commercial LP Group con character protagonista: un camaleonte 3D fotorealistico
-          animato. Lavoro di rigging end-to-end del creature: body mechanics, sistema facciale,
-          tongue dynamics (lingua proiettile) e spline coda. Il rig è stato consegnato
-          all'animation team Setpoint Studio production-ready, con controlli intuitivi e
-          deformazioni stabili sotto pose estreme.
+          animato. Lavoro di rigging end-to-end del creature + character animation sullo spot:
+          body mechanics, sistema facciale, tongue dynamics (lingua proiettile), spline coda e
+          performance animata frame-by-frame. Pipeline integrata SETPOINTSTUDIO, controlli rig
+          intuitivi e deformazioni stabili sotto pose estreme.
         </p>
 
-        <h3 class="project-content__h3 reveal-up">Il mio contributo — rigging completo</h3>
+        <h3 class="project-content__h3 reveal-up">Il mio contributo — rigging + animation</h3>
         <ul class="project-content__role-list reveal-up">
           <li><strong>Body mech rig</strong> — skeleton quadruped con IK/FK switch + stretchy limbs · controllo digit-by-digit dita prensili (le 5 dita del camaleonte hanno opposable grip caratteristico)</li>
           <li><strong>Tongue dynamics</strong> — sistema spline a curvatura variabile per la lingua-proiettile, con squash &amp; stretch automatic + curl/uncurl progressivo via slider</li>
@@ -111,6 +111,7 @@
           <li><strong>Facial rig</strong> — eyes independent (camaleonte ha occhi che ruotano indipendenti 360°), eyelids blendshapes, jaw open + tongue protrude attached</li>
           <li><strong>Skin shading prep</strong> — UV layout + topology ottimizzata per displacement scales + chromatophores layer (cambio colore via texture animation)</li>
           <li><strong>Python tools</strong> — auto-rig snippets per accelerare iterazioni revisioni</li>
+          <li><strong>Character animation</strong> — performance animata dello spot: body acting, facial expressions, tongue strike, tail balance secondary motion. Animazione keyframe + cleanup graph editor</li>
         </ul>
 
         <h3 class="project-content__h3 reveal-up">Sfide tecniche</h3>
@@ -130,54 +131,56 @@
       </div>
     </section>
 
-    <section class="project-split-section">
-      <div class="project-split-section__head">
-        <span class="project-split-section__eyebrow">Visuals</span>
-        <h2 class="project-split-section__title">Hero render &amp; behind the scenes</h2>
-        <p class="project-split-section__sub">Render finale del camaleonte affiancato a un clay render di processo: stesso character, due fasi della pipeline — beauty pass shaded a sinistra, geometria con rig controls in overlay a destra.</p>
-      </div>
-      <div class="project-split">
-        <figure class="project-split__col img-reveal reveal-up">
-          <img src="../assets/images/projects/lp/lp-thb.webp" alt="LP Group chameleon — hero render">
-          <figcaption class="project-still__caption">Hero render · final beauty</figcaption>
-        </figure>
-        <figure class="project-split__col project-split__col--video reveal-up">
-          <video
-            src="../assets/video/lp-clay.mp4"
-            poster="../assets/images/projects/lp/lp-clay-poster.jpg"
-            autoplay loop muted playsinline
-            aria-label="Clay render — processo di rigging camaleonte"
-          ></video>
-          <figcaption class="project-still__caption">Clay render · behind the scenes</figcaption>
-        </figure>
-      </div>
-    </section>
-
     <!-- ── Behind the Scenes ── -->
     <section class="project-split-section">
       <div class="project-split-section__head">
         <span class="project-split-section__eyebrow">Behind the Scenes</span>
         <h2 class="project-split-section__title">Rig breakdown &mdash; sistemi in movimento</h2>
-        <p class="project-split-section__sub">Clip di processo: ogni video mostra un sub-system del rig in isolamento &mdash; tail simulation, facial expression, tongue proiettile. Nessun post, solo Maya viewport.</p>
+        <p class="project-split-section__sub">Clip di processo: clay render del personaggio + sub-system del rig in isolamento (tail simulation, facial expression, tongue proiettile). Nessun post, solo Maya viewport.</p>
       </div>
       <div class="project-stills__inner">
         <div class="project-stills__grid">
-          <div class="project-still project-still--wide project-still--video reveal-up">
+
+          <div class="project-still project-still--wide project-still--video project-still--hud reveal-up">
+            <video src="../assets/video/lp-clay.mp4" poster="../assets/images/projects/lp/lp-clay-poster.jpg" autoplay loop muted playsinline aria-label="Clay render &mdash; processo di rigging camaleonte"></video>
+            <span class="project-still__hud-rec" aria-hidden="true">REC</span>
+            <span class="project-still__hud-file" aria-hidden="true">lp_clay_v12.ma</span>
+            <span class="project-still__hud-take" aria-hidden="true">TAKE 04 &middot; 24fps</span>
+            <span class="project-still__caption">Clay render &middot; behind the scenes</span>
+          </div>
+
+          <div class="project-still project-still--wide project-still--video project-still--hud reveal-up">
             <video src="../assets/video/lp-tail-sim-01.mp4" autoplay loop muted playsinline aria-label="Tail simulation 01 &mdash; coda prensile overlap"></video>
+            <span class="project-still__hud-rec" aria-hidden="true">REC</span>
+            <span class="project-still__hud-file" aria-hidden="true">lp_tail_sim_v07.ma</span>
+            <span class="project-still__hud-take" aria-hidden="true">TAKE 01 &middot; 24fps</span>
             <span class="project-still__caption">Tail sim 01 &middot; dynamic overlap</span>
           </div>
-          <div class="project-still project-still--wide project-still--video reveal-up">
+
+          <div class="project-still project-still--wide project-still--video project-still--hud reveal-up">
             <video src="../assets/video/lp-tail-sim-02.mp4" autoplay loop muted playsinline aria-label="Tail simulation 02 &mdash; coda curl-roll"></video>
+            <span class="project-still__hud-rec" aria-hidden="true">REC</span>
+            <span class="project-still__hud-file" aria-hidden="true">lp_tail_sim_v09.ma</span>
+            <span class="project-still__hud-take" aria-hidden="true">TAKE 02 &middot; 24fps</span>
             <span class="project-still__caption">Tail sim 02 &middot; curl-roll</span>
           </div>
-          <div class="project-still project-still--video reveal-up">
+
+          <div class="project-still project-still--video project-still--hud reveal-up">
             <video src="../assets/video/lp-face-expression.mp4" autoplay loop muted playsinline aria-label="Facial rig &mdash; expression test camaleonte"></video>
+            <span class="project-still__hud-rec" aria-hidden="true">REC</span>
+            <span class="project-still__hud-file" aria-hidden="true">lp_face_expr_v06.ma</span>
+            <span class="project-still__hud-take" aria-hidden="true">TAKE 03</span>
             <span class="project-still__caption">Facial rig &middot; expression test</span>
           </div>
-          <div class="project-still project-still--video reveal-up">
+
+          <div class="project-still project-still--video project-still--hud reveal-up">
             <video src="../assets/video/lp-tongue-rig.mp4" autoplay loop muted playsinline aria-label="Tongue rig &mdash; lingua proiettile ballistic"></video>
+            <span class="project-still__hud-rec" aria-hidden="true">REC</span>
+            <span class="project-still__hud-file" aria-hidden="true">lp_tongue_v11.ma</span>
+            <span class="project-still__hud-take" aria-hidden="true">TAKE 02</span>
             <span class="project-still__caption">Tongue rig &middot; proiettile ballistic</span>
           </div>
+
         </div>
       </div>
     </section>
@@ -186,9 +189,9 @@
     <section class="project-team">
       <div class="project-team__inner">
         <div class="project-split-section__head">
-          <span class="project-split-section__eyebrow">Team Setpoint Studio</span>
+          <span class="project-split-section__eyebrow">Team SETPOINTSTUDIO</span>
           <h2 class="project-split-section__title">Crediti del progetto</h2>
-          <p class="project-split-section__sub">Spot prodotto da un team multidisciplinare. Ogni nome qui sotto ha contribuito a un pezzo dello spot finito &mdash; rigging del camaleonte &egrave; la mia parte, ma il resto &egrave; merito loro.</p>
+          <p class="project-split-section__sub">Spot prodotto da un team multidisciplinare. Ogni nome qui sotto ha contribuito a un pezzo dello spot finito &mdash; rigging + character animation del camaleonte sono la mia parte, ma il resto &egrave; merito loro.</p>
         </div>
         <ul class="project-team__list">
           <li class="project-team__row reveal-up">
@@ -209,7 +212,7 @@
               <a href="https://www.instagram.com/agora_kypselis/" target="_blank" rel="noopener">Francesco Marchioro</a>
               &nbsp;&middot;&nbsp;
               <a href="https://www.instagram.com/mr_jecobs/" target="_blank" rel="noopener">Alessandro Giacobbi</a>
-              <span class="project-team__tag">rigging</span>
+              <span class="project-team__tag">rigging + animation</span>
               &nbsp;&middot;&nbsp;
               <a href="https://www.instagram.com/damiano_demilio/" target="_blank" rel="noopener">Damiano D&rsquo;Emilio</a>
             </span>
@@ -227,7 +230,7 @@
           <li class="project-team__row reveal-up">
             <span class="project-team__role">Studio</span>
             <span class="project-team__name">
-              <a href="https://www.setpointstudio.com" target="_blank" rel="noopener">Setpoint Studio S.r.l. &rarr;</a>
+              <a href="https://www.setpointstudio.com" target="_blank" rel="noopener">SETPOINTSTUDIO S.r.l. &rarr;</a>
             </span>
           </li>
         </ul>
@@ -238,7 +241,7 @@
       <div class="project-credits__inner">
         <div class="project-credits__col reveal-up">
           <span class="project-credits__label">Studio</span>
-          <a href="https://www.setpointstudio.com" class="project-credits__value" target="_blank" rel="noopener">Setpoint Studio S.r.l. &rarr;</a>
+          <a href="https://www.setpointstudio.com" class="project-credits__value" target="_blank" rel="noopener">SETPOINTSTUDIO S.r.l. &rarr;</a>
         </div>
         <div class="project-credits__col reveal-up">
           <span class="project-credits__label">Client</span>
@@ -246,7 +249,7 @@
         </div>
         <div class="project-credits__col reveal-up">
           <span class="project-credits__label">Role</span>
-          <span class="project-credits__value">Rigging TD — full creature</span>
+          <span class="project-credits__value">Rigging TD + Character Animation</span>
         </div>
         <div class="project-credits__col reveal-up">
           <span class="project-credits__label">Pipeline</span>

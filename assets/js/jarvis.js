@@ -73,7 +73,7 @@ export function initJarvis() {
     ping('input · scroll engaged');
   }, { passive: true, once: false });
 
-  // Scroll milestones (25/50/75/95%)
+  // Scroll milestones (25/50/75/95%) — self-removing listener once all fired
   const milestones = [
     [25, 'archive · 25% indexed'],
     [50, 'archive · 50% indexed'],
@@ -81,7 +81,7 @@ export function initJarvis() {
     [95, 'archive · scan complete'],
   ];
   const milestonesFired = new Set();
-  window.addEventListener('scroll', () => {
+  const milestoneHandler = () => {
     const max = document.documentElement.scrollHeight - window.innerHeight;
     if (max <= 0) return;
     const pct = (window.scrollY / max) * 100;
@@ -91,7 +91,11 @@ export function initJarvis() {
         ping(msg);
       }
     });
-  }, { passive: true });
+    if (milestonesFired.size >= milestones.length) {
+      window.removeEventListener('scroll', milestoneHandler);
+    }
+  };
+  window.addEventListener('scroll', milestoneHandler, { passive: true });
 
   // Section entry pings — observe sections with a recognizable identity
   if ('IntersectionObserver' in window) {

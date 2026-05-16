@@ -19,6 +19,8 @@ export class HeroScene {
     this.scrollY = 0;
     this.dpr = Math.min(window.devicePixelRatio, 2);
     this.disposed = false;
+    this.visible = true;       // IO-gated; renders only when canvas in viewport
+    this._rafId = null;
 
     this.init();
     this.bind();
@@ -160,6 +162,14 @@ export class HeroScene {
     window.addEventListener('resize', this.onResize, { passive: true });
     window.addEventListener('mousemove', this.onMouseMove, { passive: true });
     window.addEventListener('scroll', this.onScroll, { passive: true });
+    // Gate the render loop on viewport visibility — stops the WebGL render
+    // when the hero canvas has been scrolled past (saves ~3ms/frame GPU).
+    if ('IntersectionObserver' in window) {
+      this._io = new IntersectionObserver((entries) => {
+        this.visible = entries[0]?.isIntersecting ?? true;
+      }, { threshold: 0 });
+      this._io.observe(this.canvas);
+    }
   }
 
   onResize() {
@@ -182,7 +192,10 @@ export class HeroScene {
 
   animate() {
     if (this.disposed) return;
-    requestAnimationFrame(this.animate.bind(this));
+    this._rafId = requestAnimationFrame(this.animate.bind(this));
+    // Skip rendering when canvas is off-screen — keeps state advancing
+    // cheaply if needed, but doesn't push frames to GPU.
+    if (!this.visible) return;
 
     const t = performance.now() * 0.0005;
 
@@ -232,6 +245,8 @@ export class HeroScene {
 
   dispose() {
     this.disposed = true;
+    if (this._rafId) cancelAnimationFrame(this._rafId);
+    this._io?.disconnect();
     window.removeEventListener('resize', this.onResize);
     window.removeEventListener('mousemove', this.onMouseMove);
     window.removeEventListener('scroll', this.onScroll);

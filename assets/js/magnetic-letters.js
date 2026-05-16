@@ -20,31 +20,43 @@ const CHROMATIC_MAX = 4;  // px RGB shift max
 function splitText(el) {
   if (el.dataset.mlxSplit === '1') return;
   const text = el.textContent;
-  el.textContent = '';
-  // Conserva nodes per ricomposizione
+  // DocumentFragment so we only reflow once for the whole title
+  const frag = document.createDocumentFragment();
   const chars = [];
-  [...text].forEach((c) => {
+  for (const c of text) {
     if (c === ' ' || c === ' ') {
-      el.appendChild(document.createTextNode(' '));
-      return;
+      frag.appendChild(document.createTextNode(' '));
+      continue;
     }
     const span = document.createElement('span');
     span.className = 'mlx__c';
     span.textContent = c;
     span.style.display = 'inline-block';
     span.style.willChange = 'transform, text-shadow';
-    el.appendChild(span);
+    frag.appendChild(span);
     chars.push(span);
-  });
+  }
+  el.textContent = '';
+  el.appendChild(frag);
   el.dataset.mlxSplit = '1';
   el._mlxChars = chars;
   el._mlxState = chars.map(() => ({ tx: 0, ty: 0, cx: 0, cy: 0, sc: 1, sh: 0 }));
   el._mlxTarget = chars.map(() => ({ tx: 0, ty: 0, cx: 0, cy: 0, sc: 1, sh: 0 }));
+  el._mlxRects = null;
 }
 
-function getCharCenter(span) {
-  const r = span.getBoundingClientRect();
-  return { x: r.left + r.width / 2, y: r.top + r.height / 2 };
+/* Cache char-center positions once per hover session — was getBoundingClientRect()
+   PER CHAR PER MOUSEMOVE which is ~1200 layout reads/sec on a 20-char title. */
+function refreshCharRects(el) {
+  const chars = el._mlxChars;
+  if (!chars) return null;
+  const rects = new Array(chars.length);
+  for (let i = 0; i < chars.length; i++) {
+    const r = chars[i].getBoundingClientRect();
+    rects[i] = { x: r.left + r.width / 2, y: r.top + r.height / 2 };
+  }
+  el._mlxRects = rects;
+  return rects;
 }
 
 let rafId = null;
@@ -90,8 +102,11 @@ function onMouseMove(el, mx, my) {
   const chars = el._mlxChars;
   if (!chars) return;
   const targets = el._mlxTarget;
-  chars.forEach((c, i) => {
-    const { x, y } = getCharCenter(c);
+  // Use cached rects if available; refresh on first move of hover session.
+  const rects = el._mlxRects || refreshCharRects(el);
+  if (!rects) return;
+  for (let i = 0; i < chars.length; i++) {
+    const { x, y } = rects[i];
     const dx = mx - x;
     const dy = my - y;
     const dist = Math.hypot(dx, dy);
@@ -99,7 +114,6 @@ function onMouseMove(el, mx, my) {
 
     if (dist < REST_RADIUS) {
       const force = 1 - dist / REST_RADIUS;
-      // Attrai verso cursore con falloff quadratico
       const pull = force * force * MAX_PULL;
       t.tx = (dx / (dist || 1)) * pull;
       t.ty = (dy / (dist || 1)) * pull;
@@ -110,14 +124,13 @@ function onMouseMove(el, mx, my) {
 
     if (dist < CHROMATIC_RADIUS) {
       const force = 1 - dist / CHROMATIC_RADIUS;
-      // Chromatic shift direzione opposta al cursore (effetto "schiacciato")
       t.cx = -(dx / (dist || 1)) * CHROMATIC_MAX * force;
       t.cy = -(dy / (dist || 1)) * CHROMATIC_MAX * force;
       t.sh = force;
     } else {
       t.cx = 0; t.cy = 0; t.sh = 0;
     }
-  });
+  }
   scheduleAnimate();
 }
 
@@ -128,10 +141,34 @@ function onMouseLeave(el) {
   scheduleAnimate();
 }
 
+/* Invalidate rect cache for all active magnetic elements (called once on
+   resize + scroll instead of per-mousemove). */
+function invalidateAllRects() {
+  activeEls.forEach((el) => { el._mlxRects = null; });
+}
+let _rectInvalidatorWired = false;
+function wireRectInvalidator() {
+  if (_rectInvalidatorWired) return;
+  _rectInvalidatorWired = true;
+  let resizeRaf = null;
+  const onChange = () => {
+    if (resizeRaf) return;
+    resizeRaf = requestAnimationFrame(() => {
+      invalidateAllRects();
+      resizeRaf = null;
+    });
+  };
+  window.addEventListener('resize', onChange, { passive: true });
+  window.addEventListener('scroll', onChange, { passive: true });
+}
+
 export function initMagnetic(el) {
   if (!el) return;
   splitText(el);
   activeEls.add(el);
+  wireRectInvalidator();
+  // Cache invalidation on hover entry: text-fx scramble may have rebuilt spans
+  el.addEventListener('mouseenter', () => { el._mlxRects = null; });
   el.addEventListener('mousemove', (e) => onMouseMove(el, e.clientX, e.clientY));
   el.addEventListener('mouseleave', () => onMouseLeave(el));
 }

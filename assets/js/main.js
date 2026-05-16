@@ -2,21 +2,21 @@
  * Bootstrap — entry point.
  * Loads GSAP via CDN, initializes scenes, cursor, lazy, scroll triggers.
  */
-import { HeroScene } from './scene-hero.js?v=20260511-crt';
-import { BgScene } from './scene-bg.js?v=20260511-crt';
-import { Cursor } from './cursor.js?v=20260511-crt';
-import { initLazyMedia } from './lazy.js?v=20260511-crt';
-import { initTextFx } from './text-fx.js?v=20260511-crt';
-import { initMagneticAuto } from './magnetic-letters.js?v=20260511-crt';
-import { runBootSequence } from './boot.js?v=20260511-crt';
-import { initRigView } from './rig-view.js?v=20260511-crt';
-import { initInteractions } from './interactions.js?v=20260511-crt';
-import { initTargeting } from './targeting.js?v=20260511-crt';
-import { initJarvis, initSectionScan, ping } from './jarvis.js?v=20260511-crt';
-import { initSysStrip } from './sys-strip.js?v=20260511-crt';
-import { initVideoHud } from './video-hud.js?v=20260516-loop';
-import { initXrayLens } from './xray-lens.js?v=20260516-loop';
-// import { AsteroidCursor } from './asteroid-cursor.js?v=20260511-crt'; // disabled — keep file for future
+import { HeroScene } from './scene-hero.js?v=20260516-audit';
+import { BgScene } from './scene-bg.js?v=20260516-audit';
+import { Cursor } from './cursor.js?v=20260516-audit';
+import { initLazyMedia } from './lazy.js?v=20260516-audit';
+import { initTextFx } from './text-fx.js?v=20260516-audit';
+import { initMagneticAuto } from './magnetic-letters.js?v=20260516-audit';
+import { runBootSequence } from './boot.js?v=20260516-audit';
+import { initRigView } from './rig-view.js?v=20260516-audit';
+import { initInteractions } from './interactions.js?v=20260516-audit';
+import { initTargeting } from './targeting.js?v=20260516-audit';
+import { initJarvis, initSectionScan, ping } from './jarvis.js?v=20260516-audit';
+import { initSysStrip } from './sys-strip.js?v=20260516-audit';
+import { initVideoHud } from './video-hud.js?v=20260516-audit';
+import { initXrayLens } from './xray-lens.js?v=20260516-audit';
+// import { AsteroidCursor } from './asteroid-cursor.js?v=20260516-audit'; // disabled — keep file for future
 
 const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -123,22 +123,15 @@ if (!reduced && window.matchMedia('(min-width: 1024px)').matches) {
     if (!media) return;
 
     let rafId = null;
+    let resetTimer = null;
     let target = { rx: 0, ry: 0 };
     let current = { rx: 0, ry: 0 };
+    let cachedRect = null;
 
     const update = () => {
-      // Lerp toward target
       current.rx += (target.rx - current.rx) * 0.12;
       current.ry += (target.ry - current.ry) * 0.12;
-
-      // Apply transform (combine with hover translateZ from CSS via additive transform on media)
-      media.style.transform = `
-        translateZ(24px)
-        scale(1.015)
-        rotateX(${current.rx}deg)
-        rotateY(${current.ry}deg)
-      `;
-
+      media.style.transform = `translateZ(24px) scale(1.015) rotateX(${current.rx}deg) rotateY(${current.ry}deg)`;
       if (Math.abs(target.rx - current.rx) > 0.01 || Math.abs(target.ry - current.ry) > 0.01) {
         rafId = requestAnimationFrame(update);
       } else {
@@ -146,24 +139,30 @@ if (!reduced && window.matchMedia('(min-width: 1024px)').matches) {
       }
     };
 
+    card.addEventListener('mouseenter', () => {
+      // Cache rect once per hover session — invalidated on mouseleave + resize
+      cachedRect = card.getBoundingClientRect();
+      // Cancel any pending reset from a previous mouseleave (B1 race fix)
+      if (resetTimer) { clearTimeout(resetTimer); resetTimer = null; }
+    });
+
     card.addEventListener('mousemove', (e) => {
-      const r = card.getBoundingClientRect();
+      const r = cachedRect || card.getBoundingClientRect();
       const cx = e.clientX - r.left - r.width / 2;
       const cy = e.clientY - r.top - r.height / 2;
-
-      // Tilt range ±6° (was 12° — too aggressive). Stripe/Linear scale.
       target.rx = -(cy / r.height) * 7;
       target.ry =  (cx / r.width) * 7;
-
       if (!rafId) rafId = requestAnimationFrame(update);
     });
 
     card.addEventListener('mouseleave', () => {
       target.rx = 0;
       target.ry = 0;
-      // Reset transform on media — keep CSS hover transition
-      setTimeout(() => {
+      cachedRect = null;
+      // Replace blind setTimeout with named handle so re-enter can cancel it
+      resetTimer = setTimeout(() => {
         media.style.transform = '';
+        resetTimer = null;
       }, 250);
       if (!rafId) rafId = requestAnimationFrame(update);
     });
@@ -210,22 +209,28 @@ const _rigToggleObserver = new MutationObserver(() => {
 });
 _rigToggleObserver.observe(document.body, { attributes: true, attributeFilter: ['class'] });
 
-// 10. Char-reveal init — split text content into spans on .char-reveal
+// 10. Char-reveal init — split text into spans on .char-reveal.
+// Batch via DocumentFragment so each element only triggers one layout/paint
+// (was N appendChild → N reflows).
 document.querySelectorAll('.char-reveal').forEach((el) => {
   const text = el.textContent;
-  el.textContent = '';
+  const frag = document.createDocumentFragment();
   const words = text.split(/(\s+)/);
+  let charIdx = 0;
   words.forEach((w) => {
     if (/^\s+$/.test(w)) {
-      el.appendChild(document.createTextNode(' '));
+      frag.appendChild(document.createTextNode(' '));
       return;
     }
-    [...w].forEach((c, i) => {
+    for (const c of w) {
       const span = document.createElement('span');
       span.className = 'char-reveal__inner';
-      span.style.transitionDelay = `${i * 18}ms`;
+      span.style.transitionDelay = `${charIdx * 18}ms`;
       span.textContent = c;
-      el.appendChild(span);
-    });
+      frag.appendChild(span);
+      charIdx++;
+    }
   });
+  el.textContent = '';
+  el.appendChild(frag);
 });

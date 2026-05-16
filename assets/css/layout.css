@@ -1528,46 +1528,8 @@ a.project-credits__value:hover { color: var(--ox); }
   opacity: 1;
 }
 
-/* Active "scrubbing" cursor visual — small label appears in upper-left */
-.project-bts-monitors .project-still--hud.is-scrubbing > video {
-  filter: contrast(1.15) brightness(1.05);
-}
-.project-bts-monitors .project-still--hud.is-scrubbing .project-still__hud-tc {
-  background: rgba(184, 50, 63, 0.85);
-  border-left-color: var(--paper);
-  color: var(--paper);
-}
-
-/* "SCRUB →" instruction badge, appears on hover, fades out on first interaction */
-.project-bts-monitors .project-still--hud::before {
-  /* keep the existing TL corner bracket */
-}
-.project-bts-monitors .project-still--hud .project-still__hud-hint {
-  position: absolute;
-  z-index: 5;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  padding: 0.45rem 0.95rem;
-  background: rgba(0, 0, 0, 0.78);
-  color: var(--paper);
-  font-family: var(--fm);
-  font-size: 10px;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 220ms ease;
-  border: 1px solid rgba(184, 50, 63, 0.55);
-  white-space: nowrap;
-}
-.project-bts-monitors .project-still--hud:hover .project-still__hud-hint {
-  opacity: 0.85;
-}
-.project-bts-monitors .project-still--hud.has-been-scrubbed .project-still__hud-hint {
-  opacity: 0 !important;
-  display: none;
-}
+/* (scrub interaction + SCRUB hint removed — videos now always loop without
+   pause-on-hover. CSS rules deleted to avoid dead code.) */
 
 /* On smaller monitor tiles, downscale HUD slightly so it stays balanced */
 .project-bts-monitors .project-still__hud-tc { font-size: 10px; }

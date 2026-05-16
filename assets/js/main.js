@@ -14,7 +14,7 @@ import { initInteractions } from './interactions.js?v=20260511-crt';
 import { initTargeting } from './targeting.js?v=20260511-crt';
 import { initJarvis, initSectionScan, ping } from './jarvis.js?v=20260511-crt';
 import { initSysStrip } from './sys-strip.js?v=20260511-crt';
-import { initVideoHud } from './video-hud.js?v=20260516-vhud';
+import { initVideoHud } from './video-hud.js?v=20260516-scrub';
 // import { AsteroidCursor } from './asteroid-cursor.js?v=20260511-crt'; // disabled — keep file for future
 
 const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;

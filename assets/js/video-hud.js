@@ -117,6 +117,40 @@ function fireGlitch(item) {
   }
 }
 
+/* Wire the "scrub on mousemove" interaction onto one monitor. The horizontal
+   mouse position inside the tile maps to video.currentTime — turns the tile
+   into a live diagnostic monitor the user can shuttle through. */
+function wireScrub(item) {
+  const { el, video } = item;
+  const onEnter = () => {
+    video.pause();
+    el.classList.add('is-scrubbing');
+  };
+  const onLeave = () => {
+    el.classList.remove('is-scrubbing');
+    video.play().catch(() => { /* autoplay policy */ });
+  };
+  const onMove = (e) => {
+    if (!video.duration || !isFinite(video.duration)) return;
+    const rect = el.getBoundingClientRect();
+    const x = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+    video.currentTime = x * video.duration;
+    if (!el.classList.contains('has-been-scrubbed')) {
+      el.classList.add('has-been-scrubbed');
+    }
+  };
+  const onClick = () => {
+    // Quick taps on touch / non-hover devices just resume autoplay
+    el.classList.remove('is-scrubbing');
+    if (video.paused) video.play().catch(() => {});
+    else video.pause();
+  };
+  el.addEventListener('mouseenter', onEnter);
+  el.addEventListener('mouseleave', onLeave);
+  el.addEventListener('mousemove', onMove);
+  el.addEventListener('click', onClick);
+}
+
 export function initVideoHud() {
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const containers = document.querySelectorAll('.project-still--hud');
@@ -136,6 +170,20 @@ export function initVideoHud() {
     const it = { el, video, tcEl, frameEl, diagEl, fileEl, messages, nextGlitchAt: 0 };
     scheduleGlitch(it, startNow);
     items.push(it);
+
+    // Wire interactive scrub on monitors that have video (skips the
+    // sound-design <img> tile that also carries .project-still--hud).
+    if (video.tagName === 'VIDEO') {
+      wireScrub(it);
+      // Add hint label dynamically
+      if (!el.querySelector('.project-still__hud-hint')) {
+        const hint = document.createElement('span');
+        hint.className = 'project-still__hud-hint';
+        hint.setAttribute('aria-hidden', 'true');
+        hint.textContent = '← SCRUB →';
+        el.appendChild(hint);
+      }
+    }
   });
 
   if (!items.length) return;

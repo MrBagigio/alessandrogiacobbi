@@ -1104,6 +1104,96 @@ a.project-credits__value:hover { color: var(--ox); }
   pointer-events: none;
 }
 
+/* ── LIVE TC + FRAME + DIAG (JS-driven) ── */
+.project-still__hud-tc,
+.project-still__hud-frame {
+  position: absolute;
+  z-index: 4;
+  font-family: var(--fm);
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum';
+  letter-spacing: 0.04em;
+  color: var(--paper);
+  pointer-events: none;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.7);
+  white-space: nowrap;
+}
+.project-still__hud-tc {
+  bottom: 36px;
+  right: 14px;
+  font-size: 11px;
+  font-weight: 500;
+  background: rgba(0,0,0,0.42);
+  padding: 0.15rem 0.45rem;
+  border-left: 2px solid var(--ox);
+  letter-spacing: 0.06em;
+}
+.project-still__hud-frame {
+  bottom: 14px;
+  right: 14px;
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  opacity: 0.78;
+}
+/* Diagnostic line — bottom of frame, animates by content change */
+.project-still__hud-diag {
+  position: absolute;
+  z-index: 4;
+  left: 14px;
+  top: 14px;
+  font-family: var(--fm);
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  text-transform: lowercase;
+  color: var(--ox);
+  background: rgba(0,0,0,0.42);
+  padding: 0.18rem 0.5rem;
+  border-radius: 1px;
+  pointer-events: none;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.7);
+  max-width: 70%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  /* subtle blink-on-change via opacity transition */
+  transition: opacity 220ms ease;
+}
+
+/* Subtle CRT scanline overlay on hud videos */
+.project-still--hud > video {
+  position: relative;
+  z-index: 1;
+}
+.project-still--hud > video,
+.project-still--hud > img {
+  filter: contrast(1.03) saturate(0.97);
+}
+
+/* ── BTS monitor grid — compact, responsive 16:9 tiles ── */
+.project-bts-monitors {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--grid-gap);
+}
+.project-bts-monitors .project-still {
+  aspect-ratio: 16 / 9;
+}
+@media (max-width: 1023px) {
+  .project-bts-monitors { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 599px) {
+  .project-bts-monitors { grid-template-columns: 1fr; }
+}
+
+/* On smaller monitor tiles, downscale HUD slightly so it stays balanced */
+.project-bts-monitors .project-still__hud-tc { font-size: 10px; }
+.project-bts-monitors .project-still__hud-frame { font-size: 8.5px; }
+.project-bts-monitors .project-still__hud-file { font-size: 8.5px; }
+.project-bts-monitors .project-still__hud-rec { font-size: 8.5px; }
+.project-bts-monitors .project-still__hud-diag { font-size: 8.5px; }
+.project-bts-monitors .project-still__caption { font-size: 9px; }
+
 /* Scanline veneer — very subtle, only on hud variants */
 .project-still--hud > video {
   filter: contrast(1.02);

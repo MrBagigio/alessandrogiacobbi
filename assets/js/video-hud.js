@@ -99,69 +99,37 @@ function scheduleGlitch(item, now) {
   item.nextGlitchAt = now + 5000 + Math.random() * 9000;
 }
 
-/* Fire a glitch on one item: 50% chance whole-monitor signal drop,
-   otherwise just an RGB-shift on a single HUD readout.
-   Pass `forceWhole = true` to always trigger the whole-monitor variant
-   (used on hover-in for the "you touched me" signal). */
-function fireGlitch(item, forceWhole) {
+/* Fire a glitch on one HUD readout only (text-level RGB shift, 400ms).
+   Whole-monitor signal-drop was visually too disruptive — it made the
+   looping video appear to freeze. We keep just the text-glitch which
+   never touches the video element. */
+function fireGlitch(item) {
   if (item._glitching) return;
-  item._glitching = true;
   const targets = [item.tcEl, item.frameEl, item.diagEl, item.fileEl].filter(Boolean);
-  const wholeMonitor = forceWhole || (Math.random() < 0.5 && targets.length > 0);
-
-  if (wholeMonitor) {
-    item.el.classList.add('is-monitor-glitch');
-    setTimeout(() => {
-      item.el.classList.remove('is-monitor-glitch');
-      item._glitching = false;
-    }, 440);
-  } else if (targets.length) {
-    const pick = targets[Math.floor(Math.random() * targets.length)];
-    pick.classList.add('is-glitching');
-    setTimeout(() => {
-      pick.classList.remove('is-glitching');
-      item._glitching = false;
-    }, 400);
-  } else {
+  if (!targets.length) return;
+  item._glitching = true;
+  const pick = targets[Math.floor(Math.random() * targets.length)];
+  pick.classList.add('is-glitching');
+  setTimeout(() => {
+    pick.classList.remove('is-glitching');
     item._glitching = false;
-  }
+  }, 400);
 }
 
-/* Wire the "scrub on mousemove" interaction onto one monitor. The horizontal
-   mouse position inside the tile maps to video.currentTime — turns the tile
-   into a live diagnostic monitor the user can shuttle through.
-   On entry we also fire a brief signal-drop glitch so the card reacts. */
-function wireScrub(item) {
+/* Hover interaction — purely visual feedback, never touches video playback.
+   The CSS :hover state handles scale/border/brightness. JS here just bumps
+   the playbackRate slightly so the looping clip feels "energised" when you
+   focus on it, and resets on leave. No pause, no seek — videos stay in loop. */
+function wireHover(item) {
   const { el, video } = item;
   const onEnter = () => {
-    video.pause();
-    el.classList.add('is-scrubbing');
-    // Intentional "signal drop" FX on hover-in — matches the random glitches
-    fireGlitch(item, /* whole */ true);
+    try { video.playbackRate = 1.5; } catch (_) { /* no-op */ }
   };
   const onLeave = () => {
-    el.classList.remove('is-scrubbing');
-    video.play().catch(() => { /* autoplay policy */ });
-  };
-  const onMove = (e) => {
-    if (!video.duration || !isFinite(video.duration)) return;
-    const rect = el.getBoundingClientRect();
-    const x = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
-    video.currentTime = x * video.duration;
-    if (!el.classList.contains('has-been-scrubbed')) {
-      el.classList.add('has-been-scrubbed');
-    }
-  };
-  const onClick = () => {
-    // Quick taps on touch / non-hover devices just resume autoplay
-    el.classList.remove('is-scrubbing');
-    if (video.paused) video.play().catch(() => {});
-    else video.pause();
+    try { video.playbackRate = 1; } catch (_) { /* no-op */ }
   };
   el.addEventListener('mouseenter', onEnter);
   el.addEventListener('mouseleave', onLeave);
-  el.addEventListener('mousemove', onMove);
-  el.addEventListener('click', onClick);
 }
 
 export function initVideoHud() {
@@ -191,17 +159,10 @@ export function initVideoHud() {
     scheduleGlitch(it, startNow);
     items.push(it);
 
-    // Wire interactive scrub only on .project-still--hud monitors —
-    // the xray container has its own lens interaction.
+    // Wire visual-only hover feedback on BTS monitors (not the xray —
+    // it has its own lens interaction).
     if (!isXray && video.tagName === 'VIDEO') {
-      wireScrub(it);
-      if (!el.querySelector('.project-still__hud-hint')) {
-        const hint = document.createElement('span');
-        hint.className = 'project-still__hud-hint';
-        hint.setAttribute('aria-hidden', 'true');
-        hint.textContent = '← SCRUB →';
-        el.appendChild(hint);
-      }
+      wireHover(it);
     }
   });
 

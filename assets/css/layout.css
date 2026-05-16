@@ -1170,17 +1170,15 @@ a.project-credits__value:hover { color: var(--ox); }
   filter: contrast(1.03) saturate(0.97);
 }
 
-/* ── BTS monitor grid — compact, responsive 16:9 tiles ── */
+/* ── BTS monitor grid — auto-fit so tiles land slightly larger by default,
+   3-col only on very wide viewports ── */
 .project-bts-monitors {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(440px, 1fr));
   gap: var(--grid-gap);
 }
 .project-bts-monitors .project-still {
   aspect-ratio: 16 / 9;
-}
-@media (max-width: 1023px) {
-  .project-bts-monitors { grid-template-columns: repeat(2, 1fr); }
 }
 @media (max-width: 599px) {
   .project-bts-monitors { grid-template-columns: 1fr; }

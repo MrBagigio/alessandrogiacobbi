@@ -86,6 +86,37 @@ function formatFrame(seconds) {
   return `f.${pad(totalFrames, 4)}`;
 }
 
+/* Schedule the next glitch for one item — random 5–14s window. */
+function scheduleGlitch(item, now) {
+  item.nextGlitchAt = now + 5000 + Math.random() * 9000;
+}
+
+/* Fire a glitch on one item: 50% chance whole-monitor signal drop,
+   otherwise just an RGB-shift on a single HUD readout. */
+function fireGlitch(item) {
+  if (item._glitching) return;
+  item._glitching = true;
+  const targets = [item.tcEl, item.frameEl, item.diagEl, item.fileEl].filter(Boolean);
+  const wholeMonitor = Math.random() < 0.5 && targets.length > 0;
+
+  if (wholeMonitor) {
+    item.el.classList.add('is-monitor-glitch');
+    setTimeout(() => {
+      item.el.classList.remove('is-monitor-glitch');
+      item._glitching = false;
+    }, 440);
+  } else if (targets.length) {
+    const pick = targets[Math.floor(Math.random() * targets.length)];
+    pick.classList.add('is-glitching');
+    setTimeout(() => {
+      pick.classList.remove('is-glitching');
+      item._glitching = false;
+    }, 400);
+  } else {
+    item._glitching = false;
+  }
+}
+
 export function initVideoHud() {
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const containers = document.querySelectorAll('.project-still--hud');
@@ -98,9 +129,13 @@ export function initVideoHud() {
     const tcEl = el.querySelector('[data-tc]');
     const frameEl = el.querySelector('[data-frame]');
     const diagEl = el.querySelector('[data-diag]');
+    const fileEl = el.querySelector('.project-still__hud-file');
     const type = el.dataset.hudType || 'clay';
     const messages = PRESETS[type] || PRESETS.clay;
-    items.push({ el, video, tcEl, frameEl, diagEl, messages });
+    const startNow = performance.now();
+    const it = { el, video, tcEl, frameEl, diagEl, fileEl, messages, nextGlitchAt: 0 };
+    scheduleGlitch(it, startNow);
+    items.push(it);
   });
 
   if (!items.length) return;
@@ -113,11 +148,15 @@ export function initVideoHud() {
       if (it.frameEl) it.frameEl.textContent = formatFrame(t);
       if (it.diagEl && !reduced) {
         const idx = Math.floor(now / DIAG_CYCLE_MS) % it.messages.length;
-        // Avoid thrashing DOM if the message didn't change
         if (it.diagEl._lastIdx !== idx) {
           it.diagEl._lastIdx = idx;
           it.diagEl.textContent = it.messages[idx];
         }
+      }
+      // Random glitch trigger (skip under reduced-motion)
+      if (!reduced && now >= it.nextGlitchAt) {
+        fireGlitch(it);
+        scheduleGlitch(it, now);
       }
     }
     rafId = requestAnimationFrame(tick);

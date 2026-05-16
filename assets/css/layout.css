@@ -1310,9 +1310,9 @@ a.project-credits__value:hover { color: var(--ox); }
 .project-xray__hint {
   position: absolute;
   z-index: 4;
-  bottom: 38px;
+  top: 50%;
   left: 50%;
-  transform: translateX(-50%);
+  transform: translate(-50%, -50%);
   padding: 0.55rem 1rem;
   background: rgba(0,0,0,0.72);
   color: var(--paper);

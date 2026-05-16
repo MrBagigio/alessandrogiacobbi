@@ -1,9 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="it">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Marty AI Pipeline â€” Alessandro Giacobbi</title>
+  <title>Marty AI Pipeline — Alessandro Giacobbi</title>
   <meta name="description" content="Pipeline 3-stadi character training: Qwen Edit 2511 + Z-Image De-Turbo + LoRA training ai-toolkit + ArcFace gate + Florence 2 auto-caption.">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -24,7 +24,7 @@
   <div class="scroll-progress" aria-hidden="true"></div>
 
   <header class="meta-bar">
-    <div class="left"><a href="../index.html">â† Portfolio</a></div>
+    <div class="left"><a href="../index.html">← Portfolio</a></div>
     <div class="center">Marty AI Pipeline</div>
     <div class="right">
       <span class="meta-clock">--:-- CET</span>
@@ -37,10 +37,10 @@
     <section class="project-hero">
       <div class="project-hero__inner">
         <nav class="project-hero__breadcrumb reveal-up">
-          <a href="../index.html">Portfolio</a> &nbsp;/&nbsp; ComfyUI Â· Pipeline R&amp;D
+          <a href="../index.html">Portfolio</a> &nbsp;/&nbsp; ComfyUI · Pipeline R&amp;D
         </nav>
         <h1 class="project-hero__title reveal-up">Marty AI Pipeline</h1>
-        <p class="project-hero__client reveal-up">Pipeline 3-stadi character training Â· Setpoint Studio Â· 2025</p>
+        <p class="project-hero__client reveal-up">Pipeline 3-stadi character training · Setpoint Studio · 2025</p>
       </div>
     </section>
 
@@ -52,11 +52,11 @@
         </div>
         <div class="project-meta__col">
           <span class="project-meta__label">Discipline</span>
-          <span class="project-meta__value">AI Pipeline Â· LoRA Training</span>
+          <span class="project-meta__value">AI Pipeline · LoRA Training</span>
         </div>
         <div class="project-meta__col">
           <span class="project-meta__label">Hardware</span>
-          <span class="project-meta__value">RTX 4090 Â· 5070 dual-GPU</span>
+          <span class="project-meta__value">RTX 4090 · 5070 dual-GPU</span>
         </div>
         <div class="project-meta__col">
           <span class="project-meta__label">Status</span>
@@ -73,15 +73,15 @@
           Pipeline end-to-end per il training di un character LoRA fotorealistico partendo da
           1 reference photo. Combina Qwen Edit 2511 per la generazione multi-look + Z-Image
           De-Turbo per la base canonica + ai-toolkit per il training LoRA + ArcFace per il QA
-          identitÃ  + Florence 2 per l'auto-caption del dataset.
+          identità + Florence 2 per l'auto-caption del dataset.
         </p>
 
         <h3 class="project-content__h3 reveal-up">Pipeline 3 stadi</h3>
         <ul class="project-content__role-list reveal-up">
-          <li><strong>Stage 1 â€” Canonical face</strong> (Z-Image De-Turbo, RTX 4090, 28 step CFG 2.5, 1280Ã—1920) â†’ ritratto base ad alta fedeltÃ </li>
-          <li><strong>Stage 2 â€” Look variations</strong> (Qwen Edit 2511 Lightning + LookVariationBuilder, 5-7 hair/mouth/makeup variations face-locked, 4-step â‰ˆ20s/sample)</li>
-          <li><strong>Stage 3 â€” Scene contexts</strong> (SceneContextBuilder, 25 contexts/look Ã— 4 angles via Multi-Angle LoRA + multi-reference, 48-100 raw samples)</li>
-          <li><strong>QA gate â€” ArcFace</strong> (â‰¥0.70 looks Â· â‰¥0.75 ctx Â· â‰¥0.65 angles, ~40 KEEP samples)</li>
+          <li><strong>Stage 1 — Canonical face</strong> (Z-Image De-Turbo, RTX 4090, 28 step CFG 2.5, 1280Ã—1920) → ritratto base ad alta fedeltà</li>
+          <li><strong>Stage 2 — Look variations</strong> (Qwen Edit 2511 Lightning + LookVariationBuilder, 5-7 hair/mouth/makeup variations face-locked, 4-step â‰ˆ20s/sample)</li>
+          <li><strong>Stage 3 — Scene contexts</strong> (SceneContextBuilder, 25 contexts/look Ã— 4 angles via Multi-Angle LoRA + multi-reference, 48-100 raw samples)</li>
+          <li><strong>QA gate — ArcFace</strong> (â‰¥0.70 looks · â‰¥0.75 ctx · â‰¥0.65 angles, ~40 KEEP samples)</li>
           <li><strong>Quality finalpass</strong> (20-step CFG 2.5 euler simple, training-grade pulizia top 30-40)</li>
           <li><strong>Auto-caption</strong> (Florence 2 batch, 50-100 parole/image)</li>
           <li><strong>LoRA training</strong> (ai-toolkit, marty_zimage.yaml, ~90 min RTX 4090)</li>
@@ -89,15 +89,15 @@
 
         <h3 class="project-content__h3 reveal-up">Custom workflow</h3>
         <p class="project-content__p reveal-up">
-          7 workflow ComfyUI numerati (step1 â†’ step6 + step2_v2_chain) integrati con i 9 nodes
+          7 workflow ComfyUI numerati (step1 → step6 + step2_v2_chain) integrati con i 9 nodes
           di CharacterPromptKit. Workflow `step2_v2_chain_attributes.json` (42 nodi, 70 link)
           con 4 KSampler sequenziali per attribute chain controllata.
         </p>
 
         <h3 class="project-content__h3 reveal-up">Tech Stack</h3>
         <p class="project-content__p reveal-up">
-          ComfyUI Â· Qwen Image Edit 2511 (GGUF) Â· Z-Image De-Turbo (Ostris) Â· ai-toolkit (Ostris) Â·
-          ComfyUI_FaceAnalysis (AntelopeV2 + ArcFace) Â· Florence 2 Â· Python Â· CharacterPromptKit
+          ComfyUI · Qwen Image Edit 2511 (GGUF) · Z-Image De-Turbo (Ostris) · ai-toolkit (Ostris) ·
+          ComfyUI_FaceAnalysis (AntelopeV2 + ArcFace) · Florence 2 · Python · CharacterPromptKit
         </p>
 
       </div>
@@ -107,8 +107,8 @@
       <div class="project-content__inner">
         <h3 class="project-content__h3 reveal-up">Credits</h3>
         <p class="project-content__p reveal-up">
-          <strong>Author:</strong> Alessandro Giacobbi Â· <strong>Studio:</strong> Setpoint Studio S.r.l. Â· <strong>Year:</strong> 2025<br>
-          <strong>Models:</strong> Qwen Edit 2511 Â· Z-Image De-Turbo (Ostris) Â· Florence 2 (Microsoft)
+          <strong>Author:</strong> Alessandro Giacobbi · <strong>Studio:</strong> Setpoint Studio S.r.l. · <strong>Year:</strong> 2025<br>
+          <strong>Models:</strong> Qwen Edit 2511 · Z-Image De-Turbo (Ostris) · Florence 2 (Microsoft)
         </p>
       </div>
     </section>
@@ -121,7 +121,7 @@
         </div>
         <a href="./northstar-crm.html" class="btn btn--ox">
           <span>Vai al progetto</span>
-          <span class="btn-arrow">â†’</span>
+          <span class="btn-arrow">→</span>
         </a>
       </div>
     </section>
@@ -130,8 +130,8 @@
 
   <footer class="footer">
     <div class="footer__inner">
-      <span class="footer__credit">Â© 2026 Alessandro Giacobbi Â· <a href="https://www.setpointstudio.com">Setpoint Studio S.r.l.</a> Â· P.IVA 04403500244</span>
-      <span class="footer__credit"><a href="../index.html">â† Tutti i progetti</a></span>
+      <span class="footer__credit">© 2026 Alessandro Giacobbi · <a href="https://www.setpointstudio.com">Setpoint Studio S.r.l.</a> · P.IVA 04403500244</span>
+      <span class="footer__credit"><a href="../index.html">← Tutti i progetti</a></span>
     </div>
   </footer>
 

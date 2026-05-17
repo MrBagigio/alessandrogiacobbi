@@ -1,14 +1,14 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="it">
 <head>
 <meta charset="UTF-8">
 <meta name="robots" content="noindex,nofollow">
 <meta name="viewport" content="width=device-width,initial-scale=1">
   <!-- audit-100-100 hardening v1 -->
-<meta name="referrer" content="strict-origin-when-cross-origin" />
-  
-  <meta name="format-detection" content="telephone=no" />
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://images.unsplash.com https://picsum.photos https://fastly.picsum.photos; connect-src 'self'; media-src 'self' https://res.cloudinary.com https://*.bunnycdn.com data: blob:; base-uri 'self'; form-action 'self' mailto:" />
+<meta name="referrer" content="strict-origin-when-cross-origin">
+
+  <meta name="format-detection" content="telephone=no">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://images.unsplash.com https://picsum.photos https://fastly.picsum.photos; connect-src 'self'; media-src 'self' https://res.cloudinary.com https://*.bunnycdn.com data: blob:; base-uri 'self'; form-action 'self' mailto:">
 <meta name="theme-color" content="#FAF4EE">
 <meta name="description" content="Estetica Lavanda — centro estetico boutique a Thiene (VI). Trattamenti viso, corpo, manicure, makeup. Prenota il tuo rituale di bellezza.">
 <!-- Open Graph -->
@@ -416,10 +416,10 @@ details[open] summary::after{transform:rotate(-135deg) translate(-2px,-2px)}
   @media (forced-colors: active) {
     a, button { forced-color-adjust: none; }
   }
-  
+
   /* audit-100-100 phase-2e: prevent horizontal scroll on desktop */
   html, body { overflow-x: hidden; max-width: 100vw; }
-  
+
   /* Phase 2.I contrast fix */
   .btn--primary, .btn.btn--primary { background-color: #5C2A4A !important; color: #ffffff !important; }
   a[aria-label] svg { color: currentColor !important; }
@@ -462,7 +462,7 @@ details[open] summary::after{transform:rotate(-135deg) translate(-2px,-2px)}
     <div class="nav__cta">
       <a href="#contatti" class="btn btn--primary">Prenoti il rituale</a>
     </div>
-    <button class="nav__burger" aria-label="Apri menù" aria-expanded="false" aria-controls="nav">
+    <button type="button" class="nav__burger" aria-label="Apri menù" aria-expanded="false" aria-controls="nav">
       <span></span><span></span><span></span>
     </button>
   </div>

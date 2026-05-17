@@ -4,14 +4,14 @@
 <meta charset="UTF-8">
 <meta name="robots" content="noindex,nofollow">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#FAF6F0" />
-  <link rel="preconnect" href="https://picsum.photos" crossorigin />
-  <link rel="preload" as="image" href="https://picsum.photos/seed/wed-hero-garda/800/1000" fetchpriority="high" />
+  <meta name="theme-color" content="#FAF6F0">
+  <link rel="preconnect" href="https://picsum.photos" crossorigin>
+  <link rel="preload" as="image" href="https://picsum.photos/seed/wed-hero-garda/800/1000" fetchpriority="high">
   <!-- audit-100-100 hardening v1 -->
-<meta name="referrer" content="strict-origin-when-cross-origin" />
-  
-  <meta name="format-detection" content="telephone=no" />
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://images.unsplash.com https://picsum.photos https://fastly.picsum.photos; connect-src 'self'; media-src 'self' https://res.cloudinary.com https://*.bunnycdn.com data: blob:; frame-src https://www.openstreetmap.org; base-uri 'self'; form-action 'self' mailto:" />
+<meta name="referrer" content="strict-origin-when-cross-origin">
+
+  <meta name="format-detection" content="telephone=no">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://images.unsplash.com https://picsum.photos https://fastly.picsum.photos; connect-src 'self'; media-src 'self' https://res.cloudinary.com https://*.bunnycdn.com data: blob:; frame-src https://www.openstreetmap.org; base-uri 'self'; form-action 'self' mailto:">
 <meta name="description" content="Sposi del Lago — Wedding Planner Lago di Garda. Matrimoni curati per coppie 28-45 anni in Veneto e Lombardia. Progettazione completa 9-12 mesi, regia giorno evento, scouting location esclusive. Dal [ANNO].">
 <meta property="og:title" content="Sposi del Lago — Wedding Planner Lago di Garda">
 <meta property="og:description" content="Matrimoni curati. Tempo vostro, dettaglio nostro. Wedding planning a Verona/Brescia, dal [ANNO].">
@@ -21,7 +21,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WeddingService","name":"Sposi del Lago","description":"Wedding planner Lago di Garda specializzata in matrimoni boutique per coppie 28-45 anni in Veneto e Lombardia.","url":"https://sposidellago.it","telephone":"[DA VERIFICARE]","priceRange":"€€€","address":{"@type":"PostalAddress","streetAddress":"[DA VERIFICARE]","addressLocality":"Verona","addressRegion":"VR","postalCode":"[DA VERIFICARE]","addressCountry":"IT"},"areaServed":["Veneto","Lombardia","Trentino-Alto Adige"],"sameAs":["https://www.instagram.com/sposidellago","https://www.facebook.com/sposidellago"]}
+{"@context":"https://schema.org","@type":"WeddingPlanner","name":"Sposi del Lago","description":"Wedding planner Lago di Garda specializzata in matrimoni boutique per coppie 28-45 anni in Veneto e Lombardia.","url":"https://sposidellago.it","telephone":"[DA VERIFICARE]","priceRange":"€€€","address":{"@type":"PostalAddress","streetAddress":"[DA VERIFICARE]","addressLocality":"Verona","addressRegion":"VR","postalCode":"[DA VERIFICARE]","addressCountry":"IT"},"areaServed":["Veneto","Lombardia","Trentino-Alto Adige"],"sameAs":["https://www.instagram.com/sposidellago","https://www.facebook.com/sposidellago"]}
 </script>
 <style>
 :root{--cream-50:#FAF6F0;--cream-100:#F2EAD8;--blush-200:#E8C9C0;--sage-400:#A8B89C;--rose-gold-500:#B97A65;--rose-gold-600:#9A6452;--ink-900:#2A2520;--ink-700:#3D3530;--bronze-300:#D4B89E;--white:#FFFFFF;--shadow-soft:0 2px 12px rgba(42,37,32,.08);--radius-sm:6px;--radius-md:8px}
@@ -138,7 +138,7 @@ footer .social-row a{width:36px;height:36px;border:1px solid var(--cream-100);bo
   @media (forced-colors: active) {
     a, button { forced-color-adjust: none; }
   }
-  
+
   /* audit-100-100 phase-2d: img overlay placeholder R16 BIBBIA */
   .hero-img > img.ph-img,
   .portfolio-card > img.ph-img,
@@ -162,15 +162,15 @@ footer .social-row a{width:36px;height:36px;border:1px solid var(--cream-100);bo
     position: relative;
     z-index: 1;
   }
-  
+
   /* audit-100-100: skip link a11y WCAG 2.4.1 */
   .audit-skip-link { position: absolute; left: -9999px; top: 0; background: #000; color: #fff; padding: 12px 16px; z-index: 10000; text-decoration: none; font: bold 14px/1 system-ui, sans-serif; border-radius: 0 0 8px 0; }
   .audit-skip-link:focus { left: 0; outline: 3px solid #FFD700; outline-offset: 2px; }
 
-  
+
   /* audit-100-100 phase-2e: prevent horizontal scroll on desktop */
   html, body { overflow-x: hidden; max-width: 100vw; }
-  
+
   /* Phase 2.I contrast fix */
   .eyebrow { color: #6B3A56 !important; }
   .btn-primary { background-color: #6B3A56 !important; color: #ffffff !important; }
@@ -196,13 +196,13 @@ footer .social-row a{width:36px;height:36px;border:1px solid var(--cream-100);bo
       <li><a href="#contact">Contatti</a></li>
       <li><a href="#contact" class="btn btn-primary" style="padding:10px 20px;font-size:13px;min-height:auto">Richiedi consulenza</a></li>
     </ul>
-    <button class="menu-toggle" onclick="document.getElementById('nav').classList.toggle('open')">≡</button>
+    <button type="button" class="menu-toggle" onclick="document.getElementById('nav').classList.toggle('open')">≡</button>
   </div>
 </nav>
 
 <!-- ============ HERO ============ -->
 <section class="hero container">
-  <div class="hero-img"><img src="https://picsum.photos/seed/wed-hero-garda/800/1000?fm=webp" width="800" height="1000" alt="Coppia di sposi al tramonto sul Lago di Garda" class="ph-img" loading="eager" decoding="async" /></div>
+  <div class="hero-img"><img src="https://picsum.photos/seed/wed-hero-garda/800/1000?fm=webp" width="800" height="1000" alt="Coppia di sposi al tramonto sul Lago di Garda" class="ph-img" loading="eager" decoding="async"></div>
   <div>
     <span class="eyebrow">Wedding planning · Lago di Garda · Dal [ANNO]</span>
     <h1>Matrimoni curati. Tempo vostro, dettaglio nostro.</h1>
@@ -226,12 +226,12 @@ footer .social-row a{width:36px;height:36px;border:1px solid var(--cream-100);bo
   <h2 style="margin-top:8px">Selezione recente.</h2>
   <p style="color:var(--ink-700);max-width:520px;margin-top:16px">Sei matrimoni 2023-2024 selezionati. Foto pubblicate con consenso scritto delle coppie. <span class="verify">[ASSET REQUIRED — foto reali]</span></p>
   <div class="portfolio-grid">
-    <div class="portfolio-card"><img src="https://picsum.photos/seed/wed-villa-cordevigo/800/1000?fm=webp" width="800" height="1000" alt="Matrimonio Villa Cordevigo Sirmione 2024" class="ph-img" loading="lazy" decoding="async" /><span class="caption">2024 · Villa Cordevigo (Sirmione) · 80 invitati</span></div>
-    <div class="portfolio-card"><img src="https://picsum.photos/seed/wed-pratello-lonato/800/1000?fm=webp" width="800" height="1000" alt="Matrimonio agriturismo Pratello Lonato 2023" class="ph-img" loading="lazy" decoding="async" /><span class="caption">2023 · Agriturismo Pratello (Lonato) · 60 invitati</span></div>
-    <div class="portfolio-card"><img src="https://picsum.photos/seed/wed-padernello/800/1000?fm=webp" width="800" height="1000" alt="Matrimonio Castello di Padernello 2024" class="ph-img" loading="lazy" decoding="async" /><span class="caption">2024 · Castello di Padernello · 120 invitati</span></div>
-    <div class="portfolio-card"><img src="https://picsum.photos/seed/wed-calicantus-bardolino/800/1000?fm=webp" width="800" height="1000" alt="Matrimonio Villa Calicantus Bardolino 2023" class="ph-img" loading="lazy" decoding="async" /><span class="caption">2023 · Villa Calicantus (Bardolino) · 45 invitati</span></div>
-    <div class="portfolio-card"><img src="https://picsum.photos/seed/wed-tenuta-berici/800/1000?fm=webp" width="800" height="1000" alt="Matrimonio Tenuta Berici 2024" class="ph-img" loading="lazy" decoding="async" /><span class="caption">2024 · Tenuta Berici · 90 invitati</span></div>
-    <div class="portfolio-card"><img src="https://picsum.photos/seed/wed-loft-verona/800/1000?fm=webp" width="800" height="1000" alt="Elopement Loft Verona 2023" class="ph-img" loading="lazy" decoding="async" /><span class="caption">2023 · Loft Verona · 50 invitati elopement</span></div>
+    <div class="portfolio-card"><img src="https://picsum.photos/seed/wed-villa-cordevigo/800/1000?fm=webp" width="800" height="1000" alt="Matrimonio Villa Cordevigo Sirmione 2024" class="ph-img" loading="lazy" decoding="async"><span class="caption">2024 · Villa Cordevigo (Sirmione) · 80 invitati</span></div>
+    <div class="portfolio-card"><img src="https://picsum.photos/seed/wed-pratello-lonato/800/1000?fm=webp" width="800" height="1000" alt="Matrimonio agriturismo Pratello Lonato 2023" class="ph-img" loading="lazy" decoding="async"><span class="caption">2023 · Agriturismo Pratello (Lonato) · 60 invitati</span></div>
+    <div class="portfolio-card"><img src="https://picsum.photos/seed/wed-padernello/800/1000?fm=webp" width="800" height="1000" alt="Matrimonio Castello di Padernello 2024" class="ph-img" loading="lazy" decoding="async"><span class="caption">2024 · Castello di Padernello · 120 invitati</span></div>
+    <div class="portfolio-card"><img src="https://picsum.photos/seed/wed-calicantus-bardolino/800/1000?fm=webp" width="800" height="1000" alt="Matrimonio Villa Calicantus Bardolino 2023" class="ph-img" loading="lazy" decoding="async"><span class="caption">2023 · Villa Calicantus (Bardolino) · 45 invitati</span></div>
+    <div class="portfolio-card"><img src="https://picsum.photos/seed/wed-tenuta-berici/800/1000?fm=webp" width="800" height="1000" alt="Matrimonio Tenuta Berici 2024" class="ph-img" loading="lazy" decoding="async"><span class="caption">2024 · Tenuta Berici · 90 invitati</span></div>
+    <div class="portfolio-card"><img src="https://picsum.photos/seed/wed-loft-verona/800/1000?fm=webp" width="800" height="1000" alt="Elopement Loft Verona 2023" class="ph-img" loading="lazy" decoding="async"><span class="caption">2023 · Loft Verona · 50 invitati elopement</span></div>
   </div>
 </section>
 
@@ -321,7 +321,7 @@ footer .social-row a{width:36px;height:36px;border:1px solid var(--cream-100);bo
   <span class="eyebrow">Chi siamo</span>
   <h2 style="margin-top:8px">[Nome titolare].</h2>
   <div class="about">
-    <div class="about-img"><img src="https://picsum.photos/seed/wed-about-planner/600/750?fm=webp" width="600" height="750" alt="Wedding planner Sposi del Lago, ritratto" class="ph-img" loading="lazy" decoding="async" /></div>
+    <div class="about-img"><img src="https://picsum.photos/seed/wed-about-planner/600/750?fm=webp" width="600" height="750" alt="Wedding planner Sposi del Lago, ritratto" class="ph-img" loading="lazy" decoding="async"></div>
     <div class="about-text">
       <h3>«Wedding planner dal [ANNO]»</h3>
       <p style="font-size:18px">[Bio 80 parole — formazione, anni esperienza, eventuale certificazione AssoEventi/Federmep, approccio personale al lavoro. <span class="verify">[DA VERIFICARE]</span></p>

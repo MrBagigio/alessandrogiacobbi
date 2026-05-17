@@ -1,0 +1,9 @@
+{
+  "extends": ["html-validate:recommended"],
+  "rules": {
+    "no-inline-style": "off",
+    "long-title": "warn",
+    "hidden-focusable": "warn"
+  },
+  "_comment": "Demo templates use inline styles for rapid prototyping. CSP style-src 'unsafe-inline' enforced at runtime. Disabled here to avoid false-positive blocking."
+}

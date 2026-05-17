@@ -28,6 +28,9 @@ body.is-booting .reveal-up.is-revealed {
   display: inline-block;
   position: relative;
   overflow: hidden;
+  /* Breathing room so descenders (g, p, y) don't clip against the box edge */
+  padding-bottom: 0.14em;
+  line-height: 1.1;
 }
 .reveal-mask::after {
   content: '';

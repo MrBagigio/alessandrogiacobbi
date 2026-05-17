@@ -16,6 +16,7 @@ import { initJarvis, initSectionScan, ping } from './jarvis.js?v=20260516-perf';
 import { initSysStrip } from './sys-strip.js?v=20260516-perf';
 import { initVideoHud } from './video-hud.js?v=20260516-perf';
 import { initXrayLens } from './xray-lens.js?v=20260516-perf';
+import { initAboutStats } from './about-stats.js?v=20260517-about';
 // import { AsteroidCursor } from './asteroid-cursor.js?v=20260516-perf'; // disabled — keep file for future
 
 const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -74,6 +75,9 @@ if (!reduced && isFinePointer && isWideScreen) {
 
 // 6. Lazy load
 initLazyMedia();
+
+// 6.b About — animated stat counters (scroll-triggered)
+initAboutStats();
 
 // 7. Reveal animations via IntersectionObserver (no GSAP dependency required)
 const revealEls = document.querySelectorAll('.reveal-up, .reveal-mask, .img-reveal, .char-reveal');

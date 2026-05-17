@@ -78,10 +78,10 @@
 
         <h3 class="project-content__h3 reveal-up">Pipeline 3 stadi</h3>
         <ul class="project-content__role-list reveal-up">
-          <li><strong>Stage 1 — Canonical face</strong> (Z-Image De-Turbo, RTX 4090, 28 step CFG 2.5, 1280Ã—1920) → ritratto base ad alta fedeltà</li>
-          <li><strong>Stage 2 — Look variations</strong> (Qwen Edit 2511 Lightning + LookVariationBuilder, 5-7 hair/mouth/makeup variations face-locked, 4-step â‰ˆ20s/sample)</li>
-          <li><strong>Stage 3 — Scene contexts</strong> (SceneContextBuilder, 25 contexts/look Ã— 4 angles via Multi-Angle LoRA + multi-reference, 48-100 raw samples)</li>
-          <li><strong>QA gate — ArcFace</strong> (â‰¥0.70 looks · â‰¥0.75 ctx · â‰¥0.65 angles, ~40 KEEP samples)</li>
+          <li><strong>Stage 1 — Canonical face</strong> (Z-Image De-Turbo, RTX 4090, 28 step CFG 2.5, 1280×1920) → ritratto base ad alta fedeltà</li>
+          <li><strong>Stage 2 — Look variations</strong> (Qwen Edit 2511 Lightning + LookVariationBuilder, 5-7 hair/mouth/makeup variations face-locked, 4-step ≈20s/sample)</li>
+          <li><strong>Stage 3 — Scene contexts</strong> (SceneContextBuilder, 25 contexts/look × 4 angles via Multi-Angle LoRA + multi-reference, 48-100 raw samples)</li>
+          <li><strong>QA gate — ArcFace</strong> (≥0.70 looks · ≥0.75 ctx · ≥0.65 angles, ~40 KEEP samples)</li>
           <li><strong>Quality finalpass</strong> (20-step CFG 2.5 euler simple, training-grade pulizia top 30-40)</li>
           <li><strong>Auto-caption</strong> (Florence 2 batch, 50-100 parole/image)</li>
           <li><strong>LoRA training</strong> (ai-toolkit, marty_zimage.yaml, ~90 min RTX 4090)</li>

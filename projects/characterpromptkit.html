@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CharacterPromptKit — Alessandro Giacobbi</title>
-  <meta name="description" content="9 custom nodes ComfyUI per character generation: builder modulari, scene context, look variation, attribute chain. Open source MIT.">
+  <meta name="description" content="11 custom nodes ComfyUI per character generation: builder modulari, scene context, look variation, logo pipeline, attribute chain. Open source MIT v1.0.0.">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -40,7 +40,7 @@
           <a href="../index.html">Portfolio</a> &nbsp;/&nbsp; ComfyUI · Custom Nodes · Open Source
         </nav>
         <h1 class="project-hero__title reveal-up">CharacterPromptKit</h1>
-        <p class="project-hero__client reveal-up">9 custom nodes per ComfyUI · MIT licensed</p>
+        <p class="project-hero__client reveal-up">11 custom nodes per ComfyUI · MIT licensed · v1.0.0</p>
       </div>
     </section>
 
@@ -60,7 +60,7 @@
         </div>
         <div class="project-meta__col">
           <span class="project-meta__label">Status</span>
-          <span class="project-meta__value">9 nodes registered</span>
+          <span class="project-meta__value">11 nodes registered · v1.0.0</span>
         </div>
       </div>
     </section>
@@ -70,20 +70,23 @@
 
         <h3 class="project-content__h3 reveal-up">Il progetto</h3>
         <p class="project-content__p reveal-up">
-          Toolkit ComfyUI di 9 custom nodes Python per la generazione e la pipeline di character
+          Toolkit ComfyUI di 11 custom nodes Python per la generazione e la pipeline di character
           AI. Costruito durante lo sviluppo di Marty (character training Z-Image LoRA) e poi
-          rilasciato come open source MIT per la community ComfyUI italiana.
+          rilasciato come open source MIT per la community ComfyUI italiana. v1.0.0 lockata
+          29 apr 2026 con refactor monolite 3592 righe → 9 moduli + shim re-export per
+          backward compat.
         </p>
 
-        <h3 class="project-content__h3 reveal-up">9 nodes registered</h3>
+        <h3 class="project-content__h3 reveal-up">11 nodes registered</h3>
         <ul class="project-content__role-list reveal-up">
           <li><strong>CharacterPromptBuilder</strong> — builder modulare prompt character con 30+ pool tematici (face shape, hair, eyes, expression, clothing, lighting, mood)</li>
+          <li><strong>CharacterPromptBuilderFromMetadata</strong> — rebuild prompt da metadata sidecar JSON per reproducibility</li>
+          <li><strong>CharacterSaveTextFile</strong> + <strong>CharacterLoadMetadata</strong> — persistenza JSON sidecar per workflow chain</li>
           <li><strong>PortraitFaceBuilder</strong> — face-only mode con 10 lighting patterns canonici fotografia (butterfly, Rembrandt, split, loop, broad, short, clamshell, Paramount)</li>
           <li><strong>SceneContextBuilder</strong> — context generator scene con body_type lock, location, mood, time-of-day</li>
           <li><strong>LookVariationBuilder</strong> — 7 attribute pools per varianti hair/makeup/accessories face-locked</li>
           <li><strong>WhatsChangeBuilder</strong> — modular attribute change con NONE skip pattern + anchor instruction anti-drift</li>
-          <li><strong>LogoBuilder</strong> — geometric logo prompt builder con shape + style + composition</li>
-          <li><strong>FromMetadata</strong> · <strong>SaveText</strong> · <strong>LoadMetadata</strong> — utility I/O per workflow chain con metadata persistence</li>
+          <li><strong>LogoPromptBuilder</strong> + <strong>LogoQualityGate</strong> + <strong>LogoBatchSaver</strong> — logo pipeline 3-node con quality gate automatico</li>
         </ul>
 
         <h3 class="project-content__h3 reveal-up">Casi d'uso</h3>
@@ -93,14 +96,23 @@
           AI custom client (architetti virtual, e-commerce shapewear).
         </p>
 
+        <h3 class="project-content__h3 reveal-up">Packaging production-ready</h3>
+        <ul class="project-content__role-list reveal-up">
+          <li>LICENSE MIT + pyproject.toml (packaging + ComfyUI-Manager <code style="background:var(--paper2);padding:1px 4px;border:1px solid var(--rule);">[tool.comfy]</code> + ruff + mypy)</li>
+          <li>CHANGELOG + CONTRIBUTING + SECURITY + py.typed marker</li>
+          <li>GitHub Actions CI matrix Linux + Windows × Python 3.10 / 3.11 / 3.12</li>
+          <li>Ruff 0 issue · format 10/10 conformi · smoke test 11/11 nodi instanziabili</li>
+        </ul>
+
         <h3 class="project-content__h3 reveal-up">Repository</h3>
         <p class="project-content__p reveal-up">
-          GitHub: <code style="background: var(--paper2); padding: 2px 6px; border: 1px solid var(--rule);">MrBagigio/CharacterPromptKit</code> (release pending pubblica) · MIT License · 122.984 byte source
+          GitHub: <code style="background: var(--paper2); padding: 2px 6px; border: 1px solid var(--rule);">MrBagigio/ComfyUI-CharacterPromptKit</code> ·
+          tag <code style="background: var(--paper2); padding: 2px 6px; border: 1px solid var(--rule);">v1.0.0</code> · MIT License · ComfyUI-Manager registry PR pending
         </p>
 
         <h3 class="project-content__h3 reveal-up">Tech Stack</h3>
         <p class="project-content__p reveal-up">
-          Python 3 · ComfyUI custom node API · Cosmic-ray + mutmut mutation testing (cpk_v13: 99.94% kill rate raw)
+          Python 3.10–3.12 · ComfyUI custom node API · pytest · ruff · mypy · Cosmic-ray mutation testing
         </p>
 
       </div>

@@ -38,10 +38,10 @@ portfolio_giacobbi/
 2. **Ticker** — marquee infinite scroll specializzazioni
 3. **Showreel** — hero video Vimeo (placeholder, sostituire `data-vimeo-id`)
 4. **Manifesto** — claim positioning serif italic
-5. **Work 01** — 3D · Character Rigging (LP Group)
-6. **Work 02** — ComfyUI · Workflows & Custom Nodes
-7. **Work 03** — R&D · Tooling & SaaS (Northstar, HostShield)
-8. **Work 04** — Web Design · Demo template
+5. **Work 01** — Character Rigging (LP Group)
+6. **Work 02** — AI Workflows
+7. **Work 03** — R&D (Northstar, HostShield)
+8. **Work 04** — Web Design
 7. **Toolkit** — 3 colonne (3D/VFX · AI · Post/Audio)
 8. **Contact** — Three.js bg particles + 4 channels (email/studio/LinkedIn/IG)
 9. **Footer** — credits + P.IVA

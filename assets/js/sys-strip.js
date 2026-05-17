@@ -14,6 +14,8 @@
  * single most "alive" signals.
  */
 
+import { onPointerMove } from './pointer.js?v=20260516-pointer';
+
 let mx = 0, my = 0;
 let gpu = 78;
 let lastFpsT = 0;
@@ -142,10 +144,10 @@ export function initSysStrip() {
   tEl = stripEl.querySelector('[data-sys="t"]');
   modeEl = stripEl.querySelector('[data-sys="mode"]');
 
-  document.addEventListener('mousemove', (e) => {
-    mx = e.clientX;
-    my = e.clientY;
-  }, { passive: true });
+  onPointerMove((x, y) => {
+    mx = x;
+    my = y;
+  });
 
   lastFpsT = performance.now();
   requestAnimationFrame(tick);

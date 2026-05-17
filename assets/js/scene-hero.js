@@ -11,6 +11,7 @@
  * Replaces V2 (7 layered shapes + bones + torus + tetraedro = busy).
  */
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js';
+import { onPointerMove } from './pointer.js?v=20260516-pointer';
 
 export class HeroScene {
   constructor(canvas) {
@@ -157,11 +158,14 @@ export class HeroScene {
 
   bind() {
     this.onResize = this.onResize.bind(this);
-    this.onMouseMove = this.onMouseMove.bind(this);
     this.onScroll = this.onScroll.bind(this);
     window.addEventListener('resize', this.onResize, { passive: true });
-    window.addEventListener('mousemove', this.onMouseMove, { passive: true });
     window.addEventListener('scroll', this.onScroll, { passive: true });
+    // Shared pointer (rAF-coalesced) instead of own mousemove listener
+    this._unsubPointer = onPointerMove((x, y) => {
+      this.mouse.tx = (x / window.innerWidth - 0.5) * 2;
+      this.mouse.ty = (y / window.innerHeight - 0.5) * 2;
+    });
     // Gate the render loop on viewport visibility — stops the WebGL render
     // when the hero canvas has been scrolled past (saves ~3ms/frame GPU).
     if ('IntersectionObserver' in window) {
@@ -179,11 +183,6 @@ export class HeroScene {
     this.camera.aspect = w / h;
     this.camera.updateProjectionMatrix();
     this.renderer.setSize(w, h, false);
-  }
-
-  onMouseMove(e) {
-    this.mouse.tx = (e.clientX / window.innerWidth - 0.5) * 2;
-    this.mouse.ty = (e.clientY / window.innerHeight - 0.5) * 2;
   }
 
   onScroll() {
@@ -247,8 +246,8 @@ export class HeroScene {
     this.disposed = true;
     if (this._rafId) cancelAnimationFrame(this._rafId);
     this._io?.disconnect();
+    if (this._unsubPointer) this._unsubPointer();
     window.removeEventListener('resize', this.onResize);
-    window.removeEventListener('mousemove', this.onMouseMove);
     window.removeEventListener('scroll', this.onScroll);
     this.renderer.dispose();
   }

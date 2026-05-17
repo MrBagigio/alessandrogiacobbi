@@ -174,37 +174,30 @@ export function initMagnetic(el) {
 }
 
 /**
- * Particle burst su click: lettere esplodono in particle che svaniscono.
- * Usa un canvas 2D temporaneo overlay.
+ * Particle burst on click — letters explode into particles that fade.
+ *
+ * Performance: physics + draw run on a Web Worker via OffscreenCanvas when
+ * available (Chrome 80+, Safari 16.4+, Firefox 105+). Falls back to a
+ * main-thread loop when the API is missing, so older browsers still get
+ * the effect — just on the main thread.
  */
-function particleBurst(el, x, y) {
+function buildParticles(el, x, y) {
   const chars = el._mlxChars;
-  if (!chars) return;
-  const canvas = document.createElement('canvas');
-  canvas.style.cssText = 'position:fixed;inset:0;pointer-events:none;z-index:9997;';
-  canvas.width = window.innerWidth * devicePixelRatio;
-  canvas.height = window.innerHeight * devicePixelRatio;
-  canvas.style.width = window.innerWidth + 'px';
-  canvas.style.height = window.innerHeight + 'px';
-  document.body.appendChild(canvas);
-  const ctx = canvas.getContext('2d');
-  ctx.scale(devicePixelRatio, devicePixelRatio);
-
-  const particles = [];
-  chars.forEach((c) => {
+  if (!chars) return [];
+  const out = [];
+  for (const c of chars) {
     const r = c.getBoundingClientRect();
     const cx = r.left + r.width / 2;
     const cy = r.top + r.height / 2;
     const dx = cx - x;
     const dy = cy - y;
     const dist = Math.hypot(dx, dy);
-    if (dist > 280) return;
-    // Sparpaglia ~6 particle per char nelle vicinanze del click
+    if (dist > 280) continue;
     const count = 4 + Math.floor((1 - dist / 280) * 8);
     for (let i = 0; i < count; i++) {
       const angle = Math.atan2(dy, dx) + (Math.random() - 0.5) * 1.6;
       const speed = 2 + Math.random() * 7 * (1 - dist / 280);
-      particles.push({
+      out.push({
         x: cx + (Math.random() - 0.5) * r.width,
         y: cy + (Math.random() - 0.5) * r.height,
         vx: Math.cos(angle) * speed,
@@ -215,29 +208,79 @@ function particleBurst(el, x, y) {
         color: Math.random() < 0.7 ? '184,50,63' : '237,230,214',
       });
     }
-  });
+  }
+  return out;
+}
 
+function makeBurstCanvas() {
+  const canvas = document.createElement('canvas');
+  canvas.style.cssText = 'position:fixed;inset:0;pointer-events:none;z-index:9997;';
+  canvas.width = window.innerWidth * devicePixelRatio;
+  canvas.height = window.innerHeight * devicePixelRatio;
+  canvas.style.width = window.innerWidth + 'px';
+  canvas.style.height = window.innerHeight + 'px';
+  document.body.appendChild(canvas);
+  return canvas;
+}
+
+function particleBurst(el, x, y) {
+  const particles = buildParticles(el, x, y);
+  if (!particles.length) return;
+
+  const canvas = makeBurstCanvas();
+  const supportsWorker = typeof Worker !== 'undefined'
+    && typeof OffscreenCanvas !== 'undefined'
+    && 'transferControlToOffscreen' in canvas;
+
+  if (supportsWorker) {
+    try {
+      const offscreen = canvas.transferControlToOffscreen();
+      const worker = new Worker(
+        new URL('./particle-worker.js?v=20260516-pointer', import.meta.url),
+        { type: 'module' }
+      );
+      worker.postMessage({ type: 'init', data: { canvas: offscreen, dpr: devicePixelRatio } }, [offscreen]);
+      worker.postMessage({ type: 'burst', data: { particles } });
+      worker.onmessage = (e) => {
+        if (e.data?.type === 'done') {
+          worker.terminate();
+          canvas.remove();
+        }
+      };
+      // Safety timeout in case worker dies silently
+      setTimeout(() => {
+        worker.terminate();
+        if (canvas.parentNode) canvas.remove();
+      }, 5000);
+      return;
+    } catch (err) {
+      // Fall through to main-thread fallback on any worker init error
+      canvas.remove();
+    }
+  }
+
+  // ── Fallback: main-thread loop (same logic as the worker) ──
+  const fbCanvas = makeBurstCanvas();
+  const ctx = fbCanvas.getContext('2d');
+  ctx.scale(devicePixelRatio, devicePixelRatio);
   let frame = 0;
   function loop() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.clearRect(0, 0, fbCanvas.width, fbCanvas.height);
     let alive = 0;
-    particles.forEach((p) => {
-      if (p.life <= 0) return;
+    for (const p of particles) {
+      if (p.life <= 0) continue;
       alive++;
       p.x += p.vx;
       p.y += p.vy;
-      p.vy += 0.18; // gravity
+      p.vy += 0.18;
       p.vx *= 0.985;
       p.life -= p.decay;
       ctx.fillStyle = `rgba(${p.color},${Math.max(0, p.life).toFixed(2)})`;
       ctx.fillRect(p.x, p.y, p.size, p.size);
-    });
-    frame++;
-    if (alive > 0 && frame < 200) {
-      requestAnimationFrame(loop);
-    } else {
-      canvas.remove();
     }
+    frame++;
+    if (alive > 0 && frame < 200) requestAnimationFrame(loop);
+    else fbCanvas.remove();
   }
   loop();
 }

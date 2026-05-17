@@ -2,21 +2,21 @@
  * Bootstrap — entry point.
  * Loads GSAP via CDN, initializes scenes, cursor, lazy, scroll triggers.
  */
-import { HeroScene } from './scene-hero.js?v=20260516-audit';
-import { BgScene } from './scene-bg.js?v=20260516-audit';
-import { Cursor } from './cursor.js?v=20260516-audit';
-import { initLazyMedia } from './lazy.js?v=20260516-audit';
-import { initTextFx } from './text-fx.js?v=20260516-audit';
-import { initMagneticAuto } from './magnetic-letters.js?v=20260516-audit';
-import { runBootSequence } from './boot.js?v=20260516-audit';
-import { initRigView } from './rig-view.js?v=20260516-audit';
-import { initInteractions } from './interactions.js?v=20260516-audit';
-import { initTargeting } from './targeting.js?v=20260516-audit';
-import { initJarvis, initSectionScan, ping } from './jarvis.js?v=20260516-audit';
-import { initSysStrip } from './sys-strip.js?v=20260516-audit';
-import { initVideoHud } from './video-hud.js?v=20260516-audit';
-import { initXrayLens } from './xray-lens.js?v=20260516-audit';
-// import { AsteroidCursor } from './asteroid-cursor.js?v=20260516-audit'; // disabled — keep file for future
+import { HeroScene } from './scene-hero.js?v=20260516-perf';
+import { BgScene } from './scene-bg.js?v=20260516-perf';
+import { Cursor } from './cursor.js?v=20260516-perf';
+import { initLazyMedia } from './lazy.js?v=20260516-perf';
+import { initTextFx } from './text-fx.js?v=20260516-perf';
+import { initMagneticAuto } from './magnetic-letters.js?v=20260516-perf';
+import { runBootSequence } from './boot.js?v=20260516-perf';
+import { initRigView } from './rig-view.js?v=20260516-perf';
+import { initInteractions } from './interactions.js?v=20260516-perf';
+import { initTargeting } from './targeting.js?v=20260516-perf';
+import { initJarvis, initSectionScan, ping } from './jarvis.js?v=20260516-perf';
+import { initSysStrip } from './sys-strip.js?v=20260516-perf';
+import { initVideoHud } from './video-hud.js?v=20260516-perf';
+import { initXrayLens } from './xray-lens.js?v=20260516-perf';
+// import { AsteroidCursor } from './asteroid-cursor.js?v=20260516-perf'; // disabled — keep file for future
 
 const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 

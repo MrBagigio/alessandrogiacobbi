@@ -10,6 +10,8 @@
  *   - persists in localStorage
  */
 
+import { onPointerMove } from './pointer.js?v=20260516-pointer';
+
 const STORAGE_KEY = 'portfolio.rig-view';
 
 // Curated label map — only meaningful "control nodes", not slivers/cursors/masks.
@@ -221,11 +223,8 @@ export function initRigView() {
   tagElements();
   const btn = buildToggle();
 
-  // Mouse tracking (cheap — always on, only consumed when HUD visible)
-  document.addEventListener('mousemove', (e) => {
-    mx = e.clientX;
-    my = e.clientY;
-  }, { passive: true });
+  // Mouse tracking via shared pointer (consumed only when HUD visible)
+  onPointerMove((x, y) => { mx = x; my = y; });
 
   // Restore previous state
   let initial = false;

@@ -1269,3 +1269,11 @@ a [data-magnetic], [data-magnetic] a { cursor: pointer; }
   [data-magnetic] { cursor: default; }
   [data-magnetic] .mlx__c { transform: none !important; text-shadow: none !important; }
 }
+
+/* Hide rig-toggle on mobile/touch — dev-only tool, keyboard 'R' still works on desktop */
+@media (max-width: 900px) {
+  .rig-toggle { display: none !important; }
+}
+@media (hover: none) and (pointer: coarse) {
+  .rig-toggle { display: none !important; }
+}

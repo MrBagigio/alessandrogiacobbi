@@ -9,10 +9,12 @@ portfolio_giacobbi/
 ├── index.html                  ← landing principale (~370 righe lean)
 ├── README.md                   ← questo file
 ├── projects/
-│   ├── _template.html          ← template generico per nuovi progetti (con {PLACEHOLDER})
-│   ├── handball.html           ← Champions League Handball
-│   ├── fitt-nts-eco.html       ← FITT NTS ECO product viz
-│   ├── alto.html               ← ALTO behind-the-render breakdown
+│   ├── _template.html          ← template generico per nuovi progetti
+│   ├── lp.html                 ← LP Group · chameleon rigging + animation
+│   ├── characterpromptkit.html ← ComfyUI custom nodes pack
+│   ├── marty-ai-pipeline.html  ← 3-stage AI pipeline (LoRA + ArcFace)
+│   ├── northstar-crm.html      ← Single-file CRM (IndexedDB)
+│   ├── hostshield.html         ← Italian short-rental compliance SaaS
 │   └── cinematic-rigging.html  ← 8y rigging body of work
 ├── assets/
 │   ├── css/
@@ -36,8 +38,10 @@ portfolio_giacobbi/
 2. **Ticker** — marquee infinite scroll specializzazioni
 3. **Showreel** — hero video Vimeo (placeholder, sostituire `data-vimeo-id`)
 4. **Manifesto** — claim positioning serif italic
-5. **Work 01** — Brand Commercials & Product Viz (HANDBALL + FITT NTS ECO)
-6. **Work 02** — Character & Rigging (ALTO + Cinematic Rigging)
+5. **Work 01** — 3D · Character Rigging (LP Group)
+6. **Work 02** — ComfyUI · Workflows & Custom Nodes
+7. **Work 03** — R&D · Tooling & SaaS (Northstar, HostShield)
+8. **Work 04** — Web Design · Demo template
 7. **Toolkit** — 3 colonne (3D/VFX · AI · Post/Audio)
 8. **Contact** — Three.js bg particles + 4 channels (email/studio/LinkedIn/IG)
 9. **Footer** — credits + P.IVA
@@ -105,9 +109,6 @@ git push origin main
 
 - [ ] **Vimeo IDs** → sostituire `data-vimeo-id="PLACEHOLDER"` con ID reali in:
   - `index.html` (hero showreel)
-  - `projects/handball.html` (project video)
-  - `projects/fitt-nts-eco.html`
-  - `projects/alto.html`
   - `projects/cinematic-rigging.html` (compilation reel)
 - [ ] **Stills reali** → sostituire `<div class="project-card__placeholder">` con `<img>` o `<video>` reali
 - [ ] **Role list reali** → sostituire `[PLACEHOLDER]` nelle 4 project pages con contributo specifico

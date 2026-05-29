@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI R&amp;D · Research &amp; Experiments — Alessandro Giacobbi</title>
+  <meta name="description" content="R&D personale: pipeline ComfyUI, LoRA training, V2V, nodi custom, AI VFX experiments. Alessandro Giacobbi — 3D Artist &amp; AI Pipeline TD.">
+
+  <!--
+    R&D GALLERY PAGE
+    Per aggiungere screenshot:
+      1. Copia il file immagine in ../assets/img/r-and-d/
+      2. Duplica uno slot <article class="rd-item"> esistente
+      3. Sostituisci i placeholder: data-src, alt, .rd-item__label, .rd-item__meta
+      4. Togli la classe "rd-item--placeholder" se c'era
+
+    Naming consigliato file: YYYYMMDD_topic_description.jpg (es. 20260520_lora_marty_v2.jpg)
+  -->
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../assets/css/tokens.css">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/components.css?v=20260516-mob2">
+  <link rel="stylesheet" href="../assets/css/layout.css?v=20260516-audit">
+  <link rel="stylesheet" href="../assets/css/animations.css?v=20260516-hero">
+
+  <style>
+    /* ── R&D Gallery styles ─────────────────────────────────────── */
+    .rd-hero {
+      padding: 6rem var(--gutter) 3rem;
+      border-bottom: 1px solid var(--rule);
+    }
+    .rd-hero__inner {
+      max-width: var(--content-max);
+      margin: 0 auto;
+    }
+    .rd-hero__breadcrumb {
+      font-size: 0.8rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink-40);
+      margin-bottom: 1.5rem;
+    }
+    .rd-hero__breadcrumb a { color: inherit; text-decoration: none; }
+    .rd-hero__breadcrumb a:hover { color: var(--ink); }
+    .rd-hero__title {
+      font-family: var(--font-display);
+      font-size: clamp(2.2rem, 6vw, 4.5rem);
+      font-weight: 700;
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      margin: 0 0 1rem;
+    }
+    .rd-hero__sub {
+      font-size: 1rem;
+      color: var(--ink-60);
+      max-width: 52ch;
+      line-height: 1.6;
+      margin: 0;
+    }
+    .rd-hero__tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 1.5rem;
+    }
+    .rd-tag {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 0.25rem 0.65rem;
+      border: 1px solid var(--rule);
+      border-radius: 2px;
+      color: var(--ink-60);
+    }
+
+    /* ── Gallery grid ───────────────────────────────────────────── */
+    .rd-gallery {
+      padding: 4rem var(--gutter) 6rem;
+    }
+    .rd-gallery__inner {
+      max-width: var(--content-max);
+      margin: 0 auto;
+    }
+    .rd-gallery__header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--rule);
+    }
+    .rd-gallery__count {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--ink-40);
+    }
+
+    /* Masonry-style grid — 3 cols desktop, 2 tablet, 1 mobile */
+    .rd-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+    @media (max-width: 900px) { .rd-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 560px) { .rd-grid { grid-template-columns: 1fr; } }
+
+    /* Wide items span 2 cols */
+    .rd-item--wide { grid-column: span 2; }
+    @media (max-width: 560px) { .rd-item--wide { grid-column: span 1; } }
+
+    .rd-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      cursor: default;
+    }
+    .rd-item__media {
+      position: relative;
+      overflow: hidden;
+      border-radius: 4px;
+      background: var(--paper2);
+      border: 1px solid var(--rule);
+      aspect-ratio: 16 / 9;
+    }
+    .rd-item--tall .rd-item__media { aspect-ratio: 4 / 5; }
+    .rd-item--wide .rd-item__media { aspect-ratio: 21 / 9; }
+
+    .rd-item__media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.5s ease;
+    }
+    .rd-item:hover .rd-item__media img { transform: scale(1.03); }
+
+    /* Placeholder slot (before real image uploaded) */
+    .rd-item--placeholder .rd-item__media {
+      border-style: dashed;
+    }
+    .rd-item__placeholder-inner {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      color: var(--ink-30);
+    }
+    .rd-item__placeholder-inner svg {
+      width: 2rem; height: 2rem;
+      stroke: currentColor; fill: none;
+      stroke-width: 1.5;
+    }
+    .rd-item__placeholder-inner span {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .rd-item__label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--ink);
+      line-height: 1.3;
+    }
+    .rd-item__meta {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--ink-40);
+      display: flex;
+      gap: 0.75rem;
+    }
+
+    /* Lightbox overlay */
+    .rd-lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: rgba(0,0,0,0.92);
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+    .rd-lightbox.is-open { display: flex; }
+    .rd-lightbox__img {
+      max-width: 100%;
+      max-height: 90vh;
+      object-fit: contain;
+      border-radius: 2px;
+    }
+    .rd-lightbox__close {
+      position: absolute;
+      top: 1.5rem; right: 1.5rem;
+      background: none; border: none;
+      color: #fff; font-size: 2rem;
+      cursor: pointer; line-height: 1;
+      opacity: 0.7;
+    }
+    .rd-lightbox__close:hover { opacity: 1; }
+    .rd-lightbox__caption {
+      position: absolute;
+      bottom: 2rem; left: 50%;
+      transform: translateX(-50%);
+      color: rgba(255,255,255,0.6);
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      white-space: nowrap;
+    }
+  </style>
+</head>
+<body>
+
+  <a href="#main" class="skip-link">Salta al contenuto</a>
+
+  <div class="cursor-dot" aria-hidden="true"></div>
+  <div class="cursor-ring" aria-hidden="true"></div>
+  <div class="scroll-progress" aria-hidden="true"></div>
+
+  <header class="meta-bar">
+    <div class="left"><a href="../index.html">← Portfolio</a></div>
+    <div class="center">AI R&amp;D · Experiments</div>
+    <div class="right">
+      <span class="meta-clock">--:-- CET</span>
+      <a href="../index.html#contact">Contact</a>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <!-- HERO -->
+    <section class="rd-hero">
+      <div class="rd-hero__inner">
+        <nav class="rd-hero__breadcrumb reveal-up">
+          <a href="../index.html">Portfolio</a> &nbsp;/&nbsp; R&amp;D
+        </nav>
+        <h1 class="rd-hero__title reveal-up">AI R&amp;D<br>Experiments</h1>
+        <p class="rd-hero__sub reveal-up">
+          Pipeline sperimentali, LoRA training, V2V, nodi ComfyUI custom, workflow AI per VFX.
+          Lavori in progress, prototipi e ricerca personale — 2024 → present.
+        </p>
+        <div class="rd-hero__tags reveal-up">
+          <span class="rd-tag">ComfyUI</span>
+          <span class="rd-tag">LoRA Training</span>
+          <span class="rd-tag">Video-to-Video</span>
+          <span class="rd-tag">Stable Diffusion</span>
+          <span class="rd-tag">AI Pipeline</span>
+          <span class="rd-tag">RTX 4090</span>
+          <span class="rd-tag">Character Design</span>
+          <span class="rd-tag">Maya / Redshift</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- GALLERY -->
+    <section class="rd-gallery" aria-label="R&D screenshots gallery">
+      <div class="rd-gallery__inner">
+
+        <div class="rd-gallery__header">
+          <h2 class="text-meta" style="margin:0; letter-spacing:0.1em;">SCREENSHOTS &amp; OUTPUTS</h2>
+          <span class="rd-gallery__count" id="rd-count">— item</span>
+        </div>
+
+        <div class="rd-grid" id="rd-grid">
+
+          <!--
+            ══════════════════════════════════════════════════════════
+            ISTRUZIONI PER AGGIUNGERE SCREENSHOT:
+
+            TEMPLATE ITEM STANDARD (16:9):
+            ──────────────────────────────
+            <article class="rd-item reveal-up" data-label="Titolo esperimento" data-meta="data · tool">
+              <div class="rd-item__media">
+                <img data-src="../assets/img/r-and-d/NOMEFILE.jpg" alt="Descrizione breve" loading="lazy">
+              </div>
+              <p class="rd-item__label">Titolo esperimento</p>
+              <div class="rd-item__meta">
+                <span>mag 2026</span>
+                <span>ComfyUI · SDXL</span>
+              </div>
+            </article>
+
+            WIDE (occupa 2 colonne, ratio 21:9):
+            ──────────────────────────────────────
+            aggiungi classe "rd-item--wide" all'<article>
+
+            TALL (ratio 4:5, per verticali):
+            ──────────────────────────────────
+            aggiungi classe "rd-item--tall" all'<article>
+
+            Naming file: YYYYMMDD_topic.jpg → es. 20260520_lora_marty_v2.jpg
+            ══════════════════════════════════════════════════════════
+          -->
+
+          <!-- ── SLOT PLACEHOLDER 01 ── sostituisci con screenshot reale -->
+          <article class="rd-item rd-item--placeholder rd-item--wide reveal-up">
+            <div class="rd-item__media">
+              <div class="rd-item__placeholder-inner">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <rect x="3" y="3" width="18" height="18" rx="2"/>
+                  <path d="M3 9l4-4 4 4 4-4 4 4"/>
+                  <circle cx="8" cy="14" r="1.5"/>
+                </svg>
+                <span>carica screenshot</span>
+              </div>
+            </div>
+            <p class="rd-item__label">LoRA Training · Marty Character</p>
+            <div class="rd-item__meta">
+              <span>2026</span>
+              <span>ComfyUI · ai-toolkit · RTX 4090</span>
+            </div>
+          </article>
+
+          <!-- ── SLOT PLACEHOLDER 02 ── -->
+          <article class="rd-item rd-item--placeholder reveal-up">
+            <div class="rd-item__media">
+              <div class="rd-item__placeholder-inner">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <rect x="3" y="3" width="18" height="18" rx="2"/>
+                  <path d="M3 9l4-4 4 4 4-4 4 4"/>
+                  <circle cx="8" cy="14" r="1.5"/>
+                </svg>
+                <span>carica screenshot</span>
+              </div>
+            </div>
+            <p class="rd-item__label">Video-to-Video Pipeline</p>
+            <div class="rd-item__meta">
+              <span>2026</span>
+              <span>ComfyUI · V2V · AnimateDiff</span>
+            </div>
+          </article>
+
+          <!-- ── SLOT PLACEHOLDER 03 ── -->
+          <article class="rd-item rd-item--placeholder reveal-up">
+            <div class="rd-item__media">
+              <div class="rd-item__placeholder-inner">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <rect x="3" y="3" width="18" height="18" rx="2"/>
+                  <path d="M3 9l4-4 4 4 4-4 4 4"/>
+                  <circle cx="8" cy="14" r="1.5"/>
+                </svg>
+                <span>carica screenshot</span>
+              </div>
+            </div>
+            <p class="rd-item__label">CharacterPromptKit · Node UI</p>
+            <div class="rd-item__meta">
+              <span>2025 →</span>
+              <span>ComfyUI · Python · OSS</span>
+            </div>
+          </article>
+
+          <!-- ── SLOT PLACEHOLDER 04 ── -->
+          <article class="rd-item rd-item--placeholder reveal-up">
+            <div class="rd-item__media">
+              <div class="rd-item__placeholder-inner">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <rect x="3" y="3" width="18" height="18" rx="2"/>
+                  <path d="M3 9l4-4 4 4 4-4 4 4"/>
+                  <circle cx="8" cy="14" r="1.5"/>
+                </svg>
+                <span>carica screenshot</span>
+              </div>
+            </div>
+            <p class="rd-item__label">Qwen Edit · Product Visualization</p>
+            <div class="rd-item__meta">
+              <span>2026</span>
+              <span>Qwen2.5-VL · 1024px</span>
+            </div>
+          </article>
+
+          <!-- ── SLOT PLACEHOLDER 05 ── -->
+          <article class="rd-item rd-item--placeholder reveal-up">
+            <div class="rd-item__media">
+              <div class="rd-item__placeholder-inner">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <rect x="3" y="3" width="18" height="18" rx="2"/>
+                  <path d="M3 9l4-4 4 4 4-4 4 4"/>
+                  <circle cx="8" cy="14" r="1.5"/>
+                </svg>
+                <span>carica screenshot</span>
+              </div>
+            </div>
+            <p class="rd-item__label">Rigging TD · Prototype</p>
+            <div class="rd-item__meta">
+              <span>2025</span>
+              <span>Maya · Python · Custom Rig</span>
+            </div>
+          </article>
+
+          <!-- ── SLOT PLACEHOLDER 06 ── -->
+          <article class="rd-item rd-item--placeholder reveal-up">
+            <div class="rd-item__media">
+              <div class="rd-item__placeholder-inner">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <rect x="3" y="3" width="18" height="18" rx="2"/>
+                  <path d="M3 9l4-4 4 4 4-4 4 4"/>
+                  <circle cx="8" cy="14" r="1.5"/>
+                </svg>
+                <span>carica screenshot</span>
+              </div>
+            </div>
+            <p class="rd-item__label">Northstar CRM · Dev</p>
+            <div class="rd-item__meta">
+              <span>2025 →</span>
+              <span>Vanilla JS · IndexedDB · Mutation 92%</span>
+            </div>
+          </article>
+
+        </div><!-- /rd-grid -->
+
+      </div>
+    </section>
+
+    <!-- NEXT PROJECT -->
+    <section class="project-next">
+      <div class="project-next__inner">
+        <div>
+          <span class="text-meta">Vedi anche</span>
+          <h3 class="text-h3" style="margin-top: 0.5rem;">Northstar CRM</h3>
+        </div>
+        <a href="./northstar-crm.html" class="btn btn--ox">
+          <span>Vai al progetto</span>
+          <span class="btn-arrow">→</span>
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <div class="footer__inner">
+      <span class="footer__credit">© 2026 Alessandro Giacobbi · <a href="https://www.setpointstudio.com">Setpoint Studio S.r.l.</a> · P.IVA 04403500244</span>
+      <span class="footer__credit"><a href="../index.html">← Tutti i progetti</a></span>
+    </div>
+  </footer>
+
+  <!-- Lightbox -->
+  <div class="rd-lightbox" id="rd-lightbox" role="dialog" aria-modal="true" aria-label="Immagine ingrandita">
+    <button class="rd-lightbox__close" id="rd-lightbox-close" aria-label="Chiudi">×</button>
+    <img class="rd-lightbox__img" id="rd-lightbox-img" src="" alt="">
+    <span class="rd-lightbox__caption" id="rd-lightbox-caption"></span>
+  </div>
+
+  <script type="module" src="../assets/js/main.js?v=20260516-perf"></script>
+  <script>
+    // ── Lazy load images (same pattern as main.js) ──────────────
+    document.querySelectorAll('.rd-item img[data-src]').forEach(img => {
+      const io = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+          if (e.isIntersecting) {
+            e.target.src = e.target.dataset.src;
+            io.unobserve(e.target);
+          }
+        });
+      }, { rootMargin: '200px' });
+      io.observe(img);
+    });
+
+    // ── Count real items (non-placeholder) ───────────────────────
+    const items = document.querySelectorAll('.rd-item:not(.rd-item--placeholder)');
+    const placeholders = document.querySelectorAll('.rd-item--placeholder');
+    const countEl = document.getElementById('rd-count');
+    if (items.length > 0) {
+      countEl.textContent = items.length + ' screenshot' + (items.length > 1 ? 's' : '');
+    } else {
+      countEl.textContent = placeholders.length + ' slot in attesa';
+    }
+
+    // ── Lightbox ─────────────────────────────────────────────────
+    const lightbox = document.getElementById('rd-lightbox');
+    const lbImg    = document.getElementById('rd-lightbox-img');
+    const lbCap    = document.getElementById('rd-lightbox-caption');
+    const lbClose  = document.getElementById('rd-lightbox-close');
+
+    document.querySelectorAll('.rd-item:not(.rd-item--placeholder) .rd-item__media').forEach(media => {
+      media.style.cursor = 'zoom-in';
+      media.addEventListener('click', () => {
+        const img   = media.querySelector('img');
+        const label = media.closest('.rd-item').querySelector('.rd-item__label')?.textContent || '';
+        const meta  = media.closest('.rd-item').querySelector('.rd-item__meta')?.textContent?.trim() || '';
+        lbImg.src = img.src;
+        lbImg.alt = img.alt;
+        lbCap.textContent = label + (meta ? '  ·  ' + meta : '');
+        lightbox.classList.add('is-open');
+        document.body.style.overflow = 'hidden';
+      });
+    });
+
+    function closeLightbox() {
+      lightbox.classList.remove('is-open');
+      document.body.style.overflow = '';
+      lbImg.src = '';
+    }
+    lbClose.addEventListener('click', closeLightbox);
+    lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLightbox(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+  </script>
+
+</body>
+</html>

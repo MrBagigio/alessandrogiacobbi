@@ -17,7 +17,6 @@ import { initSysStrip } from './sys-strip.js?v=20260516-perf';
 import { initVideoHud } from './video-hud.js?v=20260516-perf';
 import { initXrayLens } from './xray-lens.js?v=20260516-perf';
 import { initAboutStats } from './about-stats.js?v=20260517-about';
-// import { AsteroidCursor } from './asteroid-cursor.js?v=20260516-perf'; // disabled — keep file for future
 
 const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -77,8 +76,7 @@ if (!reduced) {
   if (bgCanvas) new BgScene(bgCanvas);
 }
 
-// 5. Cursor — classic CSS magnetic dot+ring (asteroid/ship temporarily disabled)
-//    To re-enable ship morph: replace `new Cursor()` with `new AsteroidCursor('asteroid-cursor')`
+// 5. Cursor — magnetic dot + ring (desktop fine-pointer only)
 const isFinePointer = window.matchMedia('(pointer: fine)').matches;
 const isWideScreen = window.matchMedia('(min-width: 1024px)').matches;
 

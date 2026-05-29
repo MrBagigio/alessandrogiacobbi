@@ -162,12 +162,7 @@
 }
 .btn:hover .btn-arrow { transform: translateX(4px); }
 
-/* ── Asteroid cursor canvas — DISABLED for now (kept for future re-enable) ── */
-.asteroid-cursor {
-  display: none;
-}
-
-/* ── Magnetic cursor (fallback when asteroids disabled) ── */
+/* ── Magnetic cursor (dot + ring) ── */
 
 /* Hide the native OS cursor wherever the custom one is active */
 @media (pointer: fine) and (min-width: 1024px) {

@@ -94,8 +94,15 @@ export function bindOnReveal(selector, fn, opts = {}) {
  *   duration: durata singolo glitch (default 280)
  *   onlyInViewport: se true (default), pausa quando element fuori viewport
  */
+// Master gate for the continuous/ambient glitch layer. Off by default
+// (set via initTextFx({ ambient: true })). Keeps one-shot scramble-on-reveal,
+// hover scramble, hero parallax and spotlight always on — only the never-ending
+// flicker loops + ambient burst are suppressed when this is false.
+let AMBIENT_ON = false;
+
 const _loopHandles = new WeakMap();
 export function loopGlitch(el, opts = {}) {
+  if (!AMBIENT_ON) return;
   if (!el) return;
   if (_loopHandles.has(el)) return; // già attivo
   const minDelay = opts.minDelay ?? 6000;
@@ -128,6 +135,7 @@ export function loopGlitch(el, opts = {}) {
  * Utile per parole brand/keyword che devono "respirare".
  */
 export function loopScramble(el, opts = {}) {
+  if (!AMBIENT_ON) return;
   if (!el) return;
   const minDelay = opts.minDelay ?? 14000;
   const maxDelay = opts.maxDelay ?? 28000;
@@ -185,9 +193,11 @@ function markAmbient(selector) {
  * Setup: applica fx ai selettori standard del portfolio.
  * Rispetta prefers-reduced-motion.
  */
-export function initTextFx() {
+export function initTextFx(opts = {}) {
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (reduced) return;
+  // Enable the continuous-glitch layer only when explicitly asked (FX_MAXIMAL).
+  AMBIENT_ON = opts.ambient ?? false;
 
   // ─── 1. SCRAMBLE ON LOAD / ON REVEAL ───────────────────────────────────
 
@@ -335,7 +345,7 @@ export function initTextFx() {
 
   // Tool tiles (Maya, ZBrush, ComfyUI, etc.) — pick random one ogni 3-6s
   const toolTiles = document.querySelectorAll('.tool-tile');
-  if (toolTiles.length) {
+  if (AMBIENT_ON && toolTiles.length) {
     function toolLoop() {
       const visible = [...toolTiles].filter((el) => {
         const r = el.getBoundingClientRect();
@@ -352,7 +362,7 @@ export function initTextFx() {
 
   // ─── 3. AMBIENT GLITCH — random subset di elementi viventi (più frequente) ─
 
-  markAmbient([
+  if (AMBIENT_ON) markAmbient([
     '.section-heading__title',
     '.section-heading__num',
     '.project-card__title',
@@ -380,7 +390,7 @@ export function initTextFx() {
   ].join(','));
 
   // Ambient più frequente: ogni 1.4-3s
-  globalAmbientGlitch(1400, 3000);
+  if (AMBIENT_ON) globalAmbientGlitch(1400, 3000);
 
   // ─── 4. HOVER SCRAMBLE — passi sopra → re-scramble ─────────────────────
   document.querySelectorAll(
@@ -443,7 +453,7 @@ export function initTextFx() {
   });
 
   // ─── 7. CRT SCANLINE SWEEP — overlay fisso che attraversa la pagina ───
-  if (window.matchMedia('(min-width: 768px)').matches) {
+  if (AMBIENT_ON && window.matchMedia('(min-width: 768px)').matches) {
     const scan = document.createElement('div');
     scan.className = 'fx-scanline';
     scan.setAttribute('aria-hidden', 'true');
@@ -451,16 +461,17 @@ export function initTextFx() {
   }
 
   // ─── 8. INDEX/NUM massive glitch ogni tanto (BOOM moment) ─────────────
-  function massiveGlitchBurst() {
-    const candidates = [...document.querySelectorAll('.section-heading__num, .project-card__index, .hero__title em, .hero__pretitle')];
-    const visible = candidates.filter((el) => {
-      const r = el.getBoundingClientRect();
-      return r.top < window.innerHeight && r.bottom > 0;
-    });
-    // Pick 2-4 elementi visibili e glitchali insieme (effetto "scossa")
-    const picks = visible.sort(() => Math.random() - 0.5).slice(0, 2 + Math.floor(Math.random() * 3));
-    picks.forEach((el, i) => setTimeout(() => glitch(el, 400), i * 60));
-    setTimeout(massiveGlitchBurst, 18000 + Math.random() * 14000);
+  if (AMBIENT_ON) {
+    const massiveGlitchBurst = () => {
+      const candidates = [...document.querySelectorAll('.section-heading__num, .project-card__index, .hero__title em, .hero__pretitle')];
+      const visible = candidates.filter((el) => {
+        const r = el.getBoundingClientRect();
+        return r.top < window.innerHeight && r.bottom > 0;
+      });
+      const picks = visible.sort(() => Math.random() - 0.5).slice(0, 2 + Math.floor(Math.random() * 3));
+      picks.forEach((el, i) => setTimeout(() => glitch(el, 400), i * 60));
+      setTimeout(massiveGlitchBurst, 18000 + Math.random() * 14000);
+    };
+    setTimeout(massiveGlitchBurst, 8000);
   }
-  setTimeout(massiveGlitchBurst, 8000);
 }

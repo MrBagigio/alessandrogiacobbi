@@ -6,7 +6,7 @@ import { HeroScene } from './scene-hero.js?v=20260516-perf';
 import { BgScene } from './scene-bg.js?v=20260516-perf';
 import { Cursor } from './cursor.js?v=20260516-perf';
 import { initLazyMedia } from './lazy.js?v=20260516-perf';
-import { initTextFx } from './text-fx.js?v=20260516-perf';
+import { initTextFx } from './text-fx.js?v=20260517-calm';
 import { initMagneticAuto } from './magnetic-letters.js?v=20260516-perf';
 import { runBootSequence } from './boot.js?v=20260516-perf';
 import { initRigView } from './rig-view.js?v=20260516-perf';
@@ -21,15 +21,28 @@ import { initAboutStats } from './about-stats.js?v=20260517-about';
 
 const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-// 1. Boot sequence — typewriter terminal on landing, simple fade on project pages
+/* ──────────────────────────────────────────────────────────────────────────
+ * FX_MAXIMAL — master switch for the "Iron Man / JARVIS" layer.
+ *
+ * Audit verdict: the technical shell was screaming louder than the work and
+ * the 3.3s CRT boot cost real visitors. So the default is now the calm,
+ * recruiter-friendly portfolio: 3D scenes + magnetic titles + reveals + cursor.
+ *
+ * Set to `true` to bring back the full kit (CRT boot, rig-view toggle, sys-strip
+ * telemetry, JARVIS pings, targeting reticle, section-scan brackets, ambient
+ * glitch). Nothing was deleted — it all still lives in its module.
+ * ────────────────────────────────────────────────────────────────────────── */
+const FX_MAXIMAL = false;
+
+// 1. Boot sequence — typewriter terminal only in maximal mode; otherwise the
+//    loader (if present) just fades fast. Default landing = instant content.
 window.addEventListener('load', () => {
-  const hasBootMarkup = !!document.querySelector('.loader__boot');
-  if (hasBootMarkup) {
+  const loader = document.querySelector('.loader');
+  if (!loader) return;
+  if (FX_MAXIMAL && document.querySelector('.loader__boot')) {
     runBootSequence();
   } else {
-    setTimeout(() => {
-      document.querySelector('.loader')?.classList.add('is-loaded');
-    }, 400);
+    setTimeout(() => loader.classList.add('is-loaded'), 220);
   }
 });
 
@@ -176,42 +189,37 @@ if (!reduced && window.matchMedia('(min-width: 1024px)').matches) {
 // 9c. Magnetic letters PRIMA — split text in per-char spans
 initMagneticAuto();
 
-// 9d. Text FX — scramble + glitch (skip elementi data-magnetic per evitare conflitti)
-initTextFx();
+// 9d. Text FX — scramble-on-reveal + hover + hero parallax + spotlight always on;
+//     continuous ambient/loop glitch only in maximal mode.
+initTextFx({ ambient: FX_MAXIMAL });
 
-// 9e. Rig view toggle — Maya-style technical overlay (every page)
-initRigView();
-
-// 9f. Interactions — click ripple + konami easter egg
+// 9f. Interactions — click ripple + konami easter egg (kept: subtle, on-demand)
 initInteractions();
 
-// 9g. Targeting reticle — corner brackets on hover (Iron Man lock)
-initTargeting();
-
-// 9h. JARVIS pings — ephemeral status toasts on events
-initJarvis();
-
-// 9i. Section scan-in — corner brackets + sweep on viewport entry
-initSectionScan();
-
-// 9k. System telemetry strip — top-of-page live HUD (THE "Stark mode" signal)
-initSysStrip();
-
-// 9l. Per-clip video HUD readouts (TC / frame / diagnostic line)
+// 9m. X-ray lens + per-clip video HUD — only ever match on the LP project page
+//     (no-ops on pages without .project-xray / .project-still--hud), so they
+//     stay on regardless of FX_MAXIMAL — they ARE the LP breakdown content.
 initVideoHud();
-
-// 9m. X-ray lens — dual-video reveal interaction on .project-xray containers
 initXrayLens();
 
-// 9j. Cross-module ping wire — rig view toggle fires a JARVIS ping
-let _lastRigState = document.body.classList.contains('rig-view');
-const _rigToggleObserver = new MutationObserver(() => {
-  const active = document.body.classList.contains('rig-view');
-  if (active === _lastRigState) return;
-  _lastRigState = active;
-  ping(active ? 'rig view · engaged' : 'rig view · disengaged', { kind: active ? 'ok' : 'info' });
-});
-_rigToggleObserver.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+// ── Iron Man / JARVIS layer — gated behind FX_MAXIMAL (default off) ──────────
+if (FX_MAXIMAL) {
+  initRigView();      // Maya-style rig-view toggle + X-ray overlay
+  initTargeting();    // corner-bracket reticle on hover
+  initJarvis();       // ephemeral status pings
+  initSectionScan();  // corner brackets + sweep on section entry
+  initSysStrip();     // top-of-page FPS/GPU/clock telemetry strip
+
+  // rig-view toggle fires a JARVIS ping
+  let _lastRigState = document.body.classList.contains('rig-view');
+  const _rigToggleObserver = new MutationObserver(() => {
+    const active = document.body.classList.contains('rig-view');
+    if (active === _lastRigState) return;
+    _lastRigState = active;
+    ping(active ? 'rig view · engaged' : 'rig view · disengaged', { kind: active ? 'ok' : 'info' });
+  });
+  _rigToggleObserver.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+}
 
 // 10. Char-reveal init — split text into spans on .char-reveal.
 // Batch via DocumentFragment so each element only triggers one layout/paint

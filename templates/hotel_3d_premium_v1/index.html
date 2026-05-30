@@ -1,0 +1,1143 @@
+<!DOCTYPE html>
+<html lang="it-IT">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0A0805">
+
+  <link rel="canonical" href="https://villacordillera.it/">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta name="robots" content="index,follow,max-image-preview:large">
+  <meta name="format-detection" content="telephone=no">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https://picsum.photos https://fastly.picsum.photos; media-src 'self' https://res.cloudinary.com https://*.bunnycdn.com data: blob:; connect-src 'self' https://cdn.jsdelivr.net; worker-src 'self' blob:; base-uri 'self'; form-action 'self' mailto:">
+
+  <title>Villa Cordillera — Resort 5★ sul Lago di Como | Cinematic 3D experience</title>
+  <meta name="description" content="Resort 5 stelle sulla riva orientale del Lago di Como. Otto suite editoriali, ristorante d'autore, spa Maison Caulières. Aperti tutto l'anno. Esperienza immersiva 3D.">
+
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="it_IT">
+  <meta property="og:locale:alternate" content="en_GB">
+  <meta property="og:locale:alternate" content="de_DE">
+  <meta property="og:title" content="Villa Cordillera — Resort 5★ Lago di Como">
+  <meta property="og:description" content="Resort 5 stelle, ristorante d'autore, spa Maison Caulières. Esperienza 3D cinematica.">
+  <meta property="og:image" content="https://villacordillera.it/og-image-1200x630.jpg">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://picsum.photos" crossorigin>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+  <link rel="preload" as="image" href="https://picsum.photos/seed/cordillera-villa-fog/1600/2000?fm=webp" fetchpriority="high">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <!-- Schema.org Hotel + LodgingBusiness -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": ["Hotel", "Resort", "LodgingBusiness"],
+    "name": "Villa Cordillera",
+    "description": "Resort 5 stelle sulla riva orientale del Lago di Como. Otto suite editoriali, ristorante d'autore, spa Maison Caulières.",
+    "image": "https://villacordillera.it/og-image-1200x630.jpg",
+    "url": "https://villacordillera.it/",
+    "telephone": "+39 031 0000000",
+    "email": "concierge@villacordillera.it",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "",
+      "addressLocality": "Bellagio",
+      "addressRegion": "CO",
+      "postalCode": "22021",
+      "addressCountry": "IT"
+    },
+    "geo": { "@type": "GeoCoordinates", "latitude": 45.9844, "longitude": 9.2614 },
+    "starRating": { "@type": "Rating", "ratingValue": "5" },
+    "priceRange": "€€€€€",
+    "checkinTime": "16:00",
+    "checkoutTime": "11:00",
+    "petsAllowed": true,
+    "amenityFeature": [
+      { "@type": "LocationFeatureSpecification", "name": "Servizio di concierge 24h", "value": true },
+      { "@type": "LocationFeatureSpecification", "name": "Spa Maison Caulières", "value": true },
+      { "@type": "LocationFeatureSpecification", "name": "Ristorante d'autore", "value": true },
+      { "@type": "LocationFeatureSpecification", "name": "Cantina di famiglia", "value": true },
+      { "@type": "LocationFeatureSpecification", "name": "Pontile privato", "value": true },
+      { "@type": "LocationFeatureSpecification", "name": "Piscina infinity vista lago", "value": true },
+      { "@type": "LocationFeatureSpecification", "name": "Parcheggio privato", "value": true },
+      { "@type": "LocationFeatureSpecification", "name": "WiFi gratuito ad alta velocità", "value": true }
+    ],
+    "additionalProperty": [
+      { "@type": "PropertyValue", "name": "CIN", "value": "" }
+    ],
+    "aggregateRating": { "@type": "AggregateRating", "ratingValue": "4.95", "reviewCount": "62" }
+  }
+  </script>
+
+  <style>
+    /* ============================================================
+       TIER 3D PREMIUM €2900-3500 — Cinematic Three.js + scroll-driven
+       Stack: Three.js 0.169 ESM + GSAP 3.12.5 + ScrollTrigger
+       Pattern: Codrops Nov 2025 cinematic 3D scroll experiences
+       ============================================================ */
+    :root {
+      --ink: #0A0805;
+      --ink-2: #161210;
+      --ink-3: #221C18;
+      --cream: #F4EDE0;
+      --cream-2: #DDD0BB;
+      --mute: #8A7A65;
+      --mute-2: #645540;
+      --gold: #D4B574;
+      --gold-deep: #97803F;
+      --line: rgba(244,237,224,0.10);
+      --line-2: rgba(244,237,224,0.20);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    html, body { overflow-x: hidden; max-width: 100vw; }
+    body {
+      background: var(--ink);
+      color: var(--cream);
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 16px;
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    h1, h2, h3, h4 {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-weight: 300;
+      letter-spacing: -0.005em;
+      line-height: 1.05;
+    }
+    h1 { font-size: clamp(3.5rem, 9vw, 8rem); }
+    h2 { font-size: clamp(2.5rem, 6vw, 5rem); }
+    h3 { font-size: clamp(1.5rem, 3vw, 2.4rem); }
+    em { font-style: italic; color: var(--gold); }
+
+    p { color: var(--cream-2); max-width: 60ch; }
+    a { color: inherit; text-decoration: none; transition: color 0.3s; }
+    a:hover { color: var(--gold); }
+    img { max-width: 100%; height: auto; display: block; }
+
+    /* Skip link */
+    .skip-link { position: absolute; left: -9999px; top: 0; z-index: 10000; background: var(--gold); color: var(--ink); padding: 12px 20px; font-weight: 500; }
+    .skip-link:focus { left: 16px; top: 16px; outline: 3px solid var(--cream); outline-offset: 3px; }
+
+    .wrap { max-width: 1320px; margin: 0 auto; padding: 0 clamp(1.5rem, 4vw, 3rem); }
+    .wrap-narrow { max-width: 880px; margin: 0 auto; padding: 0 clamp(1.5rem, 4vw, 3rem); }
+
+    .eyebrow {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.7rem;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 500;
+      display: inline-flex; align-items: center; gap: 14px;
+    }
+    .eyebrow::before { content: ""; width: 40px; height: 1px; background: var(--gold); }
+
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      gap: 8px;
+      padding: 18px 36px;
+      font-size: 0.8125rem; font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      min-height: 52px;
+      border-radius: 0;
+      border: 1px solid transparent;
+    }
+    .btn-primary { background: var(--gold); color: var(--ink); }
+    .btn-primary:hover { background: var(--cream); transform: translateY(-2px); }
+    .btn-outline { border-color: var(--cream-2); color: var(--cream); }
+    .btn-outline:hover { background: var(--cream); color: var(--ink); border-color: var(--cream); }
+
+    /* ============================================================
+       LOADER
+       ============================================================ */
+    .loader {
+      position: fixed; inset: 0; z-index: 999;
+      background: var(--ink);
+      display: flex; align-items: center; justify-content: center;
+      flex-direction: column;
+      gap: 2rem;
+      transition: opacity 0.8s, visibility 0.8s;
+    }
+    .loader.gone { opacity: 0; visibility: hidden; pointer-events: none; }
+    .loader-mark {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.25rem;
+      letter-spacing: 0.4em;
+      color: var(--gold);
+      text-transform: uppercase;
+    }
+    .loader-bar {
+      width: 240px; height: 1px; background: var(--line-2); position: relative; overflow: hidden;
+    }
+    .loader-bar::after {
+      content: ""; position: absolute; left: 0; top: 0; height: 100%; width: 0%;
+      background: var(--gold);
+      animation: loaderFill 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    @keyframes loaderFill { to { width: 100%; } }
+
+    /* ============================================================
+       3D CANVAS — Three.js scene fixed bg behind hero
+       ============================================================ */
+    .scene-canvas {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      width: 100%;
+      height: 100vh;
+      pointer-events: none;
+    }
+    .scene-canvas canvas { display: block; width: 100%; height: 100%; }
+
+    /* ============================================================
+       NAV
+       ============================================================ */
+    nav.nav-bar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+      padding: 1.5rem 0;
+      transition: background 0.5s, padding 0.4s, border-color 0.4s;
+      border-bottom: 1px solid transparent;
+      mix-blend-mode: difference;
+    }
+    nav.nav-bar.scrolled {
+      background: rgba(10,8,5,0.95);
+      backdrop-filter: blur(16px);
+      padding: 1rem 0;
+      border-bottom-color: var(--line);
+      mix-blend-mode: normal;
+    }
+    nav.nav-bar .nav-inner { display: flex; align-items: center; justify-content: space-between; }
+    nav.nav-bar .brand {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem; font-weight: 400; letter-spacing: 0.2em;
+      color: var(--cream); text-transform: uppercase;
+    }
+    nav.nav-bar .brand em { color: var(--gold); font-style: italic; }
+    nav.nav-bar ul { display: flex; gap: 2.5rem; list-style: none; font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; }
+    @media (max-width: 880px) { nav.nav-bar ul { display: none; } }
+
+    /* ============================================================
+       HERO with 3D scene
+       ============================================================ */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex; align-items: flex-end;
+      padding: 8rem 0 6rem;
+      isolation: isolate;
+    }
+    .hero-content { position: relative; z-index: 1; }
+    .hero h1 {
+      max-width: 14ch;
+      margin: 1.5rem 0 1.5rem;
+      mix-blend-mode: lighten;
+    }
+    .hero p.subtitle {
+      font-size: 1.125rem;
+      max-width: 50ch;
+      margin-bottom: 2.5rem;
+      color: var(--cream);
+      mix-blend-mode: lighten;
+    }
+    .hero .cta-row { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .hero-stars {
+      display: inline-flex; gap: 0.4rem;
+      color: var(--gold); font-size: 0.85rem;
+      letter-spacing: 0.2em;
+      margin-bottom: 0.5rem;
+    }
+
+    /* ============================================================
+       Scroll progress indicator
+       ============================================================ */
+    .scroll-progress {
+      position: fixed; top: 0; left: 0; right: 0; height: 2px;
+      background: rgba(244,237,224,0.05);
+      z-index: 60;
+    }
+    .scroll-progress::after {
+      content: ""; position: absolute; left: 0; top: 0; height: 100%;
+      width: var(--progress, 0%);
+      background: var(--gold);
+    }
+
+    /* ============================================================
+       SECTIONS shared
+       ============================================================ */
+    section { padding: 10rem 0; position: relative; }
+    @media (max-width: 768px) { section { padding: 6rem 0; } }
+    .section-head { max-width: 720px; margin-bottom: 5rem; }
+    .section-head .eyebrow { margin-bottom: 1.5rem; }
+    .section-head h2 { margin-bottom: 1.25rem; }
+
+    /* ============================================================
+       MANIFESTO
+       ============================================================ */
+    .manifesto {
+      text-align: center;
+      padding: 12rem 0;
+      background: linear-gradient(to bottom, var(--ink) 0%, var(--ink-2) 100%);
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+    .manifesto blockquote {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      font-style: italic;
+      font-weight: 300;
+      max-width: 24ch;
+      margin: 0 auto;
+      line-height: 1.25;
+    }
+    .manifesto cite {
+      display: block; font-style: normal;
+      font-size: 0.7rem; letter-spacing: 0.32em; text-transform: uppercase;
+      color: var(--gold); margin-top: 2rem;
+    }
+
+    /* ============================================================
+       SCROLL-CINEMA — video scrub Apple AirPods style
+       ============================================================ */
+    .scroll-cinema { position: relative; height: 280vh; background: var(--ink); }
+    .cinema-track { position: relative; height: 100%; }
+    .cinema-sticky {
+      position: sticky; top: 0; height: 100vh; width: 100%;
+      overflow: hidden; isolation: isolate;
+    }
+    .cinema-video { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .cinema-sticky::before {
+      content: ""; position: absolute; inset: 0; z-index: 1;
+      background: linear-gradient(180deg, rgba(10,8,5,0.5) 0%, rgba(10,8,5,0) 35%, rgba(10,8,5,0) 65%, rgba(10,8,5,0.95) 100%);
+      pointer-events: none;
+    }
+    .cinema-overlay {
+      position: absolute; inset: 0; z-index: 2;
+      display: flex; flex-direction: column; justify-content: space-between;
+      padding: clamp(2rem, 6vw, 5rem);
+      pointer-events: none;
+    }
+    .cinema-overlay h2 { font-size: clamp(2.5rem, 8vw, 7rem); max-width: 14ch; }
+    .cinema-progress-bar {
+      position: absolute; bottom: 0; left: 0; right: 0; z-index: 3;
+      height: 2px; background: rgba(244,237,224,0.10);
+    }
+    .cinema-progress-bar::after {
+      content: ""; position: absolute; left: 0; top: 0; height: 100%;
+      width: var(--cinema-progress, 0%);
+      background: var(--gold);
+    }
+
+    /* ============================================================
+       CAMERE 3D — CSS perspective tilt cards
+       ============================================================ */
+    .rooms {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+      gap: 1rem;
+      perspective: 1200px;
+    }
+    .room {
+      position: relative;
+      background: var(--ink-2);
+      border: 1px solid var(--line);
+      overflow: hidden;
+      transform-style: preserve-3d;
+      transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.5s;
+      will-change: transform;
+    }
+    .room:hover { border-color: var(--gold-deep); }
+    .room-img {
+      aspect-ratio: 4/5; overflow: hidden; position: relative;
+    }
+    .room-img img {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform 0.8s ease;
+    }
+    .room:hover .room-img img { transform: scale(1.05); }
+    .room-body { padding: 1.5rem 1.75rem 2rem; }
+    .room-body h3 { margin-bottom: 0.5rem; }
+    .room-meta {
+      display: flex; justify-content: space-between; align-items: baseline;
+      margin-top: 1rem; padding-top: 1rem;
+      border-top: 1px solid var(--line);
+      font-size: 0.875rem;
+    }
+    .room-meta .price-label { color: var(--mute); font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; }
+    .room-meta .price { color: var(--gold); font-size: 1.125rem; font-family: 'Cormorant Garamond', serif; font-style: italic; }
+
+    /* ============================================================
+       SPLIT (restaurant / spa)
+       ============================================================ */
+    .split { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+    .split.reverse > :first-child { order: 2; }
+    @media (max-width: 880px) { .split { grid-template-columns: 1fr; gap: 3rem; } .split.reverse > :first-child { order: 0; } }
+    .split-img { aspect-ratio: 4/5; overflow: hidden; }
+    .split-img img { width: 100%; height: 100%; object-fit: cover; }
+    .award-badge {
+      display: inline-flex; align-items: center; gap: 0.75rem;
+      padding: 0.6rem 1rem;
+      background: rgba(212,181,116,0.08);
+      border: 1px solid var(--gold-deep);
+      font-size: 0.7rem; letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1.25rem;
+    }
+    .award-badge::before { content: "★"; color: var(--gold); font-size: 1.1rem; }
+
+    /* ============================================================
+       FORM
+       ============================================================ */
+    .booking-form {
+      background: var(--ink-2); border: 1px solid var(--line);
+      padding: clamp(2.5rem, 6vw, 5rem);
+      max-width: 760px; margin: 4rem auto 0;
+    }
+    .booking-form .form-row { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; margin-bottom: 1.5rem; }
+    .booking-form .form-row.single { grid-template-columns: 1fr; }
+    @media (max-width: 600px) { .booking-form .form-row { grid-template-columns: 1fr; } }
+    .booking-form label {
+      display: block; font-size: 0.7rem; letter-spacing: 0.22em;
+      text-transform: uppercase; color: var(--gold); margin-bottom: 0.5rem;
+    }
+    .booking-form input, .booking-form select, .booking-form textarea {
+      width: 100%; padding: 1rem 1.125rem;
+      background: transparent; color: var(--cream);
+      border: 1px solid var(--line-2); border-radius: 0;
+      font-family: inherit; font-size: 0.9375rem;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .booking-form input:focus, .booking-form select:focus, .booking-form textarea:focus {
+      outline: none; border-color: var(--gold); background: rgba(212,181,116,0.04);
+    }
+    .booking-form textarea { min-height: 100px; resize: vertical; }
+    .booking-form .gdpr-row {
+      display: flex; align-items: flex-start; gap: 0.75rem; margin: 1.5rem 0;
+      font-size: 0.8125rem; color: var(--mute);
+    }
+    .booking-form .gdpr-row input[type="checkbox"] { width: auto; margin-top: 0.25rem; }
+    .booking-form .gdpr-row a { color: var(--cream-2); text-decoration: underline; }
+
+    /* ============================================================
+       FOOTER
+       ============================================================ */
+    footer {
+      background: var(--ink-2);
+      padding: 6rem 0 2rem;
+      border-top: 1px solid var(--line);
+    }
+    .footer-grid {
+      display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 3rem; margin-bottom: 4rem;
+    }
+    @media (max-width: 800px) { .footer-grid { grid-template-columns: 1fr 1fr; } }
+    .footer-grid h4 {
+      font-size: 0.7rem; letter-spacing: 0.32em; text-transform: uppercase;
+      color: var(--gold); font-family: 'Inter', sans-serif; font-weight: 500;
+      margin-bottom: 1.5rem;
+    }
+    .footer-grid ul { list-style: none; font-size: 0.875rem; }
+    .footer-grid ul li { margin-bottom: 0.6rem; }
+    .footer-grid ul a { color: var(--cream-2); }
+    .footer-brand .brand-mark {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.25rem; font-weight: 400; letter-spacing: 0.2em;
+      color: var(--cream); text-transform: uppercase; margin-bottom: 1rem; display: block;
+    }
+    .footer-brand .brand-mark em { color: var(--gold); font-style: italic; }
+    .footer-bottom {
+      padding-top: 2rem; border-top: 1px solid var(--line);
+      display: flex; justify-content: space-between;
+      font-size: 0.7rem; color: var(--mute); letter-spacing: 0.1em;
+      flex-wrap: wrap; gap: 1rem;
+    }
+
+    /* ============================================================
+       Reveal animations
+       ============================================================ */
+    .reveal { opacity: 0; transform: translateY(40px); transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), transform 1.2s cubic-bezier(0.16, 1, 0.3, 1); }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ============================================================
+       prefers-reduced-motion: skip 3D + animations
+       ============================================================ */
+    @media (prefers-reduced-motion: reduce) {
+      .scene-canvas { display: none !important; }
+      .scroll-cinema { height: auto; }
+      .cinema-sticky { position: relative; height: 60vh; }
+      .cinema-video { display: none !important; }
+      .cinema-sticky::after {
+        content: ""; position: absolute; inset: 0; z-index: 0;
+        background: url('https://picsum.photos/seed/cordillera-cinema-poster/1920/1080?fm=webp') center/cover;
+      }
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+
+    :focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+    @media (forced-colors: active) {
+      a, button { forced-color-adjust: none; }
+    }
+
+    /* Hero static fallback if Three.js fails to init */
+    .hero-fallback {
+      position: absolute; inset: 0; z-index: -1;
+      background: url('https://picsum.photos/seed/cordillera-villa-fog/1600/2000?fm=webp') center/cover;
+      opacity: 0.5;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Loader -->
+<div class="loader" id="loader" aria-hidden="true">
+  <span class="loader-mark">Villa Cordillera</span>
+  <div class="loader-bar"></div>
+</div>
+
+<!-- Scroll progress bar -->
+<div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
+
+<a href="#main" class="skip-link">Salta al contenuto principale</a>
+
+<!-- 3D scene fixed background canvas -->
+<div class="scene-canvas" id="sceneCanvas" aria-hidden="true"></div>
+
+<!-- ============================================================
+     NAV
+     ============================================================ -->
+<nav class="nav-bar" id="navBar" aria-label="Navigazione principale">
+  <div class="wrap nav-inner">
+    <a href="#" class="brand">Villa <em>Cordillera</em></a>
+    <ul role="menubar">
+      <li role="none"><a role="menuitem" href="#suite">Suite</a></li>
+      <li role="none"><a role="menuitem" href="#ristorante">Ristorante</a></li>
+      <li role="none"><a role="menuitem" href="#spa">Spa</a></li>
+      <li role="none"><a role="menuitem" href="#prenota">Concierge</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main id="main">
+
+<!-- ============================================================
+     HERO with 3D Three.js scene
+     ============================================================ -->
+<section class="hero" aria-labelledby="hero-title">
+  <div class="hero-fallback" aria-hidden="true"></div>
+  <div class="wrap hero-content reveal">
+    <div class="hero-stars" role="img" aria-label="5 stelle">★★★★★</div>
+    <p class="eyebrow">Bellagio · Lago di Como · Dal 1893</p>
+    <h1 id="hero-title">Una soglia<br><em>tra acqua</em><br>e cielo.</h1>
+    <p class="subtitle">Resort di otto suite editoriali sulla riva orientale del Lago di Como. Cucina d'autore, spa Maison Caulières, pontile privato per traversate al tramonto.</p>
+    <div class="cta-row">
+      <a href="#prenota" class="btn btn-primary">Riserva la suite</a>
+      <a href="#ristorante" class="btn btn-outline">Ristorante</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     MANIFESTO
+     ============================================================ -->
+<section class="manifesto">
+  <div class="wrap-narrow">
+    <p class="eyebrow" style="margin-bottom: 3rem;">Filosofia</p>
+    <blockquote>
+      Il lago non si vede.<br>
+      Si <em>ascolta</em>.<br>
+      Tutto il resto<br>
+      è una conseguenza.
+    </blockquote>
+    <cite>— I fratelli Cordillera, dal 1893</cite>
+  </div>
+</section>
+
+<!-- ============================================================
+     SCROLL-CINEMA — video scrub Apple style
+     ============================================================ -->
+<section class="scroll-cinema" id="cinema" aria-labelledby="cinema-title">
+  <div class="cinema-track" id="cinemaTrack">
+    <div class="cinema-sticky">
+      <video class="cinema-video" id="cinemaVideo"
+             muted playsinline preload="auto" disableremoteplayback
+             poster="https://picsum.photos/seed/cordillera-cinema-poster/1920/1080?fm=webp"
+             aria-hidden="true">
+        <source src="https://res.cloudinary.com/demo/video/upload/sea_turtle.mp4" type="video/mp4">
+      </video>
+      <div class="cinema-overlay">
+        <p class="eyebrow">Scorri · Lago · Ottobre</p>
+        <h2 id="cinema-title">Acqua, vento,<br><em>tempo</em>.</h2>
+      </div>
+      <div class="cinema-progress-bar"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SUITE
+     ============================================================ -->
+<section id="suite" aria-labelledby="suite-title" style="background: var(--ink);">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow">Suite</p>
+      <h2 id="suite-title"><em>Otto</em> stanze<br>scelte una a una.</h2>
+      <p>Ogni suite ha un nome, una storia e una vista distinta. Letti king, lenzuola di lino comasco, bagno in marmo Giallo Siena. Camino su richiesta.</p>
+    </div>
+
+    <div class="rooms">
+      <article class="room reveal" data-tilt>
+        <div class="room-img">
+          <img src="https://picsum.photos/seed/cordillera-suite-cipresso/640/800?fm=webp" alt="Suite Cipresso con balcone vista lago" width="640" height="800" loading="lazy" decoding="async">
+        </div>
+        <div class="room-body">
+          <h3>Suite Cipresso</h3>
+          <p>34 mq · vista lago · 2 ospiti.</p>
+          <div class="room-meta">
+            <span class="price-label">Da</span>
+            <span class="price">€680 / notte</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="room reveal" data-tilt>
+        <div class="room-img">
+          <img src="https://picsum.photos/seed/cordillera-suite-glicine/640/800?fm=webp" alt="Suite Glicine con loggia in pietra" width="640" height="800" loading="lazy" decoding="async">
+        </div>
+        <div class="room-body">
+          <h3>Suite Glicine</h3>
+          <p>42 mq · loggia in pietra · 2-3 ospiti.</p>
+          <div class="room-meta">
+            <span class="price-label">Da</span>
+            <span class="price">€880 / notte</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="room reveal" data-tilt>
+        <div class="room-img">
+          <img src="https://picsum.photos/seed/cordillera-suite-belvedere/640/800?fm=webp" alt="Suite Belvedere con terrazza panoramica" width="640" height="800" loading="lazy" decoding="async">
+        </div>
+        <div class="room-body">
+          <h3>Suite Belvedere</h3>
+          <p>58 mq · terrazza 360° · vasca freestanding · 2-4 ospiti.</p>
+          <div class="room-meta">
+            <span class="price-label">Da</span>
+            <span class="price">€1.280 / notte</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="room reveal" data-tilt>
+        <div class="room-img">
+          <img src="https://picsum.photos/seed/cordillera-suite-cordillera/640/800?fm=webp" alt="Suite Cordillera, l'attico storico della famiglia" width="640" height="800" loading="lazy" decoding="async">
+        </div>
+        <div class="room-body">
+          <h3>Suite Cordillera</h3>
+          <p>92 mq · attico storico · biblioteca · maggiordomo dedicato.</p>
+          <div class="room-meta">
+            <span class="price-label">Da</span>
+            <span class="price">€2.400 / notte</span>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     RISTORANTE
+     ============================================================ -->
+<section id="ristorante" aria-labelledby="rest-title" style="background: var(--ink-2);">
+  <div class="wrap">
+    <div class="split">
+      <div class="split-img reveal">
+        <img src="https://picsum.photos/seed/cordillera-ristorante/720/900?fm=webp" alt="Sala del ristorante d'autore Villa Cordillera" width="720" height="900" loading="lazy" decoding="async">
+      </div>
+      <div class="split-body reveal">
+        <span class="award-badge">Michelin · 2 stelle · 2025</span>
+        <p class="eyebrow">Ristorante</p>
+        <h2 id="rest-title">Cucina <em>di lago</em>,<br>memoria di confine.</h2>
+        <p>Chef <strong>Margherita Vionnet</strong>, formazione Bras (Laguiole) e Crippa (Piazza Duomo). Menu degustazione 7 e 11 portate. Carta vini con 480 etichette, di cui 90 della cantina di famiglia.</p>
+        <p>Aperto martedì-domenica, cena 19:30-22:00. Pranzo solo nei weekend (12:30-14:00).</p>
+        <div class="cta-row" style="margin-top: 2rem;">
+          <a href="#prenota" class="btn btn-primary">Prenota tavolo</a>
+          <a href="/menu.pdf" class="btn btn-outline">Carta &amp; menu</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SPA
+     ============================================================ -->
+<section id="spa" aria-labelledby="spa-title">
+  <div class="wrap">
+    <div class="split reverse">
+      <div class="split-img reveal">
+        <img src="https://picsum.photos/seed/cordillera-spa-piscina/720/900?fm=webp" alt="Piscina infinity Villa Cordillera vista Lago di Como" width="720" height="900" loading="lazy" decoding="async">
+      </div>
+      <div class="split-body reveal">
+        <p class="eyebrow">Spa · Maison Caulières</p>
+        <h2 id="spa-title"><em>Piscina infinity</em>,<br>aria di pietra.</h2>
+        <p>Spa esclusiva con piscina infinity riscaldata vista lago, sauna finlandese in cembro, hammam in marmo Giallo Siena, due cabine per trattamenti. Apertura riservata agli ospiti.</p>
+        <p>Linea cosmetica e oli essenziali firmati <strong>Maison Caulières</strong>. Rituali con erbe del Triangolo Lariano.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     PRENOTA / CONCIERGE
+     ============================================================ -->
+<section id="prenota" aria-labelledby="book-title" style="background: var(--ink-2);">
+  <div class="wrap-narrow">
+    <div class="section-head reveal" style="text-align: center; margin-left: auto; margin-right: auto;">
+      <p class="eyebrow" style="justify-content: center;">Concierge</p>
+      <h2 id="book-title">Raccontaci il<br>vostro <em>desiderio</em>.</h2>
+      <p style="margin-left: auto; margin-right: auto;">Risposta entro 24h. Per soggiorni di più di 4 notti: pacchetti su misura con esperienze incluse, transfer Linate o Milano Centrale, traversate private del lago.</p>
+    </div>
+
+    <form class="booking-form reveal" action="mailto:concierge@villacordillera.it" method="post" enctype="text/plain">
+      <div class="form-row">
+        <div>
+          <label for="bf-checkin">Check-in</label>
+          <input type="date" id="bf-checkin" name="checkin" required>
+        </div>
+        <div>
+          <label for="bf-checkout">Check-out</label>
+          <input type="date" id="bf-checkout" name="checkout" required>
+        </div>
+      </div>
+      <div class="form-row">
+        <div>
+          <label for="bf-guests">Ospiti</label>
+          <select id="bf-guests" name="guests" required>
+            <option value="">Seleziona</option>
+            <option>2 adulti</option>
+            <option>2 adulti + bambini</option>
+            <option>4 adulti</option>
+            <option>Altro (specifica)</option>
+          </select>
+        </div>
+        <div>
+          <label for="bf-suite">Suite preferita</label>
+          <select id="bf-suite" name="suite">
+            <option value="">Da consigliare</option>
+            <option>Suite Cipresso</option>
+            <option>Suite Glicine</option>
+            <option>Suite Belvedere</option>
+            <option>Suite Cordillera</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div>
+          <label for="bf-name">Nome e cognome</label>
+          <input type="text" id="bf-name" name="name" required autocomplete="name">
+        </div>
+        <div>
+          <label for="bf-email">Email</label>
+          <input type="email" id="bf-email" name="email" required autocomplete="email">
+        </div>
+      </div>
+      <div class="form-row single">
+        <div>
+          <label for="bf-tel">Telefono</label>
+          <input type="tel" id="bf-tel" name="tel" required autocomplete="tel" placeholder="+39 ...">
+        </div>
+      </div>
+      <div class="form-row single">
+        <div>
+          <label for="bf-notes">Note (occasione, esigenze, esperienze interessate)</label>
+          <textarea id="bf-notes" name="notes" placeholder="Anniversario, viaggio di nozze, esigenze alimentari, traversata privata, esperienze in cantina..."></textarea>
+        </div>
+      </div>
+      <div class="gdpr-row">
+        <input type="checkbox" id="bf-gdpr" name="gdpr" required>
+        <label for="bf-gdpr" style="margin: 0; text-transform: none; letter-spacing: 0; font-size: inherit;">Acconsento al trattamento dei dati per essere ricontattato (GDPR art.6 lett.a). <a href="/privacy">Privacy</a></label>
+      </div>
+      <button type="submit" class="btn btn-primary" style="width: 100%; min-height: 60px;">Invia richiesta</button>
+    </form>
+  </div>
+</section>
+
+</main>
+
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
+<footer aria-labelledby="footer-title">
+  <div class="wrap">
+    <h2 id="footer-title" style="position: absolute; left: -9999px;">Footer</h2>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <span class="brand-mark">Villa <em>Cordillera</em></span>
+        <p style="font-size: 0.875rem; max-width: 30ch;">Resort 5 stelle sulla riva orientale del Lago di Como. Dal 1893 nelle mani della famiglia Cordillera.</p>
+        <p style="margin-top: 1rem; font-size: 0.7rem; letter-spacing: 0.1em;">CIN  · P.IVA </p>
+      </div>
+      <div>
+        <h4>Resort</h4>
+        <ul>
+          <li><a href="#suite">Suite</a></li>
+          <li><a href="#ristorante">Ristorante</a></li>
+          <li><a href="#spa">Spa</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Concierge</h4>
+        <ul>
+          <li><a href="tel:+390310000000">+39 031 000 0000</a></li>
+          <li><a href="mailto:concierge@villacordillera.it">concierge@villacordillera.it</a></li>
+          <li>Bellagio (CO) 22021</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Social</h4>
+        <ul>
+          <li><a href="https://www.instagram.com/villacordillera" rel="noopener">Instagram</a></li>
+          <li><a href="/privacy">Privacy</a></li>
+          <li><a href="/cookies">Cookie</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Villa Cordillera</span>
+      <span>Site by <a href="https://setpointstudio.com" rel="noopener">Setpoint Studio · Tier 3D Premium</a></span>
+    </div>
+  </div>
+</footer>
+
+<!-- ============================================================
+     SCRIPTS
+     ============================================================ -->
+
+<!-- Three.js ESM via importmap (jsdelivr CDN) -->
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.min.js"
+  }
+}
+</script>
+
+<!-- GSAP + ScrollTrigger (with SRI hashes) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha384-g4NTh/Iv5PPU4xPyhEWqPcwtNXOvdaDI8LLnyYfyNZOjKJeYQyjzQ9X5275eBjpt" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" integrity="sha384-Z3REaz79l2IaAZqJsSABtTbhjgOUYyV3p90XNnAPCSHg3EMTz1fouunq9WZRtj3d" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script type="module">
+  // ============================================================
+  // TIER 3D PREMIUM €2900-3500 — Three.js scroll-driven scene
+  // Pattern Codrops Nov 2025: GSAP scrub + camera Z animation
+  // through textured image planes in fog-rendered 3D space.
+  // ============================================================
+
+  import * as THREE from 'three';
+
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const canvasContainer = document.getElementById('sceneCanvas');
+  if (prefersReduced || !canvasContainer || !window.gsap) {
+    // Skip 3D init: hero fallback poster shows
+    if (canvasContainer) canvasContainer.style.display = 'none';
+  } else {
+    initScene();
+  }
+
+  // Loader fade
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      const loader = document.getElementById('loader');
+      if (loader) loader.classList.add('gone');
+    }, 1500);
+  });
+
+  // Nav scroll
+  (function() {
+    const nav = document.getElementById('navBar');
+    if (!nav) return;
+    function onScroll() {
+      if (window.scrollY > 40) nav.classList.add('scrolled');
+      else nav.classList.remove('scrolled');
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  })();
+
+  // Scroll progress
+  (function() {
+    const bar = document.getElementById('scrollProgress');
+    if (!bar) return;
+    function onScroll() {
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      const p = max > 0 ? (window.scrollY / max) * 100 : 0;
+      bar.style.setProperty('--progress', p.toFixed(1) + '%');
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  })();
+
+  // Reveal IntersectionObserver
+  (function() {
+    const els = document.querySelectorAll('.reveal');
+    if (prefersReduced || !('IntersectionObserver' in window)) {
+      els.forEach(el => el.classList.add('visible'));
+      return;
+    }
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          io.unobserve(e.target);
+        }
+      });
+    }, { rootMargin: '0px 0px -10% 0px', threshold: 0.05 });
+    els.forEach(el => io.observe(el));
+  })();
+
+  // 3D card tilt on mouse (only desktop with hover capability)
+  (function() {
+    if (prefersReduced) return;
+    const canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    if (!canHover) return;
+    document.querySelectorAll('[data-tilt]').forEach(card => {
+      card.addEventListener('mousemove', e => {
+        const r = card.getBoundingClientRect();
+        const x = (e.clientX - r.left) / r.width - 0.5;
+        const y = (e.clientY - r.top) / r.height - 0.5;
+        card.style.transform = `perspective(1200px) rotateY(${x * 6}deg) rotateX(${-y * 6}deg) translateZ(8px)`;
+      });
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = '';
+      });
+    });
+  })();
+
+  // Cinema scroll-scrub
+  (function() {
+    const video = document.getElementById('cinemaVideo');
+    const track = document.getElementById('cinemaTrack');
+    const section = document.getElementById('cinema');
+    if (!video || !track || !section || prefersReduced) {
+      if (video && prefersReduced) video.pause && video.pause();
+      return;
+    }
+    video.removeAttribute('autoplay');
+    let ready = false;
+    let lastTime = -1;
+    let ticking = false;
+    const progressBar = section.querySelector('.cinema-progress-bar');
+
+    function onReady() { ready = true; try { video.pause(); } catch(e) {} onScroll(); }
+    if (video.readyState >= 2) onReady();
+    else {
+      video.addEventListener('loadedmetadata', onReady, { once: true });
+      video.addEventListener('canplay', onReady, { once: true });
+    }
+    function onScroll() {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(applyScrub);
+      }
+    }
+    function applyScrub() {
+      ticking = false;
+      if (!ready || !isFinite(video.duration) || video.duration === 0) return;
+      const rect = track.getBoundingClientRect();
+      const scrollableHeight = rect.height - window.innerHeight;
+      if (scrollableHeight <= 0) return;
+      const raw = -rect.top / scrollableHeight;
+      const progress = Math.max(0, Math.min(1, raw));
+      const target = video.duration * progress;
+      if (Math.abs(target - lastTime) > 0.04) {
+        try { video.currentTime = target; lastTime = target; } catch(e) {}
+      }
+      if (progressBar) {
+        progressBar.style.setProperty('--cinema-progress', (progress * 100).toFixed(1) + '%');
+      }
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+  })();
+
+  // ============================================================
+  // 3D SCENE INIT (Three.js)
+  // - Fog-rendered scene with 4 image planes at varying Z depth
+  // - GSAP ScrollTrigger animates camera.position.z from 14 -> -90
+  //   over the .hero section scroll range (scrub: true)
+  // - Mouse parallax adds gentle camera rotation
+  // - Particle system (gold dust) with sin/cos motion
+  // - Resize handler keeps aspect ratio
+  // - Cleanup: dispose textures/geometries on pagehide
+  // ============================================================
+  function initScene() {
+    const container = canvasContainer;
+    const w = window.innerWidth;
+    const h = window.innerHeight;
+
+    const scene = new THREE.Scene();
+    scene.fog = new THREE.Fog(0x0A0805, 12, 90);
+
+    const camera = new THREE.PerspectiveCamera(50, w / h, 0.1, 200);
+    camera.position.set(0, 0, 14);
+    camera.lookAt(0, 0, 0);
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(w, h);
+    renderer.setClearColor(0x0A0805, 1);
+    container.appendChild(renderer.domElement);
+
+    // Lights
+    const ambient = new THREE.AmbientLight(0xfff5e0, 0.4);
+    scene.add(ambient);
+    const dir = new THREE.DirectionalLight(0xD4B574, 0.8);
+    dir.position.set(5, 8, 5);
+    scene.add(dir);
+
+    // Image planes — Picsum textures at varying Z depth
+    const loader = new THREE.TextureLoader();
+    loader.crossOrigin = 'anonymous';
+    const planes = [];
+    const PLANE_DEFS = [
+      { seed: 'cordillera-3d-villa', z: 0,    x: 0,    y: 0,   w: 14, h: 18, rotY: 0    },
+      { seed: 'cordillera-3d-lake',  z: -25,  x: -8,   y: 1,   w: 16, h: 9,  rotY: 0.3  },
+      { seed: 'cordillera-3d-suite', z: -50,  x: 7,    y: -2,  w: 12, h: 16, rotY: -0.4 },
+      { seed: 'cordillera-3d-fog',   z: -78,  x: -3,   y: 3,   w: 28, h: 16, rotY: 0    },
+    ];
+    PLANE_DEFS.forEach((def, i) => {
+      const tex = loader.load(`https://picsum.photos/seed/${def.seed}/1024/1024?fm=webp`);
+      tex.colorSpace = THREE.SRGBColorSpace;
+      const geom = new THREE.PlaneGeometry(def.w, def.h);
+      const mat = new THREE.MeshLambertMaterial({ map: tex, transparent: true, opacity: 0.95, side: THREE.DoubleSide });
+      const plane = new THREE.Mesh(geom, mat);
+      plane.position.set(def.x, def.y, def.z);
+      plane.rotation.y = def.rotY;
+      scene.add(plane);
+      planes.push(plane);
+    });
+
+    // Particle system — gold dust
+    const PARTICLE_COUNT = 600;
+    const positions = new Float32Array(PARTICLE_COUNT * 3);
+    const speeds = new Float32Array(PARTICLE_COUNT);
+    for (let i = 0; i < PARTICLE_COUNT; i++) {
+      positions[i*3]   = (Math.random() - 0.5) * 80;
+      positions[i*3+1] = (Math.random() - 0.5) * 60;
+      positions[i*3+2] = -Math.random() * 100;
+      speeds[i] = 0.3 + Math.random() * 0.7;
+    }
+    const partGeom = new THREE.BufferGeometry();
+    partGeom.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    const partMat = new THREE.PointsMaterial({
+      color: 0xD4B574, size: 0.08, transparent: true, opacity: 0.7,
+      sizeAttenuation: true, blending: THREE.AdditiveBlending, depthWrite: false,
+    });
+    const particles = new THREE.Points(partGeom, partMat);
+    scene.add(particles);
+
+    // Mouse parallax target
+    const mouseTarget = { x: 0, y: 0 };
+    const cameraEuler = { rotX: 0, rotY: 0 };
+    window.addEventListener('mousemove', e => {
+      mouseTarget.x = (e.clientX / window.innerWidth - 0.5);
+      mouseTarget.y = (e.clientY / window.innerHeight - 0.5);
+    }, { passive: true });
+
+    // GSAP ScrollTrigger — camera Z animation tied to hero scroll
+    if (window.gsap && window.ScrollTrigger) {
+      window.gsap.registerPlugin(window.ScrollTrigger);
+      const heroEl = document.querySelector('.hero');
+      window.gsap.to(camera.position, {
+        z: -85,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: heroEl,
+          start: 'top top',
+          end: 'bottom top',
+          scrub: 0.6,
+        },
+      });
+      // Slight camera Y shift for cinematic feel
+      window.gsap.to(camera.position, {
+        y: 4,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: heroEl,
+          start: 'top top',
+          end: 'bottom top',
+          scrub: 1,
+        },
+      });
+    }
+
+    // Render loop
+    let raf;
+    let lastTime = performance.now();
+    function tick(now) {
+      raf = requestAnimationFrame(tick);
+      const dt = Math.min(0.05, (now - lastTime) / 1000);
+      lastTime = now;
+
+      // Particle drift
+      const posArr = partGeom.attributes.position.array;
+      for (let i = 0; i < PARTICLE_COUNT; i++) {
+        posArr[i*3+1] += speeds[i] * dt * 0.3;
+        if (posArr[i*3+1] > 30) posArr[i*3+1] = -30;
+        posArr[i*3] += Math.sin(now * 0.0003 + i) * dt * 0.1;
+      }
+      partGeom.attributes.position.needsUpdate = true;
+
+      // Camera rotation (mouse parallax) — eased
+      cameraEuler.rotY += (mouseTarget.x * 0.08 - cameraEuler.rotY) * 0.05;
+      cameraEuler.rotX += (-mouseTarget.y * 0.05 - cameraEuler.rotX) * 0.05;
+      camera.rotation.y = cameraEuler.rotY;
+      camera.rotation.x = cameraEuler.rotX;
+
+      // Plane gentle rotation Y
+      planes.forEach((p, i) => {
+        p.rotation.z = Math.sin(now * 0.0001 * (i+1)) * 0.02;
+      });
+
+      renderer.render(scene, camera);
+    }
+    raf = requestAnimationFrame(tick);
+
+    // Resize
+    function onResize() {
+      const W = window.innerWidth;
+      const H = window.innerHeight;
+      camera.aspect = W / H;
+      camera.updateProjectionMatrix();
+      renderer.setSize(W, H);
+    }
+    window.addEventListener('resize', onResize);
+
+    // Cleanup
+    window.addEventListener('pagehide', () => {
+      cancelAnimationFrame(raf);
+      planes.forEach(p => {
+        p.geometry.dispose();
+        if (p.material.map) p.material.map.dispose();
+        p.material.dispose();
+      });
+      partGeom.dispose();
+      partMat.dispose();
+      renderer.dispose();
+    });
+  }
+</script>
+
+</body>
+</html>

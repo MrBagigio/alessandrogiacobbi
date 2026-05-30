@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="it-IT">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0E0B08">
+  <!-- audit-100-100 hardening v1 -->
+  <link rel="canonical" href="https://example.com/">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta name="robots" content="index,follow,max-image-preview:large">
+  <meta name="format-detection" content="telephone=no">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://images.unsplash.com https://picsum.photos https://fastly.picsum.photos; connect-src 'self'; media-src 'self' https://res.cloudinary.com https://*.bunnycdn.com data: blob:; base-uri 'self'; form-action 'self' mailto:">
+<title>Bellezza Naturale — Centro estetico boutique a Schio (VI)</title>
+<meta name="description" content="Centro estetico boutique a Schio. Trattamenti viso personalizzati, manicure, pedicure, ceretta. Prenota online in 30 secondi.">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BeautySalon",
+  "name": "Bellezza Naturale",
+  "description": "Centro estetico boutique a Schio (VI). Trattamenti viso personalizzati, manicure, pedicure, ceretta.",
+  "image": "[DA SOSTITUIRE — URL foto centro]",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Schio",
+    "addressRegion": "VI",
+    "addressCountry": "IT",
+    "streetAddress": "",
+    "postalCode": "36015"
+  },
+  "telephone": "",
+  "url": "",
+  "priceRange": "€€",
+  "openingHoursSpecification": [
+    {"@type": "OpeningHoursSpecification", "dayOfWeek": ["Tuesday","Wednesday","Thursday","Friday","Saturday"], "opens": "09:00", "closes": "19:00"}
+  ],
+  "sameAs": []
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600;700&family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600&display=swap" rel="stylesheet">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha384-g4NTh/Iv5PPU4xPyhEWqPcwtNXOvdaDI8LLnyYfyNZOjKJeYQyjzQ9X5275eBjpt" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" integrity="sha384-Z3REaz79l2IaAZqJsSABtTbhjgOUYyV3p90XNnAPCSHg3EMTz1fouunq9WZRtj3d" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: #0E0B08; color: #F4EDE2; font-family: 'Inter Tight', system-ui, sans-serif; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+  body { font-feature-settings: 'cv02','cv03','cv04','cv11'; }
+  .display { font-family: 'Fraunces', Georgia, serif; font-weight: 400; letter-spacing: -0.025em; }
+  .italic-display { font-family: 'Fraunces', serif; font-style: italic; font-weight: 300; }
+
+  /* Color tokens */
+  :root {
+    --ink: #0E0B08;
+    --cream: #F4EDE2;
+    --blush: #E4B5A6;
+    --rust: #C26B4F;
+    --bronze: #8B5A3C;
+    --sage: #6B7A5E;
+    --line: rgba(244,237,226,0.12);
+  }
+
+  /* Custom cursor */
+  .cursor { position: fixed; pointer-events: none; z-index: 9999; mix-blend-mode: difference; transition: transform 0.15s cubic-bezier(0.16, 1, 0.3, 1); }
+  .cursor-dot { width: 8px; height: 8px; background: #F4EDE2; border-radius: 50%; transform: translate(-50%, -50%); }
+  .cursor-ring { width: 40px; height: 40px; border: 1px solid rgba(244,237,226,0.4); border-radius: 50%; transform: translate(-50%, -50%); transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), width 0.3s, height 0.3s; }
+  .cursor.hover .cursor-ring { width: 80px; height: 80px; border-color: rgba(244,237,226,0.8); }
+  @media (max-width: 768px) { .cursor { display: none; } body { cursor: auto; } }
+  body { cursor: none; }
+
+  /* Noise overlay */
+  body::before {
+    content: ''; position: fixed; inset: 0; z-index: 1; pointer-events: none; opacity: 0.04;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  }
+
+  /* Fluid typography */
+  .h-mega { font-size: clamp(3.5rem, 14vw, 18rem); line-height: 0.85; }
+  .h-hero { font-size: clamp(3rem, 10vw, 11rem); line-height: 0.9; }
+  .h-section { font-size: clamp(2.5rem, 7vw, 7rem); line-height: 0.95; }
+
+  /* Marquee */
+  .marquee { display: flex; gap: 4rem; animation: marquee 40s linear infinite; white-space: nowrap; }
+  @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+  /* Reveal masks */
+  .reveal { overflow: hidden; }
+  .reveal > .reveal-inner { display: inline-block; transform: translateY(110%); opacity: 0; }
+  .reveal-active > .reveal-inner { transform: translateY(0); opacity: 1; transition: transform 1s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.8s ease; }
+
+  /* Image reveal */
+  .img-reveal { position: relative; overflow: hidden; }
+  .img-reveal::after { content: ''; position: absolute; inset: 0; background: var(--ink); transform-origin: bottom; transition: transform 1.2s cubic-bezier(0.77, 0, 0.175, 1); }
+  .img-reveal.in-view::after { transform: scaleY(0); }
+  .img-reveal img, .img-reveal .placeholder { transition: transform 1.4s cubic-bezier(0.19, 1, 0.22, 1); transform: scale(1.15); }
+  .img-reveal.in-view img, .img-reveal.in-view .placeholder { transform: scale(1); }
+
+  /* Card tilt */
+  .tilt-card { transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); transform-style: preserve-3d; }
+
+  /* Magnetic */
+  .magnetic { display: inline-block; transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
+
+  /* Layout */
+  .container { max-width: 1440px; margin: 0 auto; padding: 0 2rem; position: relative; z-index: 2; }
+  @media (max-width: 768px) { .container { padding: 0 1.25rem; } }
+
+  /* Buttons */
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 0.75rem;
+    background: var(--cream); color: var(--ink);
+    padding: 1.1rem 2rem; border-radius: 999px;
+    font-weight: 500; font-size: 0.95rem;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), background 0.3s;
+    text-decoration: none;
+    overflow: hidden; position: relative;
+  }
+  .btn-primary::after {
+    content: ''; position: absolute; inset: 0; background: var(--rust);
+    transform: translateY(101%); transition: transform 0.5s cubic-bezier(0.77, 0, 0.175, 1); z-index: -1;
+  }
+  .btn-primary:hover::after { transform: translateY(0); }
+  .btn-primary:hover { color: var(--cream); }
+
+  .btn-ghost {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    border: 1px solid var(--line); color: var(--cream);
+    padding: 1.05rem 1.8rem; border-radius: 999px;
+    font-size: 0.95rem; text-decoration: none;
+    transition: border-color 0.3s, color 0.3s;
+  }
+  .btn-ghost:hover { border-color: var(--cream); }
+
+  /* Service cards */
+  .service-card {
+    border: 1px solid var(--line); border-radius: 1.5rem;
+    padding: 2.5rem; aspect-ratio: 1/1;
+    display: flex; flex-direction: column; justify-content: space-between;
+    position: relative; overflow: hidden;
+    transition: border-color 0.4s, background 0.6s;
+    cursor: none;
+  }
+  .service-card::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(circle at var(--mx, 50%) var(--my, 50%), rgba(228,181,166,0.15), transparent 60%);
+    opacity: 0; transition: opacity 0.4s;
+  }
+  .service-card:hover { border-color: rgba(244,237,226,0.3); }
+  .service-card:hover::before { opacity: 1; }
+  .service-card .num { font-family: 'Fraunces', serif; font-style: italic; color: var(--blush); font-size: 0.85rem; }
+  .service-card .arrow { transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+  .service-card:hover .arrow { transform: translate(8px, -8px) rotate(-45deg); }
+
+  /* Listino accordion */
+  .price-row { padding: 1.25rem 0; border-bottom: 1px solid var(--line); display: grid; grid-template-columns: 1fr auto auto; align-items: center; gap: 2rem; transition: padding 0.3s; }
+  .price-row:hover { padding-left: 1rem; }
+  .price-row .price-label { font-size: clamp(1.2rem, 2vw, 1.6rem); font-family: 'Fraunces', serif; }
+  .price-row .price-time { font-size: 0.85rem; color: rgba(244,237,226,0.5); font-variant-numeric: tabular-nums; }
+  .price-row .price-amount { font-size: clamp(1.4rem, 2.5vw, 2rem); font-family: 'Fraunces', serif; color: var(--blush); font-variant-numeric: tabular-nums; }
+
+  /* Scroll progress */
+  .scroll-progress { position: fixed; top: 0; left: 0; height: 2px; background: var(--blush); z-index: 9998; transform-origin: left; transform: scaleX(0); transition: transform 0.1s linear; }
+
+  /* Sticky nav */
+  .nav { position: fixed; top: 1.5rem; left: 50%; transform: translateX(-50%); z-index: 100; padding: 0.5rem 0.5rem 0.5rem 1.5rem; background: rgba(14,11,8,0.6); backdrop-filter: blur(20px); border: 1px solid var(--line); border-radius: 999px; display: flex; align-items: center; gap: 2rem; transition: top 0.4s; }
+  @media (max-width: 768px) { .nav { width: calc(100% - 2rem); justify-content: space-between; } .nav-links { display: none; } }
+  .nav-links { display: flex; gap: 1.5rem; font-size: 0.85rem; }
+  .nav-links a { color: rgba(244,237,226,0.6); text-decoration: none; transition: color 0.3s; }
+  .nav-links a:hover { color: var(--cream); }
+
+  /* Image placeholders */
+  .ph-rect { background: linear-gradient(135deg, #1A1410 0%, #2B1F18 100%); border: 1px solid var(--line); display: flex; align-items: center; justify-content: center; color: rgba(244,237,226,0.2); font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; font-family: 'Inter Tight', sans-serif; }
+
+  /* Bento grid asymmetric */
+  .bento { display: grid; grid-template-columns: repeat(12, 1fr); gap: 1rem; }
+  @media (max-width: 768px) { .bento { grid-template-columns: 1fr; } .bento > * { grid-column: 1 / -1 !important; } }
+
+  /* Sections */
+  section { position: relative; }
+  .section-pad { padding: 8rem 0; }
+  @media (max-width: 768px) { .section-pad { padding: 4rem 0; } }
+
+  /* WhatsApp pulse */
+  @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+  .whatsapp-fab { position: fixed; bottom: 2rem; right: 2rem; width: 60px; height: 60px; background: #25D366; border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 50; animation: pulse 3s ease-in-out infinite; box-shadow: 0 8px 24px rgba(37,211,102,0.3); }
+  @media (max-width: 768px) { .whatsapp-fab { bottom: 1.25rem; right: 1.25rem; width: 52px; height: 52px; } }
+
+  /* Selection */
+  ::selection { background: var(--rust); color: var(--cream); }
+
+  /* Loader */
+  .loader { position: fixed; inset: 0; background: var(--ink); z-index: 99999; display: flex; align-items: center; justify-content: center; pointer-events: none; }
+  .loader.gone { transform: translateY(-100%); transition: transform 1.2s cubic-bezier(0.77, 0, 0.175, 1); }
+  .loader-text { font-family: 'Fraunces', serif; font-size: 4rem; font-weight: 300; }
+
+  /* Scroll-driven service number */
+  .service-list-num { font-family: 'Fraunces', serif; font-style: italic; font-size: clamp(8rem, 20vw, 22rem); line-height: 0.85; color: var(--blush); }
+
+  /* audit-100-100: a11y prefers-reduced-motion + focus-visible */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+  :focus-visible { outline: 2px solid currentColor; outline-offset: 3px; border-radius: 2px; }
+  @media (forced-colors: active) {
+    a, button { forced-color-adjust: none; }
+  }
+
+  /* audit-100-100: skip link a11y WCAG 2.4.1 */
+  .audit-skip-link { position: absolute; left: -9999px; top: 0; background: #000; color: #fff; padding: 12px 16px; z-index: 10000; text-decoration: none; font: bold 14px/1 system-ui, sans-serif; border-radius: 0 0 8px 0; }
+  .audit-skip-link:focus { left: 0; outline: 3px solid #FFD700; outline-offset: 2px; }
+
+
+  /* audit-100-100 phase-2e: prevent horizontal scroll on desktop */
+  html, body { overflow-x: hidden; max-width: 100vw; }
+
+  /* Phase 2.I contrast fix — darker text on dark bg */
+  body { color: #F8F1E5 !important; }
+  span, p, .lang-row b { color: #F8F1E5 !important; }
+  .testi-attr, .footer p { color: #E8DCC8 !important; }
+  </style>
+  <!-- audit-100-100 phase-2c preload-critical -->
+  <!-- audit-100-100 phase-2h landmark+labels -->
+  <!-- audit-100-100 phase-2i contrast-fix -->
+</head>
+<body>
+<main id="main">
+
+<a href="#main" class="audit-skip-link">Salta al contenuto</a>
+
+<!-- Loader -->
+<div class="loader" id="loader">
+  <span class="loader-text" id="loaderText">Bellezza</span>
+</div>
+
+<!-- Scroll progress -->
+<div class="scroll-progress" id="scrollProgress"></div>
+
+<!-- Custom cursor -->
+<div class="cursor" id="cursor">
+  <div class="cursor-ring" style="position:absolute;"></div>
+  <div class="cursor-dot" style="position:absolute;"></div>
+</div>
+
+<!-- Nav -->
+<nav class="nav">
+  <a href="#" style="font-family:'Fraunces',serif;font-size:1rem;letter-spacing:-0.02em;text-decoration:none;color:var(--cream);">Bellezza<span style="font-style:italic;color:var(--blush);">Naturale</span></a>
+  <div class="nav-links">
+    <a href="#servizi">Servizi</a>
+    <a href="#listino">Listino</a>
+    <a href="#chi">Sara</a>
+    <a href="#prenota">Prenota</a>
+  </div>
+  <a href="#prenota" class="btn-primary" style="padding:0.6rem 1.2rem;font-size:0.85rem;">
+    Prenota
+    <span style="display:inline-block;width:6px;height:6px;background:var(--rust);border-radius:50%;"></span>
+  </a>
+</nav>
+
+<!-- HERO -->
+<section style="min-height:100vh;display:flex;align-items:flex-end;padding:8rem 0 4rem;">
+  <div class="container" style="width:100%;">
+
+    <!-- Top tag -->
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6rem;font-size:0.8rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(244,237,226,0.5);" class="reveal-trigger">
+      <div class="reveal"><span class="reveal-inner">— Schio (VI) · Estab. 2018</span></div>
+      <div class="reveal"><span class="reveal-inner">★ 4.9 · 127 Google reviews</span></div>
+    </div>
+
+    <!-- Mega title -->
+    <h1 class="display h-hero" style="margin-bottom:3rem;">
+      <span class="reveal" style="display:block;"><span class="reveal-inner">Bellezza</span></span>
+      <span class="reveal" style="display:block;"><span class="reveal-inner italic-display" style="color:var(--blush);">naturale.</span></span>
+      <span class="reveal" style="display:block;color:rgba(244,237,226,0.4);"><span class="reveal-inner">Senza fretta.</span></span>
+    </h1>
+
+    <!-- Subline grid -->
+    <div style="display:grid;grid-template-columns:1fr auto;gap:3rem;align-items:end;margin-bottom:3rem;" class="hero-grid">
+      <div class="reveal-trigger">
+        <p class="reveal" style="max-width:520px;font-size:1.05rem;line-height:1.6;color:rgba(244,237,226,0.7);"><span class="reveal-inner">Centro estetico a Schio. Trattamenti viso, manicure, ceretta — un cliente alla volta, mai in sovrapposizione. Prenotazione online in 30 secondi.</span></p>
+      </div>
+      <div style="display:flex;gap:0.75rem;flex-wrap:wrap;">
+        <a href="#prenota" class="btn-primary magnetic">
+          Prenota online
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+        </a>
+        <a href="tel:+390445123456" class="btn-ghost magnetic">
+          ☎ 0445 123 456
+        </a>
+      </div>
+    </div>
+
+    <!-- Bottom strip -->
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:2rem;padding-top:3rem;border-top:1px solid var(--line);font-size:0.8rem;color:rgba(244,237,226,0.5);" class="hero-strip">
+      <div><span style="display:block;font-family:'Fraunces',serif;font-style:italic;color:var(--cream);font-size:1.4rem;margin-bottom:0.4rem;">12 anni</span>esperienza</div>
+      <div><span style="display:block;font-family:'Fraunces',serif;font-style:italic;color:var(--cream);font-size:1.4rem;margin-bottom:0.4rem;">3 saloni</span>di formazione</div>
+      <div><span style="display:block;font-family:'Fraunces',serif;font-style:italic;color:var(--cream);font-size:1.4rem;margin-bottom:0.4rem;">€18 — €65</span>range prezzi</div>
+      <div><span style="display:block;font-family:'Fraunces',serif;font-style:italic;color:var(--cream);font-size:1.4rem;margin-bottom:0.4rem;">Mar — Sab</span>aperto</div>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<section style="padding:3rem 0;border-block:1px solid var(--line);overflow:hidden;">
+  <div class="marquee" style="font-family:'Fraunces',serif;font-style:italic;font-size:clamp(3rem,8vw,7rem);font-weight:300;color:rgba(244,237,226,0.3);">
+    <span>Manicure · Pedicure · Pulizia viso · Ceretta · Trattamenti anti-age · </span>
+    <span>Manicure · Pedicure · Pulizia viso · Ceretta · Trattamenti anti-age · </span>
+  </div>
+</section>
+
+<!-- BENTO showcase -->
+<section class="section-pad">
+  <div class="container">
+    <div style="display:flex;justify-content:space-between;align-items:end;margin-bottom:4rem;flex-wrap:wrap;gap:2rem;">
+      <div>
+        <p style="font-size:0.75rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--blush);margin-bottom:1rem;">— 01 / Il centro</p>
+        <h2 class="display h-section" style="max-width:900px;">
+          Uno spazio<br><span class="italic-display" style="color:var(--blush);">essenziale.</span>
+        </h2>
+      </div>
+      <p style="max-width:380px;font-size:1.05rem;line-height:1.5;color:rgba(244,237,226,0.6);">
+        Niente musica alta, niente profumi sintetici. Una sala unica, illuminazione calda, prodotti italiani certificati.
+      </p>
+    </div>
+
+    <div class="bento">
+      <div class="img-reveal" style="grid-column:span 7;aspect-ratio:5/3;border-radius:1rem;">
+        <div class="placeholder ph-rect" style="width:100%;height:100%;">interno · sala trattamenti</div>
+      </div>
+      <div class="img-reveal" style="grid-column:span 5;aspect-ratio:1/1.2;border-radius:1rem;">
+        <div class="placeholder ph-rect" style="width:100%;height:100%;">dettaglio mani · macro</div>
+      </div>
+      <div class="img-reveal" style="grid-column:span 4;aspect-ratio:1/1;border-radius:1rem;">
+        <div class="placeholder ph-rect" style="width:100%;height:100%;">prodotti</div>
+      </div>
+      <div class="img-reveal" style="grid-column:span 5;aspect-ratio:5/4;border-radius:1rem;">
+        <div class="placeholder ph-rect" style="width:100%;height:100%;">vetrina ingresso</div>
+      </div>
+      <div class="img-reveal" style="grid-column:span 3;aspect-ratio:3/4;border-radius:1rem;">
+        <div class="placeholder ph-rect" style="width:100%;height:100%;">strumenti pro</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVIZI list with big numbers -->
+<section id="servizi" class="section-pad" style="border-top:1px solid var(--line);">
+  <div class="container">
+    <div style="margin-bottom:6rem;">
+      <p style="font-size:0.75rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--blush);margin-bottom:1rem;">— 02 / Servizi</p>
+      <h2 class="display h-section">
+        Quattro<br>cose, fatte<br><span class="italic-display" style="color:var(--blush);">bene.</span>
+      </h2>
+    </div>
+
+    <div style="display:flex;flex-direction:column;">
+
+      <div class="service-row" style="padding:3rem 0;border-bottom:1px solid var(--line);display:grid;grid-template-columns:auto 1fr auto;gap:3rem;align-items:center;">
+        <span class="service-list-num">01</span>
+        <div>
+          <h3 class="display" style="font-size:clamp(1.8rem,3vw,3rem);margin-bottom:0.5rem;">Mani &amp; piedi</h3>
+          <p style="font-size:1rem;color:rgba(244,237,226,0.6);max-width:520px;">Manicure base, semipermanente, ricostruzione gel, pedicure curativa con strumentazione professionale.</p>
+        </div>
+        <span style="font-family:'Fraunces',serif;font-size:1.5rem;color:var(--blush);">da €18</span>
+      </div>
+
+      <div class="service-row" style="padding:3rem 0;border-bottom:1px solid var(--line);display:grid;grid-template-columns:auto 1fr auto;gap:3rem;align-items:center;">
+        <span class="service-list-num">02</span>
+        <div>
+          <h3 class="display" style="font-size:clamp(1.8rem,3vw,3rem);margin-bottom:0.5rem;">Viso</h3>
+          <p style="font-size:1rem;color:rgba(244,237,226,0.6);max-width:520px;">Pulizia profonda, peeling, anti-aging Comfort Zone, idratazione intensiva.</p>
+        </div>
+        <span style="font-family:'Fraunces',serif;font-size:1.5rem;color:var(--blush);">da €45</span>
+      </div>
+
+      <div class="service-row" style="padding:3rem 0;border-bottom:1px solid var(--line);display:grid;grid-template-columns:auto 1fr auto;gap:3rem;align-items:center;">
+        <span class="service-list-num">03</span>
+        <div>
+          <h3 class="display" style="font-size:clamp(1.8rem,3vw,3rem);margin-bottom:0.5rem;">Ceretta</h3>
+          <p style="font-size:1rem;color:rgba(244,237,226,0.6);max-width:520px;">Cera tradizionale o brasiliana, prodotti GiGi. Tecnica delicata, no shock.</p>
+        </div>
+        <span style="font-family:'Fraunces',serif;font-size:1.5rem;color:var(--blush);">da €12</span>
+      </div>
+
+      <div class="service-row" style="padding:3rem 0;display:grid;grid-template-columns:auto 1fr auto;gap:3rem;align-items:center;">
+        <span class="service-list-num">04</span>
+        <div>
+          <h3 class="display" style="font-size:clamp(1.8rem,3vw,3rem);margin-bottom:0.5rem;">Pacchetti</h3>
+          <p style="font-size:1rem;color:rgba(244,237,226,0.6);max-width:520px;">5 trattamenti scontati 15%. Studenti universitari -10% su servizi viso.</p>
+        </div>
+        <span style="font-family:'Fraunces',serif;font-size:1.5rem;color:var(--blush);">su misura</span>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- LISTINO -->
+<section id="listino" class="section-pad" style="border-top:1px solid var(--line);">
+  <div class="container">
+    <div style="display:grid;grid-template-columns:1fr 2fr;gap:6rem;" class="listino-grid">
+
+      <div style="position:sticky;top:8rem;align-self:start;">
+        <p style="font-size:0.75rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--blush);margin-bottom:1rem;">— 03 / Listino</p>
+        <h2 class="display h-section" style="margin-bottom:2rem;">
+          Trasparenza<br><span class="italic-display" style="color:var(--blush);">totale.</span>
+        </h2>
+        <p style="font-size:1rem;color:rgba(244,237,226,0.6);">
+          Niente "richiedi preventivo". Ogni servizio ha il suo prezzo fisso, IVA inclusa. Pacchetti e sconti chiari.
+        </p>
+      </div>
+
+      <div>
+        <h3 style="font-family:'Fraunces',serif;font-style:italic;color:var(--blush);margin-bottom:1rem;font-size:1.5rem;">Mani</h3>
+        <div class="price-row"><span class="price-label">Manicure base</span><span class="price-time">25 min</span><span class="price-amount">€18</span></div>
+        <div class="price-row"><span class="price-label">Semipermanente</span><span class="price-time">45 min</span><span class="price-amount">€28</span></div>
+        <div class="price-row"><span class="price-label">Ricostruzione gel</span><span class="price-time">75 min</span><span class="price-amount">€45</span></div>
+        <div class="price-row"><span class="price-label">Refill (3 sett)</span><span class="price-time">50 min</span><span class="price-amount">€32</span></div>
+
+        <h3 style="font-family:'Fraunces',serif;font-style:italic;color:var(--blush);margin:3rem 0 1rem;font-size:1.5rem;">Piedi</h3>
+        <div class="price-row"><span class="price-label">Pedicure estetica</span><span class="price-time">40 min</span><span class="price-amount">€25</span></div>
+        <div class="price-row"><span class="price-label">Pedicure curativa</span><span class="price-time">60 min</span><span class="price-amount">€38</span></div>
+        <div class="price-row"><span class="price-label">Pedicure + smalto</span><span class="price-time">50 min</span><span class="price-amount">€32</span></div>
+
+        <h3 style="font-family:'Fraunces',serif;font-style:italic;color:var(--blush);margin:3rem 0 1rem;font-size:1.5rem;">Viso</h3>
+        <div class="price-row"><span class="price-label">Pulizia profonda</span><span class="price-time">60 min</span><span class="price-amount">€45</span></div>
+        <div class="price-row"><span class="price-label">Trattamento anti-età</span><span class="price-time">75 min</span><span class="price-amount">€65</span></div>
+        <div class="price-row"><span class="price-label">Maschera idratante</span><span class="price-time">45 min</span><span class="price-amount">€35</span></div>
+
+        <h3 style="font-family:'Fraunces',serif;font-style:italic;color:var(--blush);margin:3rem 0 1rem;font-size:1.5rem;">Ceretta</h3>
+        <div class="price-row"><span class="price-label">Gambe complete</span><span class="price-time">30 min</span><span class="price-amount">€22</span></div>
+        <div class="price-row"><span class="price-label">Inguine totale</span><span class="price-time">25 min</span><span class="price-amount">€18</span></div>
+        <div class="price-row"><span class="price-label">Ascelle</span><span class="price-time">15 min</span><span class="price-amount">€12</span></div>
+        <div class="price-row"><span class="price-label">Baffetti</span><span class="price-time">10 min</span><span class="price-amount">€8</span></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CHI SONO scroll-jacking style -->
+<section id="chi" class="section-pad" style="border-top:1px solid var(--line);">
+  <div class="container">
+    <p style="font-size:0.75rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--blush);margin-bottom:6rem;">— 04 / Sara</p>
+
+    <div style="display:grid;grid-template-columns:5fr 7fr;gap:5rem;align-items:start;" class="chi-grid">
+      <div class="img-reveal" style="aspect-ratio:4/5;border-radius:1rem;">
+        <div class="placeholder ph-rect" style="width:100%;height:100%;">ritratto · Sara Bertelli</div>
+      </div>
+      <div>
+        <p style="font-family:'Fraunces',serif;font-size:clamp(1.8rem,3vw,3rem);font-weight:300;line-height:1.25;letter-spacing:-0.02em;margin-bottom:3rem;">
+          <span class="italic-display" style="color:var(--blush);">"</span>Ho aperto Bellezza Naturale nel 2018 dopo sei anni passati in saloni di Vicenza e Bassano. Volevo un posto mio — piccolo, lento, dove ogni cliente ha il suo tempo<span class="italic-display" style="color:var(--blush);">."</span>
+        </p>
+        <p style="color:rgba(244,237,226,0.6);font-size:1rem;line-height:1.7;margin-bottom:2rem;max-width:560px;">
+          Specializzata in trattamenti viso anti-età e ricostruzione unghie. Lavoro solo su appuntamento, mai in sovrapposizione. Una cliente alla volta, mai fretta.
+        </p>
+        <ul style="list-style:none;font-size:0.9rem;color:rgba(244,237,226,0.5);">
+          <li style="padding:0.5rem 0;border-bottom:1px solid var(--line);">— Diploma estetica CFP Vicenza · 2014</li>
+          <li style="padding:0.5rem 0;border-bottom:1px solid var(--line);">— Specializzazione anti-aging Bologna · 2019</li>
+          <li style="padding:0.5rem 0;border-bottom:1px solid var(--line);">— Comfort Zone · Bioline · GiGi · prodotti italiani</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS scroll horizontal -->
+<section class="section-pad" style="border-top:1px solid var(--line);">
+  <div class="container">
+    <div style="display:flex;justify-content:space-between;align-items:end;margin-bottom:5rem;flex-wrap:wrap;gap:2rem;">
+      <div>
+        <p style="font-size:0.75rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--blush);margin-bottom:1rem;">— 05 / Recensioni</p>
+        <h2 class="display h-section">
+          <span style="font-family:'Fraunces',serif;font-style:italic;color:var(--blush);font-size:0.7em;">★</span> 4.9<br>su Google.
+        </h2>
+      </div>
+      <a href="https://g.page/bellezzanaturale-schio" class="btn-ghost">
+        Tutte le 127 recensioni →
+      </a>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;" class="reviews-grid">
+
+      <div style="border:1px solid var(--line);border-radius:1.5rem;padding:2.5rem;">
+        <div style="color:var(--blush);font-size:1.2rem;margin-bottom:1.5rem;letter-spacing:0.2em;">★★★★★</div>
+        <p style="font-family:'Fraunces',serif;font-size:1.15rem;line-height:1.5;font-weight:300;margin-bottom:2rem;">
+          "Sara è bravissima e attenta ai dettagli. La pulizia viso è la migliore che abbia mai fatto."
+        </p>
+        <p style="font-size:0.85rem;color:rgba(244,237,226,0.5);">— Marta C. · Ottobre 2025</p>
+      </div>
+
+      <div style="border:1px solid var(--line);border-radius:1.5rem;padding:2.5rem;">
+        <div style="color:var(--blush);font-size:1.2rem;margin-bottom:1.5rem;letter-spacing:0.2em;">★★★★★</div>
+        <p style="font-family:'Fraunces',serif;font-size:1.15rem;line-height:1.5;font-weight:300;margin-bottom:2rem;">
+          "Centro pulitissimo, prezzi onesti, professionalità top. Vado da lei da 3 anni. Prenotazione online comodissima."
+        </p>
+        <p style="font-size:0.85rem;color:rgba(244,237,226,0.5);">— Elena M. · Settembre 2025</p>
+      </div>
+
+      <div style="border:1px solid var(--line);border-radius:1.5rem;padding:2.5rem;">
+        <div style="color:var(--blush);font-size:1.2rem;margin-bottom:1.5rem;letter-spacing:0.2em;">★★★★★</div>
+        <p style="font-family:'Fraunces',serif;font-size:1.15rem;line-height:1.5;font-weight:300;margin-bottom:2rem;">
+          "Ricostruzione gel impeccabile, durata oltre 4 settimane. Consiglia bene senza spingere prodotti inutili."
+        </p>
+        <p style="font-size:0.85rem;color:rgba(244,237,226,0.5);">— Giulia P. · Agosto 2025</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- PRENOTA full-bleed -->
+<section id="prenota" class="section-pad" style="border-top:1px solid var(--line);background:linear-gradient(180deg,#0E0B08 0%,#15110D 100%);">
+  <div class="container" style="text-align:center;">
+    <p style="font-size:0.75rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--blush);margin-bottom:1.5rem;">— 06 / Prenota</p>
+    <h2 class="display h-mega" style="margin-bottom:3rem;">
+      Scegli<br><span class="italic-display" style="color:var(--blush);">il tuo</span><br>momento.
+    </h2>
+    <p style="max-width:480px;margin:0 auto 4rem;font-size:1.1rem;line-height:1.6;color:rgba(244,237,226,0.6);">
+      Disponibilità in tempo reale. Conferma immediata via SMS. Disdici fino a 4h prima senza costi.
+    </p>
+
+    <form style="max-width:600px;margin:0 auto;display:grid;gap:1rem;">
+      <select style="background:transparent;border:1px solid var(--line);color:var(--cream);padding:1.1rem;border-radius:999px;font-family:inherit;font-size:0.95rem;cursor:none;" aria-label="Campo modulo">
+        <option>Seleziona servizio</option>
+        <option>Manicure base · €18</option>
+        <option>Semipermanente · €28</option>
+        <option>Pulizia viso · €45</option>
+        <option>Ceretta gambe · €22</option>
+        <option>Trattamento anti-età · €65</option>
+      </select>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
+        <input type="date" style="background:transparent;border:1px solid var(--line);color:var(--cream);padding:1.1rem;border-radius:999px;font-family:inherit;font-size:0.95rem;cursor:none;color-scheme:dark;" aria-label="Date">
+        <input type="text" placeholder="Nome" style="background:transparent;border:1px solid var(--line);color:var(--cream);padding:1.1rem 1.5rem;border-radius:999px;font-family:inherit;font-size:0.95rem;cursor:none;" aria-label="Nome">
+      </div>
+      <input type="tel" placeholder="Telefono" style="background:transparent;border:1px solid var(--line);color:var(--cream);padding:1.1rem 1.5rem;border-radius:999px;font-family:inherit;font-size:0.95rem;cursor:none;" aria-label="Telefono">
+      <button type="submit" class="btn-primary magnetic" style="margin-top:1rem;justify-content:center;">
+        Conferma prenotazione →
+      </button>
+    </form>
+  </div>
+</section>
+
+<!-- FOOTER -->
+</main>
+<footer style="border-top:1px solid var(--line);padding:6rem 0 2rem;">
+  <div class="container">
+    <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:3rem;margin-bottom:5rem;" class="footer-grid">
+      <div>
+        <h3 class="display h-section" style="font-size:clamp(2.5rem,5vw,5rem);">
+          Vieni a<br><span class="italic-display" style="color:var(--blush);">trovarmi.</span>
+        </h3>
+        <a href="#prenota" class="btn-primary" style="margin-top:2rem;">Prenota online →</a>
+      </div>
+      <div style="font-size:0.9rem;line-height:1.7;color:rgba(244,237,226,0.6);">
+        <p style="color:var(--cream);font-weight:500;margin-bottom:0.5rem;">Indirizzo</p>
+        Via Pasubio 14<br>36015 Schio (VI)
+      </div>
+      <div style="font-size:0.9rem;line-height:1.7;color:rgba(244,237,226,0.6);">
+        <p style="color:var(--cream);font-weight:500;margin-bottom:0.5rem;">Orari</p>
+        Mar — Ven · 09 — 19<br>Sabato · 09 — 17<br>Dom & Lun · chiuso
+      </div>
+      <div style="font-size:0.9rem;line-height:1.7;color:rgba(244,237,226,0.6);">
+        <p style="color:var(--cream);font-weight:500;margin-bottom:0.5rem;">Contatti</p>
+        <a href="tel:+390445123456" style="color:inherit;text-decoration:none;display:block;">0445 123 456</a>
+        <a href="mailto:info@bellezzanaturale-schio.it" style="color:inherit;text-decoration:none;">info@…</a>
+      </div>
+    </div>
+
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;padding-top:2rem;border-top:1px solid var(--line);font-size:0.8rem;color:rgba(244,237,226,0.4);">
+      <span>© 2026 Bellezza Naturale · Sara Bertelli · P.IVA 04123456789</span>
+      <div style="display:flex;gap:2rem;">
+        <a href="/privacy" style="color:inherit;text-decoration:none;">Privacy</a>
+        <a href="/cookies" style="color:inherit;text-decoration:none;">Cookie</a>
+        <a href="https://setpointstudio.com" style="color:inherit;text-decoration:none;font-style:italic;">site by Setpoint Studio</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- WhatsApp -->
+<a href="https://wa.me/390445123456" class="whatsapp-fab" aria-label="WhatsApp">
+  <svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+
+<script>
+  // Loader
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      document.getElementById('loader').classList.add('gone');
+      gsap.from('.reveal-trigger .reveal-inner, .reveal-active .reveal-inner', { yPercent: 110, opacity: 0, duration: 1, stagger: 0.05, ease: 'power3.out' });
+    }, 600);
+  });
+
+  // Lenis smooth scroll (graceful degradation if Lenis unavailable)
+  let lenis = null;
+  try {
+    lenis = new Lenis({ duration: 1.4, easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)) });
+    function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+    requestAnimationFrame(raf);
+  } catch (e) {
+    /* Lenis non disponibile (CDN 404 / blocked) — smooth scroll degradato a CSS scroll-behavior */
+  }
+
+  // GSAP ScrollTrigger
+  gsap.registerPlugin(ScrollTrigger);
+  if (lenis) {
+    lenis.on('scroll', ScrollTrigger.update);
+    gsap.ticker.add((time) => lenis.raf(time * 1000));
+  }
+  gsap.ticker.lagSmoothing(0);
+
+  // Reveal text on scroll
+  document.querySelectorAll('.reveal').forEach((el) => {
+    const inner = el.querySelector('.reveal-inner');
+    if (!inner) return;
+    gsap.set(inner, { yPercent: 110, opacity: 0 });
+    ScrollTrigger.create({
+      trigger: el,
+      start: 'top 85%',
+      onEnter: () => gsap.to(inner, { yPercent: 0, opacity: 1, duration: 1, ease: 'power3.out' }),
+    });
+  });
+
+  // Image reveal
+  document.querySelectorAll('.img-reveal').forEach((el) => {
+    ScrollTrigger.create({
+      trigger: el,
+      start: 'top 90%',
+      onEnter: () => el.classList.add('in-view'),
+    });
+  });
+
+  // Custom cursor
+  const cursor = document.getElementById('cursor');
+  const dot = cursor.querySelector('.cursor-dot');
+  const ring = cursor.querySelector('.cursor-ring');
+  let mouseX = 0, mouseY = 0, dotX = 0, dotY = 0, ringX = 0, ringY = 0;
+  document.addEventListener('mousemove', (e) => { mouseX = e.clientX; mouseY = e.clientY; });
+  function tick() {
+    dotX += (mouseX - dotX) * 0.7;
+    dotY += (mouseY - dotY) * 0.7;
+    ringX += (mouseX - ringX) * 0.15;
+    ringY += (mouseY - ringY) * 0.15;
+    dot.style.left = dotX + 'px'; dot.style.top = dotY + 'px';
+    ring.style.left = ringX + 'px'; ring.style.top = ringY + 'px';
+    requestAnimationFrame(tick);
+  }
+  tick();
+
+  // Cursor hover state on links + buttons
+  document.querySelectorAll('a, button, input, select, .service-card').forEach((el) => {
+    el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+    el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+  });
+
+  // Magnetic buttons
+  document.querySelectorAll('.magnetic').forEach((el) => {
+    el.addEventListener('mousemove', (e) => {
+      const rect = el.getBoundingClientRect();
+      const x = e.clientX - rect.left - rect.width / 2;
+      const y = e.clientY - rect.top - rect.height / 2;
+      el.style.transform = `translate(${x * 0.25}px, ${y * 0.4}px)`;
+    });
+    el.addEventListener('mouseleave', () => {
+      el.style.transform = 'translate(0, 0)';
+    });
+  });
+
+  // Service card radial follow
+  document.querySelectorAll('.service-card').forEach((card) => {
+    card.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      card.style.setProperty('--mx', ((e.clientX - rect.left) / rect.width * 100) + '%');
+      card.style.setProperty('--my', ((e.clientY - rect.top) / rect.height * 100) + '%');
+    });
+  });
+
+  // Scroll progress
+  const progress = document.getElementById('scrollProgress');
+  ScrollTrigger.create({
+    start: 0, end: 'max',
+    onUpdate: (self) => { progress.style.transform = `scaleX(${self.progress})`; },
+  });
+</script>
+
+</body>
+</html>

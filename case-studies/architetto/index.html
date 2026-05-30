@@ -19,7 +19,7 @@
 {
   "@context": "https://schema.org",
   "@type": ["Organization", "ProfessionalService"],
-  "name": "Studio Studio Tau Architetti",
+  "name": "Studio Tau Architetti",
   "description": "Studio di architettura residenziale e interior design a Vicenza dal 2008",
   "foundingDate": "2008",
   "founder": [
@@ -49,6 +49,38 @@
   :root {
     --content-max: 1280px;
     --section-py: 128px;
+    --gutter: clamp(20px, 4vw, 64px);
+    /* Palette */
+    --bg: #FBFAF7;
+    --cream-50: #FBFAF7;
+    --cream-100: #F3EFE6;
+    --ink-900: #0F0F0E;
+    --ink-700: #3A3A37;
+    --bronze-400: #B89968;
+    --ruby-500: #9D2932;
+    --border: rgba(15, 15, 14, 0.12);
+    --hairline: 1px;
+    /* Typography */
+    --font-display: 'Cormorant Garamond', 'Editorial New', Georgia, serif;
+    --font-body: 'Inter', system-ui, sans-serif;
+    --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+    /* Spacing scale (4px base) */
+    --space-1: 4px;
+    --space-2: 8px;
+    --space-3: 12px;
+    --space-4: 16px;
+    --space-5: 20px;
+    --space-6: 24px;
+    --space-7: 32px;
+    --space-8: 40px;
+    --space-9: 56px;
+    --space-10: 80px;
+    /* Motion */
+    --dur-fast: 150ms;
+    --dur-base: 300ms;
+    --dur-slow: 600ms;
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-editorial: cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   body {
@@ -1605,7 +1637,7 @@
   <blockquote>
     La casa che progettiamo per <em>Lei</em> è già in parte la sua casa.
   </blockquote>
-  <cite>Studio Studio Tau Architetti</cite>
+  <cite>Studio Tau Architetti</cite>
 </section>
 
 <!-- ============================================================
@@ -2190,7 +2222,7 @@
       <div class="photo leadmag-cover dark" role="img" aria-label="Copertina PDF guida">
         <span class="pdf-tag">PDF · 24 PP · 2.4 MB</span>
         <div class="pdf-title"><em>12 materiali<br>sostenibili</em><br>2026</div>
-        <span class="pdf-meta">Studio Studio Tau Architetti · Edizione 2026</span>
+        <span class="pdf-meta">Studio Tau Architetti · Edizione 2026</span>
       </div>
     </div>
   </div>
@@ -2449,7 +2481,7 @@
         </div>
       </div>
       <div class="closing">
-        © 2026 · Studio Studio Tau Architetti<br>
+        © 2026 · Studio Tau Architetti<br>
         IT · EN<br>
         <span style="opacity:0.5">Sito · v.1.0 · 2026</span>
       </div>

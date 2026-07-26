@@ -5,18 +5,13 @@
 import { HeroScene } from './scene-hero.js?v=20260516-perf';
 import { BgScene } from './scene-bg.js?v=20260516-perf';
 import { Cursor } from './cursor.js?v=20260516-perf';
-import { initLazyMedia } from './lazy.js?v=20260516-perf';
+import { initLazyMedia } from './lazy.js?v=20260530-audit3';
 import { initTextFx } from './text-fx.js?v=20260517-calm';
 import { initMagneticAuto } from './magnetic-letters.js?v=20260516-perf';
-import { runBootSequence } from './boot.js?v=20260516-perf';
-import { initRigView } from './rig-view.js?v=20260516-perf';
-import { initInteractions } from './interactions.js?v=20260516-perf';
-import { initTargeting } from './targeting.js?v=20260516-perf';
-import { initJarvis, initSectionScan, ping } from './jarvis.js?v=20260516-perf';
-import { initSysStrip } from './sys-strip.js?v=20260516-perf';
+import { initInteractions } from './interactions.js?v=20260530-audit3';
 import { initVideoHud } from './video-hud.js?v=20260516-perf';
 import { initXrayLens } from './xray-lens.js?v=20260516-perf';
-import { initAboutStats } from './about-stats.js?v=20260517-about';
+import { initAboutStats } from './about-stats.js?v=20260530-audit4';
 
 const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -35,11 +30,12 @@ const FX_MAXIMAL = false;
 
 // 1. Boot sequence — typewriter terminal only in maximal mode; otherwise the
 //    loader (if present) just fades fast. Default landing = instant content.
+//    boot.js is dynamically imported so the default path never downloads it.
 window.addEventListener('load', () => {
   const loader = document.querySelector('.loader');
   if (!loader) return;
   if (FX_MAXIMAL && document.querySelector('.loader__boot')) {
-    runBootSequence();
+    import('./boot.js?v=20260516-perf').then((m) => m.runBootSequence());
   } else {
     setTimeout(() => loader.classList.add('is-loaded'), 220);
   }
@@ -200,23 +196,33 @@ initInteractions();
 initVideoHud();
 initXrayLens();
 
-// ── Iron Man / JARVIS layer — gated behind FX_MAXIMAL (default off) ──────────
+// ── Iron Man / JARVIS layer — gated behind FX_MAXIMAL (default off).
+//    Dynamically imported: with the flag off these 5 modules (~26 KB) are
+//    never fetched at all, instead of being downloaded and never run.
 if (FX_MAXIMAL) {
-  initRigView();      // Maya-style rig-view toggle + X-ray overlay
-  initTargeting();    // corner-bracket reticle on hover
-  initJarvis();       // ephemeral status pings
-  initSectionScan();  // corner brackets + sweep on section entry
-  initSysStrip();     // top-of-page FPS/GPU/clock telemetry strip
+  const V = '?v=20260516-perf';
+  Promise.all([
+    import('./rig-view.js' + V),
+    import('./targeting.js' + V),
+    import('./jarvis.js' + V),
+    import('./sys-strip.js' + V),
+  ]).then(([rigView, targeting, jarvis, sysStrip]) => {
+    rigView.initRigView();          // Maya-style rig-view toggle + X-ray overlay
+    targeting.initTargeting();      // corner-bracket reticle on hover
+    jarvis.initJarvis();            // ephemeral status pings
+    jarvis.initSectionScan();       // corner brackets + sweep on section entry
+    sysStrip.initSysStrip();        // top-of-page FPS/GPU/clock telemetry strip
 
-  // rig-view toggle fires a JARVIS ping
-  let _lastRigState = document.body.classList.contains('rig-view');
-  const _rigToggleObserver = new MutationObserver(() => {
-    const active = document.body.classList.contains('rig-view');
-    if (active === _lastRigState) return;
-    _lastRigState = active;
-    ping(active ? 'rig view · engaged' : 'rig view · disengaged', { kind: active ? 'ok' : 'info' });
+    // rig-view toggle fires a JARVIS ping
+    let lastRigState = document.body.classList.contains('rig-view');
+    new MutationObserver(() => {
+      const active = document.body.classList.contains('rig-view');
+      if (active === lastRigState) return;
+      lastRigState = active;
+      jarvis.ping(active ? 'rig view · engaged' : 'rig view · disengaged',
+                  { kind: active ? 'ok' : 'info' });
+    }).observe(document.body, { attributes: true, attributeFilter: ['class'] });
   });
-  _rigToggleObserver.observe(document.body, { attributes: true, attributeFilter: ['class'] });
 }
 
 // 10. Char-reveal init — split text into spans on .char-reveal.

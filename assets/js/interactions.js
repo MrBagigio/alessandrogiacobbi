@@ -53,7 +53,10 @@ function initKonami() {
 }
 
 function triggerDebugMode() {
-  document.body.classList.add('debug-mode', 'rig-view');
+  // Only 'debug-mode' (chromatic shift + toast). It used to also add 'rig-view',
+  // but the rig-view module is gated behind FX_MAXIMAL — without it nothing
+  // builds the overlay/HUD/labels, so the class promised a view it can't render.
+  document.body.classList.add('debug-mode');
   // Spawn a quick "achievement" toast
   const toast = document.createElement('div');
   toast.className = 'fx-debug-toast';

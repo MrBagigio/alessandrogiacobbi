@@ -18,15 +18,21 @@ export function initLazyMedia() {
     iframes.forEach((f) => io.observe(f));
   }
 
-  // 2. Click-to-play hero showreel
+  // 2. Click-to-play hero showreel.
+  //    Only wire placeholders that actually carry a usable Vimeo id, and never
+  //    hijack a real navigation link: the current showreel is an <a mailto:>
+  //    "request the reel" CTA, and the old code replaced its content with a
+  //    developer-facing "Vimeo ID da configurare" message on click.
   document.querySelectorAll('.showreel__placeholder').forEach((ph) => {
+    const id = ph.dataset.vimeoId;
+    if (!id || id === 'PLACEHOLDER') return;
+    const href = ph.getAttribute('href');
+    const isRealLink = ph.tagName === 'A' && href && !href.startsWith('#');
+    if (isRealLink) return;
+
     ph.addEventListener('click', () => {
       const wrap = ph.closest('.showreel__frame');
-      const id = ph.dataset.vimeoId;
-      if (!id || id === 'PLACEHOLDER') {
-        ph.innerHTML = '<div style="font-family:var(--fm); color:var(--mute); padding:2rem; text-align:center;">Reel coming soon — Vimeo ID da configurare</div>';
-        return;
-      }
+      if (!wrap) return;
       const iframe = document.createElement('iframe');
       iframe.src = `https://player.vimeo.com/video/${id}?autoplay=1&title=0&byline=0&portrait=0`;
       iframe.allow = 'autoplay; fullscreen; picture-in-picture';

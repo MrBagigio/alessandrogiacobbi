@@ -466,11 +466,32 @@ export class ManikinScene {
     if (m.state !== 'ragdoll' && m.state !== 'getup' && m.state !== 'climb') {
       // startle: the pointer rushes in
       if (b.startleCd <= 0 && near < u * 9 && (p.fastT || 0) > 0.05 && !(b.act && b.act.name === 'startle')) {
-        b.act = { name: 'startle', t: 0, dur: 0.55 + 0.4 * (1 - b.calm) }; b.startleCd = 5; return;
+        b.act = { name: 'startle', t: 0, dur: 0.55 + 0.4 * (1 - b.calm) }; b.startleCd = 5;
+        if (m.state === 'walk') { m.state = 'stand'; m.t = 0; }        // stop dead
+        return;
       }
       // watch: the other one gets thrown / falls -> freeze and stare
       if (other && other.state === 'ragdoll' && !other.grabbed && b.watchCd <= 0 && (!b.act || b.act.name !== 'watch')) {
-        b.act = { name: 'watch', t: 0, dur: 2.5 + Math.random() * 2 }; b.watchCd = 8; return;
+        b.act = { name: 'watch', t: 0, dur: 2.5 + Math.random() * 2 }; b.watchCd = 8; b.wantApproach = b.curiosity > 0.6;
+        if (m.state === 'walk') { m.state = 'stand'; m.t = 0; }        // freeze mid-step
+        return;
+      }
+      // approach: once the stare is over, the curious one walks over to where the
+      // other lies (if it is on the same walkway) and looks down at it
+      if (b.wantApproach && !b.act && other && (other.state === 'ragdoll' || other.state === 'getup') && (m.state === 'stand' || m.state === 'sit' || m.state === 'walk')) {
+        b.wantApproach = false;
+        const ox = other.x[P.HIP], oy = this.sky.topAt(ox, other.y[P.HIP] - u);
+        const myTop = m.layerTop ?? -Infinity;
+        if (Math.abs(oy - myTop) < u * 3) {
+          const run = this._runAt(ox, myTop), myRun = this._runAt(m.walkX ?? m.x[P.HIP], myTop);
+          if (run && myRun && run.x0 === myRun.x0) {
+            const goal = ox - Math.sign(ox - m.x[P.HIP]) * u * 3.2;
+            if (m.state === 'sit') { m.state = 'standup'; m.t = 0; }
+            else { m.state = 'walk'; m.t = 0; m.phase = 0; m.speedK = 0; }
+            m.goalX = goal; m.dir = Math.sign(goal - (m.walkX ?? m.x[P.HIP])) || 1; m.walkX = m.walkX ?? m.x[P.HIP];
+            return;
+          }
+        }
       }
     }
     if (b.act) return;                            // busy with a sub-action
@@ -545,7 +566,10 @@ export class ManikinScene {
         const a = sitPose(m, sp.x, sp.y, sp.side, 0, 0), c = crouchPose(m, x, groundAt(x), m.dir, 0.8), st = standPose(m, x, groundAt(x), m.dir, m.t);
         pose = k < 0.45 ? mixPose(a, c, k / 0.45) : mixPose(c, st, (k - 0.45) / 0.55);
         gains = 'gesture';
-        if (m.t > 1.0) { m.state = 'stand'; m.t = 0; b.idleT = 0.8; m.run = this._runAt(x, m.layerTop); }
+        if (m.t > 1.0) {
+          m.state = 'stand'; m.t = 0; b.idleT = 0.8; m.run = this._runAt(x, m.layerTop);
+          if (m.goalX !== undefined) { m.state = 'walk'; m.phase = 0; m.speedK = 0; m.dir = Math.sign(m.goalX - x) || 1; }
+        }
         break;
       }
       case 'walk': {
@@ -554,6 +578,13 @@ export class ManikinScene {
         m.speedK = Math.min(1, (m.speedK || 0) + dt * 1.6);            // ease in
         const speed = u * (2.0 + 1.2 * b.energy) * m.speedK;
         const nx = m.walkX + m.dir * speed * dt;
+        if (m.goalX !== undefined) {
+          if (Math.sign(m.goalX - nx) !== m.dir || Math.abs(m.goalX - nx) < u * 0.4) {
+            // arrived next to the other one: stand and look down at it for a while
+            m.goalX = undefined; m.state = 'stand'; m.t = 0; b.act = { name: 'lookdown', t: 0, dur: 2.5 + Math.random() * 2 }; b.idleT = 0;
+            break;
+          }
+        }
         const margin = u * 1.3;
         const atEnd = run && (nx > run.x1 - margin || nx < run.x0 + margin);
         if (atEnd || !(sky.topAt(nx, (m.layerTop ?? -Infinity) - 1) < sky.ground)) {
@@ -566,6 +597,7 @@ export class ManikinScene {
         m.facing = m.dir;
         pose = walkPose(m, m.walkX, groundAt, m.dir, m.phase, m.t);
         const lean = m.dir * u * 0.25 * m.speedK; pose.x[P.NECK] += lean; pose.x[P.HEAD] += lean * 1.5;   // weight forward
+        this._applyGesture(m, pose, dt);
         gains = 'walk';
         break;
       }
@@ -619,6 +651,9 @@ export class ManikinScene {
       }
     }
     if (!pose) return;
+    // safety net: an act that no state advanced (e.g. set right before a state
+    // change) must still expire, or it blocks every future decision
+    if (b.act && (m.state === 'sitdown' || m.state === 'standup' || m.state === 'climb' || m.state === 'getup')) { b.act.t += dt; if (b.act.t >= b.act.dur) b.act = null; }
     // head follows the gaze (small offsets), then drive
     const hr = u * 0.42;
     pose.x[P.HEAD] += m.look * hr * 0.6; pose.y[P.HEAD] += m.lookY * hr * 0.35;
@@ -673,6 +708,13 @@ export class ManikinScene {
         reachHand(pose, m, P.RELB, P.RHAND, pose.x[P.NECK] + u * 1.2, pose.y[P.NECK] - u * 0.6 * q + u * (1 - q) * 1.6, 1);
         break;
       }
+      case 'lookdown': {
+        const other = this.manikins.find((o) => o !== m); if (!other) break;
+        const dir = Math.sign(other.x[P.HEAD] - m.x[P.HEAD]) || 1;
+        pose.x[P.NECK] += dir * u * 0.55 * env; pose.y[P.NECK] += u * 0.25 * env; pose.x[P.HEAD] += dir * u * 0.9 * env; pose.y[P.HEAD] += u * 0.45 * env;
+        m.brain.gaze.tx = other.x[P.HEAD]; m.brain.gaze.ty = other.y[P.HEAD]; m.brain.gaze.mode = 'other';
+        break;
+      }
       case 'watch': {
         const other = this.manikins.find((o) => o !== m); if (!other) break;
         const dir = Math.sign(other.x[P.HEAD] - m.x[P.HEAD]) || 1;
@@ -713,20 +755,20 @@ export class ManikinScene {
     const lw = Math.max(1.5, u * 0.21);
     c.lineCap = 'round'; c.lineJoin = 'round';
     const seg = (a, b) => { c.beginPath(); c.moveTo(m.x[a], m.y[a]); c.lineTo(m.x[b], m.y[b]); c.stroke(); };
-    const body = () => {
-      seg(P.NECK, P.HIP);
-      seg(P.HIP, P.LKNEE); seg(P.LKNEE, P.LFOOT);
-      seg(P.HIP, P.RKNEE); seg(P.RKNEE, P.RFOOT);
-      seg(P.NECK, P.LELB); seg(P.LELB, P.LHAND);
-      seg(P.NECK, P.RELB); seg(P.RELB, P.RHAND);
-      c.beginPath(); c.moveTo(m.x[P.HEAD], m.y[P.HEAD]); c.lineTo(m.x[P.NECK], m.y[P.NECK]); c.stroke();
+    const body = (w) => {
+      // line-weight variation like a pen drawing: torso heaviest, upper limbs
+      // medium, forearms/shins lighter, neck light
+      c.lineWidth = w * 1.25; seg(P.NECK, P.HIP);
+      c.lineWidth = w * 1.0; seg(P.HIP, P.LKNEE); seg(P.HIP, P.RKNEE); seg(P.NECK, P.LELB); seg(P.NECK, P.RELB);
+      c.lineWidth = w * 0.85; seg(P.LKNEE, P.LFOOT); seg(P.RKNEE, P.RFOOT); seg(P.LELB, P.LHAND); seg(P.RELB, P.RHAND);
+      c.lineWidth = w * 0.8; c.beginPath(); c.moveTo(m.x[P.HEAD], m.y[P.HEAD]); c.lineTo(m.x[P.NECK], m.y[P.NECK]); c.stroke();
     };
     // halo pass
-    c.strokeStyle = PAPER; c.lineWidth = lw * 2.8; body();
+    c.strokeStyle = PAPER; body(lw * 2.8);
     const hrH = u * 0.42;
     c.beginPath(); c.arc(m.x[P.HEAD], m.y[P.HEAD], hrH + lw * 0.9, 0, Math.PI * 2); c.fillStyle = PAPER; c.fill();
     // ink pass
-    c.strokeStyle = ink; c.lineWidth = lw; body();
+    c.strokeStyle = ink; body(lw);
     // feet: tiny ticks
     c.lineWidth = lw * 0.9;
     for (const [k, f] of [[P.LKNEE, P.LFOOT], [P.RKNEE, P.RFOOT]]) {

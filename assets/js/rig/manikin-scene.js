@@ -167,6 +167,10 @@ export class ManikinScene {
     const ground = this.lines.length ? Math.max(...this.lines.map((l) => l.bottom)) : H;
     for (const l of layers) l.sky = new Skyline(0, dx, l.tops, ground);
     this.sky = layers.length ? new LayeredSkyline(layers, ground) : new Skyline(0, dx, new Float32Array(n).fill(Infinity), ground);
+    // horizontal world bounds = the padded canvas, not the text box: a manikin
+    // sitting on the first letter with its legs dangling off the start of the
+    // line was clamped at x=0 and crushed into a tangle (measured)
+    if (this.sky instanceof LayeredSkyline) { this.sky.x0 = -this.padX + 4; this.sky.x1 = W + this.padX - 4; }
     this.u = this.lines.length ? this.lines[0].fontPx * 0.074 : 10;   // manikin unit ≈ 7.4% of font size (standing ≈ 52% of the cap height)
     // "walkable" continuity: a step between neighbouring 2px columns up to
     // ~1.2u is a slope you walk over (round letter tops), more is a cliff.

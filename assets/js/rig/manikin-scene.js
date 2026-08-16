@@ -51,7 +51,10 @@ export class ManikinScene {
     this.canvas.className = 'hero__manikins';
     this.canvas.setAttribute('aria-hidden', 'true');
     Object.assign(this.canvas.style, { position: 'absolute', inset: '0', width: '100%', height: '100%', pointerEvents: 'none', zIndex: '3' });
-    h1.appendChild(this.canvas);
+    // NOT appended yet: it is attached in _resample() once its final offset/size
+    // are known — an absolutely positioned canvas that appears at inset:0 and
+    // then moves to top:-padTop counts as a layout shift (Lighthouse CLS 0.126
+    // with the manikins on, 0 with them off — measured).
     this.ctx = this.canvas.getContext('2d');
 
     this._bind();
@@ -75,6 +78,7 @@ export class ManikinScene {
     this.dpr = dpr;
     this.canvas.width = Math.round((W + 2 * this.padX) * dpr); this.canvas.height = Math.round((H + this.padTop) * dpr);
     this.ctx.setTransform(dpr, 0, 0, dpr, this.padX * dpr, this.padTop * dpr);
+    if (!this.canvas.isConnected) this.h1.appendChild(this.canvas);
 
     // one skyline PER LINE (a single heightmap can't hold two lines: the
     // upper line's tops hide the lower line's under the same columns —
@@ -363,11 +367,17 @@ export class ManikinScene {
     for (const m of this.manikins) {
       m.t += dt;
       if (!m.brain) this._initBrain(m);
-      this._gaze(m, dt);
-      this._blink(m, dt);
-      if (!this.animate && m.state !== 'ragdoll' && m.state !== 'getup') continue;   // reduced motion: static
-      this._think(m, dt);
-      this._act(m, dt);
+      try {
+        this._gaze(m, dt);
+        this._blink(m, dt);
+        if (!this.animate && m.state !== 'ragdoll' && m.state !== 'getup') continue;   // reduced motion: static
+        this._think(m, dt);
+        this._act(m, dt);
+      } catch (err) {
+        // one bad frame must never kill the loop or the other manikin: log once, re-seat
+        if (!this._errOnce) { this._errOnce = true; console.warn('[manikins] frame error, re-seating:', err); }
+        this._reseat(m);
+      }
     }
     this._render();
     if (this.grab || this.hover) this._label();
@@ -436,6 +446,7 @@ export class ManikinScene {
         else g.idlePt = { x: hx + (Math.random() - 0.5) * u * 24, y: hy + u * (2 + Math.random() * 6) };                          // down at the letters
         g.hold = 0.7 + Math.random() * 2.2 * b.calm;
       }
+      if (!g.idlePt) g.idlePt = { x: hx + (m.facing || 1) * u * 8, y: hy };
       want = g.idlePt.follow && other ? { x: other.x[P.HEAD], y: other.y[P.HEAD] } : g.idlePt;
     }
     g.mode = mode;
@@ -543,7 +554,7 @@ export class ManikinScene {
       if (b.idleT < 0.8) return;
       const pick = weighted([['walk', 0.6 * b.energy + 0.15], ['weightshift', 0.3], ['lookaround', 0.25], ['sitdown', 0.2], ['grapple', 0.22 * b.energy + 0.05]], rnd);
       if (pick === 'grapple') { const g = this._grappleTarget(m); if (g) { this._startGrapple(m, g); b.idleT = 0; return; } b.act = { name: 'lookaround', t: 0, dur: 1.2 }; b.idleT = 0; return; }
-      if (pick === 'walk') { m.state = 'walk'; m.t = 0; m.phase = 0; m.walkT = 0; m.dir = m.dir || m.facing || 1; m.speedK = 0; if (Math.random() < 0.5) m.dir = m.gazeDir || m.dir; }
+      if (pick === 'walk') { m.state = 'walk'; m.t = 0; m.phase = 0; m.walkT = 0; m.jog = undefined; m.dir = m.dir || m.facing || 1; m.speedK = 0; if (Math.random() < 0.5) m.dir = m.gazeDir || m.dir; }
       else if (pick === 'sitdown') { const x0 = m.walkX ?? m.x[P.HIP]; const e = this._edgeNear(x0, m.dir || 1, m.layerTop) || this._edgeNear(x0, -(m.dir || 1), m.layerTop); if (e) { m.state = 'sitdown'; m.spot = e; m.t = 0; } }
       else b.act = { name: pick, t: 0, dur: 1.8 + Math.random() };
       b.idleT = 0;
@@ -575,8 +586,35 @@ export class ManikinScene {
         break;
       }
       case 'sitdown': {
-        const sp = m.spot; pose = sitPose(m, sp.x, sp.y, sp.side, 0, 0); gains = 'gesture'; m.facing = sp.side;
-        if (m.t > 0.9) { m.state = 'sit'; m.t = 0; b.idleT = 0; }
+        // three beats: stand at the edge looking down (0.35s) → crouch with the
+        // hands reaching back to the ledge (0.45s) → lower onto the seat and
+        // swing the legs over the drop (0.55s)
+        const sp = m.spot, side = sp.side; m.facing = side;
+        const seatX = sp.x - side * u * 0.45;
+        const T1 = 0.35, T2 = 0.45, T3 = 0.55;
+        const sit = sitPose(m, sp.x, sp.y, side, 0, 0);
+        if (m.t < T1) {
+          pose = standPose(m, seatX - side * u * 0.3, groundAt, side, m.t);
+          const k = m.t / T1; pose.x[P.HEAD] += side * u * 0.5 * k; pose.y[P.HEAD] += u * 0.35 * k;
+        } else if (m.t < T1 + T2) {
+          const k = (m.t - T1) / T2;
+          const cr = crouchPose(m, seatX - side * u * 0.2, groundAt, side, 0.85);
+          reachHand(cr, m, P.LELB, P.LHAND, seatX - side * u * 1.0, sp.y - CONTACT_R * u, -side);
+          reachHand(cr, m, P.RELB, P.RHAND, seatX - side * u * 0.5, sp.y - CONTACT_R * u, side);
+          const st = standPose(m, seatX - side * u * 0.3, groundAt, side, m.t);
+          pose = mixPose(st, cr, k * k * (3 - 2 * k));
+        } else {
+          const k = Math.min(1, (m.t - T1 - T2) / T3), ee = k * k * (3 - 2 * k);
+          const cr = crouchPose(m, seatX - side * u * 0.2, groundAt, side, 0.85);
+          reachHand(cr, m, P.LELB, P.LHAND, seatX - side * u * 1.0, sp.y - CONTACT_R * u, -side);
+          reachHand(cr, m, P.RELB, P.RHAND, seatX - side * u * 0.5, sp.y - CONTACT_R * u, side);
+          pose = mixPose(cr, sit, ee);
+          // legs swing over the edge a touch late (overlap)
+          const late = Math.max(0, Math.min(1, (k - 0.25) / 0.75));
+          for (const i of [P.LKNEE, P.RKNEE, P.LFOOT, P.RFOOT]) { pose.x[i] = cr.x[i] + (sit.x[i] - cr.x[i]) * late; pose.y[i] = cr.y[i] + (sit.y[i] - cr.y[i]) * late; }
+        }
+        gains = 'gesture';
+        if (m.t > T1 + T2 + T3) { m.state = 'sit'; m.t = 0; b.idleT = 0; }
         break;
       }
       case 'stand': {
@@ -604,7 +642,8 @@ export class ManikinScene {
         m.walkT = (m.walkT || 0) + dt;
         const run = m.run || (m.run = this._runAt(m.walkX, m.layerTop));
         m.speedK = Math.min(1, (m.speedK || 0) + dt * 1.6);            // ease in
-        const speed = u * (2.0 + 1.2 * b.energy) * m.speedK;
+        if (m.jog === undefined) m.jog = Math.random() < 0.35 * b.energy;   // pick a gait for this walk
+        const speed = u * (2.0 + 1.2 * b.energy) * (m.jog ? 1.7 : 1) * m.speedK;
         const nx = m.walkX + m.dir * speed * dt;
         if (m.goalX !== undefined) {
           if (Math.sign(m.goalX - nx) !== m.dir || Math.abs(m.goalX - nx) < u * 0.4) {
@@ -654,15 +693,20 @@ export class ManikinScene {
             b.gaze.tx = m.jumpTo.x; b.gaze.ty = m.jumpTo.y; b.gaze.mode = 'other'; b.gaze.hold = 2;
           }
           else if (edge && Math.random() < 0.7) { m.state = 'sitdown'; m.spot = edge; m.t = 0; }
-          else { m.dir *= -1; m.facing = m.dir; m.state = 'stand'; m.t = 0; b.act = { name: 'lookaround', t: 0, dur: 0.6 + Math.random() }; b.idleT = 0; }
+          else { m.dir *= -1; m.facing = m.dir; m.state = 'stand'; m.t = 0; b.act = { name: 'lookaround', t: 0, dur: 0.6 + Math.random() }; b.idleT = 0; m.jog = undefined; }
           break;
         }
         m.walkX = nx; m.phase = (m.phase || 0) + dt * (speed / (u * 1.25)) * 1.0;   // cadence tied to stride
         m.facing = m.dir;
         pose = walkPose(m, m.walkX, groundAt, m.dir, m.phase, m.t);
-        const lean = m.dir * u * 0.25 * m.speedK; pose.x[P.NECK] += lean; pose.x[P.HEAD] += lean * 1.5;   // weight forward
+        const lean = m.dir * u * (0.25 + (m.jog ? 0.3 : 0)) * m.speedK; pose.x[P.NECK] += lean; pose.x[P.HEAD] += lean * 1.5;   // weight forward
+        if (m.jog) { // arms bent and pumping
+          const sw = Math.sin(m.phase) * u * 0.9;
+          reachHand(pose, m, P.LELB, P.LHAND, pose.x[P.NECK] - m.dir * sw, pose.y[P.NECK] + u * 1.2 - Math.abs(sw) * 0.2, -m.dir);
+          reachHand(pose, m, P.RELB, P.RHAND, pose.x[P.NECK] + m.dir * sw, pose.y[P.NECK] + u * 1.2 - Math.abs(sw) * 0.2, m.dir);
+        }
         this._applyGesture(m, pose, dt);
-        gains = 'walk';
+        gains = m.jog ? 'gesture' : 'walk';
         break;
       }
       case 'ragdoll': {
@@ -863,7 +907,7 @@ export class ManikinScene {
           const aEnd = g.mode === 'up' ? Math.PI / 2 + inward * 0.22 : Math.PI / 2 - d * 0.55;
           const a = g.a0 + (aEnd - g.a0) * e2;
           const rHang = u * 3.2;
-          const r = g.r0 + (rHang - g.r0) * (g.mode === 'up' ? e2 : e2 * 0.5);
+          const r = g.r0 + (rHang - g.r0) * (g.mode === 'up' ? e2 : e2 * 0.12);   // across: stay low, it's a swing not a climb
           const hipX = A.x + Math.cos(a) * r, hipY = A.y + Math.sin(a) * r;
           pose = hangPose(m, hipX, hipY, A.x, A.y, d);
           // legs tucked/kicking a little in the swing
@@ -1012,6 +1056,13 @@ export class ManikinScene {
         const dir = Math.sign(other.x[P.HEAD] - m.x[P.HEAD]) || 1;
         pose.x[P.NECK] += dir * u * 0.55 * env; pose.y[P.NECK] += u * 0.25 * env; pose.x[P.HEAD] += dir * u * 0.9 * env; pose.y[P.HEAD] += u * 0.45 * env;
         m.brain.gaze.tx = other.x[P.HEAD]; m.brain.gaze.ty = other.y[P.HEAD]; m.brain.gaze.mode = 'other';
+        // it's getting up: offer a hand toward its nearer hand
+        if (other.state === 'getup' || (other.state === 'stand' && other.t < 1.2)) {
+          const oh = Math.abs(other.x[P.LHAND] - m.x[P.HIP]) < Math.abs(other.x[P.RHAND] - m.x[P.HIP]) ? P.LHAND : P.RHAND;
+          const hand = dir > 0 ? P.RHAND : P.LHAND, elb = dir > 0 ? P.RELB : P.LELB;
+          reachHand(pose, m, elb, hand, other.x[oh] - dir * u * 0.3, other.y[oh] - u * 0.2, dir);
+          a.dur = Math.max(a.dur, a.t + 0.8);
+        }
         break;
       }
       case 'pant': {

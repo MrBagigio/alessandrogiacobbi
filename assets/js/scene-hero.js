@@ -224,9 +224,21 @@ export class HeroScene {
       this.particles.rotation.y = t * 0.05;
     }
 
-    // Camera dolly on scroll (subtle)
+    // Camera dolly on scroll (subtle). On narrow/portrait viewports (aspect < 1,
+    // i.e. phones) pull the camera back so the icosahedron doesn't fill the whole
+    // width behind the headline — it should read as ambient, not as the subject.
     const scrollProgress = Math.min(this.scrollY / window.innerHeight, 1);
-    this.camera.position.z = 7 + scrollProgress * 3;
+    const aspect = this.camera.aspect || 1;
+    // Portrait: the icosahedron (r=1.6) at z=7 filled the whole 390px hero and
+    // sat ON TOP of the headline (black on black — measured). Push it well back
+    // and offset it up-right so it reads as a backdrop, not the subject.
+    const portraitPush = aspect < 1 ? (1 - aspect) * 14 : 0;
+    this.camera.position.z = 7 + portraitPush + scrollProgress * 3;
+    if (this.hero && aspect < 1) {
+      this.hero.position.set(1.4, 1.1, 0);
+      this.heroWire.position.copy(this.hero.position);
+      this.heroCore.position.copy(this.hero.position);
+    }
     this.camera.position.y = -scrollProgress * 0.8;
     // Camera mouse parallax (very subtle)
     this.camera.position.x += (this.mouse.x * 0.25 - this.camera.position.x) * 0.03;

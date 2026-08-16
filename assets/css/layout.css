@@ -28,6 +28,19 @@ section {
   position: absolute;
   inset: 0;
   z-index: 0;
+  /* Three.js sets width/height ATTRIBUTES (buffer size). Without explicit CSS
+     size the browser uses those as the visual size → canvas was a fixed
+     1200×600 box: overflowing on mobile (the floor plane showed as a grey band
+     across the hero) and leaving a gap on ultra-wide desktops. Pin visual size
+     to the section; the buffer follows via renderer.setSize(w,h,false). */
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+/* Phones: the 3D object competed with the headline. Fade it to a backdrop so
+   the H1 always wins (JS also pushes the camera back in portrait). */
+@media (max-width: 767px) {
+  .hero__canvas { opacity: 0.45; }
 }
 
 .hero__inner {
@@ -51,6 +64,13 @@ section {
   display: flex;
   align-items: center;
   gap: 0.6rem;
+  /* CLS guard: the scramble FX swaps in wide block glyphs (░▒▓) for ~850ms.
+     On narrow viewports that pushed the line to wrap for a frame, adding 20px
+     and bouncing the ENTIRE page below it (measured CLS 0.12 → 4 shifts of the
+     hero title). Reserve one line and never let the text wrap. */
+  white-space: nowrap;
+  min-height: 1.5em;
+  overflow: hidden;
 }
 
 .hero__pretitle::before {
@@ -129,6 +149,9 @@ section {
     align-items: stretch;
     justify-content: flex-start;
     min-height: auto;
+    /* was clamp(8rem,18vh,12rem) ≈152px of dead paper above the pretitle on a
+       phone; the meta-bar is only 66px tall */
+    padding-top: 6.5rem;
     padding-bottom: var(--gap-m);
   }
   .hero__meta {
@@ -626,6 +649,23 @@ section {
 }
 
 .footer__social:hover { color: var(--ox); }
+
+/* Touch targets: on coarse pointers the 24px social rows and 16px meta-bar
+   links were well under the 44px minimum (Lighthouse/WCAG 2.5.8). Grow the
+   hit area with padding, no visual change on desktop. */
+@media (pointer: coarse) {
+  .footer__social,
+  .meta-bar > .right a,
+  .contact__channel-value {
+    min-height: 44px;
+    padding-top: 0.55rem;
+    padding-bottom: 0.55rem;
+    display: inline-flex;
+    align-items: center;
+  }
+  .meta-bar > .right { gap: 0.25rem; }
+  .meta-bar > .right a { padding-left: 0.6rem; padding-right: 0.6rem; }
+}
 
 .footer__social-icon {
   width: 24px;

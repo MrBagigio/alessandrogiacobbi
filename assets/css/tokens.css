@@ -30,7 +30,7 @@
   --ink:     #161310;
   --ink2:    #2C2823;
   --ink3:    #4A4338;
-  --mute:    #8A8478;
+  --mute:    #66605A;   /* was #8A8478 = 2.98:1 on paper (WCAG fail); now 4.99:1 paper / 4.58:1 paper2 — AA on both */
   --rule:    #C9C0AC;
   --ox:      #B8323F;
   --ox-deep: #8C1F2A;

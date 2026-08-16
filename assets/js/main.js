@@ -2,7 +2,7 @@
  * Bootstrap — entry point.
  * Loads GSAP via CDN, initializes scenes, cursor, lazy, scroll triggers.
  */
-import { HeroScene } from './scene-hero.js?v=20260516-perf';
+import { HeroScene } from './scene-hero.js?v=20260530-aaa';
 import { BgScene } from './scene-bg.js?v=20260516-perf';
 import { Cursor } from './cursor.js?v=20260516-perf';
 import { initLazyMedia } from './lazy.js?v=20260530-audit3';

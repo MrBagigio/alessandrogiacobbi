@@ -208,22 +208,32 @@ export function kneeIK(hx, hy, fx, fy, l1, l2, bend = 1) {
   return [hx + ux * a + px * h * sgn, hy + uy * a + py * h * sgn];
 }
 
-/** Standing on ground at (x, groundY). Idle sway + breathing. */
-export function standPose(m, x, groundY, facing = 1, t = 0) {
+/** Standing at x. `ground` is a y OR a function y(x) — with a function each
+ *  foot finds its own surface (letter tops are sloped and dipped: hip height
+ *  from the centre column alone put the hips in the M's notch → deep squat,
+ *  measured). Idle sway + breathing. */
+export function standPose(m, x, ground, facing = 1, t = 0) {
   const u = m.u, o = _pose();
-  const sway = Math.sin(t * 1.3) * 0.06 * u, breath = Math.sin(t * 2.1) * 0.04 * u;
-  const hipY = groundY - (PROP.thigh + PROP.shin) * u * 0.985;   // knees just short of locked
+  const gAt = typeof ground === 'function' ? ground : () => ground;
+  const sway = (Math.sin(t * 1.3) * 0.7 + Math.sin(t * 0.47) * 0.5) * 0.14 * u, breath = Math.sin(t * 2.1) * 0.06 * u;
+  // feet close together (side view of a stick figure): on sloped letter tops
+  // a wide stance put one foot out of reach → hip pulled down, one leg
+  // straight, one bent, torso tipped back (measured on the italic line)
+  const spread0 = PROP.hipW * u * 0.55;
+  const gL = gAt(x - spread0), gR = gAt(x + spread0);
+  const groundY = (gL + gR) / 2;
+  const hipY = groundY - (PROP.thigh + PROP.shin) * u * 0.995;   // aim straight: gravity/drive sag (~2 px) gives the natural soft knee
   put(o, P.HIP, x + sway, hipY);
   put(o, P.NECK, x + sway * 1.4, hipY - PROP.torso * u + breath);
   put(o, P.HEAD, x + sway * 1.6 + facing * 0.08 * u, o.y[P.NECK] - PROP.neck * u + breath);
-  const spread = PROP.hipW * u * 1.1, fy = groundY - CONTACT_R * u;
-  put(o, P.LFOOT, x - spread, fy); put(o, P.RFOOT, x + spread, fy);
+  const spread = spread0, fyL = gL - CONTACT_R * u, fyR = gR - CONTACT_R * u;
+  put(o, P.LFOOT, x - spread, fyL); put(o, P.RFOOT, x + spread, fyR);
   // knees via 2-bone IK so the target is reachable with the real bone lengths
   // (hand-placed knees were 4% short → the drive and the bones fought, 70 px/s
   // knee jitter while "standing still")
   const th = PROP.thigh * u, sh2 = PROP.shin * u;
-  const [lkx, lky] = kneeIK(o.x[P.HIP], hipY, o.x[P.LFOOT], fy, th, sh2, facing);
-  const [rkx, rky] = kneeIK(o.x[P.HIP], hipY, o.x[P.RFOOT], fy, th, sh2, facing);
+  const [lkx, lky] = kneeIK(o.x[P.HIP], hipY, o.x[P.LFOOT], fyL, th, sh2, facing);
+  const [rkx, rky] = kneeIK(o.x[P.HIP], hipY, o.x[P.RFOOT], fyR, th, sh2, facing);
   put(o, P.LKNEE, lkx, lky); put(o, P.RKNEE, rkx, rky);
   const sh = PROP.shoulder * u;
   put(o, P.LELB, o.x[P.NECK] - sh - 0.2 * u, o.y[P.NECK] + PROP.upperArm * u * 0.95);
@@ -311,8 +321,10 @@ export function walkPose(m, x, groundAt, facing = 1, phase = 0, t = 0) {
 
 /** Crouch on the ground at (x, groundY): hips low, knees bent forward, hands
  *  near the ground in front — the "landed / about to get up / startled" shape. */
-export function crouchPose(m, x, groundY, facing = 1, depth = 1) {
+export function crouchPose(m, x, ground, facing = 1, depth = 1) {
   const u = m.u, o = _pose();
+  const gAt = typeof ground === 'function' ? ground : () => ground;
+  const groundY = Math.min(gAt(x - PROP.hipW * u * 1.6), gAt(x + PROP.hipW * u * 1.6));
   const fy = groundY - CONTACT_R * u;
   const legLen = (PROP.thigh + PROP.shin) * u;
   const hipY = groundY - legLen * (0.96 - 0.42 * depth);

@@ -23,7 +23,7 @@ import { onPointerMove } from '../pointer.js?v=20260530-pm';
 import {
   Skyline, LayeredSkyline, P, PROP, createManikin, standPose, sitPose, walkPose, crouchPose, applyPose,
   step, drive, gainsPreset, reachHand, mixPose, pin, unpinAll, nearestPoint, bounds, impulse,
-} from './manikin-physics.js?v=20260530-pm8';
+} from './manikin-physics.js?v=20260530-pm12';
 
 const INK = '#161310', OX = '#B8323F', PAPER = '#EDE6D6';
 /** weighted random pick from [[name, weight], ...] with r in [0,1) */
@@ -170,7 +170,7 @@ export class ManikinScene {
     this.u = this.lines.length ? this.lines[0].fontPx * 0.074 : 10;   // manikin unit ≈ 7.4% of font size (standing ≈ 52% of the cap height)
     // "walkable" continuity: a step between neighbouring 2px columns up to
     // ~1.2u is a slope you walk over (round letter tops), more is a cliff.
-    this.STEP = this.u * 2.2;
+    this.STEP = this.u * 3.2;   // ~knee height: a ledge you step up/down without breaking stride
     // a sittable edge needs room for the shins to hang: drop ≥ 2.4u
     this.DROP = this.u * 2.4;
     if (this.debug) this._drawDebug();
@@ -428,7 +428,7 @@ export class ManikinScene {
         else if (r < 0.45) g.idlePt = { x: hx + (m.facing || 1) * u * (6 + Math.random() * 14), y: hy - u * (Math.random() * 6) };   // ahead / up
         else if (r < 0.65) g.idlePt = { x: hx - (m.facing || 1) * u * (4 + Math.random() * 10), y: hy + u * (Math.random() * 3) };   // glance back
         else g.idlePt = { x: hx + (Math.random() - 0.5) * u * 24, y: hy + u * (2 + Math.random() * 6) };                          // down at the letters
-        g.hold = 1.2 + Math.random() * 3.2 * b.calm;
+        g.hold = 0.7 + Math.random() * 2.2 * b.calm;
       }
       want = g.idlePt.follow && other ? { x: other.x[P.HEAD], y: other.y[P.HEAD] } : g.idlePt;
     }
@@ -463,7 +463,7 @@ export class ManikinScene {
     const near = p.inside ? Math.hypot(p.x - m.x[P.HEAD], p.y - m.y[P.HEAD]) : Infinity;
 
     // reactions preempt (only when awake and not mid-gesture)
-    if (m.state !== 'ragdoll' && m.state !== 'getup' && m.state !== 'climb') {
+    if (m.state !== 'ragdoll' && m.state !== 'getup' && m.state !== 'climb' && m.state !== 'jump' && m.state !== 'peek') {
       // startle: the pointer rushes in
       if (b.startleCd <= 0 && near < u * 9 && (p.fastT || 0) > 0.05 && !(b.act && b.act.name === 'startle')) {
         b.act = { name: 'startle', t: 0, dur: 0.55 + 0.4 * (1 - b.calm) }; b.startleCd = 5;
@@ -502,7 +502,7 @@ export class ManikinScene {
     if (m.state === 'sit') {
       const wantWave = near < u * 8 && (p.still || 0) > 0.6 && b.curiosity > 0.5 && (m.lastWave === undefined || m.t - m.lastWave > 7);
       if (wantWave) { b.act = { name: 'wave', t: 0, dur: 2.0 }; m.lastWave = m.t; return; }
-      if (b.idleT < 2.5 + 3 * b.calm) return;   // let the dangle breathe
+      if (b.idleT < 1.0 + 1.6 * b.calm) return;   // let the dangle breathe
       const menu = [
         ['kick', 0.25 * b.energy], ['scratch', 0.18], ['leanback', 0.22 * b.calm], ['stretch', 0.15],
         ['slouch', 0.35 * b.calm], ['lookaround', 0.3], ['standup', m.t > 12 ? 0.22 * b.energy : 0], ['nap', m.t > 26 ? 0.25 * b.calm : 0],
@@ -514,8 +514,8 @@ export class ManikinScene {
       else b.act = { name: pick, t: 0, dur: durs[pick] };
       b.idleT = 0;
     } else if (m.state === 'stand') {
-      if (b.idleT < 1.5) return;
-      const pick = weighted([['walk', 0.5 * b.energy + 0.1], ['weightshift', 0.3], ['lookaround', 0.3], ['sitdown', 0.25]], rnd);
+      if (b.idleT < 0.8) return;
+      const pick = weighted([['walk', 0.6 * b.energy + 0.15], ['weightshift', 0.3], ['lookaround', 0.25], ['sitdown', 0.2]], rnd);
       if (pick === 'walk') { m.state = 'walk'; m.t = 0; m.phase = 0; m.walkT = 0; m.dir = m.dir || m.facing || 1; m.speedK = 0; if (Math.random() < 0.5) m.dir = m.gazeDir || m.dir; }
       else if (pick === 'sitdown') { const x0 = m.walkX ?? m.x[P.HIP]; const e = this._edgeNear(x0, m.dir || 1, m.layerTop) || this._edgeNear(x0, -(m.dir || 1), m.layerTop); if (e) { m.state = 'sitdown'; m.spot = e; m.t = 0; } }
       else b.act = { name: pick, t: 0, dur: 1.8 + Math.random() };
@@ -532,7 +532,7 @@ export class ManikinScene {
     const sky = this.sky, u = this.u, b = m.brain;
     const groundAt = (x) => sky.topAt(x, (m.layerTop ?? -Infinity) - 1);
     const facing = m.facing || 1;
-    let pose = null, gains = 'stand', gravity = 1;
+    let pose = null, gains = 'stand', gravity = 0.55;   // awake muscles carry ~half the weight; ragdoll uses full gravity
 
     switch (m.state) {
       case 'sit': {
@@ -540,7 +540,7 @@ export class ManikinScene {
         // legs: physics does the dangling — the pose only nudges the shins with a
         // slow irregular impulse (two incommensurate sines + rests), never a metronome
         const kick = (b.act && b.act.name === 'kick') ? 1.6 : (b.act && b.act.name === 'slouch') ? 0.15 : 1;
-        const sw = (Math.sin(m.t * 1.7) * 0.6 + Math.sin(m.t * 2.9 + 1) * 0.4) * (0.35 + 0.65 * Math.max(0, Math.sin(m.t * 0.21))) * kick;
+        const sw = (Math.sin(m.t * 1.7) * 0.6 + Math.sin(m.t * 2.9 + 1) * 0.4) * (0.55 + 0.45 * Math.max(0, Math.sin(m.t * 0.21))) * 1.3 * kick;
         pose = sitPose(m, sp.x, sp.y, side, m.t, sw);
         gains = 'sit';
         m.facing = side;
@@ -554,7 +554,7 @@ export class ManikinScene {
       }
       case 'stand': {
         const x = m.walkX ?? m.x[P.HIP]; m.walkX = x;
-        pose = standPose(m, x, groundAt(x), facing, m.t);
+        pose = standPose(m, x, groundAt, facing, m.t);
         this._applyGesture(m, pose, dt);
         gains = 'stand';
         break;
@@ -563,7 +563,7 @@ export class ManikinScene {
         const sp = m.spot; const x = sp.x - sp.side * u * 1.6; m.walkX = x; m.dir = -sp.side; m.facing = m.dir;
         // anticipation: lean forward from the seat, then rise
         const k = Math.min(1, m.t / 0.9);
-        const a = sitPose(m, sp.x, sp.y, sp.side, 0, 0), c = crouchPose(m, x, groundAt(x), m.dir, 0.8), st = standPose(m, x, groundAt(x), m.dir, m.t);
+        const a = sitPose(m, sp.x, sp.y, sp.side, 0, 0), c = crouchPose(m, x, groundAt, m.dir, 0.8), st = standPose(m, x, groundAt, m.dir, m.t);
         pose = k < 0.45 ? mixPose(a, c, k / 0.45) : mixPose(c, st, (k - 0.45) / 0.55);
         gains = 'gesture';
         if (m.t > 1.0) {
@@ -599,11 +599,18 @@ export class ManikinScene {
         const atEnd = run && (nx > run.x1 - margin || nx < run.x0 + margin);
         if (atEnd || !(sky.topAt(nx, (m.layerTop ?? -Infinity) - 1) < sky.ground)) {
           const edge = this._edgeNear(m.walkX, m.dir, m.layerTop);
-          if (edge && Math.random() < 0.7) { m.state = 'sitdown'; m.spot = edge; m.t = 0; }
+          // is there a lower line to jump down to? (drop between 3u and 40u, ink below)
+          const below = edge ? sky.topAt(edge.x + m.dir * u * 3, edge.y + u) : sky.ground;
+          const canJump = edge && below < sky.ground && below - edge.y > u * 3 && below - edge.y < u * 40;
+          if (canJump && Math.random() < 0.55 * (0.5 + b.energy)) {
+            m.state = 'peek'; m.spot = edge; m.jumpTo = { x: edge.x + m.dir * u * 3.2, y: below }; m.t = 0; m.facing = m.dir;
+            b.gaze.tx = m.jumpTo.x; b.gaze.ty = m.jumpTo.y; b.gaze.mode = 'other'; b.gaze.hold = 2;
+          }
+          else if (edge && Math.random() < 0.7) { m.state = 'sitdown'; m.spot = edge; m.t = 0; }
           else { m.dir *= -1; m.facing = m.dir; m.state = 'stand'; m.t = 0; b.act = { name: 'lookaround', t: 0, dur: 0.6 + Math.random() }; b.idleT = 0; }
           break;
         }
-        m.walkX = nx; m.phase += dt * (speed / (u * 1.25)) * 1.0;   // cadence tied to stride
+        m.walkX = nx; m.phase = (m.phase || 0) + dt * (speed / (u * 1.25)) * 1.0;   // cadence tied to stride
         m.facing = m.dir;
         pose = walkPose(m, m.walkX, groundAt, m.dir, m.phase, m.t);
         const lean = m.dir * u * 0.25 * m.speedK; pose.x[P.NECK] += lean; pose.x[P.HEAD] += lean * 1.5;   // weight forward
@@ -639,13 +646,48 @@ export class ManikinScene {
         const onFloor = gy >= sky.ground - 0.5;
         // phase 1: push up onto hands & knees (crouch); phase 2: rise
         const k = m.t / 1.35;
-        const cr = crouchPose(m, gx, gy, d, 1), st = standPose(m, gx, gy, d, m.t);
+        const gA = onFloor ? () => sky.ground : groundAt;
+        const cr = crouchPose(m, gx, gA, d, 1), st = standPose(m, gx, gA, d, m.t);
         pose = k < 0.42 ? cr : mixPose(cr, st, Math.min(1, (k - 0.42) / 0.58));
         gains = k < 0.42 ? 'gesture' : 'stand';
         if (m.t > 1.35) {
           m.walkX = gx; m.dir = d; m.facing = d; m.run = this._runAt(gx, m.layerTop);
           if (onFloor) { const t = this._nearestEdgeAny(gx); if (t) { m.state = 'climb'; m.spot = t; m.climbFrom = { x: gx, y: gy }; m.t = 0; break; } }
           m.state = 'stand'; m.t = 0; b.idleT = 0; b.act = { name: 'lookaround', t: 0, dur: 1.2 };
+        }
+        break;
+      }
+      case 'peek': {
+        // stand at the very edge, lean and look down; then hop
+        const e = m.spot; const x = e.x - e.side * u * 0.6;
+        pose = standPose(m, x, groundAt, e.side, m.t);
+        const k = Math.min(1, m.t / 0.5), env = Math.sin(Math.PI * Math.min(1, m.t / 1.6));
+        pose.x[P.NECK] += e.side * u * 0.5 * env; pose.x[P.HEAD] += e.side * u * 0.8 * env; pose.y[P.HEAD] += u * 0.35 * env;
+        gains = 'gesture';
+        if (m.t > 1.6) { m.state = 'jump'; m.t = 0; m.jumpFrom = { x: m.x[P.HIP], y: m.y[P.HIP] }; m.jumpDur = 0.55 + Math.min(0.5, (m.jumpTo.y - e.y) / (u * 40)); }
+        break;
+      }
+      case 'jump': {
+        // anticipation crouch (0.18s), then a ballistic arc of the hip to the
+        // landing point with the body tucked; lands in a crouch and gets up
+        const T = m.jumpDur, f = m.jumpFrom, to = m.jumpTo, d = m.facing || 1;
+        const legs = (PROP.thigh + PROP.shin) * u;
+        if (m.t < 0.18) {
+          pose = crouchPose(m, f.x, groundAt, d, 0.7); gains = 'gesture';
+        } else {
+          const k = Math.min(1, (m.t - 0.18) / T);
+          const hx = f.x + (to.x - f.x) * k;
+          const peakLift = u * 2.5;
+          const hy = f.y + (to.y - legs * 0.62 - f.y) * k - Math.sin(Math.PI * k) * peakLift;
+          // tuck: crouch pose translated to the flying hip; feet trail up
+          const tuck = crouchPose(m, hx, () => hy + legs * 0.62, d, 0.9);
+          for (let i = 0; i < P.N; i++) { tuck.y[i] += (k < 0.6 ? -u * 0.4 * Math.sin(Math.PI * k) : 0); }
+          pose = tuck; gains = 'gesture'; gravity = 0;
+          if (k >= 1) {
+            m.state = 'getup'; m.t = 0.5;                       // land in the crouch phase, rise quickly
+            m.getupX = to.x; m.getupY = to.y; m.layerTop = this._layerTopFor(to.y); m.getupDir = d; b.shake = 0.3;
+            m.walkX = to.x; m.dir = d;
+          }
         }
         break;
       }
@@ -663,13 +705,26 @@ export class ManikinScene {
     if (!pose) return;
     // safety net: an act that no state advanced (e.g. set right before a state
     // change) must still expire, or it blocks every future decision
-    if (b.act && (m.state === 'sitdown' || m.state === 'standup' || m.state === 'climb' || m.state === 'getup')) { b.act.t += dt; if (b.act.t >= b.act.dur) b.act = null; }
+    if (b.act && (m.state === 'sitdown' || m.state === 'standup' || m.state === 'climb' || m.state === 'getup' || m.state === 'peek' || m.state === 'jump')) { b.act.t += dt; if (b.act.t >= b.act.dur) b.act = null; }
     // head follows the gaze (small offsets), then drive
     const hr = u * 0.42;
-    pose.x[P.HEAD] += m.look * hr * 0.6; pose.y[P.HEAD] += m.lookY * hr * 0.35;
+    pose.x[P.HEAD] += m.look * hr * 1.1; pose.y[P.HEAD] += m.lookY * hr * 0.6;
+    pose.x[P.NECK] += m.look * hr * 0.35;                       // the shoulders turn a little too
     if (b.shake > 0) { b.shake -= dt; pose.x[P.HEAD] += Math.sin(b.shake * 40) * u * 0.25 * b.shake; }
     drive(m, pose, gainsPreset(gains), 0.14);
     step(m, dt, sky, { noSleep: true, gravity });
+    if (!Number.isFinite(m.x[P.HIP]) || !Number.isFinite(m.y[P.HIP])) this._reseat(m);
+  }
+
+  /** Last-resort recovery: a NaN in the solver (bad state combo) would make a
+   *  manikin vanish for good; instead sit it back down on the nearest edge. */
+  _reseat(m) {
+    const e = this._nearestEdgeAny(this.W / 2) || { x: this.W / 2, y: this.sky.ground, side: 1 };
+    m.state = 'sit'; m.spot = e; m.layerTop = this._layerTopFor(e.y); m.t = 0; m.phase = 0; m.walkX = e.x; m.dir = e.side; m.facing = e.side; m.goalX = undefined;
+    if (m.brain) m.brain.act = null;
+    applyPose(m, sitPose(m, e.x, e.y, e.side, 0, 1), 1);
+    for (let i = 0; i < P.N; i++) { m.px[i] = m.x[i]; m.py[i] = m.y[i]; m.pinned[i] = 0; }
+    console.warn('[manikins] NaN recovered: manikin', m.id, 're-seated');
   }
 
   /** Sub-action overlays on the current pose (arm gestures, torso lean, startle crouch). */
@@ -721,7 +776,7 @@ export class ManikinScene {
       case 'kick': break;                          // handled by the dangle multiplier
       case 'lookaround': break;                    // gaze system does it
       case 'weightshift': {
-        const sh = Math.sin(a.t * 1.6) * u * 0.35 * env; pose.x[P.HIP] += sh; pose.x[P.NECK] += sh * 1.3; pose.x[P.HEAD] += sh * 1.4;
+        const sh = Math.sin(a.t * 1.6) * u * 0.6 * env; pose.x[P.HIP] += sh; pose.x[P.NECK] += sh * 1.3; pose.x[P.HEAD] += sh * 1.4;
         break;
       }
       case 'startle': {

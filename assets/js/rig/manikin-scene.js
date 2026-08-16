@@ -167,7 +167,7 @@ export class ManikinScene {
     const ground = this.lines.length ? Math.max(...this.lines.map((l) => l.bottom)) : H;
     for (const l of layers) l.sky = new Skyline(0, dx, l.tops, ground);
     this.sky = layers.length ? new LayeredSkyline(layers, ground) : new Skyline(0, dx, new Float32Array(n).fill(Infinity), ground);
-    this.u = this.lines.length ? this.lines[0].fontPx * 0.066 : 10;   // manikin unit ≈ 6.6% of font size (standing ≈ 46% of the cap height)
+    this.u = this.lines.length ? this.lines[0].fontPx * 0.074 : 10;   // manikin unit ≈ 7.4% of font size (standing ≈ 52% of the cap height)
     // "walkable" continuity: a step between neighbouring 2px columns up to
     // ~1.2u is a slope you walk over (round letter tops), more is a cliff.
     this.STEP = this.u * 2.2;
@@ -505,10 +505,10 @@ export class ManikinScene {
       if (b.idleT < 2.5 + 3 * b.calm) return;   // let the dangle breathe
       const menu = [
         ['kick', 0.25 * b.energy], ['scratch', 0.18], ['leanback', 0.22 * b.calm], ['stretch', 0.15],
-        ['lookaround', 0.3], ['standup', m.t > 12 ? 0.22 * b.energy : 0], ['nap', m.t > 26 ? 0.25 * b.calm : 0],
+        ['slouch', 0.35 * b.calm], ['lookaround', 0.3], ['standup', m.t > 12 ? 0.22 * b.energy : 0], ['nap', m.t > 26 ? 0.25 * b.calm : 0],
       ];
       const pick = weighted(menu, rnd);
-      const durs = { kick: 1.6, scratch: 1.4, leanback: 2.6, stretch: 1.6, lookaround: 2.2, standup: 0.01, nap: 0 };
+      const durs = { kick: 1.6, scratch: 1.4, leanback: 2.6, stretch: 1.6, slouch: 5 + Math.random() * 5, lookaround: 2.2, standup: 0.01, nap: 0 };
       if (pick === 'nap') { m.state = 'ragdoll'; m.napping = true; m.napLen = 6 + Math.random() * 6; m.t = 0; }
       else if (pick === 'standup') { m.state = 'standup'; m.t = 0; }
       else b.act = { name: pick, t: 0, dur: durs[pick] };
@@ -539,7 +539,7 @@ export class ManikinScene {
         const sp = m.spot; const side = sp.side;
         // legs: physics does the dangling — the pose only nudges the shins with a
         // slow irregular impulse (two incommensurate sines + rests), never a metronome
-        const kick = (b.act && b.act.name === 'kick') ? 1.6 : 1;
+        const kick = (b.act && b.act.name === 'kick') ? 1.6 : (b.act && b.act.name === 'slouch') ? 0.15 : 1;
         const sw = (Math.sin(m.t * 1.7) * 0.6 + Math.sin(m.t * 2.9 + 1) * 0.4) * (0.35 + 0.65 * Math.max(0, Math.sin(m.t * 0.21))) * kick;
         pose = sitPose(m, sp.x, sp.y, side, m.t, sw);
         gains = 'sit';
@@ -582,6 +582,16 @@ export class ManikinScene {
           if (Math.sign(m.goalX - nx) !== m.dir || Math.abs(m.goalX - nx) < u * 0.4) {
             // arrived next to the other one: stand and look down at it for a while
             m.goalX = undefined; m.state = 'stand'; m.t = 0; b.act = { name: 'lookdown', t: 0, dur: 2.5 + Math.random() * 2 }; b.idleT = 0;
+            break;
+          }
+        }
+        // don't walk into the other one: stop short, look at it, then turn back
+        const other = this.manikins.find((o) => o !== m);
+        if (other && Math.abs((other.layerTop ?? 1e9) - (m.layerTop ?? -1e9)) < u * 3 && other.state !== 'ragdoll') {
+          const ahead = (other.x[P.HIP] - nx) * m.dir;
+          if (ahead > 0 && ahead < u * 2.6 && m.goalX === undefined) {
+            m.state = 'stand'; m.t = 0; b.act = { name: 'lookaround', t: 0, dur: 1.2 + Math.random() }; b.idleT = 0; m.dir *= -1; m.facing = -m.dir;
+            b.gaze.tx = other.x[P.HEAD]; b.gaze.ty = other.y[P.HEAD]; b.gaze.mode = 'other'; b.gaze.hold = 1.5;
             break;
           }
         }
@@ -686,6 +696,21 @@ export class ManikinScene {
         reachHand(pose, m, P.LELB, P.LHAND, pose.x[P.NECK] - u * 0.6, pose.y[P.NECK] - u * 2.6 * env, -1);
         reachHand(pose, m, P.RELB, P.RHAND, pose.x[P.NECK] + u * 0.6, pose.y[P.NECK] - u * 2.6 * env, 1);
         pose.y[P.NECK] -= u * 0.25 * env; pose.y[P.HEAD] -= u * 0.35 * env;
+        break;
+      }
+      case 'slouch': {
+        // elbows on the knees, chin in the hands, thinking — env ramps in/out
+        const e2 = Math.min(1, Math.min(a.t, a.dur - a.t) / 0.7);
+        pose.x[P.NECK] += side * u * 0.75 * e2; pose.y[P.NECK] += u * 0.35 * e2;
+        pose.x[P.HEAD] += side * u * 0.7 * e2; pose.y[P.HEAD] += u * 0.45 * e2;
+        const kx = (pose.x[P.LKNEE] + pose.x[P.RKNEE]) / 2, ky = (pose.y[P.LKNEE] + pose.y[P.RKNEE]) / 2;
+        // elbows to knees, hands up under the chin
+        const chinX = pose.x[P.HEAD] + side * u * 0.1, chinY = pose.y[P.HEAD] + u * 0.45;
+        reachHand(pose, m, P.LELB, P.LHAND, chinX - side * u * 0.15, chinY, -side);
+        reachHand(pose, m, P.RELB, P.RHAND, chinX + side * u * 0.15, chinY, side);
+        // pull elbows down onto the knees
+        for (const el of [P.LELB, P.RELB]) { pose.x[el] = pose.x[el] * (1 - e2) + (kx - side * u * 0.2) * e2; pose.y[el] = pose.y[el] * (1 - e2) + (ky - u * 0.15) * e2; }
+        // legs stop swinging while slouched
         break;
       }
       case 'leanback': {

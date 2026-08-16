@@ -15,7 +15,7 @@ import { TAIL_VERT, TAIL_FRAG } from './tail-shaders.js?v=20260530-tail13';
 import {
   proceduralSpec, loadSpec, buildChain, solveFK, solveIK, forward,
   stepSprings, settle, MAX_STRETCH,
-} from './tail-chain.js?v=20260530-tail4';
+} from './tail-chain.js?v=20260530-tail26';
 
 // Tube tones. NOT the page's paper2/paper3: those were within a few points of
 // the page background, so the lit half of the tube was invisible against it
@@ -33,8 +33,10 @@ const CURL_REST = 0.70, CURL_END = 0.15;
 const BASE_RADIUS = 0.072;
 
 export class TailScene {
-  constructor(canvas, { anchor, animate = true, spec = null } = {}) {
+  constructor(canvas, { anchor, animate = true, spec = null, onFirstFrame = null } = {}) {
     this.canvas = canvas;
+    this.onFirstFrame = onFirstFrame;
+    this._framed = false;
     this.anchor = anchor || canvas;      // element whose rect frames the tail
     this.animate = animate;
     this.disposed = false;
@@ -52,6 +54,9 @@ export class TailScene {
     this.chain = buildChain(spec || proceduralSpec());
     this.chain.curl = CURL_REST;
     solveFK(this.chain); settle(this.chain); forward(this.chain);
+
+    // debug/QA handle (read-only use): document.querySelector('.hero__canvas').__tail
+    canvas.__tail = this;
 
     this._initRenderer();
     this._buildTube();
@@ -402,16 +407,28 @@ export class TailScene {
 
     if (this.animate) {
       // eased scalars
+      // Eased scalars, SNAPPED once below the perceptual threshold: an
+      // exponential never reaches its target, and without the snap the scene
+      // kept rendering ~2 s of visually identical frames after every release
+      // (measured 3.2 s to idle vs ~1 s visible motion).
       const eb = 1 - Math.exp(-dt / 0.15);
       c.ikBlend += (this.ikBlendTarget - c.ikBlend) * (c.dragging ? eb : 1 - Math.exp(-dt / 0.35));
       this.bloom += (this.bloomTarget - this.bloom) * (1 - Math.exp(-dt / 0.25));
-      if (Math.abs(this.ikBlendTarget - c.ikBlend) > 1e-3 || Math.abs(this.bloomTarget - this.bloom) > 1e-3) moving = true;
+      if (Math.abs(this.ikBlendTarget - c.ikBlend) < 0.01) c.ikBlend = this.ikBlendTarget; else moving = true;
+      if (Math.abs(this.bloomTarget - this.bloom) < 0.01) this.bloom = this.bloomTarget; else moving = true;
       solveFK(c);
-      if (c.ikBlend > 1e-3) solveIK(c, c.target.x, c.target.y); else c.stretch = 1;
+      if (c.ikBlend > 0) solveIK(c, c.target.x, c.target.y); else c.stretch = 1;
       const settled = stepSprings(c, dt);
       if (!settled) moving = true;
     } else {
-      solveFK(c); settle(c); c.stretch = 1;
+      // Reduced motion: no springs, no eases — but posing is USER-initiated
+      // motion, so a drag still moves the tail; it just snaps (no overlap,
+      // no recoil) and the frame is rendered on demand only.
+      solveFK(c);
+      c.ikBlend = c.dragging ? 1 : 0;
+      this.bloom = this.bloomTarget;
+      if (c.dragging) solveIK(c, c.target.x, c.target.y); else c.stretch = 1;
+      settle(c);
     }
     forward(c);
 
@@ -454,8 +471,10 @@ export class TailScene {
     // control lines
     this._updateControls();
 
+    const t0 = performance.now();
     if (this.visible) this.renderer.render(this.scene, this.camera);
-    this._govern(now);
+    this._govern(performance.now() - t0);
+    if (!this._framed && this.visible) { this._framed = true; try { this.onFirstFrame?.(); } catch (_) {} }
     if (this.animate && moving && this.visible) this.rafId = requestAnimationFrame((t) => this._frame(t));
   }
 
@@ -488,12 +507,17 @@ export class TailScene {
     this.ctrlMat.opacity = this.hoverJoint >= 0 || c.dragging ? 1.0 : 0.55;
   }
 
-  _govern(now) {
-    const ft = this.frameTimes; ft.push(now); if (ft.length > 121) ft.shift();
-    if (ft.length < 121) return;
-    const avg = (ft[ft.length - 1] - ft[0]) / 120;
-    if (avg > 14 && this.hatchOn) { this.hatchOn = 0; ft.length = 0; return; }
-    if (avg > 14 && this.dprCap > 1) { this.dprCap = 1; this.renderer.setPixelRatio(1); this._layout(); ft.length = 0; }
+  /** Quality governor. Measures the JS-side cost of renderer.render() (ms of
+   *  WORK per frame), NOT the interval between frames — that interval is
+   *  ~16.7 ms at 60 Hz whatever the load, so a 14 ms threshold on it fired
+   *  unconditionally and stripped hatch + DPR on every machine (measured).
+   *  Steps down hatch → DPR only if 90 consecutive frames average > 9 ms. */
+  _govern(workMs) {
+    const ft = this.frameTimes; ft.push(workMs); if (ft.length > 90) ft.shift();
+    if (ft.length < 90) return;
+    const avg = ft.reduce((a, b) => a + b, 0) / ft.length;
+    if (avg > 9 && this.hatchOn) { this.hatchOn = 0; ft.length = 0; return; }
+    if (avg > 9 && this.dprCap > 1) { this.dprCap = 1; this.renderer.setPixelRatio(1); this._layout(); ft.length = 0; }
   }
 
   dispose() {
@@ -512,7 +536,9 @@ export class TailScene {
 /** Fetch optional Maya sidecar; resolves to a spec or null. */
 export async function loadTailSpec(url) {
   try {
-    const r = await fetch(url, { cache: 'force-cache' });
+    // NOT force-cache: it happily serves a previously cached 404 forever
+    // (measured: file added, curl 200, page kept seeing 404 from HTTP cache).
+    const r = await fetch(url);
     if (!r.ok) return null;
     return loadSpec(await r.json());
   } catch { return null; }

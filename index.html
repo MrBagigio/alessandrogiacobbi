@@ -43,7 +43,7 @@
   <link rel="stylesheet" href="./assets/css/tokens.css?v=20260530-aaa">
   <link rel="stylesheet" href="./assets/css/base.css?v=20260530-aaa">
   <link rel="stylesheet" href="./assets/css/components.css?v=20260530-aaa">
-  <link rel="stylesheet" href="./assets/css/layout.css?v=20260530-tail">
+  <link rel="stylesheet" href="./assets/css/layout.css?v=20260530-tail25">
   <link rel="stylesheet" href="./assets/css/animations.css?v=20260530-aaa">
 </head>
 <body>
@@ -108,7 +108,11 @@
         <!-- Signature piece anchor: the LP chameleon tail rig (WebGL, drawn on
              the hero canvas underneath) frames itself inside this box. It is
              pure layout — the canvas renders here; the caption is real text. -->
-        <div class="hero__rig" aria-hidden="true"></div>
+        <div class="hero__rig" aria-hidden="true">
+          <!-- static rest-pose poster: first paint + no-WebGL fallback; fades
+               out once the live rig marks .hero.is-live -->
+          <img class="hero__rig-poster" src="./assets/images/hero-tail-rest.svg" alt="" width="400" height="502" decoding="async" fetchpriority="high">
+        </div>
         <p class="hero__rig-caption reveal-up">
           <span class="hero__rig-fig">fig. 01</span>
           LP chameleon &middot; tail_rig &middot; IK/FK &middot; 16 jnt
@@ -654,7 +658,7 @@
     </div>
   </footer>
 
-  <script type="module" src="./assets/js/main.js?v=20260530-tail16"></script>
+  <script type="module" src="./assets/js/main.js?v=20260530-tail27"></script>
 
 </body>
 </html>

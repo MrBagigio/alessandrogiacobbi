@@ -167,6 +167,21 @@ describe('loadSpec (Maya sidecar JSON)', () => {
     expect(loadSpec({})).toBeNull();
     expect(loadSpec({ joints: 'nope' })).toBeNull();
   });
+  it('uniform Maya radii (untouched default 1.0) get the procedural taper; tiny radii are floored', () => {
+    const uni = mk(16); uni.joints.forEach((j) => { j.r = 1.0; });
+    const s = loadSpec(uni);
+    expect(s.radii[0]).toBeCloseTo(1, 6);
+    expect(s.radii[s.N - 1]).toBeCloseTo(0.12, 6);
+    const tiny = mk(16); tiny.joints[15].r = 0.0001;
+    const s2 = loadSpec(tiny);
+    expect(s2.radii[15]).toBeGreaterThanOrEqual(0.08 - 1e-6); // Float32Array storage
+  });
+  it('missing names fall back to tail_01.. (1-based, per joint)', () => {
+    const anon = mk(10); anon.joints.forEach((j) => { delete j.name; });
+    const s = loadSpec(anon);
+    expect(s.names[0]).toBe('tail_01');
+    expect(s.names[9]).toBe('tail_10');
+  });
   it('a chain built from JSON reproduces its own rest at curl=1', () => {
     const s = loadSpec(mk(14));
     const c = buildChain(s);

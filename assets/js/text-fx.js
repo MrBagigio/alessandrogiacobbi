@@ -102,7 +102,6 @@ let AMBIENT_ON = false;
 
 const _loopHandles = new WeakMap();
 export function loopGlitch(el, opts = {}) {
-  if (!AMBIENT_ON) return;
   if (!el) return;
   if (_loopHandles.has(el)) return; // già attivo
   const minDelay = opts.minDelay ?? 6000;
@@ -135,7 +134,6 @@ export function loopGlitch(el, opts = {}) {
  * Utile per parole brand/keyword che devono "respirare".
  */
 export function loopScramble(el, opts = {}) {
-  if (!AMBIENT_ON) return;
   if (!el) return;
   const minDelay = opts.minDelay ?? 14000;
   const maxDelay = opts.maxDelay ?? 28000;
@@ -198,6 +196,11 @@ export function initTextFx(opts = {}) {
   if (reduced) return;
   // Enable the continuous-glitch layer only when explicitly asked (FX_MAXIMAL).
   AMBIENT_ON = opts.ambient ?? false;
+  // The loop primitives (loopGlitch/loopScramble) are always functional —
+  // they are exported and unit-tested on their own. The AMBIENT gate lives
+  // HERE, at orchestration level: when off, every ambient call is a no-op.
+  const ambientGlitch = AMBIENT_ON ? loopGlitch : () => {};
+  const ambientScramble = AMBIENT_ON ? loopScramble : () => {};
 
   // ─── 1. SCRAMBLE ON LOAD / ON REVEAL ───────────────────────────────────
 
@@ -205,13 +208,13 @@ export function initTextFx(opts = {}) {
   const pretitle = document.querySelector('.hero__pretitle');
   if (pretitle) {
     scramble(pretitle, { delay: 450, duration: 850 });
-    loopScramble(pretitle, { minDelay: 16000, maxDelay: 28000, duration: 700 });
+    ambientScramble(pretitle, { minDelay: 16000, maxDelay: 28000, duration: 700 });
   }
 
   // Hero meta-label (Based/Studio/Status) — scramble staggered
   document.querySelectorAll('.hero__meta-label').forEach((el, i) => {
     scramble(el, { delay: 700 + i * 120, duration: 600 });
-    loopGlitch(el, { minDelay: 10000 + i * 1500, maxDelay: 22000, duration: 240 });
+    ambientGlitch(el, { minDelay: 10000 + i * 1500, maxDelay: 22000, duration: 240 });
   });
 
   // Trusted-by label
@@ -232,7 +235,7 @@ export function initTextFx(opts = {}) {
   // Showreel CTA title + tag — scramble on reveal
   bindOnReveal('.showreel__cta-title', (el) => {
     scramble(el, { duration: 900, stableChance: 0.32 });
-    loopScramble(el, { minDelay: 14000, maxDelay: 26000, duration: 800 });
+    ambientScramble(el, { minDelay: 14000, maxDelay: 26000, duration: 800 });
   });
   bindOnReveal('.showreel__tag, .showreel__cta-sub', (el) => {
     scramble(el, { duration: 600 });
@@ -241,7 +244,7 @@ export function initTextFx(opts = {}) {
   // Project card titles — scramble on reveal + loop scramble raro
   bindOnReveal('.project-card__title', (el) => {
     scramble(el, { duration: 700 });
-    loopScramble(el, { minDelay: 20000, maxDelay: 40000, duration: 600 });
+    ambientScramble(el, { minDelay: 20000, maxDelay: 40000, duration: 600 });
   });
 
   // Project meta (LP Group · Setpoint · Character Rigging) — scramble
@@ -263,11 +266,11 @@ export function initTextFx(opts = {}) {
   });
   bindOnReveal('.project-hero__nda-tag, .demo-bar__tier', (el) => {
     scramble(el, { duration: 500 });
-    loopGlitch(el, { minDelay: 6000, maxDelay: 12000, duration: 260 });
+    ambientGlitch(el, { minDelay: 6000, maxDelay: 12000, duration: 260 });
   });
   bindOnReveal('.project-split-section__eyebrow', (el) => {
     scramble(el, { duration: 600 });
-    loopGlitch(el, { minDelay: 9000, maxDelay: 18000, duration: 280 });
+    ambientGlitch(el, { minDelay: 9000, maxDelay: 18000, duration: 280 });
   });
   bindOnReveal('.project-split-section__title', (el) => {
     scramble(el, { duration: 800 });
@@ -281,7 +284,7 @@ export function initTextFx(opts = {}) {
   // Contact pretitle + channel labels
   bindOnReveal('.contact__pretitle', (el) => {
     scramble(el, { duration: 700 });
-    loopGlitch(el, { minDelay: 9000, maxDelay: 18000, duration: 320 });
+    ambientGlitch(el, { minDelay: 9000, maxDelay: 18000, duration: 320 });
   });
   bindOnReveal('.contact__channel-label', (el) => {
     scramble(el, { duration: 550 });
@@ -297,40 +300,40 @@ export function initTextFx(opts = {}) {
   // Section num (01-05) — glitch on reveal + loop frequente
   bindOnReveal('.section-heading__num, .project-card__index', (el) => {
     glitch(el, 380);
-    loopGlitch(el, { minDelay: 5000, maxDelay: 11000, duration: 280 });
+    ambientGlitch(el, { minDelay: 5000, maxDelay: 11000, duration: 280 });
   });
 
   // Section heading title — loop glitch dopo scramble
   document.querySelectorAll('.section-heading__title').forEach((el) => {
-    loopGlitch(el, { minDelay: 11000, maxDelay: 22000, duration: 360 });
+    ambientGlitch(el, { minDelay: 11000, maxDelay: 22000, duration: 360 });
   });
 
   // Hero <em>Character</em> word — loop glitch (parola brand)
   document.querySelectorAll('.hero__title em').forEach((el) => {
-    loopGlitch(el, { minDelay: 7000, maxDelay: 14000, duration: 380 });
+    ambientGlitch(el, { minDelay: 7000, maxDelay: 14000, duration: 380 });
   });
 
   // Hero title masks (Render, che vendono, che si muovono) — loop glitch raro
   document.querySelectorAll('.hero__title .reveal-mask').forEach((el, i) => {
-    loopGlitch(el, { minDelay: 13000 + i * 1500, maxDelay: 26000, duration: 320 });
+    ambientGlitch(el, { minDelay: 13000 + i * 1500, maxDelay: 26000, duration: 320 });
   });
 
   // Project card titles — loop glitch
   document.querySelectorAll('.project-card__title').forEach((el) => {
-    loopGlitch(el, { minDelay: 11000, maxDelay: 24000, duration: 320 });
+    ambientGlitch(el, { minDelay: 11000, maxDelay: 24000, duration: 320 });
   });
 
   // Contact title + footer cta-text — loop glitch
   document.querySelectorAll('.contact__title em, .footer__cta-text em').forEach((el) => {
-    loopGlitch(el, { minDelay: 9000, maxDelay: 19000, duration: 360 });
+    ambientGlitch(el, { minDelay: 9000, maxDelay: 19000, duration: 360 });
   });
 
   // Meta-bar elements (Available, clock)
   const clock = document.querySelector('.meta-clock');
-  if (clock) loopGlitch(clock, { minDelay: 18000, maxDelay: 32000, duration: 220, onlyInViewport: false });
+  if (clock) ambientGlitch(clock, { minDelay: 18000, maxDelay: 32000, duration: 220, onlyInViewport: false });
 
   const metaLeft = document.querySelector('.meta-bar .left');
-  if (metaLeft) loopGlitch(metaLeft, { minDelay: 16000, maxDelay: 30000, duration: 240, onlyInViewport: false });
+  if (metaLeft) ambientGlitch(metaLeft, { minDelay: 16000, maxDelay: 30000, duration: 240, onlyInViewport: false });
 
   // Trusted-by logos — random one glitches every 4-8s
   const trustedLogos = document.querySelectorAll('.trusted-by__logo');

@@ -123,11 +123,21 @@ export function loadSpec(json) {
     if (!(len > 0)) return null;
     const restXY = new Float32Array(n * 2);
     for (let i = 0; i < n; i++) { restXY[i * 2] = shifted[i][0] / len; restXY[i * 2 + 1] = shifted[i][1] / len; }
+    // Radii: normalise to the thickest joint, and never let a joint fall
+    // under 8% of it — Maya joint `radius` is a display attribute that riggers
+    // often leave at 1.0 for the whole chain or shrink to ~0 at the tip; a
+    // zero radius would pinch the tube into a line and break the hull.
     const rr = J.map((j) => (Number.isFinite(j.r) && j.r > 0 ? j.r : 1));
     const rmax = Math.max(...rr);
     const radii = new Float32Array(n);
-    for (let i = 0; i < n; i++) radii[i] = rr[i] / rmax;
-    return { N: n, restXY, radii, source: 'json', names: J.map((j) => String(j.name || `tail_${String(i).padStart(2, '0')}`)) };
+    for (let i = 0; i < n; i++) radii[i] = Math.max(0.08, rr[i] / rmax);
+    // If every radius is identical (typical untouched Maya default) apply the
+    // procedural taper instead — a cylinder does not read as a tail.
+    if (radii.every((r) => Math.abs(r - radii[0]) < 1e-6)) {
+      for (let i = 0; i < n; i++) radii[i] = 1.0 - 0.88 * (i / (n - 1));
+    }
+    const names = J.map((j, i) => String(j.name || `tail_${String(i + 1).padStart(2, '0')}`));
+    return { N: n, restXY, radii, source: 'json', names };
   } catch {
     return null;
   }
@@ -271,7 +281,18 @@ export function stepSprings(c, dt) {
     c.theta[i] += c.vel[i] * clampedDt;
     const av = Math.abs(c.vel[i]); if (av > maxV) maxV = av;
   }
-  c.settled = maxV < 1e-3;
+  // Settle when both velocity AND residual error are below the perceptual
+  // floor (chain length 1 ≈ 300–550 css px on screen: 2e-3 rad on a 0.07
+  // segment ≈ 0.05 px). Then snap so the pose is exactly the goal and the
+  // renderer can go idle instead of chasing an asymptote (measured: 3.2 s
+  // to idle at 1e-3 velocity-only vs ~1 s of visible motion).
+  let maxErr = 0;
+  for (let i = 0; i < c.N; i++) {
+    const goal = c.thetaFK[i] + (c.thetaIK[i] - c.thetaFK[i]) * c.ikBlend;
+    const e = Math.abs(c.theta[i] - goal); if (e > maxErr) maxErr = e;
+  }
+  c.settled = maxV < 2e-2 && maxErr < 2e-3;
+  if (c.settled) settle(c);
   return c.settled;
 }
 

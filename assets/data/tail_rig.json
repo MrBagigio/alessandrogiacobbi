@@ -1,0 +1,6 @@
+{
+  "_readme": "Optional Maya sidecar for the hero tail rig. When `joints` is present and valid (8–24 entries of {name, rest:[x,y,z], r}), tail-chain.loadSpec() replaces the procedural log-spiral coil with the real LP tail chain (PCA-projected to a plane, normalised to length 1). Without `joints` this file is a no-op and the procedural coil ships. Kept as a real file so the fetch is a 200, not a console 404. Export snippet: tools/maya_export_tail.py",
+  "unit": "cm",
+  "up": "y",
+  "project": "LP"
+}

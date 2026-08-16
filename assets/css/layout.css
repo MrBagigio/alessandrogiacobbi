@@ -47,10 +47,35 @@ section {
 .hero__inner > *:not(.hero__rig) { pointer-events: auto; }
 .hero__inner { pointer-events: none; }
 
+.hero__inner {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--gap-m);
+  width: 100%;
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 0 var(--pad-side);
+}
+
+/* NOTE: the rig layout block MUST come after the base .hero__inner rule
+   above — same specificity, so source order decides; it originally sat
+   before it and the desktop 2-column grid silently lost (measured: rig
+   column 548px instead of clamp(300px,26vw,460px), H1 wrapping). */
 /* ── Tail rig anchor + caption ──
    .hero__rig is an empty layout box: tail-scene.js reads its rect every
    resize and frames the coil inside it (ortho camera, world == css px). */
-.hero__rig { pointer-events: none; }
+.hero__rig { pointer-events: none; position: relative; }
+/* Rest-pose poster: fills the anchor box exactly like the live rig frames
+   itself (same solver, same margins). Fades once WebGL is live. Stays for
+   no-WebGL / renderer failure — the hero never shows an empty box. */
+.hero__rig-poster {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: contain; object-position: center;
+  opacity: 1; transition: opacity 320ms ease-out 80ms;
+}
+.hero.is-live .hero__rig-poster { opacity: 0; }
 .hero__rig-caption {
   font-family: var(--fm);
   font-size: 11px;
@@ -79,19 +104,26 @@ section {
    bottom-aligned with the CTA row (like a plate in a technical book). */
 @media (min-width: 1200px) {
   .hero__inner {
-    grid-template-columns: minmax(0, 1fr) clamp(300px, 26vw, 460px);
+    grid-template-columns: minmax(0, 1fr) clamp(280px, 22vw, 400px);
     column-gap: var(--gap-l);
     align-items: end;
   }
   .hero__pretitle, .hero__title, .hero__cta { grid-column: 1; }
-  .hero__rig { grid-column: 2; grid-row: 1 / span 3; align-self: end; width: 100%; aspect-ratio: 4 / 5; }
-  .hero__rig-caption { grid-column: 2; grid-row: 4; display: block; margin-top: 0.75rem; }
+  /* The H1 now shares the row with the rig column: 12vw made "CHARACTER
+     ANIMATION." wrap at 1440 (measured 1113px line vs 880px column). Sized
+     so the italic line fits column 1 from 1200 to 1920+ on one line. */
+  .hero__inner .hero__title { font-size: clamp(3.5rem, 9.6vw, 9.75rem); max-width: none; } /* specificity > base rule below */
+  /* rig spans pretitle+H1 rows, bottom-aligned with the H1; the caption sits
+     in the CTA row so it reads level with the buttons (a 4th row put it under
+     the CTA, on top of .hero__meta, and outside the reveal observer's margin) */
+  .hero__rig { grid-column: 2; grid-row: 1 / span 2; align-self: end; width: 100%; aspect-ratio: 4 / 5; }
+  .hero__rig-caption { grid-column: 2; grid-row: 3; align-self: start; display: block; margin-top: 0.25rem; }
 }
 /* 1024–1199: narrower pocket top-right, out of the H1's way */
 @media (min-width: 1024px) and (max-width: 1199px) {
   .hero__rig { position: absolute; top: clamp(6rem, 14vh, 9rem); right: var(--pad-side); width: 24vw; aspect-ratio: 4 / 5; }
-  .hero__rig-caption { display: block; position: absolute; right: var(--pad-side); top: calc(clamp(6rem, 14vh, 9rem) + 24vw * 1.25 + 0.5rem); }
-  .hero__title { max-width: 14ch; }
+  .hero__rig-caption { display: block; position: absolute; right: var(--pad-side); width: 24vw; top: calc(clamp(6rem, 14vh, 9rem) + 24vw * 1.25 + 0.5rem); }
+  .hero__inner .hero__title { max-width: 14ch; }
 }
 /* <1024: rig sits in flow, top-right, BEFORE the pretitle — never under the H1 */
 @media (max-width: 1023px) {
@@ -99,17 +131,6 @@ section {
   .hero__inner { display: grid; }
 }
 
-.hero__inner {
-  position: relative;
-  z-index: 2;
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--gap-m);
-  width: 100%;
-  max-width: var(--maxw);
-  margin: 0 auto;
-  padding: 0 var(--pad-side);
-}
 
 .hero__pretitle {
   font-family: var(--fm);

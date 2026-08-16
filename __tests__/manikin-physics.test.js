@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import {
   Skyline, LayeredSkyline, P, PROP, createManikin, standPose, sitPose, walkPose, applyPose,
-  step, pin, unpinAll, nearestPoint, bounds, impulse, GRAVITY,
+  step, pin, unpinAll, nearestPoint, bounds, impulse, GRAVITY, drive, gainsPreset, CONTACT_R,
 } from '../assets/js/rig/manikin-physics.js';
 
 const finite = (arr) => Array.from(arr).every(Number.isFinite);
@@ -89,7 +89,7 @@ describe('Manikin poses', () => {
     const m = createManikin({ x: 100, y: 300, u: 10 });
     expect(m.cons.length).toBe(10);
     expect(finite(m.x) && finite(m.y)).toBe(true);
-    expect(m.y[P.LFOOT]).toBeCloseTo(300, 6);
+    expect(m.y[P.LFOOT]).toBeCloseTo(300 - CONTACT_R * 10, 6);   // feet sit one contact radius above the ground
     expect(m.y[P.HEAD]).toBeLessThan(m.y[P.HIP]);
   });
   it('bone lengths in every pose stay within 12% of their rest lengths (poses are physically plausible)', () => {
@@ -127,6 +127,49 @@ describe('Manikin poses', () => {
     const p = standPose(m, 40, 100, 1, 0);
     applyPose(m, p, 1);
     for (let i = 0; i < P.N; i++) expect(m.x[i]).toBeCloseTo(p.x[i], 9);
+  });
+});
+
+describe('active-ragdoll drive', () => {
+  const world = fakeSkyline();
+  it('drives a fallen body up into the stand pose while gravity/bones/floor act (converges < 0.4u, no NaN)', () => {
+    const m = createManikin({ x: 60, y: 200, u: 10 });
+    for (let i = 0; i < 90; i++) step(m, 1 / 60, world);              // collapse on the letter
+    const target = standPose(m, 60, 200, 1, 0), g = gainsPreset('stand');
+    for (let i = 0; i < 150; i++) { drive(m, target, g); step(m, 1 / 60, world, { noSleep: true }); }
+    expect(finite(m.x) && finite(m.y)).toBe(true);
+    for (const i of [P.HIP, P.NECK, P.LFOOT, P.RFOOT]) {
+      expect(Math.hypot(m.x[i] - target.x[i], m.y[i] - target.y[i])).toBeLessThan(m.u * 0.4);
+    }
+    for (const [a, b, len] of m.cons) { const d = Math.hypot(m.x[b] - m.x[a], m.y[b] - m.y[a]); expect(Math.abs(d - len) / len).toBeLessThan(0.08); }
+  });
+  it('follow-through: after a sudden torso move the hip overshoots and the passive hand is still swinging once the hip has arrived', () => {
+    const m = createManikin({ x: 60, y: 200, u: 10 });
+    const g = gainsPreset('walk');
+    let target = standPose(m, 60, 200, 1, 0);
+    for (let i = 0; i < 60; i++) { drive(m, target, g); step(m, 1 / 60, world, { noSleep: true }); }
+    target = standPose(m, 100, 200, 1, 0);                              // torso jumps 40px right
+    let overshoot = false, handSwingsAfterHipArrived = false;
+    for (let i = 0; i < 24; i++) {
+      drive(m, target, g); step(m, 1 / 60, world, { noSleep: true });
+      const hipErr = target.x[P.HIP] - m.x[P.HIP];
+      const vHip = Math.hypot(m.x[P.HIP] - m.px[P.HIP], m.y[P.HIP] - m.py[P.HIP]) * 60;
+      const vHand = Math.hypot(m.x[P.RHAND] - m.px[P.RHAND], m.y[P.RHAND] - m.py[P.RHAND]) * 60;
+      if (hipErr < -2) overshoot = true;
+      if (Math.abs(hipErr) < 8 && vHand > vHip * 1.5 && vHand > 150) handSwingsAfterHipArrived = true;
+    }
+    expect(overshoot).toBe(true);
+    expect(handSwingsAfterHipArrived).toBe(true);
+    for (let i = 0; i < 120; i++) { drive(m, target, g); step(m, 1 / 60, world, { noSleep: true }); }
+    expect(Math.abs(m.x[P.RHAND] - target.x[P.RHAND])).toBeLessThan(m.u * 0.6);   // …and settles
+  });
+  it('a driven standing body is quiet: no point vibrates above ~1 px/frame once settled', () => {
+    const m = createManikin({ x: 60, y: 200, u: 10 });
+    const g = gainsPreset('stand'), target = standPose(m, 60, 200, 1, 0);
+    for (let i = 0; i < 120; i++) { drive(m, target, g); step(m, 1 / 60, world, { noSleep: true }); }
+    let maxV = 0;
+    for (let i = 0; i < 60; i++) { drive(m, target, g); step(m, 1 / 60, world, { noSleep: true }); for (let k = 0; k < P.N; k++) maxV = Math.max(maxV, Math.hypot(m.x[k] - m.px[k], m.y[k] - m.py[k]) * 60); }
+    expect(maxV).toBeLessThan(65);
   });
 });
 

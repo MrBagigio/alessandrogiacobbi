@@ -21,11 +21,13 @@
  */
 import { onPointerMove } from '../pointer.js?v=20260516-pointer';
 import {
-  Skyline, LayeredSkyline, P, PROP, createManikin, standPose, sitPose, walkPose, applyPose,
-  step, pin, unpinAll, nearestPoint, bounds, impulse,
-} from './manikin-physics.js?v=20260530-mk12';
+  Skyline, LayeredSkyline, P, PROP, createManikin, standPose, sitPose, walkPose, crouchPose, applyPose,
+  step, drive, gainsPreset, reachHand, mixPose, pin, unpinAll, nearestPoint, bounds, impulse,
+} from './manikin-physics.js?v=20260530-mk22';
 
 const INK = '#161310', OX = '#B8323F', PAPER = '#EDE6D6';
+/** weighted random pick from [[name, weight], ...] with r in [0,1) */
+function weighted(items, r) { const tot = items.reduce((a, [, w]) => a + w, 0) || 1; let acc = 0; for (const [n, w] of items) { acc += w / tot; if (r < acc) return n; } return items[items.length - 1][0]; }
 const GRAB_PX = 22;
 
 export class ManikinScene {
@@ -229,7 +231,7 @@ export class ManikinScene {
     document.addEventListener('visibilitychange', this._onVis);
 
     this._unsub = onPointerMove((x, y) => {
-      const p = this._toLocal(x, y); this.pointer.x = p.x; this.pointer.y = p.y;
+      const p = this._toLocal(x, y); this.pointer.x = p.x; this.pointer.y = p.y; this.pointer.cx = x; this.pointer.cy = y;
       this.pointer.inside = p.x >= -this.padX && p.x <= this.W + this.padX && p.y >= -this.padTop && p.y <= this.H + 40;
       if (this.grab) { pin(this.grab.m, this.grab.i, p.x, p.y); return; }
       // hover
@@ -327,11 +329,11 @@ export class ManikinScene {
       if (m.state === 'sit' || m.state === 'sitdown' || m.state === 'climb') {
         const e = this._edgeNear(x, m.spot?.side || 1, layerTop) || this._nearestEdgeAny(x);
         if (e) { m.spot = e; m.layerTop = this._layerTopFor(e.y); m.state = 'sit'; applyPose(m, sitPose(m, e.x, e.y, e.side, m.t, 1), 1); }
-      } else if (m.state === 'walk' || m.state === 'standup' || m.state === 'getup') {
+      } else if (m.state === 'walk' || m.state === 'stand' || m.state === 'standup' || m.state === 'getup') {
         m.walkX = x; m.run = this._runAt(x, layerTop);
         if (!m.run) { const e = this._nearestEdgeAny(x); if (e) { m.state = 'sit'; m.spot = e; m.layerTop = this._layerTopFor(e.y); applyPose(m, sitPose(m, e.x, e.y, e.side, 0, 1), 1); continue; } }
-        m.state = 'walk';
-        applyPose(m, walkPose(m, x, (xx) => this.sky.topAt(xx, layerTop - 1), m.dir || 1, m.phase || 0, m.t), 1);
+        m.state = 'stand'; m.brain && (m.brain.act = null);
+        applyPose(m, standPose(m, x, this.sky.topAt(x, layerTop - 1), m.dir || 1, m.t), 1);
       } else {
         // ragdoll: scale positions in place, physics takes it from here
         for (let i = 0; i < P.N; i++) { m.x[i] *= kx; m.px[i] *= kx; }
@@ -353,134 +355,332 @@ export class ManikinScene {
     if (this.disposed) return;
     const dt = Math.min(0.05, (now - this.lastT) / 1000); this.lastT = now;
     const sky = this.sky; if (!sky) return;
-    // surface under a manikin that is standing/walking on a given line: look
-    // only at/below that line's top so gaps between letters read as gaps
-    const groundFor = (m) => (x) => sky.topAt(x, (m.layerTop ?? -Infinity) - 1);
-
+    this._perceive(dt);
     for (const m of this.manikins) {
       m.t += dt;
-      // head look-at: -1..1 toward the pointer, only when awake
-      if (this.pointer.inside && m.state !== 'ragdoll') {
-        const dxp = this.pointer.x - m.x[P.HEAD]; m.look += (Math.max(-1, Math.min(1, dxp / (this.u * 12))) - m.look) * 0.08;
-      } else m.look *= 0.95;
-
-      if (!this.animate && m.state !== 'ragdoll') { /* static: keep the initial pose */ continue; }
-
-      switch (m.state) {
-        case 'sit': {
-          const s = m.spot;
-          const swing = 0.6 + 0.4 * Math.sin(m.t * 0.23);
-          const pose = sitPose(m, s.x, s.y, s.side, m.t * 1.0, swing);
-          // wave: pointer lingers nearby → raise the near hand and wave for a bit
-          const near = this.pointer.inside && Math.hypot(this.pointer.x - m.x[P.HEAD], this.pointer.y - m.y[P.HEAD]) < this.u * 7;
-          m.nearT = near ? (m.nearT || 0) + dt : 0;
-          if (!m.waveT && m.nearT > 0.7 && (m.lastWave === undefined || m.t - m.lastWave > 6)) { m.waveT = 2.2; m.lastWave = m.t; }
-          if (m.waveT > 0) {
-            m.waveT -= dt;
-            const hand = s.side > 0 ? P.RHAND : P.LHAND, elb = s.side > 0 ? P.RELB : P.LELB;
-            const nx = pose.x[P.NECK], ny = pose.y[P.NECK], u = this.u, side = s.side;
-            const a = Math.sin(m.t * 14) * 0.35;                       // wag
-            pose.x[elb] = nx + side * (0.9 * u); pose.y[elb] = ny - 0.6 * u;
-            pose.x[hand] = pose.x[elb] + side * Math.cos(a) * 0.5 * u + Math.sin(a) * 0.9 * u * side;
-            pose.y[hand] = pose.y[elb] - PROP.foreArm * u * 0.9 * Math.cos(a * 0.6);
-            if (m.waveT <= 0) m.waveT = 0;
-          }
-          applyPose(m, pose, 0.25);
-          // now and then: get up for a stroll, or doze off (collapse into a nap)
-          if (m.t > 14 + m.id * 5 && Math.random() < dt / 8) { m.state = 'standup'; m.t = 0; }
-          else if (m.t > 30 && Math.random() < dt / 20) { m.state = 'ragdoll'; m.napping = true; m.napLen = 6 + Math.random() * 5; m.t = 0; }
-          break;
-        }
-        case 'standup': {
-          const s = m.spot; const x = s.x - s.side * this.u * 1.6;
-          applyPose(m, standPose(m, x, groundFor(m)(x), -s.side, m.t), 0.18);
-          if (m.t > 0.9) { m.state = 'walk'; m.t = 0; m.phase = 0; m.speed = this.u * 2.4; m.walkX = x; m.dir = -s.side; m.run = this._runAt(x, m.layerTop); }
-          break;
-        }
-        case 'walk': {
-          if (m.walkX === undefined) m.walkX = m.x[P.HIP];
-          if (m.dir === undefined) m.dir = 1;
-          const groundAt = groundFor(m);
-          if (m.pause > 0) { m.pause -= dt; applyPose(m, standPose(m, m.walkX, groundAt(m.walkX), m.dir, m.t), 0.2); break; }
-          const run = m.run || this._runAt(m.walkX, m.layerTop);
-          const nx = m.walkX + m.dir * m.speed * dt;
-          const margin = this.u * 1.2;
-          const atEnd = run && (nx > run.x1 - margin || nx < run.x0 + margin);
-          if (atEnd || !(sky.topAt(nx, (m.layerTop ?? -Infinity) - 1) < sky.ground)) {
-            // reached the end of the word: sit on the edge if it's a drop, else turn around
-            const edge = this._edgeNear(m.walkX, m.dir, m.layerTop);
-            if (edge && Math.random() < 0.65) { m.state = 'sitdown'; m.spot = edge; m.t = 0; }
-            else { m.dir *= -1; m.pause = 0.6 + Math.random() * 1.2; }
-            break;
-          }
-          m.walkX = nx; m.phase += dt * (m.speed / (this.u * 0.95)) * 1.05;
-          applyPose(m, walkPose(m, m.walkX, groundAt, m.dir, m.phase, m.t), 0.45);
-          if (Math.random() < dt / 9) { m.pause = 0.8 + Math.random() * 1.5; }
-          break;
-        }
-        case 'sitdown': {
-          const s = m.spot;
-          applyPose(m, sitPose(m, s.x, s.y, s.side, 0, 0), 0.16);
-          if (m.t > 0.8) { m.state = 'sit'; m.t = 0; }
-          break;
-        }
-        case 'ragdoll': {
-          const rest = step(m, dt, sky);
-          if (!m.grabbed && rest && m.restTime > (m.napping ? m.napLen : 1.1)) {
-            // decide ONCE where we are getting up: the surface the hip rests on
-            m.state = 'getup'; m.t = 0; m.napping = false;
-            m.getupX = m.x[P.HIP];
-            m.getupY = sky.topAt(m.getupX, m.y[P.HIP] - this.u);
-            m.layerTop = this._layerTopFor(m.getupY);
-          }
-          break;
-        }
-        case 'getup': {
-          // rise where we lie: stand on the surface under the hip, facing the pointer if any
-          const gx = m.getupX, gy = m.getupY;
-          const facing = this.pointer.inside ? (this.pointer.x > gx ? 1 : -1) : (m.dir || 1);
-          applyPose(m, standPose(m, gx, gy, facing, m.t), 0.12 + m.t * 0.1);
-          if (m.t > 1.0) {
-            m.walkX = gx; m.dir = facing; m.run = this._runAt(gx, m.layerTop); m.speed = this.u * 2.4;
-            const onFloor = gy >= sky.ground - 0.5;
-            if (onFloor) {
-              // landed on the floor (between/beside the words): hop back up
-              // onto the nearest letter edge instead of loitering down here
-              const target = this._nearestEdgeAny(gx);
-              if (target) { m.state = 'climb'; m.spot = target; m.climbFrom = { x: gx, y: gy }; m.t = 0; break; }
-            }
-            const edge = this._edgeNear(gx, facing, m.layerTop);
-            if (!m.run || m.run.x1 - m.run.x0 < this.u * 5) { m.state = 'sit'; m.spot = edge || { x: gx, y: gy, side: facing }; }
-            else m.state = 'walk';
-            m.t = 0; m.phase = 0;
-          }
-          break;
-        }
-        case 'climb': {
-          // kinematic hop: hip on a parabola from the floor to the edge, legs
-          // tucked mid-air, lands in the sit pose. ~0.9 s.
-          const T = 0.9, k = Math.min(1, m.t / T), e = m.spot, f = m.climbFrom;
-          const facing = e.side;
-          const hx = f.x + (e.x - f.x) * k;
-          const arc = -Math.sin(Math.PI * k) * this.u * 3.5;          // up to 3.5u above the straight line
-          const hy = f.y + (e.y - f.y) * k + arc;
-          // pose: standing figure whose ground is the moving hip's foot line, then blend to sit
-          const stand = standPose(m, hx, hy + (PROP.thigh + PROP.shin) * this.u * 0.6, facing, m.t);
-          const sit = sitPose(m, e.x, e.y, facing, 0, 0);
-          const w = k * k;
-          const blend = { x: new Float64Array(P.N), y: new Float64Array(P.N) };
-          for (let i = 0; i < P.N; i++) { blend.x[i] = stand.x[i] * (1 - w) + sit.x[i] * w; blend.y[i] = stand.y[i] * (1 - w) + sit.y[i] * w; }
-          applyPose(m, blend, 0.5);
-          if (k >= 1) { m.state = 'sit'; m.layerTop = this._layerTopFor(e.y); m.t = 0; }
-          break;
-        }
-      }
+      if (!m.brain) this._initBrain(m);
+      this._gaze(m, dt);
+      this._blink(m, dt);
+      if (!this.animate && m.state !== 'ragdoll' && m.state !== 'getup') continue;   // reduced motion: static
+      this._think(m, dt);
+      this._act(m, dt);
     }
     this._render();
     if (this.grab || this.hover) this._label();
-    // keep looping while animating or anything is ragdolling; otherwise idle
     const anyMoving = this.animate || this.manikins.some((m) => m.state === 'ragdoll' || m.state === 'getup');
     if (anyMoving && this.visible && !document.hidden) this.rafId = requestAnimationFrame((t) => this._frame(t));
+  }
+
+  /* ───────────────────────── perception ───────────────────────── */
+
+  _perceive(dt) {
+    const p = this.pointer;
+    // pointer speed from CLIENT coords (px/s), smoothed — local coords also move
+    // when the headline's parallax transform changes, which read as phantom speed
+    if (this._pp && p.cx !== undefined) { const v = Math.hypot(p.cx - this._pp.x, p.cy - this._pp.y) / Math.max(dt, 1e-3); p.speed = (p.speed || 0) * 0.7 + v * 0.3; }
+    this._pp = { x: p.cx ?? 0, y: p.cy ?? 0 };
+    p.fastT = (p.speed || 0) > 900 ? (p.fastT || 0) + dt : 0;
+    p.still = (p.speed || 0) < 12 ? (p.still || 0) + dt : 0;
+    // tail rig being dragged? (its control point in our local space)
+    const heroDragging = document.querySelector('.hero')?.classList.contains('is-dragging') && !this.grab;
+    this.tailDrag = null;
+    if (heroDragging) {
+      const t = document.querySelector('.hero__canvas')?.__tail;
+      if (t?.chain?.dragging) { const c = t._jointClient(t.chain.N - 1); this.tailDrag = this._toLocal(c.x, c.y); }
+    }
+  }
+
+  /* ───────────────────────── brain: personality, gaze, blink ───────────────────────── */
+
+  _initBrain(m) {
+    // two temperaments: #0 curious & lively, #1 lazy & calm
+    const curious = m.id === 0;
+    m.brain = {
+      curiosity: curious ? 0.9 : 0.4, energy: curious ? 0.8 : 0.45, calm: curious ? 0.5 : 0.85,
+      gaze: { x: m.x[P.HEAD] + m.facing * 40, y: m.y[P.HEAD], tx: 0, ty: 0, hold: 0, mode: 'idle', jitter: 0, pointerHold: 0 },
+      blink: { t: 1.5 + Math.random() * 3, closed: 0 },
+      act: null,               // current sub-action {name, t, dur, ...}
+      idleT: 0,                // time since last sub-action
+      startleCd: 0, watchCd: 0,
+      shake: 0,                // head-shake timer after landing
+    };
+    m.look = 0; m.lookY = 0;
+  }
+
+  _gaze(m, dt) {
+    const b = m.brain, g = b.gaze, u = this.u, p = this.pointer;
+    const hx = m.x[P.HEAD], hy = m.y[P.HEAD];
+    const other = this.manikins.find((o) => o !== m);
+    // choose a target with priorities; hold times make it feel deliberate
+    let want = null, mode = g.mode;
+    if (this.grab?.m === m) { want = null; mode = 'held'; }
+    else if (this.tailDrag) { want = this.tailDrag; mode = 'tail'; }
+    else if (other && (other.state === 'ragdoll' || other.state === 'getup' || other.state === 'climb')) { want = { x: other.x[P.HEAD], y: other.y[P.HEAD] }; mode = 'other'; }
+    else if (p.inside && ((p.speed || 0) > 60 || Math.hypot(p.x - hx, p.y - hy) < u * 12)) { want = { x: p.x, y: p.y }; mode = 'pointer'; g.pointerHold = 1.2 + b.curiosity; }
+    else if (g.pointerHold > 0 && p.inside) { g.pointerHold -= dt; want = { x: p.x, y: p.y }; mode = 'pointer'; }
+    else {
+      // idle wander: hold a point for a while, then saccade somewhere else
+      g.hold -= dt;
+      if (g.hold <= 0 || mode !== 'idle') {
+        mode = 'idle';
+        const r = Math.random();
+        if (other && r < 0.25) g.idlePt = { x: other.x[P.HEAD], y: other.y[P.HEAD], follow: true };
+        else if (r < 0.45) g.idlePt = { x: hx + (m.facing || 1) * u * (6 + Math.random() * 14), y: hy - u * (Math.random() * 6) };   // ahead / up
+        else if (r < 0.65) g.idlePt = { x: hx - (m.facing || 1) * u * (4 + Math.random() * 10), y: hy + u * (Math.random() * 3) };   // glance back
+        else g.idlePt = { x: hx + (Math.random() - 0.5) * u * 24, y: hy + u * (2 + Math.random() * 6) };                          // down at the letters
+        g.hold = 1.2 + Math.random() * 3.2 * b.calm;
+      }
+      want = g.idlePt.follow && other ? { x: other.x[P.HEAD], y: other.y[P.HEAD] } : g.idlePt;
+    }
+    g.mode = mode;
+    if (want) { g.tx = want.x; g.ty = want.y; }
+    // saccade: fast ease toward target, tiny drift while holding
+    const k = mode === 'idle' ? 0.22 : 0.4;
+    g.x += (g.tx - g.x) * k; g.y += (g.ty - g.y) * k;
+    g.jitter += dt;
+    const jx = Math.sin(g.jitter * 3.1) * 0.6 + Math.sin(g.jitter * 7.3) * 0.3, jy = Math.cos(g.jitter * 2.3) * 0.5;
+    // head look vector (-1..1) used by poses/render; eye follows faster than head
+    const dxg = g.x + jx - hx, dyg = g.y + jy - hy;
+    const lx = Math.max(-1, Math.min(1, dxg / (u * 10))), ly = Math.max(-1, Math.min(1, dyg / (u * 10)));
+    m.look += (lx - m.look) * 0.12; m.lookY += (ly - m.lookY) * 0.12;
+    m.eyeX = lx; m.eyeY = ly;
+    m.gazeDir = Math.sign(dxg) || m.facing;
+  }
+
+  _blink(m, dt) {
+    const bl = m.brain.blink;
+    if (bl.closed > 0) { bl.closed -= dt; return; }
+    bl.t -= dt;
+    if (bl.t <= 0) { bl.closed = 0.11; bl.t = (Math.random() < 0.25 ? 0.25 : 2.2 + Math.random() * 4.5); }
+  }
+
+  /* ───────────────────────── brain: decisions ───────────────────────── */
+
+  _think(m, dt) {
+    const b = m.brain, p = this.pointer, u = this.u;
+    b.startleCd -= dt; b.watchCd -= dt;
+    const other = this.manikins.find((o) => o !== m);
+    const near = p.inside ? Math.hypot(p.x - m.x[P.HEAD], p.y - m.y[P.HEAD]) : Infinity;
+
+    // reactions preempt (only when awake and not mid-gesture)
+    if (m.state !== 'ragdoll' && m.state !== 'getup' && m.state !== 'climb') {
+      // startle: the pointer rushes in
+      if (b.startleCd <= 0 && near < u * 9 && (p.fastT || 0) > 0.05 && !(b.act && b.act.name === 'startle')) {
+        b.act = { name: 'startle', t: 0, dur: 0.55 + 0.4 * (1 - b.calm) }; b.startleCd = 5; return;
+      }
+      // watch: the other one gets thrown / falls -> freeze and stare
+      if (other && other.state === 'ragdoll' && !other.grabbed && b.watchCd <= 0 && (!b.act || b.act.name !== 'watch')) {
+        b.act = { name: 'watch', t: 0, dur: 2.5 + Math.random() * 2 }; b.watchCd = 8; return;
+      }
+    }
+    if (b.act) return;                            // busy with a sub-action
+    b.idleT += dt;
+
+    // utility pick for the next sub-action, by state
+    const rnd = Math.random();
+    if (m.state === 'sit') {
+      const wantWave = near < u * 8 && (p.still || 0) > 0.6 && b.curiosity > 0.5 && (m.lastWave === undefined || m.t - m.lastWave > 7);
+      if (wantWave) { b.act = { name: 'wave', t: 0, dur: 2.0 }; m.lastWave = m.t; return; }
+      if (b.idleT < 2.5 + 3 * b.calm) return;   // let the dangle breathe
+      const menu = [
+        ['kick', 0.25 * b.energy], ['scratch', 0.18], ['leanback', 0.22 * b.calm], ['stretch', 0.15],
+        ['lookaround', 0.3], ['standup', m.t > 12 ? 0.22 * b.energy : 0], ['nap', m.t > 26 ? 0.25 * b.calm : 0],
+      ];
+      const pick = weighted(menu, rnd);
+      const durs = { kick: 1.6, scratch: 1.4, leanback: 2.6, stretch: 1.6, lookaround: 2.2, standup: 0.01, nap: 0 };
+      if (pick === 'nap') { m.state = 'ragdoll'; m.napping = true; m.napLen = 6 + Math.random() * 6; m.t = 0; }
+      else if (pick === 'standup') { m.state = 'standup'; m.t = 0; }
+      else b.act = { name: pick, t: 0, dur: durs[pick] };
+      b.idleT = 0;
+    } else if (m.state === 'stand') {
+      if (b.idleT < 1.5) return;
+      const pick = weighted([['walk', 0.5 * b.energy + 0.1], ['weightshift', 0.3], ['lookaround', 0.3], ['sitdown', 0.25]], rnd);
+      if (pick === 'walk') { m.state = 'walk'; m.t = 0; m.phase = 0; m.walkT = 0; m.dir = m.dir || m.facing || 1; m.speedK = 0; if (Math.random() < 0.5) m.dir = m.gazeDir || m.dir; }
+      else if (pick === 'sitdown') { const x0 = m.walkX ?? m.x[P.HIP]; const e = this._edgeNear(x0, m.dir || 1, m.layerTop) || this._edgeNear(x0, -(m.dir || 1), m.layerTop); if (e) { m.state = 'sitdown'; m.spot = e; m.t = 0; } }
+      else b.act = { name: pick, t: 0, dur: 1.8 + Math.random() };
+      b.idleT = 0;
+    } else if (m.state === 'walk') {
+      // occasional stop to look around
+      if (b.idleT > 3 && rnd < dt * 0.25) { m.state = 'stand'; m.t = 0; b.act = { name: 'lookaround', t: 0, dur: 1.4 + Math.random() * 1.6 }; b.idleT = 0; }
+    }
+  }
+
+  /* ───────────────────────── act: build target pose and drive ───────────────────────── */
+
+  _act(m, dt) {
+    const sky = this.sky, u = this.u, b = m.brain;
+    const groundAt = (x) => sky.topAt(x, (m.layerTop ?? -Infinity) - 1);
+    const facing = m.facing || 1;
+    let pose = null, gains = 'stand', gravity = 1;
+
+    switch (m.state) {
+      case 'sit': {
+        const sp = m.spot; const side = sp.side;
+        // legs: physics does the dangling — the pose only nudges the shins with a
+        // slow irregular impulse (two incommensurate sines + rests), never a metronome
+        const kick = (b.act && b.act.name === 'kick') ? 1.6 : 1;
+        const sw = (Math.sin(m.t * 1.7) * 0.6 + Math.sin(m.t * 2.9 + 1) * 0.4) * (0.35 + 0.65 * Math.max(0, Math.sin(m.t * 0.21))) * kick;
+        pose = sitPose(m, sp.x, sp.y, side, m.t, sw);
+        gains = 'sit';
+        m.facing = side;
+        this._applyGesture(m, pose, dt);
+        break;
+      }
+      case 'sitdown': {
+        const sp = m.spot; pose = sitPose(m, sp.x, sp.y, sp.side, 0, 0); gains = 'gesture'; m.facing = sp.side;
+        if (m.t > 0.9) { m.state = 'sit'; m.t = 0; b.idleT = 0; }
+        break;
+      }
+      case 'stand': {
+        const x = m.walkX ?? m.x[P.HIP]; m.walkX = x;
+        pose = standPose(m, x, groundAt(x), facing, m.t);
+        this._applyGesture(m, pose, dt);
+        gains = 'stand';
+        break;
+      }
+      case 'standup': {
+        const sp = m.spot; const x = sp.x - sp.side * u * 1.6; m.walkX = x; m.dir = -sp.side; m.facing = m.dir;
+        // anticipation: lean forward from the seat, then rise
+        const k = Math.min(1, m.t / 0.9);
+        const a = sitPose(m, sp.x, sp.y, sp.side, 0, 0), c = crouchPose(m, x, groundAt(x), m.dir, 0.8), st = standPose(m, x, groundAt(x), m.dir, m.t);
+        pose = k < 0.45 ? mixPose(a, c, k / 0.45) : mixPose(c, st, (k - 0.45) / 0.55);
+        gains = 'gesture';
+        if (m.t > 1.0) { m.state = 'stand'; m.t = 0; b.idleT = 0.8; m.run = this._runAt(x, m.layerTop); }
+        break;
+      }
+      case 'walk': {
+        m.walkT = (m.walkT || 0) + dt;
+        const run = m.run || (m.run = this._runAt(m.walkX, m.layerTop));
+        m.speedK = Math.min(1, (m.speedK || 0) + dt * 1.6);            // ease in
+        const speed = u * (2.0 + 1.2 * b.energy) * m.speedK;
+        const nx = m.walkX + m.dir * speed * dt;
+        const margin = u * 1.3;
+        const atEnd = run && (nx > run.x1 - margin || nx < run.x0 + margin);
+        if (atEnd || !(sky.topAt(nx, (m.layerTop ?? -Infinity) - 1) < sky.ground)) {
+          const edge = this._edgeNear(m.walkX, m.dir, m.layerTop);
+          if (edge && Math.random() < 0.7) { m.state = 'sitdown'; m.spot = edge; m.t = 0; }
+          else { m.dir *= -1; m.facing = m.dir; m.state = 'stand'; m.t = 0; b.act = { name: 'lookaround', t: 0, dur: 0.6 + Math.random() }; b.idleT = 0; }
+          break;
+        }
+        m.walkX = nx; m.phase += dt * (speed / (u * 0.95)) * 1.05;
+        m.facing = m.dir;
+        pose = walkPose(m, m.walkX, groundAt, m.dir, m.phase, m.t);
+        const lean = m.dir * u * 0.25 * m.speedK; pose.x[P.NECK] += lean; pose.x[P.HEAD] += lean * 1.5;   // weight forward
+        gains = 'walk';
+        break;
+      }
+      case 'ragdoll': {
+        // struggle while held: irregular kicks and reaches
+        if (m.grabbed) {
+          m.struggleT = (m.struggleT || 0) - dt;
+          if (m.struggleT <= 0) {
+            m.struggleT = 0.25 + Math.random() * 0.7;
+            const pts = [P.LFOOT, P.RFOOT, P.LHAND, P.RHAND, P.LKNEE, P.RKNEE];
+            const i = pts[Math.floor(Math.random() * pts.length)];
+            const k = u * (0.35 + Math.random() * 0.6) * (0.5 + b.energy);
+            m.px[i] -= (Math.random() - 0.5) * k * 2; m.py[i] -= (Math.random() * 0.8) * k;
+            m.asleep = false;
+          }
+        }
+        const rest = step(m, dt, sky);
+        if (!m.grabbed && rest && m.restTime > (m.napping ? m.napLen : 0.9 + 0.6 * b.calm)) {
+          m.state = 'getup'; m.t = 0; m.napping = false;
+          m.getupX = m.x[P.HIP]; m.getupY = sky.topAt(m.getupX, m.y[P.HIP] - u);
+          m.layerTop = this._layerTopFor(m.getupY);
+          m.getupDir = (this.pointer.inside ? (this.pointer.x > m.getupX ? 1 : -1) : (m.dir || 1));
+          b.shake = 0.5;
+        }
+        return;   // physics already stepped
+      }
+      case 'getup': {
+        const gx = m.getupX, gy = m.getupY, d = m.getupDir;
+        const onFloor = gy >= sky.ground - 0.5;
+        // phase 1: push up onto hands & knees (crouch); phase 2: rise
+        const k = m.t / 1.35;
+        const cr = crouchPose(m, gx, gy, d, 1), st = standPose(m, gx, gy, d, m.t);
+        pose = k < 0.42 ? cr : mixPose(cr, st, Math.min(1, (k - 0.42) / 0.58));
+        gains = k < 0.42 ? 'gesture' : 'stand';
+        if (m.t > 1.35) {
+          m.walkX = gx; m.dir = d; m.facing = d; m.run = this._runAt(gx, m.layerTop);
+          if (onFloor) { const t = this._nearestEdgeAny(gx); if (t) { m.state = 'climb'; m.spot = t; m.climbFrom = { x: gx, y: gy }; m.t = 0; break; } }
+          m.state = 'stand'; m.t = 0; b.idleT = 0; b.act = { name: 'lookaround', t: 0, dur: 1.2 };
+        }
+        break;
+      }
+      case 'climb': {
+        const T = 0.9, k = Math.min(1, m.t / T), e = m.spot, f = m.climbFrom;
+        const hx = f.x + (e.x - f.x) * k, arc = -Math.sin(Math.PI * k) * u * 3.5;
+        const hy = f.y + (e.y - f.y) * k + arc;
+        const st = standPose(m, hx, hy + (PROP.thigh + PROP.shin) * u * 0.6, e.side, m.t);
+        const si = sitPose(m, e.x, e.y, e.side, 0, 0);
+        pose = mixPose(st, si, k * k); gains = 'gesture'; gravity = 0.15;
+        if (k >= 1) { m.state = 'sit'; m.layerTop = this._layerTopFor(e.y); m.t = 0; b.idleT = 0; }
+        break;
+      }
+    }
+    if (!pose) return;
+    // head follows the gaze (small offsets), then drive
+    const hr = u * 0.42;
+    pose.x[P.HEAD] += m.look * hr * 0.6; pose.y[P.HEAD] += m.lookY * hr * 0.35;
+    if (b.shake > 0) { b.shake -= dt; pose.x[P.HEAD] += Math.sin(b.shake * 40) * u * 0.25 * b.shake; }
+    drive(m, pose, gainsPreset(gains), 0.14);
+    step(m, dt, sky, { noSleep: true, gravity });
+  }
+
+  /** Sub-action overlays on the current pose (arm gestures, torso lean, startle crouch). */
+  _applyGesture(m, pose, dt) {
+    const b = m.brain, a = b.act; if (!a) return;
+    a.t += dt; const u = this.u, k = a.t / a.dur, side = m.facing || 1;
+    const env = Math.sin(Math.PI * Math.min(1, k));                    // 0->1->0 envelope
+    switch (a.name) {
+      case 'wave': {
+        const hand = side > 0 ? P.RHAND : P.LHAND, elb = side > 0 ? P.RELB : P.LELB;
+        const wag = Math.sin(a.t * 13) * 0.55 * env;
+        const tx = pose.x[P.NECK] + side * (0.9 + 0.5 * env) * u + Math.sin(wag) * u * 1.4;
+        const ty = pose.y[P.NECK] - (0.2 + 1.5 * env) * u;
+        reachHand(pose, m, elb, hand, tx, ty, side);
+        break;
+      }
+      case 'scratch': {
+        const hand = side > 0 ? P.RHAND : P.LHAND, elb = side > 0 ? P.RELB : P.LELB;
+        const tx = pose.x[P.HEAD] + side * u * 0.5 + Math.sin(a.t * 18) * u * 0.15 * env, ty = pose.y[P.HEAD] - u * 0.35 * env + (1 - env) * u * 2;
+        reachHand(pose, m, elb, hand, tx, ty, side);
+        break;
+      }
+      case 'stretch': {
+        reachHand(pose, m, P.LELB, P.LHAND, pose.x[P.NECK] - u * 0.6, pose.y[P.NECK] - u * 2.6 * env, -1);
+        reachHand(pose, m, P.RELB, P.RHAND, pose.x[P.NECK] + u * 0.6, pose.y[P.NECK] - u * 2.6 * env, 1);
+        pose.y[P.NECK] -= u * 0.25 * env; pose.y[P.HEAD] -= u * 0.35 * env;
+        break;
+      }
+      case 'leanback': {
+        pose.x[P.NECK] -= side * u * 0.7 * env; pose.x[P.HEAD] -= side * u * 0.9 * env; pose.y[P.HEAD] -= u * 0.15 * env;
+        m.lookY += (-0.6 - m.lookY) * 0.1;
+        break;
+      }
+      case 'kick': break;                          // handled by the dangle multiplier
+      case 'lookaround': break;                    // gaze system does it
+      case 'weightshift': {
+        const sh = Math.sin(a.t * 1.6) * u * 0.35 * env; pose.x[P.HIP] += sh; pose.x[P.NECK] += sh * 1.3; pose.x[P.HEAD] += sh * 1.4;
+        break;
+      }
+      case 'startle': {
+        // flinch: quick crouch + arms up, then release
+        const q = Math.min(1, a.t / 0.12) * (1 - Math.max(0, (k - 0.55) / 0.45));
+        pose.y[P.HIP] += u * 0.5 * q; pose.y[P.NECK] += u * 0.6 * q; pose.y[P.HEAD] += u * 0.7 * q;
+        pose.x[P.NECK] -= side * u * 0.3 * q; pose.x[P.HEAD] -= side * u * 0.5 * q;
+        reachHand(pose, m, P.LELB, P.LHAND, pose.x[P.NECK] - u * 1.2, pose.y[P.NECK] - u * 0.6 * q + u * (1 - q) * 1.6, -1);
+        reachHand(pose, m, P.RELB, P.RHAND, pose.x[P.NECK] + u * 1.2, pose.y[P.NECK] - u * 0.6 * q + u * (1 - q) * 1.6, 1);
+        break;
+      }
+      case 'watch': {
+        const other = this.manikins.find((o) => o !== m); if (!other) break;
+        const dir = Math.sign(other.x[P.HEAD] - m.x[P.HEAD]) || 1;
+        pose.x[P.NECK] += dir * u * 0.35 * env; pose.x[P.HEAD] += dir * u * 0.55 * env;
+        break;
+      }
+    }
+    if (a.t >= a.dur) { b.act = null; b.idleT = 0; }
   }
 
   _nearestEdgeAny(x) {
@@ -541,9 +741,13 @@ export class ManikinScene {
     c.fillStyle = PAPER; c.fill(); c.lineWidth = lw; c.strokeStyle = ink; c.stroke();
     // neck
     c.beginPath(); c.moveTo(m.x[P.HEAD], m.y[P.HEAD] + hr * 0.9); c.lineTo(m.x[P.NECK], m.y[P.NECK]); c.stroke();
-    // eye
-    const ex = m.x[P.HEAD] + m.look * hr * 0.45 + (m.dir || m.facing || 1) * hr * 0.15, ey = m.y[P.HEAD] - hr * 0.1;
-    c.beginPath(); c.arc(ex, ey, Math.max(0.9, u * 0.09), 0, Math.PI * 2); c.fillStyle = m.tint === 'ox' ? OX : ink; c.fill();
+    // eye: follows the gaze in 2D, blinks (a short line while closed)
+    const facing = m.facing || m.dir || 1;
+    const ex = m.x[P.HEAD] + (m.eyeX ?? m.look) * hr * 0.42 + facing * hr * 0.18, ey = m.y[P.HEAD] + (m.eyeY ?? 0) * hr * 0.3 - hr * 0.08;
+    const closed = m.brain?.blink?.closed > 0;
+    c.fillStyle = c.strokeStyle = m.tint === 'ox' ? OX : ink;
+    if (closed) { c.lineWidth = Math.max(1, u * 0.09); c.beginPath(); c.moveTo(ex - hr * 0.28, ey); c.lineTo(ex + hr * 0.28, ey); c.stroke(); }
+    else { c.beginPath(); c.arc(ex, ey, Math.max(0.9, u * 0.09), 0, Math.PI * 2); c.fill(); }
     // joints: X-ray dots in the accent colour
     const jr = Math.max(1.2, u * 0.13);
     c.fillStyle = accent;

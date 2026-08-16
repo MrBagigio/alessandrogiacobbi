@@ -140,6 +140,11 @@ export class LayeredSkyline {
 // point indices
 export const P = { HEAD: 0, NECK: 1, HIP: 2, LKNEE: 3, LFOOT: 4, RKNEE: 5, RFOOT: 6, LELB: 7, LHAND: 8, RELB: 9, RHAND: 10, N: 11 };
 
+/** Contact radius of a point (fraction of u): collide() keeps points this far
+ *  above a surface, so poses that put feet ON the surface must aim there too,
+ *  or the drive and the floor fight (measured: 60 px/s foot flicker). */
+export const CONTACT_R = 0.16;
+
 /** Body proportions in units of u (u ≈ 1/7 of standing height). */
 export const PROP = { head: 0.62, neck: 0.55, torso: 2.05, thigh: 1.85, shin: 1.85, upperArm: 1.45, foreArm: 1.4, shoulder: 0.5, hipW: 0.35 };
 
@@ -207,14 +212,19 @@ export function kneeIK(hx, hy, fx, fy, l1, l2, bend = 1) {
 export function standPose(m, x, groundY, facing = 1, t = 0) {
   const u = m.u, o = _pose();
   const sway = Math.sin(t * 1.3) * 0.06 * u, breath = Math.sin(t * 2.1) * 0.04 * u;
-  const hipY = groundY - (PROP.thigh + PROP.shin) * u * 0.96;
+  const hipY = groundY - (PROP.thigh + PROP.shin) * u * 0.985;   // knees just short of locked
   put(o, P.HIP, x + sway, hipY);
   put(o, P.NECK, x + sway * 1.4, hipY - PROP.torso * u + breath);
   put(o, P.HEAD, x + sway * 1.6 + facing * 0.08 * u, o.y[P.NECK] - PROP.neck * u + breath);
-  const spread = PROP.hipW * u * 1.4;
-  put(o, P.LFOOT, x - spread, groundY); put(o, P.RFOOT, x + spread, groundY);
-  put(o, P.LKNEE, x - spread * 0.7 + facing * 0.15 * u, hipY + PROP.thigh * u * 0.95);
-  put(o, P.RKNEE, x + spread * 0.7 + facing * 0.15 * u, hipY + PROP.thigh * u * 0.95);
+  const spread = PROP.hipW * u * 1.1, fy = groundY - CONTACT_R * u;
+  put(o, P.LFOOT, x - spread, fy); put(o, P.RFOOT, x + spread, fy);
+  // knees via 2-bone IK so the target is reachable with the real bone lengths
+  // (hand-placed knees were 4% short → the drive and the bones fought, 70 px/s
+  // knee jitter while "standing still")
+  const th = PROP.thigh * u, sh2 = PROP.shin * u;
+  const [lkx, lky] = kneeIK(o.x[P.HIP], hipY, o.x[P.LFOOT], fy, th, sh2, facing);
+  const [rkx, rky] = kneeIK(o.x[P.HIP], hipY, o.x[P.RFOOT], fy, th, sh2, facing);
+  put(o, P.LKNEE, lkx, lky); put(o, P.RKNEE, rkx, rky);
   const sh = PROP.shoulder * u;
   put(o, P.LELB, o.x[P.NECK] - sh - 0.2 * u, o.y[P.NECK] + PROP.upperArm * u * 0.95);
   put(o, P.RELB, o.x[P.NECK] + sh + 0.2 * u, o.y[P.NECK] + PROP.upperArm * u * 0.95);
@@ -273,7 +283,7 @@ export function walkPose(m, x, groundAt, facing = 1, phase = 0, t = 0) {
   const stride = 0.95 * u, lift = 0.5 * u;
   const bob = Math.abs(Math.sin(phase)) * 0.12 * u;
   const gY = groundAt(x);
-  const hipY = gY - (PROP.thigh + PROP.shin) * u * 0.93 - bob;
+  const hipY = gY - (PROP.thigh + PROP.shin) * u * 0.955 - bob;
   put(o, P.HIP, x, hipY);
   put(o, P.NECK, x + facing * 0.12 * u, hipY - PROP.torso * u);
   put(o, P.HEAD, x + facing * 0.22 * u, o.y[P.NECK] - PROP.neck * u);
@@ -282,7 +292,7 @@ export function walkPose(m, x, groundAt, facing = 1, phase = 0, t = 0) {
     const s = Math.sin(ph), c = Math.cos(ph);
     const fx = x + facing * s * stride;
     const up = c > 0 ? c * lift : 0;             // swing phase lifts
-    return [fx, groundAt(fx) - up];
+    return [fx, groundAt(fx) - CONTACT_R * u - up];
   };
   const [lx, ly] = f(phase), [rx, ry] = f(phase + Math.PI);
   put(o, P.LFOOT, lx, ly); put(o, P.RFOOT, rx, ry);
@@ -298,6 +308,46 @@ export function walkPose(m, x, groundAt, facing = 1, phase = 0, t = 0) {
   put(o, P.RHAND, o.x[P.RELB] + facing * aswing * 0.8, o.y[P.RELB] + PROP.foreArm * u * 0.85);
   return o;
 }
+
+/** Crouch on the ground at (x, groundY): hips low, knees bent forward, hands
+ *  near the ground in front — the "landed / about to get up / startled" shape. */
+export function crouchPose(m, x, groundY, facing = 1, depth = 1) {
+  const u = m.u, o = _pose();
+  const fy = groundY - CONTACT_R * u;
+  const legLen = (PROP.thigh + PROP.shin) * u;
+  const hipY = groundY - legLen * (0.96 - 0.42 * depth);
+  const hipX = x - facing * 0.25 * u * depth;
+  put(o, P.HIP, hipX, hipY);
+  put(o, P.NECK, hipX + facing * (0.35 + 0.5 * depth) * u, hipY - PROP.torso * u * (1 - 0.18 * depth));
+  put(o, P.HEAD, o.x[P.NECK] + facing * 0.25 * u, o.y[P.NECK] - PROP.neck * u * 0.95);
+  const spread = PROP.hipW * u * 1.6;
+  put(o, P.LFOOT, x - spread + facing * 0.2 * u, fy); put(o, P.RFOOT, x + spread + facing * 0.2 * u, fy);
+  const th = PROP.thigh * u, sh2 = PROP.shin * u;
+  const [lkx, lky] = kneeIK(hipX, hipY, o.x[P.LFOOT], fy, th, sh2, facing);
+  const [rkx, rky] = kneeIK(hipX, hipY, o.x[P.RFOOT], fy, th, sh2, facing);
+  put(o, P.LKNEE, lkx, lky); put(o, P.RKNEE, rkx, rky);
+  // hands toward the ground in front (bracing)
+  reachHand(o, m, P.LELB, P.LHAND, x + facing * 1.1 * u, groundY - CONTACT_R * u, -facing);
+  reachHand(o, m, P.RELB, P.RHAND, x + facing * 1.6 * u, groundY - CONTACT_R * u, facing);
+  return o;
+}
+
+/** Arm 2-bone IK on a pose: place elbow/hand so the hand reaches (tx,ty)
+ *  from the neck; the elbow bends toward `bend` (±1 in x). Clamps to reach. */
+export function reachHand(o, m, elb, hand, tx, ty, bend = 1) {
+  const u = m.u, l1 = PROP.upperArm * u, l2 = PROP.foreArm * u;
+  const sx = o.x[P.NECK], sy = o.y[P.NECK];
+  let dx = tx - sx, dy = ty - sy, d = Math.hypot(dx, dy) || 1e-6;
+  const maxD = (l1 + l2) * 0.985; if (d > maxD) { dx *= maxD / d; dy *= maxD / d; d = maxD; }
+  const [ex, ey] = kneeIK(sx, sy, sx + dx, sy + dy, l1, l2, bend);
+  put(o, elb, ex, ey); put(o, hand, sx + dx, sy + dy);
+  return o;
+}
+
+/** Copy of a pose. */
+export function clonePose(p) { return { x: Float64Array.from(p.x), y: Float64Array.from(p.y) }; }
+/** Blend two poses: a*(1-w) + b*w. */
+export function mixPose(a, b, w) { const o = _pose(); for (let i = 0; i < P.N; i++) { o.x[i] = a.x[i] + (b.x[i] - a.x[i]) * w; o.y[i] = a.y[i] + (b.y[i] - a.y[i]) * w; } return o; }
 
 /** Blend current points toward a pose. k=1 snaps. Keeps prev for velocity. */
 export function applyPose(m, pose, k = 0.35) {
@@ -321,18 +371,20 @@ export const REST_V = 4;          // px/s below which a point counts as resting
  * `world.ground` = floor y, `world.x0/x1` = soft horizontal bounds.
  * Returns true when the whole body is at rest on a surface.
  */
-export function step(m, dt, world) {
+export function step(m, dt, world, opts = {}) {
   const N = P.N;
+  const gScale = opts.gravity ?? 1, noSleep = !!opts.noSleep, damp = opts.damp ?? DAMP;
   // Asleep: frozen solid until something wakes it (pin / impulse / pose).
   // A grounded ragdoll otherwise flickers ~1 px/frame forever where a knee
   // is wedged between a strut, a bone and the floor (measured 68 px/s on one
   // point) — invisible, but it would never count as "at rest".
-  if (m.asleep) { let anyPin = 0; for (let i = 0; i < N; i++) anyPin |= m.pinned[i]; if (!anyPin) { m.restTime += dt; return true; } m.asleep = false; }
-  const g = GRAVITY * dt * dt;
+  if (m.asleep && !noSleep) { let anyPin = 0; for (let i = 0; i < N; i++) anyPin |= m.pinned[i]; if (!anyPin) { m.restTime += dt; return true; } m.asleep = false; }
+  if (noSleep) m.asleep = false;
+  const g = GRAVITY * gScale * dt * dt;
   // integrate
   for (let i = 0; i < N; i++) {
     if (m.pinned[i]) { m.px[i] = m.x[i] = m.pinX[i]; m.py[i] = m.y[i] = m.pinY[i]; continue; }
-    const vx = (m.x[i] - m.px[i]) * DAMP, vy = (m.y[i] - m.py[i]) * DAMP;
+    const vx = (m.x[i] - m.px[i]) * damp, vy = (m.y[i] - m.py[i]) * damp;
     m.px[i] = m.x[i]; m.py[i] = m.y[i];
     m.x[i] += vx; m.y[i] += vy + g;
   }
@@ -356,7 +408,7 @@ export function step(m, dt, world) {
   // surface; 0.25 s of quiet → freeze (asleep) and report resting.
   const nearly = maxV < 90 && anyGround === 1;
   m.quietTime = nearly ? (m.quietTime || 0) + dt : 0;
-  if (m.quietTime > 0.25) {
+  if (m.quietTime > 0.25 && !noSleep) {
     for (let i = 0; i < N; i++) { m.px[i] = m.x[i]; m.py[i] = m.y[i]; }
     m.asleep = true; m.restTime += dt; return true;
   }
@@ -377,7 +429,7 @@ function satisfy(m, a, b, len, minOnly, k = 1) {
 }
 
 function collide(m, world) {
-  const r = m.u * 0.16;
+  const r = m.u * CONTACT_R;
   for (let i = 0; i < P.N; i++) {
     m.onGround[i] = 0;
     if (m.pinned[i]) continue;
@@ -394,8 +446,13 @@ function collide(m, world) {
       const wasAbove = m.py[i] <= surf + r * 1.5;
       if (wasAbove) {
         m.y[i] = surf;
-        const vx = m.x[i] - m.px[i];
-        m.px[i] = m.x[i] - vx * FRICTION;
+        let vx = (m.x[i] - m.px[i]) * FRICTION;
+        // static friction: a grounded point crawling slower than ~0.35 px/frame
+        // sticks. Letter tops are curved — without this a landed body kept
+        // creeping down the slope and never counted as at rest (measured 5 s
+        // on the shoulder of a G instead of 1.2 s).
+        if (Math.abs(vx) < 0.35) vx = 0;
+        m.px[i] = m.x[i] - vx;
         m.py[i] = m.y[i];               // kill vertical bounce
         m.onGround[i] = 1;
       } else {
@@ -410,6 +467,52 @@ function collide(m, world) {
     if (m.x[i] < world.x0) { m.x[i] = world.x0; m.px[i] = m.x[i]; }
     if (m.x[i] > world.x1) { m.x[i] = world.x1; m.px[i] = m.x[i]; }
   }
+}
+
+/**
+ * Active-ragdoll drive: pull each point toward the target pose with its own
+ * stiffness (0..1 per frame) and bleed off some velocity (per-point damping),
+ * WITHOUT resetting prev — so the body keeps its momentum: it overshoots,
+ * settles, arms swing after the torso stops. Follow with step(m, dt, world,
+ * {noSleep:true}) so gravity, bones and the floor act on the result.
+ * gains/damps: Float32Array(P.N) or a number.
+ */
+export function drive(m, pose, gains, damps = 0.12) {
+  m.asleep = false; m.quietTime = 0;
+  for (let i = 0; i < P.N; i++) {
+    if (m.pinned[i]) continue;
+    const k = typeof gains === 'number' ? gains : gains[i];
+    const d = typeof damps === 'number' ? damps : damps[i];
+    // damp velocity first (prev toward current), then spring toward target
+    m.px[i] += (m.x[i] - m.px[i]) * d;
+    m.py[i] += (m.y[i] - m.py[i]) * d;
+    m.x[i] += (pose.x[i] - m.x[i]) * k;
+    m.y[i] += (pose.y[i] - m.y[i]) * k;
+  }
+}
+
+/** Per-point stiffness presets for drive(). Feet/hips firm, hands loose. */
+export function gainsPreset(kind = 'stand') {
+  const g = new Float32Array(P.N);
+  const set = (i, v) => { g[i] = v; };
+  if (kind === 'walk') {
+    set(P.HIP, 0.42); set(P.NECK, 0.34); set(P.HEAD, 0.22);
+    set(P.LKNEE, 0.30); set(P.RKNEE, 0.30); set(P.LFOOT, 0.55); set(P.RFOOT, 0.55);
+    set(P.LELB, 0.10); set(P.RELB, 0.10); set(P.LHAND, 0.05); set(P.RHAND, 0.05);   // arms swing passively
+  } else if (kind === 'sit') {
+    set(P.HIP, 0.45); set(P.NECK, 0.30); set(P.HEAD, 0.20);
+    set(P.LKNEE, 0.28); set(P.RKNEE, 0.28); set(P.LFOOT, 0.14); set(P.RFOOT, 0.14); // shins pendulum-ish
+    set(P.LELB, 0.14); set(P.RELB, 0.14); set(P.LHAND, 0.16); set(P.RHAND, 0.16);
+  } else if (kind === 'gesture') {
+    set(P.HIP, 0.45); set(P.NECK, 0.32); set(P.HEAD, 0.24);
+    set(P.LKNEE, 0.28); set(P.RKNEE, 0.28); set(P.LFOOT, 0.30); set(P.RFOOT, 0.30);
+    set(P.LELB, 0.30); set(P.RELB, 0.30); set(P.LHAND, 0.34); set(P.RHAND, 0.34);
+  } else { // stand
+    set(P.HIP, 0.40); set(P.NECK, 0.32); set(P.HEAD, 0.22);
+    set(P.LKNEE, 0.30); set(P.RKNEE, 0.30); set(P.LFOOT, 0.55); set(P.RFOOT, 0.55);
+    set(P.LELB, 0.12); set(P.RELB, 0.12); set(P.LHAND, 0.07); set(P.RHAND, 0.07);
+  }
+  return g;
 }
 
 /** Pin point i to (x, y) (grab). */

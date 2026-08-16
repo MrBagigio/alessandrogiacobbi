@@ -236,6 +236,7 @@ export class ManikinScene {
       let best = null, bd = GRAB_PX;
       for (const m of this.manikins) { const n = nearestPoint(m, p.x, p.y); if (n.d < bd) { bd = n.d; best = m; } }
       if (best !== this.hover) { this.hover = best; this._cursor(!!best); }
+      this._label();
     });
     // capture-phase pointerdown on the document: we sit above the tail canvas,
     // so if a manikin is hit we take the event and nothing else acts on it
@@ -260,6 +261,23 @@ export class ManikinScene {
     const sx = (this.W + 2 * this.padX) / (r.width || 1), sy = (this.H + this.padTop) / (r.height || 1);
     return { x: (cx - r.left) * sx - this.padX, y: (cy - r.top) * sy - this.padTop };
   }
+  _label() {
+    if (!this.labelEl) {
+      this.labelEl = document.createElement('span');
+      this.labelEl.className = 'hero__rig-label hero__mk-label'; this.labelEl.setAttribute('aria-hidden', 'true');
+      document.querySelector('.hero')?.appendChild(this.labelEl);
+    }
+    const m = this.grab?.m || this.hover;
+    if (!m) { this.labelEl.style.opacity = 0; return; }
+    const st = m.state === 'ragdoll' ? (m.grabbed ? 'ragdoll · grabbed' : 'ragdoll') : m.state;
+    this.labelEl.textContent = `manikin_${String(m.id + 1).padStart(2, '0')} · ${st}`;
+    // position: client coords of the head, offset up-right, relative to .hero
+    const cr = this.canvas.getBoundingClientRect(); const sx = cr.width / (this.W + 2 * this.padX), sy = cr.height / (this.H + this.padTop);
+    const hx = cr.left + (m.x[P.HEAD] + this.padX) * sx, hy = cr.top + (m.y[P.HEAD] + this.padTop) * sy;
+    const hr = document.querySelector('.hero')?.getBoundingClientRect() || { left: 0, top: 0 };
+    this.labelEl.style.transform = `translate(${Math.round(hx - hr.left + 14)}px, ${Math.round(hy - hr.top - 24)}px)`;
+    this.labelEl.style.opacity = 1;
+  }
   _cursor(on) {
     document.querySelector('.cursor-ring')?.classList.toggle('is-hover', on);
     document.body.style.cursor = on ? 'grab' : '';
@@ -272,6 +290,9 @@ export class ManikinScene {
     document.querySelector('.hero')?.classList.add('is-dragging');
     document.querySelector('.cursor-ring')?.classList.add('is-grab');
     document.body.style.cursor = 'grabbing';
+    // touch: while a manikin is held, the finger must move it, not scroll the page
+    this._noScroll = (ev) => ev.preventDefault();
+    document.addEventListener('touchmove', this._noScroll, { passive: false });
     this._loop();
   }
   _endGrab() {
@@ -286,6 +307,7 @@ export class ManikinScene {
     document.querySelector('.hero')?.classList.remove('is-dragging');
     document.querySelector('.cursor-ring')?.classList.remove('is-grab');
     document.body.style.cursor = this.hover ? 'grab' : '';
+    if (this._noScroll) { document.removeEventListener('touchmove', this._noScroll); this._noScroll = null; }
   }
 
   _respawnKeepingStates() {
@@ -348,9 +370,25 @@ export class ManikinScene {
         case 'sit': {
           const s = m.spot;
           const swing = 0.6 + 0.4 * Math.sin(m.t * 0.23);
-          applyPose(m, sitPose(m, s.x, s.y, s.side, m.t * 1.0, swing), 0.25);
-          // now and then, get up and go for a walk along this run
+          const pose = sitPose(m, s.x, s.y, s.side, m.t * 1.0, swing);
+          // wave: pointer lingers nearby → raise the near hand and wave for a bit
+          const near = this.pointer.inside && Math.hypot(this.pointer.x - m.x[P.HEAD], this.pointer.y - m.y[P.HEAD]) < this.u * 7;
+          m.nearT = near ? (m.nearT || 0) + dt : 0;
+          if (!m.waveT && m.nearT > 0.7 && (m.lastWave === undefined || m.t - m.lastWave > 6)) { m.waveT = 2.2; m.lastWave = m.t; }
+          if (m.waveT > 0) {
+            m.waveT -= dt;
+            const hand = s.side > 0 ? P.RHAND : P.LHAND, elb = s.side > 0 ? P.RELB : P.LELB;
+            const nx = pose.x[P.NECK], ny = pose.y[P.NECK], u = this.u, side = s.side;
+            const a = Math.sin(m.t * 14) * 0.35;                       // wag
+            pose.x[elb] = nx + side * (0.9 * u); pose.y[elb] = ny - 0.6 * u;
+            pose.x[hand] = pose.x[elb] + side * Math.cos(a) * 0.5 * u + Math.sin(a) * 0.9 * u * side;
+            pose.y[hand] = pose.y[elb] - PROP.foreArm * u * 0.9 * Math.cos(a * 0.6);
+            if (m.waveT <= 0) m.waveT = 0;
+          }
+          applyPose(m, pose, 0.25);
+          // now and then: get up for a stroll, or doze off (collapse into a nap)
           if (m.t > 14 + m.id * 5 && Math.random() < dt / 8) { m.state = 'standup'; m.t = 0; }
+          else if (m.t > 30 && Math.random() < dt / 20) { m.state = 'ragdoll'; m.napping = true; m.napLen = 6 + Math.random() * 5; m.t = 0; }
           break;
         }
         case 'standup': {
@@ -388,9 +426,9 @@ export class ManikinScene {
         }
         case 'ragdoll': {
           const rest = step(m, dt, sky);
-          if (!m.grabbed && rest && m.restTime > 1.1) {
+          if (!m.grabbed && rest && m.restTime > (m.napping ? m.napLen : 1.1)) {
             // decide ONCE where we are getting up: the surface the hip rests on
-            m.state = 'getup'; m.t = 0;
+            m.state = 'getup'; m.t = 0; m.napping = false;
             m.getupX = m.x[P.HIP];
             m.getupY = sky.topAt(m.getupX, m.y[P.HIP] - this.u);
             m.layerTop = this._layerTopFor(m.getupY);
@@ -439,6 +477,7 @@ export class ManikinScene {
       }
     }
     this._render();
+    if (this.grab || this.hover) this._label();
     // keep looping while animating or anything is ragdolling; otherwise idle
     const anyMoving = this.animate || this.manikins.some((m) => m.state === 'ragdoll' || m.state === 'getup');
     if (anyMoving && this.visible && !document.hidden) this.rafId = requestAnimationFrame((t) => this._frame(t));
@@ -471,7 +510,7 @@ export class ManikinScene {
     // invisible. The halo cuts them out of whatever they stand on. The tint
     // only changes the accent (joints, eye).
     const u = m.u, ink = INK, accent = m.tint === 'ox' ? OX : OX;
-    const lw = Math.max(1.4, u * 0.19);
+    const lw = Math.max(1.5, u * 0.21);
     c.lineCap = 'round'; c.lineJoin = 'round';
     const seg = (a, b) => { c.beginPath(); c.moveTo(m.x[a], m.y[a]); c.lineTo(m.x[b], m.y[b]); c.stroke(); };
     const body = () => {
@@ -484,7 +523,7 @@ export class ManikinScene {
     };
     // halo pass
     c.strokeStyle = PAPER; c.lineWidth = lw * 2.8; body();
-    const hrH = PROP.head * u * 0.5;
+    const hrH = u * 0.42;
     c.beginPath(); c.arc(m.x[P.HEAD], m.y[P.HEAD], hrH + lw * 0.9, 0, Math.PI * 2); c.fillStyle = PAPER; c.fill();
     // ink pass
     c.strokeStyle = ink; c.lineWidth = lw; body();
@@ -497,7 +536,7 @@ export class ManikinScene {
       c.beginPath(); c.moveTo(m.x[f], m.y[f]); c.lineTo(m.x[f] + nx * u * 0.42 * dir, m.y[f] + ny * u * 0.42 * dir); c.stroke();
     }
     // head: paper disc with ink rim, eye dot that looks around
-    const hr = PROP.head * u * 0.5;
+    const hr = u * 0.42;
     c.beginPath(); c.arc(m.x[P.HEAD], m.y[P.HEAD], hr, 0, Math.PI * 2);
     c.fillStyle = PAPER; c.fill(); c.lineWidth = lw; c.strokeStyle = ink; c.stroke();
     // neck
@@ -531,6 +570,6 @@ export class ManikinScene {
     document.removeEventListener('visibilitychange', this._onVis);
     document.removeEventListener('pointerdown', this._onDown, { capture: true });
     window.removeEventListener('pointerup', this._onUp); window.removeEventListener('pointercancel', this._onUp);
-    this.canvas.remove();
+    this.canvas.remove(); this.labelEl?.remove();
   }
 }

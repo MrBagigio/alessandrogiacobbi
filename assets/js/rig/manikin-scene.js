@@ -630,6 +630,19 @@ export class ManikinScene {
           // is there a lower line to jump down to? (drop between 3u and 40u, ink below)
           const below = edge ? sky.topAt(edge.x + m.dir * u * 3, edge.y + u) : sky.ground;
           const canJump = edge && below < sky.ground && below - edge.y > u * 3 && below - edge.y < u * 40;
+          // narrow gap to the next word (≤ 6u): hop across without breaking stride
+          {
+            const myTop = m.layerTop ?? -Infinity;
+            const nexts = sky.runs(this.STEP, u * 3).filter((r) => Math.abs(r.yAvg - myTop) < u * 3 && r !== run && (m.dir > 0 ? r.x0 >= (run ? run.x1 : nx) - 2 : r.x1 <= (run ? run.x0 : nx) + 2));
+            nexts.sort((a2, b2) => m.dir > 0 ? a2.x0 - b2.x0 : b2.x1 - a2.x1);
+            const nr = nexts[0];
+            const gap = nr ? (m.dir > 0 ? nr.x0 - (run ? run.x1 : nx) : (run ? run.x0 : nx) - nr.x1) : Infinity;
+            if (nr && gap > 0 && gap < u * 6) {
+              const lx = m.dir > 0 ? nr.x0 + u * 1.6 : nr.x1 - u * 1.6;
+              m.state = 'jump'; m.t = 0; m.jumpFrom = { x: m.x[P.HIP], y: m.y[P.HIP] }; m.jumpTo = { x: lx, y: sky.topAt(lx, myTop - 1) }; m.jumpDur = 0.32; m.facing = m.dir; m.hop = true;
+              break;
+            }
+          }
           const smallDrop = edge && below < sky.ground && below - edge.y > u * 3 && below - edge.y <= u * 9;
           if (smallDrop && Math.random() < 0.6) {
             m.state = 'climbdown'; m.spot = edge; m.jumpTo = { x: edge.x + m.dir * u * 1.2, y: below }; m.t = 0; break;
@@ -713,16 +726,21 @@ export class ManikinScene {
         } else {
           const k = Math.min(1, (m.t - 0.18) / T);
           const hx = f.x + (to.x - f.x) * k;
-          const peakLift = u * 2.5;
+          const peakLift = m.hop ? u * 1.6 : u * 2.5;
           const hy = f.y + (to.y - legs * 0.62 - f.y) * k - Math.sin(Math.PI * k) * peakLift;
           // tuck: crouch pose translated to the flying hip; feet trail up
           const tuck = crouchPose(m, hx, () => hy + legs * 0.62, d, 0.9);
           for (let i = 0; i < P.N; i++) { tuck.y[i] += (k < 0.6 ? -u * 0.4 * Math.sin(Math.PI * k) : 0); }
           pose = tuck; gains = 'gesture'; gravity = 0;
           if (k >= 1) {
-            m.state = 'getup'; m.t = 0.5;                       // land in the crouch phase, rise quickly
-            m.getupX = to.x; m.getupY = to.y; m.layerTop = this._layerTopFor(to.y); m.getupDir = d; b.shake = 0.3;
-            m.walkX = to.x; m.dir = d;
+            if (m.hop) {
+              // small hop across a gap: land and keep walking
+              m.hop = false; m.state = 'walk'; m.t = 0; m.walkX = to.x; m.dir = d; m.layerTop = this._layerTopFor(to.y); m.run = this._runAt(to.x, m.layerTop); m.speedK = 0.6;
+            } else {
+              m.state = 'getup'; m.t = 0.5;                       // land in the crouch phase, rise quickly
+              m.getupX = to.x; m.getupY = to.y; m.layerTop = this._layerTopFor(to.y); m.getupDir = d; b.shake = 0.3;
+              m.walkX = to.x; m.dir = d;
+            }
           }
         }
         break;
@@ -857,14 +875,26 @@ export class ManikinScene {
           }
         } else if (g.phase === 'mantle') {
           // haul over the ledge: hip goes from below the anchor to a crouch on top of it
-          const dur = 0.55, k = Math.min(1, m.t / dur), e2 = k * k * (3 - 2 * k);
+          // two beats: (1) hands grab the ledge, body pulls up until the hips
+          // are level with it; (2) a knee comes over and it settles into a
+          // crouch on top — the hands never leave the ledge
+          const dur = 0.8, k = Math.min(1, m.t / dur);
           const legs = (PROP.thigh + PROP.shin) * u;
           const inward = -(g.side || d);                            // onto the ledge = away from the drop
-          const topX = A.x + inward * u * 1.3, topY = A.y - legs * 0.55;
-          const hipX = g.mFrom.x + (topX - g.mFrom.x) * e2, hipY = g.mFrom.y + (topY - g.mFrom.y) * e2 - Math.sin(Math.PI * k) * u * 0.6;
-          const cr = crouchPose(m, topX, () => A.y, inward, 1);
-          const hang = hangPose(m, hipX, hipY, A.x, A.y - CONTACT_R * u, inward);
-          pose = mixPose(hang, cr, e2); gains = 'gesture'; gravity = 0.15; g.ropeTip = A;
+          const ledge = { x: A.x + inward * u * 0.5, y: A.y - CONTACT_R * u };
+          const topX = A.x + inward * u * 1.5, topY = A.y - legs * 0.55;
+          if (k < 0.5) {
+            const e1 = (k / 0.5); const ee = e1 * e1 * (3 - 2 * e1);
+            const hipX = g.mFrom.x + (A.x - inward * u * 0.2 - g.mFrom.x) * ee, hipY = g.mFrom.y + (A.y + u * 0.6 - g.mFrom.y) * ee;
+            pose = hangPose(m, hipX, hipY, ledge.x, ledge.y, inward);
+          } else {
+            const e1 = ((k - 0.5) / 0.5); const ee = e1 * e1 * (3 - 2 * e1);
+            const hang = hangPose(m, A.x - inward * u * 0.2, A.y + u * 0.6, ledge.x, ledge.y, inward);
+            const cr = crouchPose(m, topX, () => A.y, inward, 1);
+            pose = mixPose(hang, cr, ee);
+            pose.y[P.HIP] -= Math.sin(Math.PI * ee) * u * 0.5;      // a little lift over the lip
+          }
+          gains = 'gesture'; gravity = 0.15; g.ropeTip = k < 0.5 ? A : null;
           if (k >= 1) {
             m.grapple = null; m.state = 'getup'; m.t = 0.5; m.getupX = topX; m.getupY = A.y; m.layerTop = this._layerTopFor(A.y); m.getupDir = inward; m.walkX = topX; m.dir = inward; m.facing = inward;
           }

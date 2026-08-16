@@ -19,11 +19,11 @@
  * Cost: 2D canvas, 2 × 11 verlet points. rAF only while the hero is on
  * screen and the tab visible; ~0.1 ms/frame.
  */
-import { onPointerMove } from '../pointer.js?v=20260516-pointer';
+import { onPointerMove } from '../pointer.js?v=20260530-pm';
 import {
   Skyline, LayeredSkyline, P, PROP, createManikin, standPose, sitPose, walkPose, crouchPose, applyPose,
   step, drive, gainsPreset, reachHand, mixPose, pin, unpinAll, nearestPoint, bounds, impulse,
-} from './manikin-physics.js?v=20260530-mk22';
+} from './manikin-physics.js?v=20260530-pm5';
 
 const INK = '#161310', OX = '#B8323F', PAPER = '#EDE6D6';
 /** weighted random pick from [[name, weight], ...] with r in [0,1) */
@@ -794,13 +794,19 @@ export class ManikinScene {
     c.beginPath(); c.arc(m.x[P.HEAD], m.y[P.HEAD], hrH + lw * 0.9, 0, Math.PI * 2); c.fillStyle = PAPER; c.fill();
     // ink pass
     c.strokeStyle = ink; body(lw);
-    // feet: tiny ticks
-    c.lineWidth = lw * 0.9;
+    // feet: a short foot from the ankle, pointing the way the body faces,
+    // mostly flat (it follows the shin only a little) — perpendicular-to-shin
+    // feet pointed sideways/up whenever the leg was angled ("piedi storti")
+    const facingF = (m.facing || m.dir || 1);
     for (const [k, f] of [[P.LKNEE, P.LFOOT], [P.RKNEE, P.RFOOT]]) {
       const dx = m.x[f] - m.x[k], dy = m.y[f] - m.y[k], d = Math.hypot(dx, dy) || 1;
-      const nx = -dy / d, ny = dx / d;                     // perpendicular to the shin
-      const dir = (m.dir || m.facing || 1);
-      c.beginPath(); c.moveTo(m.x[f], m.y[f]); c.lineTo(m.x[f] + nx * u * 0.42 * dir, m.y[f] + ny * u * 0.42 * dir); c.stroke();
+      // toe forward; drops a little when the shin trails behind (dangling/swing)
+      const trail = Math.max(0, -(dx / d) * facingF);
+      let fx = facingF, fy = 0.12 + 0.55 * trail;
+      const L = Math.hypot(fx, fy) || 1; fx /= L; fy /= L;
+      const len = u * 0.5;
+      c.strokeStyle = PAPER; c.lineWidth = lw * 2.4; c.beginPath(); c.moveTo(m.x[f] - fx * len * 0.25, m.y[f] - fy * len * 0.25); c.lineTo(m.x[f] + fx * len, m.y[f] + fy * len); c.stroke();
+      c.strokeStyle = ink; c.lineWidth = lw * 0.95; c.beginPath(); c.moveTo(m.x[f] - fx * len * 0.25, m.y[f] - fy * len * 0.25); c.lineTo(m.x[f] + fx * len, m.y[f] + fy * len); c.stroke();
     }
     // head: paper disc with ink rim, eye dot that looks around
     const hr = u * 0.42;

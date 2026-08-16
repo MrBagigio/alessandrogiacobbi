@@ -14,7 +14,7 @@
  * single most "alive" signals.
  */
 
-import { onPointerMove } from './pointer.js?v=20260516-pointer';
+import { onPointerMove } from './pointer.js?v=20260530-pm';
 
 let mx = 0, my = 0;
 let gpu = 78;

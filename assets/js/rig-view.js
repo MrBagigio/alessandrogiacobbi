@@ -10,7 +10,7 @@
  *   - persists in localStorage
  */
 
-import { onPointerMove } from './pointer.js?v=20260516-pointer';
+import { onPointerMove } from './pointer.js?v=20260530-pm';
 
 const STORAGE_KEY = 'portfolio.rig-view';
 

@@ -2,9 +2,9 @@
  * Bootstrap — entry point.
  * Loads GSAP via CDN, initializes scenes, cursor, lazy, scroll triggers.
  */
-import { HeroScene } from './scene-hero.js?v=20260530-mk15';
+import { HeroScene } from './scene-hero.js?v=20260530-pm';
 import { BgScene } from './scene-bg.js?v=20260516-perf';
-import { Cursor } from './cursor.js?v=20260516-perf';
+import { Cursor } from './cursor.js?v=20260530-pm';
 import { initLazyMedia } from './lazy.js?v=20260530-audit3';
 import { initTextFx } from './text-fx.js?v=20260530-tail26';
 import { initMagneticAuto } from './magnetic-letters.js?v=20260516-perf';
@@ -82,7 +82,7 @@ if (heroTitle && window.matchMedia('(min-width: 768px)').matches) {
   const debug = /[?&]manikins=debug/.test(location.search);
   const count = window.matchMedia('(min-width: 1024px)').matches ? 2 : 1;
   requestAnimationFrame(() => {
-    import('./rig/manikin-scene.js?v=20260530-mk28').then((m) => {
+    import('./rig/manikin-scene.js?v=20260530-pm5').then((m) => {
       window.__manikins = new m.ManikinScene(heroTitle, { count, animate: !reduced, debug });
     }).catch((e) => console.warn('[hero] manikins unavailable:', e?.message || e));
   });

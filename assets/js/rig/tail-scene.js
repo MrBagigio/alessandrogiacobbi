@@ -10,7 +10,7 @@
  * that steps down hatching → DPR before it would ever drop frames.
  */
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js';
-import { onPointerMove } from '../pointer.js?v=20260516-pointer';
+import { onPointerMove } from '../pointer.js?v=20260530-pm';
 import { TAIL_VERT, TAIL_FRAG } from './tail-shaders.js?v=20260530-tail13';
 import {
   proceduralSpec, loadSpec, buildChain, solveFK, solveIK, forward,

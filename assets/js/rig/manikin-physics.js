@@ -393,7 +393,7 @@ export function step(m, dt, world, opts = {}) {
     for (const [a, b, len] of m.cons) satisfy(m, a, b, len, 0);
     for (const [a, b, min] of m.struts) satisfy(m, a, b, min, 1, 0.5);   // soft: struts nudge, bones bind
     // collisions inside the loop so constraints don't push points back into ink
-    collide(m, world);
+    collide(m, world, noSleep);
   }
   // rest detection + sleep. A grounded ragdoll twitches forever at a few
   // px/s (constraints vs. floor vs. struts, measured 30–110 px/s pops while
@@ -428,7 +428,7 @@ function satisfy(m, a, b, len, minOnly, k = 1) {
   m.x[b] -= dx * kb; m.y[b] -= dy * kb;
 }
 
-function collide(m, world) {
+function collide(m, world, awake = false) {
   const r = m.u * CONTACT_R;
   for (let i = 0; i < P.N; i++) {
     m.onGround[i] = 0;
@@ -451,7 +451,10 @@ function collide(m, world) {
         // sticks. Letter tops are curved — without this a landed body kept
         // creeping down the slope and never counted as at rest (measured 5 s
         // on the shoulder of a G instead of 1.2 s).
-        if (Math.abs(vx) < 0.35) vx = 0;
+        // (only for a passive ragdoll: an awake body must be able to shuffle its
+        // feet under itself, or they stay glued where it stopped walking and it
+        // stands leaning back — measured)
+        if (!awake && Math.abs(vx) < 0.35) vx = 0;
         m.px[i] = m.x[i] - vx;
         m.py[i] = m.y[i];               // kill vertical bounce
         m.onGround[i] = 1;
@@ -486,8 +489,13 @@ export function drive(m, pose, gains, damps = 0.12) {
     // damp velocity first (prev toward current), then spring toward target
     m.px[i] += (m.x[i] - m.px[i]) * d;
     m.py[i] += (m.y[i] - m.py[i]) * d;
-    m.x[i] += (pose.x[i] - m.x[i]) * k;
-    m.y[i] += (pose.y[i] - m.y[i]) * k;
+    const mx = (pose.x[i] - m.x[i]) * k, my = (pose.y[i] - m.y[i]) * k;
+    m.x[i] += mx; m.y[i] += my;
+    // stiff points (planted feet, hips) move quasi-kinematically: the drive
+    // step is not turned into velocity, so floor friction can't eat it and a
+    // foot reaches its target instead of creeping (measured: feet stuck in the
+    // last stride for >1.5 s after stopping)
+    if (k >= 0.5) { m.px[i] += mx; m.py[i] += my; }
   }
 }
 

@@ -5,7 +5,7 @@
  * Pointer position comes from the shared pointer module (one global
  * listener fans out via rAF to every consumer).
  */
-import { onPointerMove } from './pointer.js?v=20260516-pointer';
+import { onPointerMove } from './pointer.js?v=20260530-pm';
 
 export class Cursor {
   constructor() {

@@ -39,7 +39,14 @@ function _onMove(e) {
 }
 
 // Capture early so position is current even before any module subscribes.
-window.addEventListener('mousemove', _onMove, { passive: true });
+// POINTERMOVE, not mousemove: when a pointerdown is preventDefault-ed (the tail
+// rig and the manikins do that to grab), the browser SUPPRESSES compatibility
+// mousemove events until pointerup — so with a mousemove-only listener the
+// custom cursor froze and the grabbed thing stopped following (measured with a
+// real CDP drag: pointermove ×N, mousemove ×0 after the cancelled pointerdown).
+// mousemove kept as a fallback for engines without pointer events.
+if (window.PointerEvent) window.addEventListener('pointermove', _onMove, { passive: true });
+else window.addEventListener('mousemove', _onMove, { passive: true });
 
 // Touch fallback — first touch contact updates the pointer too,
 // so HUDs that read getPointer() get something sensible on mobile.

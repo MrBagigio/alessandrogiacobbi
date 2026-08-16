@@ -424,6 +424,9 @@ export function initTextFx(opts = {}) {
       } else { raf = null; }
     }
     heroSection.addEventListener('mousemove', (e) => {
+      // While the user drags the tail rig, the H1 must stay put — otherwise the
+      // headline sways under the pointer they're using to pose the tail.
+      if (heroSection.classList.contains('is-dragging')) return;
       const r = heroSection.getBoundingClientRect();
       target.x = (e.clientX - r.left) / r.width - 0.5;
       target.y = (e.clientY - r.top) / r.height - 0.5;

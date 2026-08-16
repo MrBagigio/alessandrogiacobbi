@@ -2,11 +2,11 @@
  * Bootstrap — entry point.
  * Loads GSAP via CDN, initializes scenes, cursor, lazy, scroll triggers.
  */
-import { HeroScene } from './scene-hero.js?v=20260530-aaa';
+import { HeroScene } from './scene-hero.js?v=20260530-tail16';
 import { BgScene } from './scene-bg.js?v=20260516-perf';
 import { Cursor } from './cursor.js?v=20260516-perf';
 import { initLazyMedia } from './lazy.js?v=20260530-audit3';
-import { initTextFx } from './text-fx.js?v=20260517-calm';
+import { initTextFx } from './text-fx.js?v=20260530-tail';
 import { initMagneticAuto } from './magnetic-letters.js?v=20260516-perf';
 import { initInteractions } from './interactions.js?v=20260530-audit3';
 import { initVideoHud } from './video-hud.js?v=20260516-perf';
@@ -63,11 +63,14 @@ if (progress) {
   }, { passive: true });
 }
 
-// 4. Three.js scenes (skip on reduced-motion)
+// 4. Three.js scenes.
+//    Hero tail rig: ALWAYS mounted — under reduced-motion it renders one static
+//    frame in rest pose (before this, reduced-motion left the canvas empty,
+//    which is worse than still). Drag remains user-initiated so it stays on.
+//    Contact particle field: skipped under reduced-motion (pure ambient motion).
+const heroCanvas = document.querySelector('.hero__canvas');
+if (heroCanvas) new HeroScene(heroCanvas, { animate: !reduced });
 if (!reduced) {
-  const heroCanvas = document.querySelector('.hero__canvas');
-  if (heroCanvas) new HeroScene(heroCanvas);
-
   const bgCanvas = document.querySelector('.contact__canvas');
   if (bgCanvas) new BgScene(bgCanvas);
 }

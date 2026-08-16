@@ -36,11 +36,67 @@ section {
   width: 100%;
   height: 100%;
   display: block;
+  /* the tail rig is drawn into the .hero__rig box; the canvas itself must not
+     eat pointer events meant for links/buttons — the rig re-enables them via
+     pointerdown hit-testing on its own joints only */
+  pointer-events: none;
 }
-/* Phones: the 3D object competed with the headline. Fade it to a backdrop so
-   the H1 always wins (JS also pushes the camera back in portrait). */
-@media (max-width: 767px) {
-  .hero__canvas { opacity: 0.45; }
+.hero.is-live .hero__canvas { pointer-events: auto; }
+/* keep text/CTA clickable above the canvas */
+.hero__inner, .hero__meta { position: relative; z-index: 2; }
+.hero__inner > *:not(.hero__rig) { pointer-events: auto; }
+.hero__inner { pointer-events: none; }
+
+/* ── Tail rig anchor + caption ──
+   .hero__rig is an empty layout box: tail-scene.js reads its rect every
+   resize and frames the coil inside it (ortho camera, world == css px). */
+.hero__rig { pointer-events: none; }
+.hero__rig-caption {
+  font-family: var(--fm);
+  font-size: 11px;
+  line-height: 1.5;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--mute);
+  margin: 0;
+  display: none;
+}
+.hero__rig-fig { color: var(--ox); margin-right: 0.6rem; }
+.hero__rig-hint { opacity: 0; transition: opacity 240ms; }
+.hero.is-live .hero__rig-hint { opacity: 0.85; }
+@media (pointer: coarse) { .hero__rig-hint { display: none; } }
+.hero__rig-label {
+  position: absolute; left: 0; top: 0; z-index: 3;
+  font-family: var(--fm); font-size: 11px; letter-spacing: 0.08em;
+  color: var(--ox); background: var(--paper);
+  padding: 0.1rem 0.4rem; pointer-events: none;
+  opacity: 0; transition: opacity 150ms; white-space: nowrap;
+}
+.hero.is-dragging { user-select: none; -webkit-user-select: none; }
+.hero.is-dragging .hero__canvas { cursor: grabbing; }
+
+/* ≥1200: two columns — headline left, rig as a marginal figure right,
+   bottom-aligned with the CTA row (like a plate in a technical book). */
+@media (min-width: 1200px) {
+  .hero__inner {
+    grid-template-columns: minmax(0, 1fr) clamp(300px, 26vw, 460px);
+    column-gap: var(--gap-l);
+    align-items: end;
+  }
+  .hero__pretitle, .hero__title, .hero__cta { grid-column: 1; }
+  .hero__rig { grid-column: 2; grid-row: 1 / span 3; align-self: end; width: 100%; aspect-ratio: 4 / 5; }
+  .hero__rig-caption { grid-column: 2; grid-row: 4; display: block; margin-top: 0.75rem; }
+}
+/* 1024–1199: narrower pocket top-right, out of the H1's way */
+@media (min-width: 1024px) and (max-width: 1199px) {
+  .hero__rig { position: absolute; top: clamp(6rem, 14vh, 9rem); right: var(--pad-side); width: 24vw; aspect-ratio: 4 / 5; }
+  .hero__rig-caption { display: block; position: absolute; right: var(--pad-side); top: calc(clamp(6rem, 14vh, 9rem) + 24vw * 1.25 + 0.5rem); }
+  .hero__title { max-width: 14ch; }
+}
+/* <1024: rig sits in flow, top-right, BEFORE the pretitle — never under the H1 */
+@media (max-width: 1023px) {
+  .hero__rig { order: -1; justify-self: end; width: min(38vw, 220px); aspect-ratio: 4 / 5; margin-bottom: 0.5rem; }
+  .hero__inner { display: grid; }
 }
 
 .hero__inner {

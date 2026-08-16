@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mutagen — MetaUpgrader · Rig framework R&amp;D · Alessandro Giacobbi</title>
+  <meta name="description" content="Mutagen / MetaUpgrader: framework modulare Python per rig facciali e creature in Maya — 28 moduli, contract test cross-modulo, mutation testing sistematico. R&amp;D personale di Alessandro Giacobbi.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../assets/css/tokens.css?v=20260530-aaa">
+  <link rel="stylesheet" href="../assets/css/base.css?v=20260530-aaa">
+  <link rel="stylesheet" href="../assets/css/components.css?v=20260530-aaa">
+  <link rel="stylesheet" href="../assets/css/layout.css?v=20260530-aaa">
+  <link rel="stylesheet" href="../assets/css/animations.css?v=20260530-aaa">
+
+  <style>
+    /* ── Page-local: module map + metric strip ─────────────────────────── */
+    .mg-metrics {
+      max-width: var(--maxw); margin: 0 auto; padding: 0 var(--pad-side);
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--gap-m);
+    }
+    .mg-metric { border-top: 1px solid var(--rule); padding-top: 1rem; }
+    .mg-metric__num {
+      font-family: var(--fd); font-size: clamp(2.2rem, 4vw, 3.4rem);
+      line-height: 1; letter-spacing: -0.02em; color: var(--ink);
+    }
+    .mg-metric__num em { font-style: normal; color: var(--ox); }
+    .mg-metric__lbl {
+      display: block; margin-top: 0.5rem; font-family: var(--fm); font-size: 10px;
+      letter-spacing: 0.16em; text-transform: uppercase; color: var(--mute);
+    }
+    @media (max-width: 767px) { .mg-metrics { grid-template-columns: repeat(2, 1fr); gap: var(--gap-s); } }
+
+    .mg-modules {
+      max-width: var(--maxw); margin: 0 auto; padding: 0 var(--pad-side);
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 1px;
+      background: var(--rule); border: 1px solid var(--rule);
+    }
+    .mg-mod { background: var(--paper); padding: 1.1rem 1.15rem; min-height: 118px; }
+    .mg-mod__name {
+      font-family: var(--fm); font-size: 11px; letter-spacing: 0.06em;
+      color: var(--ink); display: flex; align-items: center; gap: 0.5rem;
+    }
+    .mg-mod__name::before { content: ''; width: 6px; height: 6px; background: var(--ox); border-radius: 50%; }
+    .mg-mod__desc { margin: 0.55rem 0 0; font-family: var(--fb); font-size: 13px; line-height: 1.45; color: var(--mute); }
+    .mg-mod--hub { background: var(--paper2); }
+    .mg-mod--hub .mg-mod__name::before { width: 10px; height: 10px; border-radius: 1px; }
+
+    /* Media slots — honest placeholders until real screenshots land */
+    .mg-slot {
+      aspect-ratio: 16 / 9; background: var(--ink2); border: 1px dashed var(--rule);
+      display: grid; place-items: center; text-align: center; padding: 1.5rem;
+    }
+    .mg-slot span {
+      font-family: var(--fm); font-size: 10px; letter-spacing: 0.16em;
+      text-transform: uppercase; color: var(--paper); opacity: 0.6; line-height: 1.7;
+    }
+  </style>
+</head>
+<body>
+
+  <a href="#main" class="skip-link">Salta al contenuto</a>
+  <div class="cursor-dot" aria-hidden="true"></div>
+  <div class="cursor-ring" aria-hidden="true"></div>
+  <div class="scroll-progress" aria-hidden="true"></div>
+
+  <header class="meta-bar">
+    <div class="left"><a href="../index.html">&larr; Portfolio</a></div>
+    <div class="center">Mutagen &mdash; MetaUpgrader</div>
+    <div class="right">
+      <span class="meta-clock">--:-- CET</span>
+      <a href="../index.html#contact">Contact</a>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <section class="project-hero">
+      <div class="project-hero__inner">
+        <nav class="project-hero__breadcrumb reveal-up">
+          <a href="../index.html">Portfolio</a> &nbsp;/&nbsp; R&amp;D &middot; Rigging tooling
+        </nav>
+        <h1 class="project-hero__title reveal-up">Mutagen</h1>
+        <p class="project-hero__client reveal-up">MetaUpgrader &middot; framework modulare per rig facciali e creature &middot; Maya / Python</p>
+        <p class="project-hero__nda reveal-up">
+          <span class="project-hero__nda-tag fx-flicker">R&amp;D</span>
+          Progetto personale in sviluppo continuo &middot; codice privato &middot; qui architettura, metodo e numeri
+        </p>
+      </div>
+    </section>
+
+    <section class="project-meta">
+      <div class="project-meta__inner">
+        <div class="project-meta__col">
+          <span class="project-meta__label">Cos'&egrave;</span>
+          <span class="project-meta__value">Rig framework &middot; facial + creature</span>
+        </div>
+        <div class="project-meta__col">
+          <span class="project-meta__label">Stack</span>
+          <span class="project-meta__value">Maya &middot; Python &middot; pytest &middot; cosmic-ray</span>
+        </div>
+        <div class="project-meta__col">
+          <span class="project-meta__label">Scope</span>
+          <span class="project-meta__value">28 moduli &middot; hub + moduli locali</span>
+        </div>
+        <div class="project-meta__col">
+          <span class="project-meta__label">Stato</span>
+          <span class="project-meta__value">2024 &rarr; in corso</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 01 · Numeri -->
+    <section class="project-split-section" data-chapter="01" data-chapter-total="05">
+      <div class="project-split-section__head">
+        <span class="project-split-section__eyebrow">
+          <span class="project-split-section__num">01</span>
+          <span class="project-split-section__divider" aria-hidden="true"></span>
+          I numeri
+        </span>
+        <h2 class="project-split-section__title">Un rig framework testato come software</h2>
+        <p class="project-split-section__sub">Non un set di script: un sistema modulare con contratti tra moduli, test di parit&agrave; hub/locale e mutation testing sistematico. I numeri qui sotto vengono dai run reali della suite.</p>
+      </div>
+      <div class="mg-metrics">
+        <div class="mg-metric reveal-up"><div class="mg-metric__num">28</div><span class="mg-metric__lbl">moduli Maya</span></div>
+        <div class="mg-metric reveal-up"><div class="mg-metric__num">294<em>/294</em></div><span class="mg-metric__lbl">mutazioni killed &middot; suite core</span></div>
+        <div class="mg-metric reveal-up"><div class="mg-metric__num">100<em>%</em></div><span class="mg-metric__lbl">mutation score &middot; 14 moduli SSS</span></div>
+        <div class="mg-metric reveal-up"><div class="mg-metric__num">0</div><span class="mg-metric__lbl">ruff errors &middot; 14 moduli</span></div>
+      </div>
+    </section>
+
+    <!-- 02 · Architettura -->
+    <section class="project-content" data-chapter="02" data-chapter-total="05">
+      <div class="project-content__inner">
+        <div class="project-split-section__head">
+          <span class="project-split-section__eyebrow">
+            <span class="project-split-section__num">02</span>
+            <span class="project-split-section__divider" aria-hidden="true"></span>
+            Architettura
+          </span>
+          <h2 class="project-split-section__title">Hub + moduli, con un contratto tra loro</h2>
+          <p class="project-split-section__sub">Il problema che risolve: in un rig facciale complesso ogni sistema (occhi, orecchie, respiro, energia) scrive attributi su altri sistemi. Senza un contratto esplicito, un rename da una parte rompe silenziosamente l'altra.</p>
+        </div>
+
+        <h3 class="project-content__h3 reveal-up">Il pattern</h3>
+        <p class="project-content__p reveal-up">
+          Un <strong>hub</strong> centrale registra i moduli e risolve i <em>driver</em> (quale controllo
+          guida cosa) con una catena di fallback. Ogni <strong>modulo locale</strong> &egrave; installabile
+          da solo, ma quando gira dentro l'hub deve risolvere <em>gli stessi</em> host: la parit&agrave;
+          hub/locale &egrave; un test parametrizzato, non una speranza.
+        </p>
+
+        <h3 class="project-content__h3 reveal-up">Contract test cross-modulo</h3>
+        <p class="project-content__p reveal-up">
+          Ogni modulo che scrive attributi su un altro importa gli <code>ATTR_RANGES</code> della
+          destinazione e asserisce l'esistenza del target <em>a livello di costanti</em>, non al momento
+          del wiring. &Egrave; cos&igrave; che &egrave; emerso il bug del <em>PupilAmplitude</em> fantasma
+          (un modulo scriveva su un attributo che nessuno leggeva) e il drift di fallback tra hub e locale
+          su 7 moduli su 8: producer e consumer risolvevano host diversi e i bridge FACS saltavano
+          23 wire su 24 &mdash; in silenzio.
+        </p>
+
+        <h3 class="project-content__h3 reveal-up">Mutation testing come routine</h3>
+        <p class="project-content__p reveal-up">
+          Ogni fix passa da un mutante: si altera il codice (un operatore, un clamp, una condizione),
+          si verifica che <em>almeno un test</em> lo uccida. Se sopravvive, il test &egrave; debole e va
+          rafforzato. Harness <code>cosmic-ray</code> su 28 moduli, ~140k mutazioni effettive,
+          run resumabili per modulo. Il risultato pratico: bug reali trovati dai log di produzione
+          (target-chain sbagliata, slot senza driver, split-mode degli occhi) sono diventati test
+          anti-regressione, non note in un file.
+        </p>
+      </div>
+    </section>
+
+    <!-- 03 · Mappa moduli -->
+    <section class="project-split-section" data-chapter="03" data-chapter-total="05">
+      <div class="project-split-section__head">
+        <span class="project-split-section__eyebrow">
+          <span class="project-split-section__num">03</span>
+          <span class="project-split-section__divider" aria-hidden="true"></span>
+          Mappa dei moduli
+        </span>
+        <h2 class="project-split-section__title">Il sistema facciale &mdash; una selezione</h2>
+        <p class="project-split-section__sub">Alcuni dei 28 moduli. Ognuno &egrave; installabile in isolamento su un rig MetaHuman-like; insieme, via hub, formano il sistema completo.</p>
+      </div>
+      <div class="mg-modules">
+        <div class="mg-mod mg-mod--hub reveal-up"><div class="mg-mod__name">Hub</div><p class="mg-mod__desc">Registro moduli, risoluzione driver con fallback chain, batch install a fasi, parit&agrave; hub/locale.</p></div>
+        <div class="mg-mod reveal-up"><div class="mg-mod__name">Meta_Eyes</div><p class="mg-mod__desc">Gaze, split/unified mode, pupil dilate L/R, blink signal bus verso gli altri moduli.</p></div>
+        <div class="mg-mod reveal-up"><div class="mg-mod__name">Meta_Blink</div><p class="mg-mod__desc">Blink rate/depth, contratto con Energy e HeadAlive.</p></div>
+        <div class="mg-mod reveal-up"><div class="mg-mod__name">Meta_Energy</div><p class="mg-mod__desc">Fatigue accumulator: modula blink, pupille, micro-movimenti in base a un livello di energia.</p></div>
+        <div class="mg-mod reveal-up"><div class="mg-mod__name">Meta_HeadAlive</div><p class="mg-mod__desc">Micro-motion della testa ctrl-only, driver fallback con guard sul nodeType.</p></div>
+        <div class="mg-mod reveal-up"><div class="mg-mod__name">Meta_Micro</div><p class="mg-mod__desc">Micro-espressioni; contratto FACS su wrinkle/micro target.</p></div>
+        <div class="mg-mod reveal-up"><div class="mg-mod__name">Meta_Ears</div><p class="mg-mod__desc">Ear dynamics + auto-attach su rig esistenti; primo modulo sotto cosmic-ray.</p></div>
+        <div class="mg-mod reveal-up"><div class="mg-mod__name">Meta_Breath</div><p class="mg-mod__desc">Respiro con secondary su torace/spalle.</p></div>
+        <div class="mg-mod reveal-up"><div class="mg-mod__name">Meta_Teeth</div><p class="mg-mod__desc">Volume denti con power law, contratto con jaw.</p></div>
+        <div class="mg-mod reveal-up"><div class="mg-mod__name">Meta_Caruncle</div><p class="mg-mod__desc">Caruncola oculare, segue gaze e blink.</p></div>
+        <div class="mg-mod reveal-up"><div class="mg-mod__name">EyeConform</div><p class="mg-mod__desc">Conformazione palpebre alla sclera.</p></div>
+        <div class="mg-mod reveal-up"><div class="mg-mod__name">WrinkleMap</div><p class="mg-mod__desc">Shader-driven wrinkle con invarianti fisiche (clamp range, condizioni) sotto mutation.</p></div>
+        <div class="mg-mod reveal-up"><div class="mg-mod__name">FACS bridges</div><p class="mg-mod__desc">Ponti verso il rig FACS: eyes/pupil/blink con probe multi-candidato per split-mode.</p></div>
+        <div class="mg-mod reveal-up"><div class="mg-mod__name">Autorig</div><p class="mg-mod__desc">Build pelvis/IK e catene; base per l'integrazione RigX.</p></div>
+      </div>
+    </section>
+
+    <!-- 04 · Media -->
+    <section class="project-split-section" data-chapter="04" data-chapter-total="05">
+      <div class="project-split-section__head">
+        <span class="project-split-section__eyebrow">
+          <span class="project-split-section__num">04</span>
+          <span class="project-split-section__divider" aria-hidden="true"></span>
+          In Maya
+        </span>
+        <h2 class="project-split-section__title">UI, hub e rig in movimento</h2>
+        <p class="project-split-section__sub">Screenshot e clip del framework in uso: launcher, pannelli modulo, rig facciale con i sistemi attivi.</p>
+      </div>
+      <div class="project-stills__inner">
+        <div class="project-stills__grid">
+          <!-- MEDIA TODO: sostituire ogni .mg-slot con <img>/<video> reali.
+               Suggeriti: 1) launcher/hub UI  2) pannello Meta_Energy o Meta_Eyes
+               3) rig facciale in viewport con blink+gaze attivi  4) terminale cosmic-ray / pytest run -->
+          <div class="project-still mg-slot reveal-up"><span>screenshot<br>launcher &middot; hub UI</span></div>
+          <div class="project-still mg-slot reveal-up"><span>screenshot<br>pannello modulo</span></div>
+          <div class="project-still project-still--wide mg-slot reveal-up"><span>clip<br>rig facciale in viewport &middot; blink + gaze + energy</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 05 · Metodo -->
+    <section class="project-content" data-chapter="05" data-chapter-total="05">
+      <div class="project-content__inner">
+        <div class="project-split-section__head">
+          <span class="project-split-section__eyebrow">
+            <span class="project-split-section__num">05</span>
+            <span class="project-split-section__divider" aria-hidden="true"></span>
+            Metodo
+          </span>
+          <h2 class="project-split-section__title">Cosa mi porto dietro sui rig di produzione</h2>
+        </div>
+        <ul class="project-content__role-list reveal-up">
+          <li><strong>Trova &rarr; verifica &rarr; fixa &rarr; verifica &rarr; test &rarr; docs</strong> &mdash; ogni bug reale diventa un test che lo impedisce per sempre.</li>
+          <li><strong>Mai fidarsi delle docstring</strong> &mdash; si testa con numeri, si greppano <em>tutte</em> le occorrenze prima di un rename.</li>
+          <li><strong>Producer/consumer co-locati</strong> &mdash; chi scrive un attributo e chi lo legge stanno nello stesso test.</li>
+          <li><strong>Mock non basta</strong> &mdash; 200/200 su mock e fallimento sul rig reale: si chiede sempre un diagnostic live.</li>
+          <li><strong>Costanti fisiologiche con riferimento</strong> &mdash; blink rate, hippus pupillare, fatigue: valori con fonte e test di range.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="project-credits">
+      <div class="project-credits__inner">
+        <div class="project-credits__col reveal-up">
+          <span class="project-credits__label">Tipo</span>
+          <span class="project-credits__value">R&amp;D personale &middot; codice privato</span>
+        </div>
+        <div class="project-credits__col reveal-up">
+          <span class="project-credits__label">Stack</span>
+          <span class="project-credits__value">Maya &middot; Python &middot; pytest &middot; hypothesis &middot; cosmic-ray &middot; ruff</span>
+        </div>
+        <div class="project-credits__col reveal-up">
+          <span class="project-credits__label">Ambito</span>
+          <span class="project-credits__value">Facial + creature rig &middot; digital double</span>
+        </div>
+        <div class="project-credits__col reveal-up">
+          <span class="project-credits__label">Prossimo</span>
+          <span class="project-credits__value">Integrazione RigX &middot; cosmic-ray sui 28 moduli</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="project-next">
+      <div class="project-next__inner">
+        <div>
+          <span class="text-meta">Progetto correlato</span>
+          <h3 class="text-h3" style="margin-top: 0.5rem;">LP Group &mdash; Chameleon rig</h3>
+        </div>
+        <a href="./lp.html" class="btn btn--ox">
+          <span>Vai al progetto</span>
+          <span class="btn-arrow">&rarr;</span>
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <div class="footer__inner">
+      <span class="footer__credit">&copy; 2026 Alessandro Giacobbi &middot; <a href="https://www.setpointstudio.com">Setpoint Studio S.r.l.</a> &middot; P.IVA 04403500244</span>
+      <span class="footer__credit"><a href="../index.html">&larr; Tutti i progetti</a></span>
+    </div>
+  </footer>
+
+  <script type="module" src="../assets/js/main.js?v=20260530-aaa"></script>
+
+</body>
+</html>

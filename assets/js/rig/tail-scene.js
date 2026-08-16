@@ -309,6 +309,7 @@ export class TailScene {
       this.ikBlendTarget = 1;
       this._setTargetFromClient(e.clientX, e.clientY);
       this.canvas.closest('.hero')?.classList.add('is-dragging');
+      document.querySelector('.cursor-ring')?.classList.add('is-grab');
       try { this.canvas.setPointerCapture?.(e.pointerId); } catch (_) {}
       this.requestRender();
     };
@@ -317,6 +318,7 @@ export class TailScene {
       this.chain.dragging = false;
       this.ikBlendTarget = 0;
       this.canvas.closest('.hero')?.classList.remove('is-dragging');
+      document.querySelector('.cursor-ring')?.classList.remove('is-grab');
       this.requestRender();
     };
     this.canvas.addEventListener('pointerdown', this._onDown);

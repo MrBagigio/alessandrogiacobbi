@@ -198,6 +198,12 @@
   border-color: var(--ox);
   background: var(--ox-bg);
 }
+/* grabbing a rig control / a manikin: ring closes like a hand */
+.cursor-ring.is-grab {
+  width: 22px; height: 22px;
+  border-width: 2px; border-color: var(--ox);
+  background: transparent;
+}
 
 @media (max-width: 1023px) {
   .cursor-dot, .cursor-ring { display: none; }

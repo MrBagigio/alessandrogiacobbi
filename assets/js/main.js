@@ -2,7 +2,7 @@
  * Bootstrap — entry point.
  * Loads GSAP via CDN, initializes scenes, cursor, lazy, scroll triggers.
  */
-import { HeroScene } from './scene-hero.js?v=20260530-tail27';
+import { HeroScene } from './scene-hero.js?v=20260530-mk15';
 import { BgScene } from './scene-bg.js?v=20260516-perf';
 import { Cursor } from './cursor.js?v=20260516-perf';
 import { initLazyMedia } from './lazy.js?v=20260530-audit3';
@@ -73,6 +73,19 @@ if (heroCanvas) new HeroScene(heroCanvas, { animate: !reduced });
 if (!reduced) {
   const bgCanvas = document.querySelector('.contact__canvas');
   if (bgCanvas) new BgScene(bgCanvas);
+}
+// 4b. Manikins on the headline (fig. 02) — ≥768px; on phones the H1 wraps to
+//     3 tiny lines and there is no room for them. Loaded lazily after first
+//     paint so it never competes with the hero's own LCP.
+const heroTitle = document.querySelector('.hero__title');
+if (heroTitle && window.matchMedia('(min-width: 768px)').matches) {
+  const debug = /[?&]manikins=debug/.test(location.search);
+  const count = window.matchMedia('(min-width: 1024px)').matches ? 2 : 1;
+  requestAnimationFrame(() => {
+    import('./rig/manikin-scene.js?v=20260530-mk15').then((m) => {
+      window.__manikins = new m.ManikinScene(heroTitle, { count, animate: !reduced, debug });
+    }).catch((e) => console.warn('[hero] manikins unavailable:', e?.message || e));
+  });
 }
 
 // 5. Cursor — magnetic dot + ring (desktop fine-pointer only)

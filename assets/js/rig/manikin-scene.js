@@ -23,7 +23,7 @@ import { onPointerMove } from '../pointer.js?v=20260530-pm';
 import {
   Skyline, LayeredSkyline, P, PROP, createManikin, standPose, sitPose, walkPose, crouchPose, applyPose,
   step, drive, gainsPreset, reachHand, mixPose, pin, unpinAll, nearestPoint, bounds, impulse,
-} from './manikin-physics.js?v=20260530-pm7';
+} from './manikin-physics.js?v=20260530-pm8';
 
 const INK = '#161310', OX = '#B8323F', PAPER = '#EDE6D6';
 /** weighted random pick from [[name, weight], ...] with r in [0,1) */

@@ -303,7 +303,7 @@ const DEFAULT_SELECTORS = [
 
 export function initMagneticAuto(selectors = DEFAULT_SELECTORS) {
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const wide = window.matchMedia('(min-width: 1024px)').matches;
+  const wide = window.matchMedia('(pointer: fine) and (min-width: 640px)').matches;   // a mouse, not a wide window
   if (reduced || !wide) return;
 
   selectors.forEach((sel) => {

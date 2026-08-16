@@ -6,8 +6,8 @@ import { HeroScene } from './scene-hero.js?v=20260530-pm';
 import { BgScene } from './scene-bg.js?v=20260516-perf';
 import { Cursor } from './cursor.js?v=20260530-pm';
 import { initLazyMedia } from './lazy.js?v=20260530-audit3';
-import { initTextFx } from './text-fx.js?v=20260530-tail26';
-import { initMagneticAuto } from './magnetic-letters.js?v=20260516-perf';
+import { initTextFx } from './text-fx.js?v=20260530-fx';
+import { initMagneticAuto } from './magnetic-letters.js?v=20260530-fx';
 import { initInteractions } from './interactions.js?v=20260530-audit3';
 import { initVideoHud } from './video-hud.js?v=20260516-perf';
 import { initXrayLens } from './xray-lens.js?v=20260516-perf';
@@ -88,9 +88,12 @@ if (heroTitle && window.matchMedia('(min-width: 768px)').matches) {
   });
 }
 
-// 5. Cursor — magnetic dot + ring (desktop fine-pointer only)
+// 5. Cursor — magnetic dot + ring. Gated on a FINE pointer (a mouse), not on
+//    window width: a desktop window narrowed to 800px still has a mouse and
+//    lost the custom cursor + all pointer FX (measured in a side-by-side pane).
+//    Touch devices report (pointer: coarse) and keep the native behaviour.
 const isFinePointer = window.matchMedia('(pointer: fine)').matches;
-const isWideScreen = window.matchMedia('(min-width: 1024px)').matches;
+const isWideScreen = window.matchMedia('(min-width: 640px)').matches;
 
 if (!reduced && isFinePointer && isWideScreen) {
   new Cursor();
@@ -130,8 +133,8 @@ document.querySelectorAll('a[href^="#"]').forEach((a) => {
   });
 });
 
-// 9. Magnetic buttons
-if (!reduced && window.matchMedia('(min-width: 1024px)').matches) {
+// 9. Magnetic buttons + tilt cards — any fine pointer
+if (!reduced && isFinePointer && isWideScreen) {
   document.querySelectorAll('.btn').forEach((btn) => {
     btn.addEventListener('mousemove', (e) => {
       const r = btn.getBoundingClientRect();

@@ -413,7 +413,7 @@ export function initTextFx(opts = {}) {
   // ─── 5. HERO TITLE 3D PARALLAX — mouse → rotateX/Y ────────────────────
   const heroTitle = document.querySelector('.hero__title');
   const heroSection = document.querySelector('.hero');
-  if (heroTitle && heroSection && window.matchMedia('(min-width: 1024px)').matches) {
+  if (heroTitle && heroSection && window.matchMedia('(pointer: fine) and (min-width: 640px)').matches) {
     let raf;
     let target = { x: 0, y: 0 };
     let current = { x: 0, y: 0 };

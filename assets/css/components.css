@@ -165,7 +165,7 @@
 /* ── Magnetic cursor (dot + ring) ── */
 
 /* Hide the native OS cursor wherever the custom one is active */
-@media (pointer: fine) and (min-width: 1024px) {
+@media (pointer: fine) and (min-width: 640px) {
   *, *::before, *::after { cursor: none !important; }
 }
 
@@ -205,7 +205,7 @@
   background: transparent;
 }
 
-@media (max-width: 1023px) {
+@media (pointer: coarse), (max-width: 639px) {
   .cursor-dot, .cursor-ring { display: none; }
 }
 

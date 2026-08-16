@@ -23,7 +23,7 @@ import { onPointerMove } from '../pointer.js?v=20260530-pm';
 import {
   Skyline, LayeredSkyline, P, PROP, createManikin, standPose, sitPose, walkPose, crouchPose, applyPose,
   step, drive, gainsPreset, reachHand, mixPose, pin, unpinAll, nearestPoint, bounds, impulse,
-} from './manikin-physics.js?v=20260530-pm5';
+} from './manikin-physics.js?v=20260530-pm7';
 
 const INK = '#161310', OX = '#B8323F', PAPER = '#EDE6D6';
 /** weighted random pick from [[name, weight], ...] with r in [0,1) */
@@ -69,7 +69,7 @@ export class ManikinScene {
     // h1 box; a thrown one flies higher still. The canvas extends above/around
     // the box and all drawing is translated by (padX, padTop).
     const fontPx = parseFloat(getComputedStyle(this.h1).fontSize) || 100;
-    this.padTop = Math.ceil(fontPx * 1.1); this.padX = Math.ceil(fontPx * 0.5);
+    this.padTop = Math.ceil(fontPx * 2.4); this.padX = Math.ceil(fontPx * 0.8);
     Object.assign(this.canvas.style, { top: `${-this.padTop}px`, left: `${-this.padX}px`, width: `calc(100% + ${2 * this.padX}px)`, height: `calc(100% + ${this.padTop}px)` });
     const dpr = Math.min(2, devicePixelRatio || 1);
     this.dpr = dpr;
@@ -301,7 +301,7 @@ export class ManikinScene {
     const { m } = this.grab; unpinAll(m); m.grabbed = false; this.grab = null;
     // cap the fling: a flick of the mouse is 1500+ px/s and sent them off the
     // top of the hero for a full second (measured hip y −273)
-    const VMAX = 700 / 60; // px per frame
+    const VMAX = 1400 / 60; // px per frame — a real throw, but not into orbit
     for (let i = 0; i < P.N; i++) {
       const vx = m.x[i] - m.px[i], vy = m.y[i] - m.py[i], v = Math.hypot(vx, vy);
       if (v > VMAX) { m.px[i] = m.x[i] - vx * (VMAX / v); m.py[i] = m.y[i] - vy * (VMAX / v); }
@@ -603,7 +603,7 @@ export class ManikinScene {
           else { m.dir *= -1; m.facing = m.dir; m.state = 'stand'; m.t = 0; b.act = { name: 'lookaround', t: 0, dur: 0.6 + Math.random() }; b.idleT = 0; }
           break;
         }
-        m.walkX = nx; m.phase += dt * (speed / (u * 0.95)) * 1.05;
+        m.walkX = nx; m.phase += dt * (speed / (u * 1.25)) * 1.0;   // cadence tied to stride
         m.facing = m.dir;
         pose = walkPose(m, m.walkX, groundAt, m.dir, m.phase, m.t);
         const lean = m.dir * u * 0.25 * m.speedK; pose.x[P.NECK] += lean; pose.x[P.HEAD] += lean * 1.5;   // weight forward
@@ -768,7 +768,23 @@ export class ManikinScene {
   _render() {
     const c = this.ctx; c.clearRect(-this.padX, -this.padTop, this.W + 2 * this.padX, this.H + this.padTop);
     if (this.debug) this._drawDebug();
+    for (const m of this.manikins) this._drawShadow(c, m);
     for (const m of this.manikins) this._drawManikin(c, m);
+  }
+
+  /** Soft contact shadow on the surface under the body — what makes them feel
+   *  like they have weight and actually touch the letters. Fades with height. */
+  _drawShadow(c, m) {
+    const u = m.u; const b = bounds(m);
+    const cx = (b.x0 + b.x1) / 2, low = b.y1;
+    const surf = this.sky.topAt(cx, low - u * 0.6);
+    if (!(surf < this.sky.ground + 1)) return;
+    const h = Math.max(0, surf - low);
+    const a = 0.16 * Math.max(0, 1 - h / (u * 5));
+    if (a <= 0.005) return;
+    const w = (b.x1 - b.x0) * 0.55 + u * 0.8, hh = u * 0.16 + h * 0.02;
+    c.save(); c.globalAlpha = a; c.fillStyle = INK;
+    c.beginPath(); c.ellipse(cx, surf, w / 2, hh, 0, 0, Math.PI * 2); c.fill(); c.restore();
   }
 
   _drawManikin(c, m) {

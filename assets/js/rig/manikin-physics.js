@@ -280,7 +280,7 @@ export function sitPose(m, x, y, facing = 1, t = 0, swing = 1) {
  */
 export function walkPose(m, x, groundAt, facing = 1, phase = 0, t = 0) {
   const u = m.u, o = _pose();
-  const stride = 0.95 * u, lift = 0.5 * u;
+  const stride = 1.25 * u, lift = 0.55 * u;
   const bob = Math.abs(Math.sin(phase)) * 0.12 * u;
   const gY = groundAt(x);
   const hipY = gY - (PROP.thigh + PROP.shin) * u * 0.955 - bob;
@@ -504,7 +504,7 @@ export function gainsPreset(kind = 'stand') {
   const g = new Float32Array(P.N);
   const set = (i, v) => { g[i] = v; };
   if (kind === 'walk') {
-    set(P.HIP, 0.42); set(P.NECK, 0.34); set(P.HEAD, 0.22);
+    set(P.HIP, 0.55); set(P.NECK, 0.34); set(P.HEAD, 0.22);
     set(P.LKNEE, 0.30); set(P.RKNEE, 0.30); set(P.LFOOT, 0.55); set(P.RFOOT, 0.55);
     set(P.LELB, 0.10); set(P.RELB, 0.10); set(P.LHAND, 0.05); set(P.RHAND, 0.05);   // arms swing passively
   } else if (kind === 'sit') {
@@ -516,7 +516,7 @@ export function gainsPreset(kind = 'stand') {
     set(P.LKNEE, 0.28); set(P.RKNEE, 0.28); set(P.LFOOT, 0.30); set(P.RFOOT, 0.30);
     set(P.LELB, 0.30); set(P.RELB, 0.30); set(P.LHAND, 0.34); set(P.RHAND, 0.34);
   } else { // stand
-    set(P.HIP, 0.40); set(P.NECK, 0.32); set(P.HEAD, 0.22);
+    set(P.HIP, 0.55); set(P.NECK, 0.32); set(P.HEAD, 0.22);
     set(P.LKNEE, 0.30); set(P.RKNEE, 0.30); set(P.LFOOT, 0.55); set(P.RFOOT, 0.55);
     set(P.LELB, 0.12); set(P.RELB, 0.12); set(P.LHAND, 0.07); set(P.RHAND, 0.07);
   }

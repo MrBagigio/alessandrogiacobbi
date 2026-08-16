@@ -21,9 +21,9 @@
  */
 import { onPointerMove } from '../pointer.js?v=20260530-pm';
 import {
-  Skyline, LayeredSkyline, P, PROP, createManikin, standPose, sitPose, walkPose, crouchPose, applyPose,
+  Skyline, LayeredSkyline, P, PROP, CONTACT_R, createManikin, standPose, sitPose, walkPose, crouchPose, hangPose, applyPose,
   step, drive, gainsPreset, reachHand, mixPose, pin, unpinAll, nearestPoint, bounds, impulse,
-} from './manikin-physics.js?v=20260530-pm12';
+} from './manikin-physics.js?v=20260530-st2';
 
 const INK = '#161310', OX = '#B8323F', PAPER = '#EDE6D6';
 /** weighted random pick from [[name, weight], ...] with r in [0,1) */
@@ -384,6 +384,8 @@ export class ManikinScene {
     if (this._pp && p.cx !== undefined) { const v = Math.hypot(p.cx - this._pp.x, p.cy - this._pp.y) / Math.max(dt, 1e-3); p.speed = (p.speed || 0) * 0.7 + v * 0.3; }
     this._pp = { x: p.cx ?? 0, y: p.cy ?? 0 };
     p.fastT = (p.speed || 0) > 900 ? (p.fastT || 0) + dt : 0;
+    // previous-frame local position (for "is it coming toward me?")
+    this._pp2 = this._ppLocal || { x: p.x, y: p.y }; this._ppLocal = { x: p.x, y: p.y };
     p.still = (p.speed || 0) < 12 ? (p.still || 0) + dt : 0;
     // tail rig being dragged? (its control point in our local space)
     const heroDragging = document.querySelector('.hero')?.classList.contains('is-dragging') && !this.grab;
@@ -467,7 +469,27 @@ export class ManikinScene {
     const near = p.inside ? Math.hypot(p.x - m.x[P.HEAD], p.y - m.y[P.HEAD]) : Infinity;
 
     // reactions preempt (only when awake and not mid-gesture)
-    if (m.state !== 'ragdoll' && m.state !== 'getup' && m.state !== 'climb' && m.state !== 'jump' && m.state !== 'peek') {
+    const busy = ['ragdoll', 'getup', 'climb', 'jump', 'peek', 'grapple', 'climbdown', 'trip', 'flee'].includes(m.state);
+    if (!busy) {
+      // flee: the pointer keeps coming AT me — approaching, close, and moving.
+      // the calm one bolts sooner; the curious one gives it a moment first
+      // "coming at me": smoothed distance is shrinking while the pointer moves.
+      // (raw per-frame comparison failed with coalesced/irregular move events)
+      b.nearS = b.nearS === undefined || !p.inside ? near : b.nearS * 0.75 + near * 0.25;
+      const approaching = p.inside && (p.speed || 0) > 200 && near < b.nearS - 0.2;
+      const retreating = !p.inside || near > b.nearS + 0.2;
+      if (approaching && near < u * 14) b.chaseT = (b.chaseT || 0) + dt;
+      else if (retreating) b.chaseT = Math.max(0, (b.chaseT || 0) - dt * 1.2);
+      b.fleeCd = (b.fleeCd || 0) - dt;
+      if (b.fleeCd <= 0 && b.chaseT > (0.12 + 0.22 * b.curiosity) && (m.state === 'stand' || m.state === 'walk' || m.state === 'sit')) {
+        b.fleeCd = 7; b.chaseT = 0; b.act = null;
+        const away = Math.sign(m.x[P.HEAD] - p.x) || 1;
+        if (m.state === 'sit') { m.state = 'standup'; m.t = 0; m.fleeAfterStandup = away; }
+        else { m.state = 'flee'; m.t = 0; m.fleeT = 0; m.dir = away; m.facing = away; m.speedK = 0.3; m.walkX = m.walkX ?? m.x[P.HIP]; m.run = this._runAt(m.walkX, m.layerTop); }
+        return;
+      }
+    }
+    if (!busy) {
       // startle: the pointer rushes in
       if (b.startleCd <= 0 && near < u * 9 && (p.fastT || 0) > 0.05 && !(b.act && b.act.name === 'startle')) {
         b.act = { name: 'startle', t: 0, dur: 0.55 + 0.4 * (1 - b.calm) }; b.startleCd = 5;
@@ -519,7 +541,8 @@ export class ManikinScene {
       b.idleT = 0;
     } else if (m.state === 'stand') {
       if (b.idleT < 0.8) return;
-      const pick = weighted([['walk', 0.6 * b.energy + 0.15], ['weightshift', 0.3], ['lookaround', 0.25], ['sitdown', 0.2]], rnd);
+      const pick = weighted([['walk', 0.6 * b.energy + 0.15], ['weightshift', 0.3], ['lookaround', 0.25], ['sitdown', 0.2], ['grapple', 0.22 * b.energy + 0.05]], rnd);
+      if (pick === 'grapple') { const g = this._grappleTarget(m); if (g) { this._startGrapple(m, g); b.idleT = 0; return; } b.act = { name: 'lookaround', t: 0, dur: 1.2 }; b.idleT = 0; return; }
       if (pick === 'walk') { m.state = 'walk'; m.t = 0; m.phase = 0; m.walkT = 0; m.dir = m.dir || m.facing || 1; m.speedK = 0; if (Math.random() < 0.5) m.dir = m.gazeDir || m.dir; }
       else if (pick === 'sitdown') { const x0 = m.walkX ?? m.x[P.HIP]; const e = this._edgeNear(x0, m.dir || 1, m.layerTop) || this._edgeNear(x0, -(m.dir || 1), m.layerTop); if (e) { m.state = 'sitdown'; m.spot = e; m.t = 0; } }
       else b.act = { name: pick, t: 0, dur: 1.8 + Math.random() };
@@ -573,6 +596,7 @@ export class ManikinScene {
         if (m.t > 1.0) {
           m.state = 'stand'; m.t = 0; b.idleT = 0.8; m.run = this._runAt(x, m.layerTop);
           if (m.goalX !== undefined) { m.state = 'walk'; m.phase = 0; m.speedK = 0; m.dir = Math.sign(m.goalX - x) || 1; }
+          if (m.fleeAfterStandup) { m.state = 'flee'; m.fleeT = 0; m.dir = m.fleeAfterStandup; m.facing = m.dir; m.speedK = 0.3; m.fleeAfterStandup = 0; }
         }
         break;
       }
@@ -606,6 +630,12 @@ export class ManikinScene {
           // is there a lower line to jump down to? (drop between 3u and 40u, ink below)
           const below = edge ? sky.topAt(edge.x + m.dir * u * 3, edge.y + u) : sky.ground;
           const canJump = edge && below < sky.ground && below - edge.y > u * 3 && below - edge.y < u * 40;
+          const smallDrop = edge && below < sky.ground && below - edge.y > u * 3 && below - edge.y <= u * 9;
+          if (smallDrop && Math.random() < 0.6) {
+            m.state = 'climbdown'; m.spot = edge; m.jumpTo = { x: edge.x + m.dir * u * 1.2, y: below }; m.t = 0; break;
+          }
+          const gAcross = this._grappleTarget(m, true);
+          if (gAcross && gAcross.mode === 'across' && Math.random() < 0.5 * (0.4 + b.energy)) { this._startGrapple(m, gAcross); break; }
           if (canJump && Math.random() < 0.55 * (0.5 + b.energy)) {
             m.state = 'peek'; m.spot = edge; m.jumpTo = { x: edge.x + m.dir * u * 3.2, y: below }; m.t = 0; m.facing = m.dir;
             b.gaze.tx = m.jumpTo.x; b.gaze.ty = m.jumpTo.y; b.gaze.mode = 'other'; b.gaze.hold = 2;
@@ -657,7 +687,9 @@ export class ManikinScene {
         if (m.t > 1.35) {
           m.walkX = gx; m.dir = d; m.facing = d; m.run = this._runAt(gx, m.layerTop);
           if (onFloor) { const t = this._nearestEdgeAny(gx); if (t) { m.state = 'climb'; m.spot = t; m.climbFrom = { x: gx, y: gy }; m.t = 0; break; } }
-          m.state = 'stand'; m.t = 0; b.idleT = 0; b.act = { name: 'lookaround', t: 0, dur: 1.2 };
+          m.state = 'stand'; m.t = 0; b.idleT = 0;
+          b.act = m.tripped ? { name: 'scratch', t: 0, dur: 1.6 } : { name: 'lookaround', t: 0, dur: 1.2 };
+          m.tripped = false;
         }
         break;
       }
@@ -695,6 +727,159 @@ export class ManikinScene {
         }
         break;
       }
+      case 'flee': {
+        // run away from the pointer: fast, arms up, glancing back; stops when
+        // the pointer is far, or when cornered (edge / wall) → jumps down,
+        // grapples up, or crouches panting
+        m.walkT = (m.walkT || 0) + dt; m.fleeT = (m.fleeT || 0) + dt;
+        const run = m.run || (m.run = this._runAt(m.walkX, m.layerTop));
+        m.speedK = Math.min(1, (m.speedK || 0) + dt * 3.5);
+        const speed = u * 7.5 * m.speedK;
+        const nx = m.walkX + m.dir * speed * dt;
+        const margin = u * 1.3;
+        const atEnd = run && (nx > run.x1 - margin || nx < run.x0 + margin);
+        const px = this.pointer, far = !px.inside || Math.hypot(px.x - m.x[P.HEAD], px.y - m.y[P.HEAD]) > u * 20;
+        if (far || m.fleeT > 4.5) { m.state = 'stand'; m.t = 0; b.act = { name: 'pant', t: 0, dur: 1.6 }; b.idleT = 0; break; }
+        if (atEnd || !(sky.topAt(nx, (m.layerTop ?? -Infinity) - 1) < sky.ground)) {
+          // cornered: escape route? down (jump), up (grapple), else turn and dash back past the pointer
+          const edge = this._edgeNear(m.walkX, m.dir, m.layerTop);
+          const below = edge ? sky.topAt(edge.x + m.dir * u * 3, edge.y + u) : sky.ground;
+          if (edge && below < sky.ground && below - edge.y > u * 3) { m.state = 'jump'; m.t = 0.18; m.jumpFrom = { x: m.x[P.HIP], y: m.y[P.HIP] }; m.jumpTo = { x: edge.x + m.dir * u * 3.2, y: below }; m.jumpDur = 0.55; m.facing = m.dir; break; }
+          const g = this._grappleTarget(m); if (g) { this._startGrapple(m, g); break; }
+          m.dir *= -1; m.facing = m.dir; break;
+        }
+        // trip sometimes when panicking
+        if (Math.random() < dt * 0.12) { m.state = 'trip'; m.t = 0; break; }
+        m.walkX = nx; m.phase = (m.phase || 0) + dt * (speed / (u * 1.4));
+        m.facing = m.dir;
+        pose = walkPose(m, m.walkX, groundAt, m.dir, m.phase, m.t);
+        // panic: torso forward, arms up and flailing, head looking back over the shoulder
+        const lean = m.dir * u * 0.55; pose.x[P.NECK] += lean; pose.x[P.HEAD] += lean * 1.4;
+        const fl = Math.sin(m.t * 22) * 0.4;
+        reachHand(pose, m, P.LELB, P.LHAND, pose.x[P.NECK] - u * (0.9 + fl), pose.y[P.NECK] - u * 1.9, -1);
+        reachHand(pose, m, P.RELB, P.RHAND, pose.x[P.NECK] + u * (0.9 - fl), pose.y[P.NECK] - u * 1.9, 1);
+        b.gaze.tx = px.x; b.gaze.ty = px.y; b.gaze.mode = 'pointer';
+        gains = 'walk';
+        break;
+      }
+      case 'trip': {
+        // the front foot catches: 0.22 s pitch forward with arms out, then a
+        // real fall (ragdoll with forward momentum) → lies → gets up → scratches head
+        const d = m.facing || 1;
+        pose = walkPose(m, m.walkX, groundAt, d, m.phase || 0, m.t);
+        const k = Math.min(1, m.t / 0.22);
+        pose.x[P.NECK] += d * u * 1.2 * k; pose.y[P.NECK] += u * 0.6 * k; pose.x[P.HEAD] += d * u * 1.6 * k; pose.y[P.HEAD] += u * 0.9 * k;
+        reachHand(pose, m, P.LELB, P.LHAND, pose.x[P.NECK] + d * u * 1.6, pose.y[P.NECK] + u * 0.6, -d);
+        reachHand(pose, m, P.RELB, P.RHAND, pose.x[P.NECK] + d * u * 1.9, pose.y[P.NECK] + u * 0.2, d);
+        gains = 'gesture';
+        if (m.t >= 0.22) {
+          m.state = 'ragdoll'; m.tripped = true; m.restTime = 0; m.asleep = false;
+          impulse(m, d * u * 18, -u * 3);      // forward momentum into the fall
+          for (let i = 0; i < P.N; i++) { m.px[i] = m.x[i] - (m.x[i] - m.px[i]) * 0.5; }
+        }
+        break;
+      }
+      case 'climbdown': {
+        // small drop (3–9u): turn to face the ledge, crouch, lower the body
+        // over the edge hanging from the hands, then let go and land in a crouch
+        const e = m.spot, d = e.side;                       // d = the way the drop is
+        const ledgeX = e.x, ledgeY = e.y;
+        const T1 = 0.55, T2 = 0.7, T3 = 0.35;
+        const below = m.jumpTo.y;
+        if (m.t < T1) {
+          // crouch at the edge, turned away from the drop, hands reaching for the ledge
+          const k = m.t / T1;
+          const cr = crouchPose(m, ledgeX - d * u * 1.0, groundAt, -d, 0.5 + 0.5 * k);
+          reachHand(cr, m, P.LELB, P.LHAND, ledgeX - d * u * 0.2, ledgeY - CONTACT_R * u, -d);
+          reachHand(cr, m, P.RELB, P.RHAND, ledgeX - d * u * 0.9, ledgeY - CONTACT_R * u, d);
+          pose = cr; gains = 'gesture'; m.facing = -d;
+        } else if (m.t < T1 + T2) {
+          // lower over the edge: hip slides down past the ledge, hands stay on it, legs hang
+          const k = (m.t - T1) / T2, e2 = k * k * (3 - 2 * k);
+          const hipX = ledgeX + d * u * (0.2 + 0.4 * e2), hipY = ledgeY - u * 1.4 + (u * 3.6) * e2;
+          pose = hangPose(m, hipX, hipY, ledgeX - d * u * 0.3, ledgeY - CONTACT_R * u, -d);
+          gains = 'gesture'; gravity = 0.3;
+        } else if (m.t < T1 + T2 + T3) {
+          pose = hangPose(m, ledgeX + d * u * 0.6, ledgeY + u * 2.2, ledgeX - d * u * 0.3, ledgeY - CONTACT_R * u, -d);
+          gains = 'gesture'; gravity = 0.3;
+        } else {
+          // let go: short kinematic drop, land crouched, rise
+          m.state = 'getup'; m.t = 0.45; m.getupX = ledgeX + d * u * 1.2; m.getupY = below; m.layerTop = this._layerTopFor(below); m.getupDir = d; m.walkX = m.getupX; m.dir = d;
+          for (let i = 0; i < P.N; i++) { m.py[i] = m.y[i] - u * 0.35; }   // a little downward momentum
+        }
+        break;
+      }
+      case 'grapple': {
+        // rope up / across: aim (wind-up) → throw (rope tip flies to the anchor)
+        // → swing/pull on a shrinking pendulum around the anchor → mantle onto
+        // the ledge (or release into a short flight to a landing spot)
+        const g = m.grapple, A = g.anchor, T = g.target;
+        const d = Math.sign(A.x - m.x[P.HIP]) || 1;
+        if (g.phase === 'aim') {
+          pose = standPose(m, m.walkX, groundAt, d, m.t); m.facing = d;
+          const k = Math.min(1, m.t / 0.45);
+          // right arm winds back and up, weight on the back foot; look at the anchor
+          reachHand(pose, m, P.RELB, P.RHAND, pose.x[P.NECK] - d * u * (0.6 + 1.0 * k), pose.y[P.NECK] - u * (0.4 + 1.6 * k), -d);
+          pose.x[P.NECK] -= d * u * 0.35 * k; pose.x[P.HEAD] -= d * u * 0.2 * k;
+          b.gaze.tx = A.x; b.gaze.ty = A.y; b.gaze.mode = 'other'; b.gaze.hold = 2;
+          g.ropeFrom = { x: pose.x[P.RHAND], y: pose.y[P.RHAND] }; g.ropeTip = null;
+          gains = 'gesture';
+          if (m.t > 0.55) { g.phase = 'throw'; m.t = 0; }
+        } else if (g.phase === 'throw') {
+          pose = standPose(m, m.walkX, groundAt, d, m.t);
+          const k = Math.min(1, m.t / 0.32);
+          // arm whips forward-up toward the anchor; rope tip flies along an arc
+          reachHand(pose, m, P.RELB, P.RHAND, pose.x[P.NECK] + d * u * (0.2 + 1.9 * k), pose.y[P.NECK] - u * (1.4 + 0.9 * k), d);
+          pose.x[P.NECK] += d * u * 0.4 * k; pose.x[P.HEAD] += d * u * 0.5 * k;
+          const hx = pose.x[P.RHAND], hy = pose.y[P.RHAND];
+          const kk = Math.min(1, m.t / 0.42);
+          g.ropeTip = { x: hx + (A.x - hx) * kk, y: hy + (A.y - hy) * kk - Math.sin(Math.PI * kk) * u * 2.5 };
+          gains = 'gesture';
+          if (m.t > 0.48) { g.phase = 'swing'; m.t = 0; g.r0 = Math.hypot(m.x[P.HIP] - A.x, m.y[P.HIP] - A.y); g.a0 = Math.atan2(m.y[P.HIP] - A.y, m.x[P.HIP] - A.x); }
+        } else if (g.phase === 'swing') {
+          // pendulum around A: angle from a0 to hanging (π/2 = straight below);
+          // radius reels in to rHang; body hangs from both hands on the rope
+          const dur = g.mode === 'up' ? 1.15 : 0.9;
+          const k = Math.min(1, m.t / dur), e2 = k * k * (3 - 2 * k);
+          const inward = g.mode === 'up' ? -(g.side || d) : d;                                  // 'up': end under the ledge, slightly INSIDE the word
+          const aEnd = g.mode === 'up' ? Math.PI / 2 + inward * 0.22 : Math.PI / 2 - d * 0.55;
+          const a = g.a0 + (aEnd - g.a0) * e2;
+          const rHang = u * 3.2;
+          const r = g.r0 + (rHang - g.r0) * (g.mode === 'up' ? e2 : e2 * 0.5);
+          const hipX = A.x + Math.cos(a) * r, hipY = A.y + Math.sin(a) * r;
+          pose = hangPose(m, hipX, hipY, A.x, A.y, d);
+          // legs tucked/kicking a little in the swing
+          gains = 'gesture'; gravity = 0.15;
+          g.ropeTip = A;
+          if (k >= 1) {
+            if (g.mode === 'up') { g.phase = 'mantle'; m.t = 0; g.mFrom = { x: hipX, y: hipY }; }
+            else { g.phase = 'fly'; m.t = 0; g.fFrom = { x: hipX, y: hipY }; g.ropeTip = null; }
+          }
+        } else if (g.phase === 'mantle') {
+          // haul over the ledge: hip goes from below the anchor to a crouch on top of it
+          const dur = 0.55, k = Math.min(1, m.t / dur), e2 = k * k * (3 - 2 * k);
+          const legs = (PROP.thigh + PROP.shin) * u;
+          const inward = -(g.side || d);                            // onto the ledge = away from the drop
+          const topX = A.x + inward * u * 1.3, topY = A.y - legs * 0.55;
+          const hipX = g.mFrom.x + (topX - g.mFrom.x) * e2, hipY = g.mFrom.y + (topY - g.mFrom.y) * e2 - Math.sin(Math.PI * k) * u * 0.6;
+          const cr = crouchPose(m, topX, () => A.y, inward, 1);
+          const hang = hangPose(m, hipX, hipY, A.x, A.y - CONTACT_R * u, inward);
+          pose = mixPose(hang, cr, e2); gains = 'gesture'; gravity = 0.15; g.ropeTip = A;
+          if (k >= 1) {
+            m.grapple = null; m.state = 'getup'; m.t = 0.5; m.getupX = topX; m.getupY = A.y; m.layerTop = this._layerTopFor(A.y); m.getupDir = inward; m.walkX = topX; m.dir = inward; m.facing = inward;
+          }
+        } else if (g.phase === 'fly') {
+          // released at the bottom of the swing: short ballistic hop to the landing spot
+          const dur = 0.5, k = Math.min(1, m.t / dur);
+          const legs = (PROP.thigh + PROP.shin) * u;
+          const hx = g.fFrom.x + (T.x - g.fFrom.x) * k, hy = g.fFrom.y + (T.y - legs * 0.62 - g.fFrom.y) * k - Math.sin(Math.PI * k) * u * 2.2;
+          pose = crouchPose(m, hx, () => hy + legs * 0.62, d, 0.8); gains = 'gesture'; gravity = 0;
+          if (k >= 1) {
+            m.grapple = null; m.state = 'getup'; m.t = 0.5; m.getupX = T.x; m.getupY = T.y; m.layerTop = this._layerTopFor(T.y); m.getupDir = d; m.walkX = T.x; m.dir = d; b.shake = 0.3;
+          }
+        }
+        break;
+      }
       case 'climb': {
         const T = 0.9, k = Math.min(1, m.t / T), e = m.spot, f = m.climbFrom;
         const hx = f.x + (e.x - f.x) * k, arc = -Math.sin(Math.PI * k) * u * 3.5;
@@ -709,7 +894,7 @@ export class ManikinScene {
     if (!pose) return;
     // safety net: an act that no state advanced (e.g. set right before a state
     // change) must still expire, or it blocks every future decision
-    if (b.act && (m.state === 'sitdown' || m.state === 'standup' || m.state === 'climb' || m.state === 'getup' || m.state === 'peek' || m.state === 'jump')) { b.act.t += dt; if (b.act.t >= b.act.dur) b.act = null; }
+    if (b.act && ['sitdown', 'standup', 'climb', 'getup', 'peek', 'jump', 'grapple', 'climbdown', 'trip', 'flee'].includes(m.state)) { b.act.t += dt; if (b.act.t >= b.act.dur) b.act = null; }
     // head follows the gaze (small offsets), then drive
     const hr = u * 0.42;
     pose.x[P.HEAD] += m.look * hr * 1.1; pose.y[P.HEAD] += m.lookY * hr * 0.6;
@@ -799,6 +984,15 @@ export class ManikinScene {
         m.brain.gaze.tx = other.x[P.HEAD]; m.brain.gaze.ty = other.y[P.HEAD]; m.brain.gaze.mode = 'other';
         break;
       }
+      case 'pant': {
+        // hands on knees, head down, breathing hard
+        const kk = Math.min(1, a.t / 0.3) * (1 - Math.max(0, (k - 0.7) / 0.3));
+        pose.y[P.HIP] += u * 0.35 * kk; pose.x[P.NECK] += side * u * 0.9 * kk; pose.y[P.NECK] += u * 0.9 * kk + Math.sin(a.t * 9) * u * 0.08 * kk;
+        pose.x[P.HEAD] += side * u * 1.0 * kk; pose.y[P.HEAD] += u * 1.2 * kk;
+        reachHand(pose, m, P.LELB, P.LHAND, pose.x[P.LKNEE] - side * u * 0.1, pose.y[P.LKNEE] - u * 0.2, -side);
+        reachHand(pose, m, P.RELB, P.RHAND, pose.x[P.RKNEE] + side * u * 0.1, pose.y[P.RKNEE] - u * 0.2, side);
+        break;
+      }
       case 'watch': {
         const other = this.manikins.find((o) => o !== m); if (!other) break;
         const dir = Math.sign(other.x[P.HEAD] - m.x[P.HEAD]) || 1;
@@ -809,6 +1003,46 @@ export class ManikinScene {
     if (a.t >= a.dur) { b.act = null; b.idleT = 0; }
   }
 
+  /** Find somewhere to grapple to: an edge on a HIGHER line within reach
+   *  ('up'), or — at a gap on the same line — the far side of the gap with an
+   *  anchor on the line above ('across'). Returns {mode, anchor, target} or null. */
+  _grappleTarget(m, preferAcross = false) {
+    const u = this.u, hx = m.x[P.HIP], hy = m.y[P.HIP];
+    const myTop = m.layerTop ?? this._layerTopFor(hy);
+    const es = this.sky.edges(this.DROP, this.STEP, u * 2.2);
+    // up: edges at least 5u above and at most 30u above, horizontally within 4..22u
+    const ups = es.filter((e) => hy - e.y > u * 5 && hy - e.y < u * 32 && Math.abs(e.x - hx) > u * 2 && Math.abs(e.x - hx) < u * 22 && Math.abs(e.y - myTop) > u * 3);
+    ups.sort((a, b) => Math.abs(a.x - hx) - Math.abs(b.x - hx));
+    // across: same-line run boundary ahead with a gap and another run beyond, anchor = point on the line above the gap
+    let across = null;
+    const run = this._runAt(m.walkX ?? hx, myTop);
+    if (run) {
+      const dir = m.dir || m.facing || 1;
+      const runs = this.sky.runs(this.STEP, u * 3).filter((r) => Math.abs(r.yAvg - myTop) < u * 3 && r !== run && (dir > 0 ? r.x0 > run.x1 : r.x1 < run.x0));
+      runs.sort((a, b) => dir > 0 ? a.x0 - b.x0 : b.x1 - a.x1);
+      const next = runs[0];
+      if (next) {
+        const gap = dir > 0 ? next.x0 - run.x1 : run.x0 - next.x1;
+        if (gap > u * 2 && gap < u * 30) {
+          const midX = dir > 0 ? (run.x1 + next.x0) / 2 : (run.x0 + next.x1) / 2;
+          // an anchor above the gap: the surface of the line above at midX (must exist and be ≥6u higher)
+          const above = this.sky.topAt(midX, -1e9);
+          if (above < myTop - u * 6 && above < this.sky.ground) {
+            const landX = dir > 0 ? next.x0 + u * 2.5 : next.x1 - u * 2.5;
+            across = { mode: 'across', anchor: { x: midX, y: above }, target: { x: landX, y: this.sky.topAt(landX, myTop - 1) }, dir };
+          }
+        }
+      }
+    }
+    if (preferAcross && across) return across;
+    if (ups.length) { const e = ups[0]; return { mode: 'up', anchor: { x: e.x - e.side * u * 0.4, y: e.y }, target: { x: e.x, y: e.y }, dir: Math.sign(e.x - hx) || 1, side: e.side }; }
+    return across;
+  }
+  _startGrapple(m, g) {
+    m.state = 'grapple'; m.t = 0; m.grapple = { ...g, phase: 'aim', ropeTip: null };
+    m.walkX = m.walkX ?? m.x[P.HIP]; m.facing = g.dir; m.dir = g.dir;
+    if (m.brain) m.brain.act = null;
+  }
   _nearestEdgeAny(x) {
     const es = this.sky.edges(this.DROP, this.STEP, this.u * 2.2);
     es.sort((a, b) => Math.hypot(a.x - x, 0) - Math.hypot(b.x - x, 0));
@@ -828,7 +1062,28 @@ export class ManikinScene {
     const c = this.ctx; c.clearRect(-this.padX, -this.padTop, this.W + 2 * this.padX, this.H + this.padTop);
     if (this.debug) this._drawDebug();
     for (const m of this.manikins) this._drawShadow(c, m);
+    for (const m of this.manikins) this._drawRope(c, m);
     for (const m of this.manikins) this._drawManikin(c, m);
+  }
+
+  /** Grapple rope: from the throwing hand (or both hands while hanging) to the
+   *  hook, drawn as a slightly slack ink line with a small hook at the tip. */
+  _drawRope(c, m) {
+    const g = m.grapple; if (!g || !g.ropeTip) return;
+    const u = m.u; const tip = g.ropeTip;
+    const fromX = g.phase === 'throw' ? m.x[P.RHAND] : (m.x[P.LHAND] + m.x[P.RHAND]) / 2;
+    const fromY = g.phase === 'throw' ? m.y[P.RHAND] : (m.y[P.LHAND] + m.y[P.RHAND]) / 2;
+    const taut = g.phase === 'swing' || g.phase === 'mantle';
+    c.save(); c.lineCap = 'round';
+    c.strokeStyle = PAPER; c.lineWidth = Math.max(2.4, u * 0.28); this._ropePath(c, fromX, fromY, tip.x, tip.y, taut ? 0 : u * 0.9); c.stroke();
+    c.strokeStyle = INK; c.lineWidth = Math.max(1, u * 0.1); this._ropePath(c, fromX, fromY, tip.x, tip.y, taut ? 0 : u * 0.9); c.stroke();
+    // hook: a small open J at the tip, oriented down
+    c.lineWidth = Math.max(1.2, u * 0.14); c.beginPath(); c.arc(tip.x, tip.y + u * 0.15, u * 0.32, -Math.PI * 0.9, Math.PI * 0.55); c.stroke();
+    c.restore();
+  }
+  _ropePath(c, x0, y0, x1, y1, sag) {
+    c.beginPath(); c.moveTo(x0, y0);
+    if (sag > 0) c.quadraticCurveTo((x0 + x1) / 2, (y0 + y1) / 2 + sag, x1, y1); else c.lineTo(x1, y1);
   }
 
   /** Soft contact shadow on the surface under the body — what makes them feel

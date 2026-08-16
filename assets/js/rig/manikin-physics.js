@@ -344,6 +344,28 @@ export function crouchPose(m, x, ground, facing = 1, depth = 1) {
   return o;
 }
 
+/** Hanging from both hands at (hx, hy) (a ledge, a rope anchor): hip at
+ *  (hipX, hipY), torso stretched toward the hands, legs down (physics lets
+ *  them dangle/kick), head looking toward `facing`. */
+export function hangPose(m, hipX, hipY, hx, hy, facing = 1) {
+  const u = m.u, o = _pose();
+  put(o, P.HIP, hipX, hipY);
+  let dx = hx - hipX, dy = hy - hipY, d = Math.hypot(dx, dy) || 1; dx /= d; dy /= d;
+  const nx = hipX + dx * PROP.torso * u, ny = hipY + dy * PROP.torso * u;
+  put(o, P.NECK, nx, ny);
+  put(o, P.HEAD, nx + facing * 0.25 * u - dx * 0.1 * u, ny - PROP.neck * u * 0.9 + 0.1 * u);
+  reachHand(o, m, P.LELB, P.LHAND, hx - facing * 0.25 * u, hy, -facing);
+  reachHand(o, m, P.RELB, P.RHAND, hx + facing * 0.25 * u, hy, facing);
+  // legs: hang below the hip, knees a little forward
+  const th = PROP.thigh * u, sh2 = PROP.shin * u;
+  put(o, P.LFOOT, hipX - facing * 0.15 * u, hipY + (th + sh2) * 0.92);
+  put(o, P.RFOOT, hipX + facing * 0.35 * u, hipY + (th + sh2) * 0.88);
+  const [lkx, lky] = kneeIK(hipX, hipY, o.x[P.LFOOT], o.y[P.LFOOT], th, sh2, facing);
+  const [rkx, rky] = kneeIK(hipX, hipY, o.x[P.RFOOT], o.y[P.RFOOT], th, sh2, facing);
+  put(o, P.LKNEE, lkx, lky); put(o, P.RKNEE, rkx, rky);
+  return o;
+}
+
 /** Arm 2-bone IK on a pose: place elbow/hand so the hand reaches (tx,ty)
  *  from the neck; the elbow bends toward `bend` (±1 in x). Clamps to reach. */
 export function reachHand(o, m, elb, hand, tx, ty, bend = 1) {

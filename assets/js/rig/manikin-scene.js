@@ -504,13 +504,13 @@ export class ManikinScene {
       // startle: the pointer rushes in
       if (b.startleCd <= 0 && near < u * 9 && (p.fastT || 0) > 0.05 && !(b.act && b.act.name === 'startle')) {
         b.act = { name: 'startle', t: 0, dur: 0.55 + 0.4 * (1 - b.calm) }; b.startleCd = 5;
-        if (m.state === 'walk') { m.state = 'stand'; m.t = 0; }        // stop dead
+        if (m.state === 'walk') { this._stopHard(m, 0.2); m.state = 'stand'; m.t = 0; }        // stop dead
         return;
       }
       // watch: the other one gets thrown / falls -> freeze and stare
       if (other && other.state === 'ragdoll' && !other.grabbed && b.watchCd <= 0 && (!b.act || b.act.name !== 'watch')) {
         b.act = { name: 'watch', t: 0, dur: 2.5 + Math.random() * 2 }; b.watchCd = 8; b.wantApproach = b.curiosity > 0.6;
-        if (m.state === 'walk') { m.state = 'stand'; m.t = 0; }        // freeze mid-step
+        if (m.state === 'walk') { this._stopHard(m, 0.2); m.state = 'stand'; m.t = 0; }        // freeze mid-step
         return;
       }
       // approach: once the stare is over, the curious one walks over to where the
@@ -560,7 +560,7 @@ export class ManikinScene {
       b.idleT = 0;
     } else if (m.state === 'walk') {
       // occasional stop to look around
-      if (b.idleT > 3 && rnd < dt * 0.25) { m.state = 'stand'; m.t = 0; b.act = { name: 'lookaround', t: 0, dur: 1.4 + Math.random() * 1.6 }; b.idleT = 0; }
+      if (b.idleT > 3 && rnd < dt * 0.25) { this._stopHard(m, 0.35); m.state = 'stand'; m.t = 0; b.act = { name: 'lookaround', t: 0, dur: 1.4 + Math.random() * 1.6 }; b.idleT = 0; }
     }
   }
 
@@ -648,7 +648,7 @@ export class ManikinScene {
         if (m.goalX !== undefined) {
           if (Math.sign(m.goalX - nx) !== m.dir || Math.abs(m.goalX - nx) < u * 0.4) {
             // arrived next to the other one: stand and look down at it for a while
-            m.goalX = undefined; m.state = 'stand'; m.t = 0; b.act = { name: 'lookdown', t: 0, dur: 2.5 + Math.random() * 2 }; b.idleT = 0;
+            m.goalX = undefined; this._stopHard(m, 0.35); m.state = 'stand'; m.t = 0; b.act = { name: 'lookdown', t: 0, dur: 2.5 + Math.random() * 2 }; b.idleT = 0;
             break;
           }
         }
@@ -657,7 +657,7 @@ export class ManikinScene {
         if (other && Math.abs((other.layerTop ?? 1e9) - (m.layerTop ?? -1e9)) < u * 3 && other.state !== 'ragdoll') {
           const ahead = (other.x[P.HIP] - nx) * m.dir;
           if (ahead > 0 && ahead < u * 2.6 && m.goalX === undefined) {
-            m.state = 'stand'; m.t = 0; b.act = { name: 'lookaround', t: 0, dur: 1.2 + Math.random() }; b.idleT = 0; m.dir *= -1; m.facing = -m.dir;
+            this._stopHard(m, 0.3); m.state = 'stand'; m.t = 0; b.act = { name: 'lookaround', t: 0, dur: 1.2 + Math.random() }; b.idleT = 0; m.dir *= -1; m.facing = -m.dir;
             b.gaze.tx = other.x[P.HEAD]; b.gaze.ty = other.y[P.HEAD]; b.gaze.mode = 'other'; b.gaze.hold = 1.5;
             break;
           }
@@ -693,7 +693,7 @@ export class ManikinScene {
             b.gaze.tx = m.jumpTo.x; b.gaze.ty = m.jumpTo.y; b.gaze.mode = 'other'; b.gaze.hold = 2;
           }
           else if (edge && Math.random() < 0.7) { m.state = 'sitdown'; m.spot = edge; m.t = 0; }
-          else { m.dir *= -1; m.facing = m.dir; m.state = 'stand'; m.t = 0; b.act = { name: 'lookaround', t: 0, dur: 0.6 + Math.random() }; b.idleT = 0; m.jog = undefined; }
+          else { this._stopHard(m, 0.3); m.dir *= -1; m.facing = m.dir; m.state = 'stand'; m.t = 0; b.act = { name: 'lookaround', t: 0, dur: 0.6 + Math.random() }; b.idleT = 0; }
           break;
         }
         m.walkX = nx; m.phase = (m.phase || 0) + dt * (speed / (u * 1.25)) * 1.0;   // cadence tied to stride
@@ -801,14 +801,14 @@ export class ManikinScene {
         const margin = u * 1.3;
         const atEnd = run && (nx > run.x1 - margin || nx < run.x0 + margin);
         const px = this.pointer, far = !px.inside || Math.hypot(px.x - m.x[P.HEAD], px.y - m.y[P.HEAD]) > u * 20;
-        if (far || m.fleeT > 4.5) { m.state = 'stand'; m.t = 0; b.act = { name: 'pant', t: 0, dur: 1.6 }; b.idleT = 0; break; }
+        if (far || m.fleeT > 4.5) { this._stopHard(m, 0.3); m.state = 'stand'; m.t = 0; b.act = { name: 'pant', t: 0, dur: 1.6 }; b.idleT = 0; break; }
         if (atEnd || !(sky.topAt(nx, (m.layerTop ?? -Infinity) - 1) < sky.ground)) {
           // cornered: escape route? down (jump), up (grapple), else turn and dash back past the pointer
           const edge = this._edgeNear(m.walkX, m.dir, m.layerTop);
           const below = edge ? sky.topAt(edge.x + m.dir * u * 3, edge.y + u) : sky.ground;
           if (edge && below < sky.ground && below - edge.y > u * 3) { m.state = 'jump'; m.t = 0.18; m.jumpFrom = { x: m.x[P.HIP], y: m.y[P.HIP] }; m.jumpTo = { x: edge.x + m.dir * u * 3.2, y: below }; m.jumpDur = 0.55; m.facing = m.dir; break; }
           const g = this._grappleTarget(m); if (g) { this._startGrapple(m, g); break; }
-          m.dir *= -1; m.facing = m.dir; break;
+          this._stopHard(m, 0.2); m.dir *= -1; m.facing = m.dir; m.speedK = 0.2; break;
         }
         // trip sometimes when panicking
         if (Math.random() < dt * 0.12) { m.state = 'trip'; m.t = 0; break; }
@@ -1123,6 +1123,13 @@ export class ManikinScene {
     m.state = 'grapple'; m.t = 0; m.grapple = { ...g, phase: 'aim', ropeTip: null };
     m.walkX = m.walkX ?? m.x[P.HIP]; m.facing = g.dir; m.dir = g.dir;
     if (m.brain) m.brain.act = null;
+  }
+  /** Hard stop: bleed the body's momentum and re-centre the stand target on
+   *  the hips. Without this a running body driven to a stand pose pivoted over
+   *  its (kinematic) feet like a pole-vaulter (measured: horizontal frames). */
+  _stopHard(m, keep = 0.15) {
+    for (let i = 0; i < P.N; i++) { m.px[i] = m.x[i] - (m.x[i] - m.px[i]) * keep; m.py[i] = m.y[i] - (m.y[i] - m.py[i]) * keep; }
+    m.walkX = m.x[P.HIP]; m.speedK = 0; m.jog = undefined;
   }
   _nearestEdgeAny(x) {
     const es = this.sky.edges(this.DROP, this.STEP, this.u * 2.2);

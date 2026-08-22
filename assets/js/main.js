@@ -82,7 +82,7 @@ if (heroTitle && window.matchMedia('(min-width: 768px)').matches && !/[?&]maniki
   const debug = /[?&]manikins=debug/.test(location.search);
   const count = window.matchMedia('(min-width: 1024px)').matches ? 2 : 1;
   requestAnimationFrame(() => {
-    import('./rig/manikin-scene.js?v=20260530-st12').then((m) => {
+    import('./rig/manikin-scene.js?v=20260530-st13').then((m) => {
       window.__manikins = new m.ManikinScene(heroTitle, { count, animate: !reduced, debug });
     }).catch((e) => console.warn('[hero] manikins unavailable:', e?.message || e));
   });

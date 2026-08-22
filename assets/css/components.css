@@ -169,7 +169,7 @@
 .asteroid-cursor { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 9996; pointer-events: none; display: none; }
 body.is-arcade .asteroid-cursor { display: block; }
 body.is-arcade .cursor-dot, body.is-arcade .cursor-ring { display: none !important; }
-.meta-bar .arcade-toggle { color: var(--ox); letter-spacing: 0.06em; }
+.meta-bar .arcade-toggle { color: var(--ox); letter-spacing: 0.06em; background: none; border: 0; padding: 0; font: inherit; cursor: pointer; }
 .meta-bar .arcade-toggle[aria-pressed="true"] { color: var(--ink); }
 @media (pointer: coarse), (max-width: 767px) { .meta-bar .arcade-toggle { display: none; } }
 

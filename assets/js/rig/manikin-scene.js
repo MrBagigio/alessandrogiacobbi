@@ -252,6 +252,7 @@ export class ManikinScene {
     // so if a manikin is hit we take the event and nothing else acts on it
     this._onDown = (e) => {
       if (e.button !== undefined && e.button !== 0) return;
+      if (this.suspended) return;                       // arcade mode: clicks are for shooting
       const p = this._toLocal(e.clientX, e.clientY);
       let best = null, bi = -1, bd = GRAB_PX;
       for (const m of this.manikins) { const n = nearestPoint(m, p.x, p.y); if (n.d < bd) { bd = n.d; best = m; bi = n.i; } }

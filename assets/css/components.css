@@ -162,6 +162,17 @@
 }
 .btn:hover .btn-arrow { transform: translateX(4px); }
 
+/* ── Arcade: the Asteroids cursor game (assets/js/arcade.js) ──
+   Full-viewport canvas, pointer-events none, above content. Only displayed
+   while body.is-arcade; the CSS cursor hides because the game draws its own
+   dot + ship. */
+.asteroid-cursor { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 9996; pointer-events: none; display: none; }
+body.is-arcade .asteroid-cursor { display: block; }
+body.is-arcade .cursor-dot, body.is-arcade .cursor-ring { display: none !important; }
+.meta-bar .arcade-toggle { color: var(--ox); letter-spacing: 0.06em; }
+.meta-bar .arcade-toggle[aria-pressed="true"] { color: var(--ink); }
+@media (pointer: coarse), (max-width: 767px) { .meta-bar .arcade-toggle { display: none; } }
+
 /* ── Magnetic cursor (dot + ring) ── */
 
 /* Hide the native OS cursor wherever the custom one is active */

@@ -12,6 +12,7 @@ import { initInteractions } from './interactions.js?v=20260530-audit3';
 import { initVideoHud } from './video-hud.js?v=20260516-perf';
 import { initXrayLens } from './xray-lens.js?v=20260516-perf';
 import { initAboutStats } from './about-stats.js?v=20260530-audit4';
+import { initArcade } from './arcade.js?v=20260530-arc4';
 
 const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -82,7 +83,7 @@ if (heroTitle && window.matchMedia('(min-width: 768px)').matches && !/[?&]maniki
   const debug = /[?&]manikins=debug/.test(location.search);
   const count = window.matchMedia('(min-width: 1024px)').matches ? 2 : 1;
   requestAnimationFrame(() => {
-    import('./rig/manikin-scene.js?v=20260530-st13').then((m) => {
+    import('./rig/manikin-scene.js?v=20260530-arc1').then((m) => {
       window.__manikins = new m.ManikinScene(heroTitle, { count, animate: !reduced, debug });
     }).catch((e) => console.warn('[hero] manikins unavailable:', e?.message || e));
   });
@@ -98,6 +99,9 @@ const isWideScreen = window.matchMedia('(min-width: 640px)').matches;
 if (!reduced && isFinePointer && isWideScreen) {
   new Cursor();
 }
+
+// 5b. Arcade — the Asteroids cursor game, on demand (▲ arcade / key A / ?arcade=1)
+window.__arcade = initArcade();
 
 // 6. Lazy load
 initLazyMedia();

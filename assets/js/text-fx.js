@@ -6,16 +6,71 @@
  */
 
 const SCRAMBLE_CHARS = '!<>-_\\/[]{}—=+*^?#░▒▓▢▣▤';
+const rndChar = () => SCRAMBLE_CHARS[Math.floor(Math.random() * SCRAMBLE_CHARS.length)];
+// the scramble alphabet and the real text both contain '<' '>' '&' — escape
+// before they go through innerHTML (a lone '<' followed by '/' ate the span)
+const esc = (c) => (c === '&' ? '&amp;' : c === '<' ? '&lt;' : c === '>' ? '&gt;' : c);
+
+/**
+ * Markup-safe scramble for elements WITH child elements: only the TEXT NODES
+ * (any depth, skipping magnetic-split / already-scrambling subtrees) animate,
+ * each inside a transient inline host span that is swapped back for the
+ * original Text node at the end. Children, flex rows, links, pills and CTA
+ * arrows are never touched. (The flat innerHTML rewrite flattened
+ * .project-card__meta to one text node and exploded its flex row — measured.)
+ */
+function scrambleTextNodes(el, opts = {}) {
+  if (el.dataset.fxRunning === '1') return;
+  const duration = opts.duration ?? 750, startDelay = opts.delay ?? 0, stableChance = opts.stableChance ?? 0.28;
+  const nodes = [];
+  const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, {
+    acceptNode(n) {
+      if (!/\S/.test(n.nodeValue)) return NodeFilter.FILTER_REJECT;
+      for (let p = n.parentNode; p && p !== el; p = p.parentNode) {
+        if (p.nodeType === 1 && (p.hasAttribute('data-magnetic') || p.dataset.mlxSplit === '1' || p.classList.contains('fx-scramble') || p.classList.contains('fx-scramble-host'))) return NodeFilter.FILTER_REJECT;
+      }
+      return NodeFilter.FILTER_ACCEPT;
+    },
+  });
+  for (let n = walker.nextNode(); n; n = walker.nextNode()) nodes.push(n);
+  if (!nodes.length) return;
+  const jobs = nodes.map((node) => {
+    const host = document.createElement('span'); host.className = 'fx-scramble-host';
+    const queue = [...node.nodeValue].map((c) => (/\s/.test(c)
+      ? { final: c, skip: true }
+      : { final: c, from: rndChar(), start: Math.random() * duration * 0.35, end: duration * 0.55 + Math.random() * duration * 0.4 }));
+    host.textContent = node.nodeValue;                 // no flash: starts as the real text
+    node.parentNode.replaceChild(host, node);
+    return { node, host, queue };
+  });
+  el.dataset.fxRunning = '1';
+  const startTime = performance.now() + startDelay;
+  function tick(now) {
+    const t = now - startTime; let done = 0, total = 0;
+    for (const j of jobs) {
+      let out = '';
+      for (const q of j.queue) {
+        total++;
+        if (q.skip || t >= q.end) { out += esc(q.final); done++; }
+        else { if (t >= q.start && Math.random() < stableChance) q.from = rndChar(); out += `<span class="fx-scramble">${esc(q.from)}</span>`; }
+      }
+      j.host.innerHTML = out;
+    }
+    if (done < total) { requestAnimationFrame(tick); return; }
+    for (const j of jobs) if (j.host.parentNode) j.host.parentNode.replaceChild(j.node, j.host);   // DOM back to the exact original
+    el.dataset.fxRunning = ''; el.dataset.fxDone = '1';
+  }
+  requestAnimationFrame(tick);
+}
 
 export function scramble(el, opts = {}) {
   if (!el || el.dataset.fxDone === '1') return;
   // Skip se elemento ha magnetic letters (per-char spans), non sovrascrivere
   if (el.hasAttribute('data-magnetic') || el.dataset.mlxSplit === '1') return;
-  // Skip any element with CHILD ELEMENTS: scramble rewrites innerHTML as flat
-  // text, which permanently destroys nested markup (links, separator spans,
-  // pills, CTA arrows) and collapses flex containers to one text node
-  // (measured on .project-card__meta: 3 spans → "LP GroupSetpoint Studio…").
-  if (el.firstElementChild) return;
+  // Elements with CHILD ELEMENTS take the markup-safe path (text nodes only):
+  // the flat innerHTML rewrite below would permanently destroy nested markup
+  // (links, separator spans, pills, CTA arrows) and collapse flex containers.
+  if (el.firstElementChild) return scrambleTextNodes(el, opts);
   // Stash final text (idempotent — sopravvive a re-trigger)
   if (!el.dataset.textFx) el.dataset.textFx = el.textContent.trim();
   const finalText = el.dataset.textFx;
@@ -29,7 +84,7 @@ export function scramble(el, opts = {}) {
     if (/\s/.test(c)) return { final: c, skip: true };
     return {
       final: c,
-      from: SCRAMBLE_CHARS[Math.floor(Math.random() * SCRAMBLE_CHARS.length)],
+      from: rndChar(),
       start: Math.random() * duration * 0.35,
       end:   duration * 0.55 + Math.random() * duration * 0.4,
     };
@@ -43,15 +98,15 @@ export function scramble(el, opts = {}) {
     let done = 0;
     queue.forEach((q) => {
       if (q.skip || t >= q.end) {
-        out += q.final;
+        out += esc(q.final);
         done++;
       } else if (t >= q.start) {
         if (Math.random() < stableChance) {
-          q.from = SCRAMBLE_CHARS[Math.floor(Math.random() * SCRAMBLE_CHARS.length)];
+          q.from = rndChar();
         }
-        out += `<span class="fx-scramble">${q.from}</span>`;
+        out += `<span class="fx-scramble">${esc(q.from)}</span>`;
       } else {
-        out += `<span class="fx-scramble">${q.from}</span>`;
+        out += `<span class="fx-scramble">${esc(q.from)}</span>`;
       }
     });
     el.innerHTML = out;

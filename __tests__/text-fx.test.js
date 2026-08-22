@@ -71,18 +71,62 @@ describe('scramble', () => {
     expect(el.dataset.textFx).toBe('Test')
   })
 
-  it('skips elements with child markup (meta spans, links, CTA arrows) instead of flattening them', () => {
-    const meta = document.createElement('p')
-    meta.className = 'project-card__meta'
-    meta.innerHTML = '<span>LP Group</span><span class="sep">·</span><a href="#x">Setpoint Studio</a>'
-    document.body.appendChild(meta)
-    const before = meta.innerHTML
-    scramble(meta, { duration: 100 })
-    expect(requestAnimationFrame).not.toHaveBeenCalled()
-    expect(meta.innerHTML).toBe(before)
-    expect(meta.querySelectorAll('span, a').length).toBe(3)
-    expect(meta.dataset.textFx).toBeUndefined()
-    meta.remove()
+  describe('elements with child markup (meta spans, links, CTA arrows) — text-node path', () => {
+    const MARKUP = '<span>LP Group</span><span class="sep">·</span><a href="#x">Setpoint <b>Studio</b></a> tail'
+    function makeMeta() {
+      const meta = document.createElement('p')
+      meta.className = 'project-card__meta'
+      meta.innerHTML = MARKUP
+      document.body.appendChild(meta)
+      return meta
+    }
+    it('mid-animation keeps every child element, link and href; only text nodes are wrapped', () => {
+      const meta = makeMeta()
+      let cb
+      requestAnimationFrame.mockImplementationOnce((fn) => { cb = fn; return 1 })
+      scramble(meta, { duration: 500 })
+      expect(cb).toBeTypeOf('function')
+      cb(performance.now() + 1)                                   // inside the scramble window
+      expect([...meta.children].filter((c) => !c.classList.contains('fx-scramble-host')).length).toBe(3)   // span, span, a — not flattened (the direct ' tail' text gets one inline host)
+      expect(meta.querySelector('a')?.getAttribute('href')).toBe('#x')
+      expect(meta.querySelector('a b')).not.toBeNull()
+      expect(meta.querySelectorAll('.fx-scramble').length).toBeGreaterThan(0)
+      expect(meta.querySelectorAll('.fx-scramble-host').length).toBe(5)   // LP Group · Setpoint Studio tail
+      expect(meta.dataset.fxRunning).toBe('1')
+      meta.remove()
+    })
+    it('restores the EXACT original DOM when done (hosts swapped back for the original text nodes)', () => {
+      const meta = makeMeta()
+      const textNodes = [...meta.querySelectorAll('*')].flatMap((e) => [...e.childNodes]).filter((n) => n.nodeType === 3)
+      let cb
+      requestAnimationFrame.mockImplementationOnce((fn) => { cb = fn; return 1 })
+      scramble(meta, { duration: 300 })
+      cb(performance.now() + 10_000)                              // far past every q.end
+      expect(meta.innerHTML).toBe(MARKUP)
+      expect(meta.querySelectorAll('.fx-scramble-host, .fx-scramble').length).toBe(0)
+      expect(meta.dataset.fxDone).toBe('1')
+      expect(meta.dataset.fxRunning).toBe('')
+      // same Text node objects, not copies
+      const after = [...meta.querySelectorAll('*')].flatMap((e) => [...e.childNodes]).filter((n) => n.nodeType === 3)
+      expect(after.length).toBe(textNodes.length)
+      textNodes.forEach((n, i) => expect(after[i]).toBe(n))
+      meta.remove()
+    })
+    it('does not double-run while a pass is in flight, and escapes < > & from the alphabet/text', () => {
+      const meta = makeMeta()
+      meta.innerHTML = '<span>a &lt; b &amp; c &gt; d</span>'
+      let cb
+      requestAnimationFrame.mockImplementationOnce((fn) => { cb = fn; return 1 })
+      scramble(meta, { duration: 300 })
+      const calls = requestAnimationFrame.mock.calls.length
+      scramble(meta, { duration: 300 })                           // re-entry while running → ignored
+      expect(requestAnimationFrame.mock.calls.length).toBe(calls)
+      cb(performance.now() + 1)
+      expect(meta.querySelector('span').children.length).toBeGreaterThan(0)   // hosts/spans, no stray text from unescaped '<'
+      cb(performance.now() + 10_000)
+      expect(meta.querySelector('span').textContent).toBe('a < b & c > d')
+      meta.remove()
+    })
   })
 
   it('does not overwrite an existing data-text-fx (idempotent stash)', () => {

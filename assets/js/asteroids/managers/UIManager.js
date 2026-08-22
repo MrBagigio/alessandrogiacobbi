@@ -28,13 +28,16 @@ export class UIManager {
         ctx.textAlign = 'right';
         const hudX = playerX + 95;
         const hudY = playerY + 5;
+        // paper halo under every HUD line so it stays readable over the headline
+        ctx.lineJoin = 'round'; ctx.lineWidth = 4; ctx.strokeStyle = 'rgba(237, 230, 214, 0.9)';
+        const halo = (t, x, y) => { ctx.strokeText(t, x, y); ctx.fillText(t, x, y); };
         ctx.fillStyle = '#161310';
-        ctx.fillText(`SCORE: ${score}`, hudX, hudY);
-        ctx.fillText('▲ '.repeat(lives).trim(), hudX, hudY + 15);
+        halo(`SCORE: ${score}`, hudX, hudY);
+        halo('▲ '.repeat(lives).trim(), hudX, hudY + 15);
         const shouldDrawWaveText = !(this.waveFlashTimer > 0 && this.waveFlashTimer % 20 < 10);
         if (shouldDrawWaveText) {
             ctx.fillStyle = this.waveFlashTimer > 0 ? '#B8323F' : '#161310';
-            ctx.fillText(`WAVE: ${wave}`, hudX, hudY + 30);
+            halo(`WAVE: ${wave}`, hudX, hudY + 30);
         }
 
         // Combo System HUD

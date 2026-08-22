@@ -19,7 +19,7 @@
  * Desktop fine-pointer only; off under prefers-reduced-motion.
  */
 const CANVAS_ID = 'asteroid-cursor';
-const V = '?v=20260530-arc4';
+const V = '?v=20260530-arc5';
 
 export function initArcade() {
   const fine = matchMedia('(pointer: fine)').matches;
@@ -84,6 +84,7 @@ export function initArcade() {
       state.bus = bus; state.on = true; setLabel();
       // the manikins should not be grabbed while you're shooting asteroids
       window.__manikins && (window.__manikins.suspended = true);
+      const tail = document.querySelector('.hero__canvas')?.__tail; if (tail) tail.suspended = true;
     } catch (err) {
       console.warn('[arcade] unavailable:', err?.message || err);
     } finally { state.loading = false; }
@@ -97,6 +98,7 @@ export function initArcade() {
     const c = document.getElementById(CANVAS_ID); if (c) { c.style.display = 'none'; c.classList.remove('is-ready'); }
     state.on = false; setLabel();
     window.__manikins && (window.__manikins.suspended = false);
+    const tail = document.querySelector('.hero__canvas')?.__tail; if (tail) tail.suspended = false;
   };
 
   toggle?.addEventListener('click', (e) => { e.preventDefault(); state.on ? stop() : start(); });

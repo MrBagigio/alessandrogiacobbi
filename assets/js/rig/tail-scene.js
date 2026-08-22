@@ -299,6 +299,7 @@ export class TailScene {
     });
 
     this._onDown = (e) => {
+      if (this.suspended) return;               // arcade mode: clicks are for shooting
       if (e.button !== undefined && e.button !== 0) return;
       const j = this._nearestJoint(e.clientX, e.clientY);
       const tip = this._nearestTip(e.clientX, e.clientY);

@@ -2,7 +2,7 @@
  * Bootstrap — entry point.
  * Loads GSAP via CDN, initializes scenes, cursor, lazy, scroll triggers.
  */
-import { HeroScene } from './scene-hero.js?v=20260530-pm';
+import { HeroScene } from './scene-hero.js?v=20260530-arc5';
 import { BgScene } from './scene-bg.js?v=20260516-perf';
 import { Cursor } from './cursor.js?v=20260530-pm';
 import { initLazyMedia } from './lazy.js?v=20260530-audit3';
@@ -12,7 +12,7 @@ import { initInteractions } from './interactions.js?v=20260530-audit3';
 import { initVideoHud } from './video-hud.js?v=20260516-perf';
 import { initXrayLens } from './xray-lens.js?v=20260516-perf';
 import { initAboutStats } from './about-stats.js?v=20260530-audit4';
-import { initArcade } from './arcade.js?v=20260530-arc4';
+import { initArcade } from './arcade.js?v=20260530-arc5';
 
 const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 

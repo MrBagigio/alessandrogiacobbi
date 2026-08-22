@@ -62,7 +62,7 @@ export class UIManager {
         });
         ctx.restore();
     }
-    _drawNotifications(ctx) { this.notifications.forEach(n => { ctx.save(); const alpha = n.life < 30 ? n.life / 30 : 1; ctx.globalAlpha = alpha; ctx.font = "bold 16px 'Geist Mono', monospace"; ctx.fillStyle = n.color; ctx.textAlign = "center"; const yPos = window.innerHeight / 2 - 50 - (n.maxLife - n.life) * 0.3; ctx.fillText(n.text, window.innerWidth / 2, yPos); ctx.restore(); }); }
+    _drawNotifications(ctx) { this.notifications.forEach(n => { ctx.save(); const age = n.maxLife - n.life; const alpha = n.life < 30 ? n.life / 30 : Math.min(1, age / 8); ctx.globalAlpha = alpha; const pop = 1 + Math.max(0, 1 - age / 10) * 0.25; ctx.font = `bold ${Math.round(22 * pop)}px 'Geist Mono', monospace`; ctx.textAlign = "center"; ctx.lineJoin = 'round'; ctx.lineWidth = 6; ctx.strokeStyle = 'rgba(237,230,214,0.92)'; ctx.fillStyle = n.color; const yPos = window.innerHeight / 2 - 60 - age * 0.25; ctx.strokeText(n.text, window.innerWidth / 2, yPos); ctx.fillText(n.text, window.innerWidth / 2, yPos); ctx.restore(); }); }
     _drawScorePopups(ctx) { this.scorePopups.forEach(s => { ctx.save(); ctx.font = "bold 14px 'Geist Mono', monospace"; ctx.fillStyle = `rgba(22, 19, 16, ${s.life / 60})`; ctx.textAlign = "center"; ctx.fillText(s.text, s.x, s.y); ctx.restore(); }); }
     _drawGameOver(ctx, { mouseX, mouseY }) { ctx.save(); ctx.font = "bold 20px 'Geist Mono', monospace"; ctx.fillStyle = '#161310'; ctx.textAlign = "center"; ctx.fillText("GAME OVER", mouseX, mouseY - 10); ctx.font = "14px 'Geist Mono', monospace"; ctx.fillText("(click per ricominciare · Esc per uscire)", mouseX, mouseY + 12); ctx.restore(); }
 

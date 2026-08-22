@@ -67,6 +67,7 @@ export class Player {
             laser: { active: false, timer: 0 }
         };
         this.trailParticles = [];
+        this.flash = 0;
     }
 
     setCosmetics(config) {
@@ -121,16 +122,32 @@ export class Player {
         this.trailParticles = this.trailParticles.filter(p => p.life > 0);
     }
 
-    draw(ctx, gameTime, mouseVelocity, isShipMode, scale = 1) {
+    draw(ctx, gameTime, mouseVelocity, isShipMode, scale = 1, morph = 1, bank = 0) {
         if (this.isRespawning && (this.respawnTimer % 20 < 10)) return;
         if (scale < 0.01) return;
 
         this.trailParticles.forEach(p => p.draw(ctx));
 
+        const m = Math.max(0, Math.min(1, morph));
+        const em = m * m * (3 - 2 * m);               // eased morph
+
+        // ── sphere (the cursor ring) — fades out as the ship takes over
+        if (em < 0.99) {
+            ctx.save();
+            ctx.globalAlpha = (1 - em) * scale;
+            ctx.strokeStyle = '#161310'; ctx.lineWidth = 1.2;
+            ctx.beginPath(); ctx.arc(this.x, this.y, 12 + 6 * em, 0, Math.PI * 2); ctx.stroke();
+            ctx.restore();
+        }
+        if (em < 0.02) return;
+
         ctx.save();
         ctx.translate(this.x, this.y);
         ctx.rotate(this.angle);
-        ctx.scale(scale, scale);
+        // banking: squash across the turn axis + a slight roll read as a lean
+        ctx.transform(1, 0, 0, 1 - Math.abs(bank) * 0.35, 0, 0);
+        ctx.scale(scale * (0.55 + 0.45 * em), scale * (0.55 + 0.45 * em));
+        ctx.globalAlpha = em;
 
         const designPath = Player.shipDesigns[this.currentShipDesignIndex];
         ctx.beginPath();
@@ -138,11 +155,19 @@ export class Player {
             ctx[i === 0 ? 'moveTo' : 'lineTo'](p.x * this.radius, p.y * this.radius);
         });
         ctx.closePath();
-        ctx.fillStyle = 'rgba(237, 230, 214, 0.9)';
+        ctx.fillStyle = 'rgba(237, 230, 214, 0.95)';
         ctx.fill();
         ctx.strokeStyle = this.cosmetics?.shipStrokeColor || '#161310';
-        ctx.lineWidth = 1.5;
+        ctx.lineWidth = 1.6;
         ctx.stroke();
+        // cockpit dot
+        ctx.fillStyle = '#B8323F'; ctx.beginPath(); ctx.arc(this.radius * 0.25, 0, 1.8, 0, Math.PI * 2); ctx.fill();
+        // muzzle flash
+        if (this.flash > 0) {
+            ctx.save(); ctx.globalAlpha = em * this.flash / 3; ctx.fillStyle = '#B8323F';
+            ctx.beginPath(); ctx.moveTo(this.radius + 2, 0); ctx.lineTo(this.radius + 9 + this.flash * 2, -3); ctx.lineTo(this.radius + 12 + this.flash * 2, 0); ctx.lineTo(this.radius + 9 + this.flash * 2, 3); ctx.closePath(); ctx.fill(); ctx.restore();
+            this.flash--;
+        }
 
         const thrust = Math.min(Math.hypot(mouseVelocity.x, mouseVelocity.y) * 2, 25);
         if (isShipMode && thrust > 3) {
@@ -216,6 +241,7 @@ export class Player {
                 });
             };
 
+            this.flash = 3;
             bullets.push(createBullet());
             if (this.powerUpState.tripleShot.active) {
                 bullets.push(createBullet(-0.2));

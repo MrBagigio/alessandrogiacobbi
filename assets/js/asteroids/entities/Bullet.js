@@ -44,5 +44,10 @@ export class Bullet {
             } 
         } 
     }
-    draw(ctx) { ctx.fillStyle = this.color; ctx.beginPath(); ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2); ctx.fill(); }
+    draw(ctx) {
+        // short motion trail behind the round
+        ctx.save(); ctx.strokeStyle = this.color; ctx.globalAlpha = 0.45; ctx.lineWidth = this.radius * 1.2; ctx.lineCap = 'round';
+        ctx.beginPath(); ctx.moveTo(this.x - this.vx * 2.2, this.y - this.vy * 2.2); ctx.lineTo(this.x, this.y); ctx.stroke(); ctx.restore();
+        ctx.fillStyle = this.color; ctx.beginPath(); ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2); ctx.fill();
+    }
 }

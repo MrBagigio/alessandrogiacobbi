@@ -72,6 +72,16 @@ export class AsteroidsGame {
         this.hasShownShipHint = false;
         
         this.clickFeedback = null; // {x, y, radius, alpha, timestamp}
+
+        // ── AAA layer ──
+        this.morph = 0;            // 0 = sphere (cursor ring) … 1 = ship; distance-driven, smoothed
+        this.restPaused = false;   // game frozen while the ship has caught the cursor (sphere)
+        this.pendingSpawns = [];   // wave entities that arrived while paused (NOT dropped)
+        this.rings = [];           // shockwave rings {x, y, r, max, life}
+        this.flash = 0;            // full-screen hit flash 0..1
+        this.slowmo = 0;           // frames of slow motion left (death)
+        this.frameNo = 0;
+        this.bank = 0;             // ship banking (turn rate), radians
         
         this.isMagnetic = false;
         this.attachedTarget = null;
@@ -177,6 +187,7 @@ export class AsteroidsGame {
         this.waveManager.reset();
         this.uiManager.reset();
         this.resetMagneticState();
+        this.pendingSpawns = []; this.rings = []; this.flash = 0; this.slowmo = 0; this.restPaused = false;
         // Non avviare la prima ondata qui, ma aspetta che il gioco si attivi
     }
     
@@ -421,14 +432,25 @@ export class AsteroidsGame {
         const distance = Math.hypot(this.mouse.x - this.player.x, this.mouse.y - this.player.y);
         const wasInShipMode = this.isShipMode;
 
+        // Ship ↔ sphere morph: the gap between the dot (pointer) and the
+        // lagging body drives it. Near → sphere (a ring around the dot, the
+        // classic cursor) and the game PAUSES; far → ship and the game runs.
+        // Smoothstep + hysteresis so it doesn't flicker at the threshold.
+        const MIN = 12, MAX = 64;
+        let target = distance <= MIN ? 0 : distance >= MAX ? 1 : (() => { const t = (distance - MIN) / (MAX - MIN); return t * t * (3 - 2 * t); })();
+        if (this.isGameOver) target = 0;
+        this.morph += (target - this.morph) * 0.16;
         if (!this.isGameOver) {
-            if (distance > this.player.radius) {
-                this.isShipMode = true;
-            } else {
-                this.isShipMode = false;
-            }
+            if (!this.isShipMode && this.morph > 0.6) this.isShipMode = true;
+            else if (this.isShipMode && this.morph < 0.25) this.isShipMode = false;
         } else {
             this.isShipMode = false;
+        }
+        // pause while resting as a sphere (only meaningful in combat mode)
+        const wasPaused = this.restPaused;
+        this.restPaused = this.isGameMode && !this.isShipMode && !this.isGameOver;
+        if (wasPaused && !this.restPaused && this.pendingSpawns.length) {
+            this.entities.push(...this.pendingSpawns); this.pendingSpawns = [];
         }
         
         // If game mode just activated AND we're in combat mode, start the first wave e mostra hint una tantum
@@ -454,6 +476,20 @@ export class AsteroidsGame {
             return;
         }
         
+        // ── paused as a sphere: nothing moves, nothing shoots, nothing hurts.
+        // Only cosmetic particles/rings keep fading so the freeze reads as a freeze.
+        if (this.restPaused) {
+            this.particles.forEach(p => p.update());
+            this.particles = this.particles.filter(p => p.life > 0);
+            this.rings.forEach(r => { r.r += (r.max - r.r) * 0.18; r.life -= 0.04; });
+            this.rings = this.rings.filter(r => r.life > 0);
+            this.player.trailParticles = [];
+            return;
+        }
+        // slow motion after a hit: the world advances every 3rd frame
+        this.frameNo++;
+        if (this.slowmo > 0) { this.slowmo--; if (this.frameNo % 3 !== 0) { this.player.updatePowerUps(this.gameTime); this._tickCosmetics(); return; } }
+        this._tickCosmetics();
         this.player.updatePowerUps(this.gameTime);
 
         if (!isHangarActive) {
@@ -555,6 +591,13 @@ export class AsteroidsGame {
         this.ctx.globalAlpha = gameAlpha;
 
         if (gameAlpha > 0.01) {
+            // paper halos first: everything that matters floats on a soft
+            // clearing, so the page underneath reads as transparent around it
+            for (const e of this.entities) { if (e.radius) this._halo(this.ctx, e.x, e.y, e.radius * 2.1 + 6, e.constructor.name === 'Bullet' ? 0.35 : 0.85); }
+            for (const r of this.rings) {
+                this.ctx.save(); this.ctx.globalAlpha = gameAlpha * Math.max(0, r.life); this.ctx.strokeStyle = r.color; this.ctx.lineWidth = 1.5 + r.life * 2;
+                this.ctx.beginPath(); this.ctx.arc(r.x, r.y, r.r, 0, Math.PI * 2); this.ctx.stroke(); this.ctx.restore();
+            }
             this.entities.forEach(entity => entity.draw(this.ctx, this.gameTime));
             this.particles.forEach(p => p.draw(this.ctx));
 
@@ -566,7 +609,22 @@ export class AsteroidsGame {
 
         const playerScale = (1 - easedMagnet) * this.globalAlpha;
         if (playerScale > 0.01) {
-            this.player.draw(this.ctx, this.gameTime, this.mouseVelocity, this.isShipMode, playerScale);
+            // halo under the ship/sphere (screen space)
+            this._halo(this.ctx, this.player.x, this.player.y, this.player.radius * 2.4 + 8, 0.9);
+            this.player.draw(this.ctx, this.gameTime, this.mouseVelocity, this.isShipMode, playerScale, this.morph, this.bank);
+        }
+        // hit flash: a quick oxblood wash over the whole screen
+        if (this.flash > 0.01) {
+            this.ctx.save(); this.ctx.globalAlpha = this.flash * 0.35; this.ctx.fillStyle = '#B8323F';
+            this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height); this.ctx.restore();
+        }
+        // paused-as-sphere badge
+        if (this.restPaused && this.isGameMode) {
+            this.ctx.save(); this.ctx.globalAlpha = 0.8 * (1 - this.morph); this.ctx.font = "11px 'Geist Mono', monospace"; this.ctx.textAlign = 'left';
+            this.ctx.lineJoin = 'round'; this.ctx.lineWidth = 4; this.ctx.strokeStyle = 'rgba(237,230,214,0.9)'; this.ctx.fillStyle = '#161310';
+            const tx = this.player.x + 18, ty = this.player.y + 4;
+            this.ctx.strokeText('PAUSA · muovi per riprendere', tx, ty); this.ctx.fillText('PAUSA · muovi per riprendere', tx, ty);
+            this.ctx.restore();
         }
         
         this.uiManager.draw(this.ctx, { lives: this.player.lives, score: this.score, wave: this.waveManager.currentWave + 1, isGameOver: this.isGameOver, comboMultiplier: this.comboMultiplier, playerX: this.player.x, playerY: this.player.y, mouseX: this.mouse.x, mouseY: this.mouse.y });
@@ -587,6 +645,29 @@ export class AsteroidsGame {
         this.ctx.beginPath();
         this.ctx.arc(this.mouse.x, this.mouse.y, CONFIG.DOT_RADIUS, 0, Math.PI * 2);
         this.ctx.fill();
+    }
+
+    _tickCosmetics() {
+        this.rings.forEach(r => { r.r += (r.max - r.r) * 0.18; r.life -= 0.04; });
+        this.rings = this.rings.filter(r => r.life > 0);
+        if (this.flash > 0) this.flash = Math.max(0, this.flash - 0.06);
+        // banking: how fast the heading changes
+        const dAng = ((this.player.angle - (this._prevAngle ?? this.player.angle)) + Math.PI * 3) % (Math.PI * 2) - Math.PI;
+        this._prevAngle = this.player.angle;
+        this.bank += ((Math.max(-1, Math.min(1, dAng * 6))) - this.bank) * 0.2;
+    }
+
+    /** Expanding shockwave ring (destruction / pickup). */
+    addRing(x, y, max, color = 'rgba(22,19,16,0.55)') { this.rings.push({ x, y, r: 2, max, life: 1, color }); }
+
+    /** Soft paper halo under an object: "clears" the page content around it so
+     *  the game stays readable over text and images. Page-space coords. */
+    _halo(ctx, x, y, r, a = 0.82) {
+        const g = ctx.createRadialGradient(x, y, r * 0.25, x, y, r);
+        g.addColorStop(0, `rgba(237, 230, 214, ${a})`);
+        g.addColorStop(0.7, `rgba(237, 230, 214, ${a * 0.55})`);
+        g.addColorStop(1, 'rgba(237, 230, 214, 0)');
+        ctx.fillStyle = g; ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill();
     }
 
     createImpactSpark(x, y) {
@@ -642,6 +723,8 @@ export class AsteroidsGame {
                                 popupText
                         );
                         this.createExplosion(event.enemy.x, event.enemy.y, event.enemy.color);
+                        this.addRing(event.enemy.x, event.enemy.y, (event.enemy.radius || 20) * 2.6, 'rgba(184,50,63,0.6)');
+                        this.triggerShake(6 + (event.enemy.radius || 20) * 0.12, 8);
 
                         // Spawn at most one pickup per enemy: prefer power-up, otherwise possibly spawn a coin.
                         let didSpawnPickup = false;
@@ -667,7 +750,9 @@ export class AsteroidsGame {
 
                     if (event.enemy.owner !== 'player') event.enemy.shouldBeRemoved = true;
                     this.triggerShake(30, 30);
-                    this.createExplosion(this.player.x, this.player.y);
+                    this.createExplosion(this.player.x + window.scrollX, this.player.y + window.scrollY);
+                    this.addRing(this.player.x + window.scrollX, this.player.y + window.scrollY, 90, 'rgba(184,50,63,0.7)');
+                    this.flash = 0.55; this.slowmo = 40;
 
                     const playerState = this.player.takeDamage();
 
@@ -735,13 +820,15 @@ export class AsteroidsGame {
             return;
         }
         this.uiManager.triggerWaveFlash();
+        this.uiManager.addNotification(`WAVE ${this.waveManager.currentWave + 1}`, '#161310', 110);
         if (waveResult.entities) {
             waveResult.entities.forEach(spawnEvent => {
                 let timeoutId;
                 const callback = () => {
-                    if (this.isShipMode) {
-                        this.entities.push(spawnEvent.entity);
-                    }
+                    // while the ship is a sphere (paused) the wave waits for you
+                    // instead of being silently dropped (which skipped whole waves)
+                    if (this.isShipMode && !this.restPaused) this.entities.push(spawnEvent.entity);
+                    else this.pendingSpawns.push(spawnEvent.entity);
                     this.spawnTimeouts.delete(timeoutId);
                 };
                 timeoutId = setTimeout(callback, spawnEvent.delay);
@@ -886,7 +973,7 @@ export class AsteroidsGame {
         }
         // Keep only non-combat entities (coins, powerups)
         this.entities = this.entities.filter(e => !(e instanceof Asteroid) && !(e instanceof AlienShip) && !(e instanceof Bullet));
-        this.particles = [];
+        this.particles = []; this.pendingSpawns = []; this.rings = [];
         // Clear any pending spawns
         this.clearAllTimeouts();
         // Reset score and wave

@@ -19,7 +19,7 @@
  * Desktop fine-pointer only; off under prefers-reduced-motion.
  */
 const CANVAS_ID = 'asteroid-cursor';
-const V = '?v=20260530-arc5';
+const V = '?v=20260530-arc7';
 
 export function initArcade() {
   const fine = matchMedia('(pointer: fine)').matches;

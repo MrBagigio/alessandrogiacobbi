@@ -167,7 +167,7 @@ export class AsteroidsGame {
             this.abortController = null;
         }
         this.clearAllTimeouts();
-        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
         this.resetMagneticState();
         this.isShooting = false;
     }
@@ -192,14 +192,22 @@ export class AsteroidsGame {
     }
     
     handleResize() {
-        this.canvas.width = window.innerWidth;
-        this.canvas.height = window.innerHeight;
-        this.background.resize(this.canvas.width, this.canvas.height);
+        // HiDPI: back the canvas at devicePixelRatio (capped at 2) and scale the
+        // context, so all drawing stays in CSS px (the game's native units) but
+        // lines/text are crisp on retina displays instead of 1× blurry.
+        const dpr = Math.min(2, window.devicePixelRatio || 1);
+        this.dpr = dpr;
+        this.canvas.width = Math.round(window.innerWidth * dpr);
+        this.canvas.height = Math.round(window.innerHeight * dpr);
+        this.canvas.style.width = window.innerWidth + 'px';
+        this.canvas.style.height = window.innerHeight + 'px';
+        this.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        this.background.resize(window.innerWidth, window.innerHeight);
 
         if (this.player) {
             const r = this.player.radius || 16;
-            const maxX = Math.max(r, this.canvas.width - r);
-            const maxY = Math.max(r, this.canvas.height - r);
+            const maxX = Math.max(r, window.innerWidth - r);
+            const maxY = Math.max(r, window.innerHeight - r);
             this.player.x = Math.min(Math.max(this.player.x, r), maxX);
             this.player.y = Math.min(Math.max(this.player.y, r), maxY);
         }
@@ -289,7 +297,7 @@ export class AsteroidsGame {
 
         const isHangarActive = this.hangarView && this.hangarView.classList.contains('active');
 
-        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);   // CSS px: the context is DPR-scaled
 
         if (!isHangarActive) {
             this.background.draw(this.ctx);
@@ -616,7 +624,7 @@ export class AsteroidsGame {
         // hit flash: a quick oxblood wash over the whole screen
         if (this.flash > 0.01) {
             this.ctx.save(); this.ctx.globalAlpha = this.flash * 0.35; this.ctx.fillStyle = '#B8323F';
-            this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height); this.ctx.restore();
+            this.ctx.fillRect(0, 0, window.innerWidth, window.innerHeight); this.ctx.restore();
         }
         // paused-as-sphere badge
         if (this.restPaused && this.isGameMode) {

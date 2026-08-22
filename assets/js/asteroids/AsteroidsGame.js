@@ -289,11 +289,26 @@ export class AsteroidsGame {
     step(deltaTime) {
         if (!this.isRunning) return;
 
-        // Compute frame delta in seconds (clamped) so transitions are time-based
-        const dt = Math.max(0, Math.min(0.05, deltaTime || 0));
-        this.delta = dt;
+        // Fixed-step simulation. Everything in update() advances a fixed amount
+        // per call (player lerp 0.05, morph 0.16, comboTimer--, respawnTimer--,
+        // entity x += vx, ring life, slowmo...): it was tuned at 60 Hz and ran
+        // 2–2.4× faster on 120/144 Hz displays (respawn grace 0.83 s instead of
+        // 2 s, combo window 1.25 s instead of 3 s). So: accumulate the real dt,
+        // run update() once per 1/60 s tick (≤4 per frame), draw once.
+        const STEP = 1 / 60;
+        let dt = Math.max(0, Math.min(0.05, deltaTime || 0));
+        if (Math.abs(dt - STEP) < 0.002) dt = STEP;          // 60 Hz jitter → exactly 1 tick/frame, no 0/2-tick hitches
         // Manteniamo gameTime come "ms dall'avvio" per compatibilità con la logica esistente
         this.gameTime += dt * 1000;
+        this._acc = (this._acc || 0) + dt;
+        const n = Math.min(4, Math.floor(this._acc / STEP + 1e-9));
+        // pointer velocity in px per TICK (what shoot/bank/trail expect), not per rAF frame
+        if (n > 0) {
+            this.mouseVelocity.x = (this.mouse.x - this.prevMouse.x) / n;
+            this.mouseVelocity.y = (this.mouse.y - this.prevMouse.y) / n;
+            this.prevMouse.x = this.mouse.x; this.prevMouse.y = this.mouse.y;
+        }
+        this.delta = STEP;                                    // update() reads it for the magnet lerps
 
         const isHangarActive = this.hangarView && this.hangarView.classList.contains('active');
 
@@ -305,14 +320,13 @@ export class AsteroidsGame {
 
         this.ctx.save();
         this.applyShake();
-        this.update();
+        for (let i = 0; i < n; i++) { this.update(); this._acc -= STEP; }
+        if (this._acc >= STEP) this._acc = 0;                 // hitch (tab switch): drop the backlog, don't burst
         this.draw(isHangarActive);
         this.ctx.restore();
     }
 
     update() {
-        this.updateMouseVelocity();
-
         // Update click feedback (gameTime is in ms, so compare with 300ms)
         if (this.clickFeedback) {
             const elapsed = this.gameTime - this.clickFeedback.timestamp;
@@ -696,7 +710,13 @@ export class AsteroidsGame {
         for (const event of events) {
             switch (event.type) {
                 case 'bullet_hit_enemy': {
+                    // the collision manager emits one event per BULLET: a triple-shot
+                    // regularly lands 2–3 bullets on the same asteroid in one frame.
+                    // Only the bullet that makes the kill scores it (was: double/triple
+                    // score + duplicate debris for the same rock)
+                    const wasAlive = !event.enemy.shouldBeRemoved;
                     event.bullet.shouldBeRemoved = true;
+                    if (!wasAlive) break;
                     this.createExplosion(event.bullet.x, event.bullet.y, 'rgba(22,19,16,0.5)', 5);
                     const debris = event.enemy.takeDamage(1);
                     if (debris) this.entities.push(...debris);

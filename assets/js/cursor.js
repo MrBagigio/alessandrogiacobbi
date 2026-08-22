@@ -12,6 +12,10 @@ export class Cursor {
     this.dot = document.querySelector('.cursor-dot');
     this.ring = document.querySelector('.cursor-ring');
     if (!this.dot || !this.ring) return;
+    // The CSS `cursor: none` rule is gated on this class, so the native cursor
+    // is only hidden when the custom one actually exists (reduced-motion
+    // desktops and narrow→wide resizes used to end up with NO cursor at all).
+    document.documentElement.classList.add('has-custom-cursor');
 
     this.x = window.innerWidth / 2;
     this.y = window.innerHeight / 2;
@@ -47,5 +51,6 @@ export class Cursor {
 
   dispose() {
     if (this._unsub) this._unsub();
+    document.documentElement.classList.remove('has-custom-cursor');
   }
 }

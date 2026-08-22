@@ -275,7 +275,12 @@ export function stepSprings(c, dt) {
     const k = c.stiffness[i];
     const zeta = c.damping;
     const cDamp = 2 * zeta * Math.sqrt(k);
-    const x = c.theta[i] - goal;
+    // Joint 1 is the free root heading (raw atan2, range (−π, π]): take the
+    // SHORT arc, or a target crossing the −X axis behind the root flips the
+    // goal by 2π and the whole tail whips a full 360° (measured 362° sweep).
+    // Interior joints must NOT wrap — |θ−goal| may legitimately exceed π
+    // against the ±MAX_BEND limits.
+    const x = i === 1 ? wrap(c.theta[i] - goal) : c.theta[i] - goal;
     const a = -k * x - cDamp * c.vel[i];
     c.vel[i] += a * clampedDt;
     c.theta[i] += c.vel[i] * clampedDt;
@@ -289,7 +294,7 @@ export function stepSprings(c, dt) {
   let maxErr = 0;
   for (let i = 0; i < c.N; i++) {
     const goal = c.thetaFK[i] + (c.thetaIK[i] - c.thetaFK[i]) * c.ikBlend;
-    const e = Math.abs(c.theta[i] - goal); if (e > maxErr) maxErr = e;
+    const e = Math.abs(i === 1 ? wrap(c.theta[i] - goal) : c.theta[i] - goal); if (e > maxErr) maxErr = e;
   }
   c.settled = maxV < 2e-2 && maxErr < 2e-3;
   if (c.settled) settle(c);

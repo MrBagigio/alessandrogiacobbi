@@ -11,6 +11,11 @@ export function scramble(el, opts = {}) {
   if (!el || el.dataset.fxDone === '1') return;
   // Skip se elemento ha magnetic letters (per-char spans), non sovrascrivere
   if (el.hasAttribute('data-magnetic') || el.dataset.mlxSplit === '1') return;
+  // Skip any element with CHILD ELEMENTS: scramble rewrites innerHTML as flat
+  // text, which permanently destroys nested markup (links, separator spans,
+  // pills, CTA arrows) and collapses flex containers to one text node
+  // (measured on .project-card__meta: 3 spans → "LP GroupSetpoint Studio…").
+  if (el.firstElementChild) return;
   // Stash final text (idempotent — sopravvive a re-trigger)
   if (!el.dataset.textFx) el.dataset.textFx = el.textContent.trim();
   const finalText = el.dataset.textFx;

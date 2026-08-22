@@ -15,7 +15,7 @@ import { TAIL_VERT, TAIL_FRAG } from './tail-shaders.js?v=20260530-tail13';
 import {
   proceduralSpec, loadSpec, buildChain, solveFK, solveIK, forward,
   stepSprings, settle, MAX_STRETCH,
-} from './tail-chain.js?v=20260530-tail26';
+} from './tail-chain.js?v=20260530-tail27';
 
 // Tube tones. NOT the page's paper2/paper3: those were within a few points of
 // the page background, so the lit half of the tube was invisible against it

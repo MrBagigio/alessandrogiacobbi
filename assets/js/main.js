@@ -2,17 +2,17 @@
  * Bootstrap — entry point.
  * Loads GSAP via CDN, initializes scenes, cursor, lazy, scroll triggers.
  */
-import { HeroScene } from './scene-hero.js?v=20260530-arc5';
+import { HeroScene } from './scene-hero.js?v=20260530-arc9';
 import { BgScene } from './scene-bg.js?v=20260516-perf';
-import { Cursor } from './cursor.js?v=20260530-pm';
+import { Cursor } from './cursor.js?v=20260530-arc9';
 import { initLazyMedia } from './lazy.js?v=20260530-audit3';
-import { initTextFx } from './text-fx.js?v=20260530-fx';
+import { initTextFx } from './text-fx.js?v=20260530-arc9';
 import { initMagneticAuto } from './magnetic-letters.js?v=20260530-fx';
 import { initInteractions } from './interactions.js?v=20260530-audit3';
 import { initVideoHud } from './video-hud.js?v=20260516-perf';
 import { initXrayLens } from './xray-lens.js?v=20260516-perf';
 import { initAboutStats } from './about-stats.js?v=20260530-audit4';
-import { initArcade } from './arcade.js?v=20260530-arc8';
+import { initArcade } from './arcade.js?v=20260530-arc9';
 
 const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -83,21 +83,28 @@ if (heroTitle && window.matchMedia('(min-width: 768px)').matches && !/[?&]maniki
   const debug = /[?&]manikins=debug/.test(location.search);
   const count = window.matchMedia('(min-width: 1024px)').matches ? 2 : 1;
   requestAnimationFrame(() => {
-    import('./rig/manikin-scene.js?v=20260530-arc1').then((m) => {
+    import('./rig/manikin-scene.js?v=20260530-arc9').then((m) => {
       window.__manikins = new m.ManikinScene(heroTitle, { count, animate: !reduced, debug });
     }).catch((e) => console.warn('[hero] manikins unavailable:', e?.message || e));
   });
 }
 
-// 5. Cursor — magnetic dot + ring. Gated on a FINE pointer (a mouse), not on
-//    window width: a desktop window narrowed to 800px still has a mouse and
-//    lost the custom cursor + all pointer FX (measured in a side-by-side pane).
+// 5. Cursor — magnetic dot + ring. Gated on a FINE pointer (a mouse) and a
+//    window ≥640px (a desktop window narrowed to 800px still has a mouse and
+//    used to lose the custom cursor + all pointer FX at the old 1024 gate).
 //    Touch devices report (pointer: coarse) and keep the native behaviour.
+//    The CSS `cursor:none` is keyed on html.has-custom-cursor (set by Cursor),
+//    so when this branch is skipped the native cursor stays visible.
 const isFinePointer = window.matchMedia('(pointer: fine)').matches;
 const isWideScreen = window.matchMedia('(min-width: 640px)').matches;
 
-if (!reduced && isFinePointer && isWideScreen) {
-  new Cursor();
+let cursor = null;
+if (!reduced && isFinePointer && isWideScreen) cursor = new Cursor();
+// narrow → wide resize (side-by-side pane restored): mount the cursor late
+if (!reduced && isFinePointer && !cursor) {
+  const mq = window.matchMedia('(min-width: 640px)');
+  const onWide = (e) => { if (e.matches && !cursor) { cursor = new Cursor(); mq.removeEventListener('change', onWide); } };
+  mq.addEventListener('change', onWide);
 }
 
 // 5b. Arcade — the Asteroids cursor game, on demand (▲ arcade / key A / ?arcade=1)

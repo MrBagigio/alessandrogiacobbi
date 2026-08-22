@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import {
   Skyline, LayeredSkyline, P, PROP, createManikin, standPose, sitPose, walkPose, applyPose,
-  step, pin, unpinAll, nearestPoint, bounds, impulse, GRAVITY, drive, gainsPreset, CONTACT_R,
+  step, pin, unpinAll, nearestPoint, bounds, impulse, GRAVITY, drive, gainsPreset, CONTACT_R, TICK, ticksFor,
 } from '../assets/js/rig/manikin-physics.js';
 
 const finite = (arr) => Array.from(arr).every(Number.isFinite);
@@ -231,5 +231,93 @@ describe('Manikin physics', () => {
     let t = 0; while (t < 3 && !m.onGround.some((g) => g)) { step(m, 1 / 60, world); t += 1 / 60; }
     expect(t).toBeGreaterThan(0.15); expect(t).toBeLessThan(0.9);
     expect(GRAVITY).toBeGreaterThan(600);
+  });
+});
+
+describe('audit regressions (sleep-while-held, snap velocity, wall teleport, fixed ticks)', () => {
+  const world = fakeSkyline();
+  // same headline but every letter top raised by `dy` px (a resize re-raster)
+  function raisedSkyline(dy) {
+    const dx = 2, n = 200; const tops = new Float32Array(n).fill(Infinity);
+    for (let c = 0; c < n; c++) {
+      const x = c * dx;
+      if (x < 120) tops[c] = 200 - dy;
+      if (x >= 160 && x < 280) tops[c] = 200 - dy;
+      if (x >= 200 && x < 220) tops[c] = 185 - dy;
+    }
+    return new Skyline(0, dx, tops, 320);
+  }
+  it('a held (pinned) body never falls asleep, and drops normally once released', () => {
+    const m = createManikin({ x: 60, y: 150, u: 10 });
+    for (let i = 0; i < 240; i++) step(m, 1 / 60, world);            // lie down, fall asleep
+    expect(m.asleep).toBe(true);
+    const hy = m.y[P.RHAND];
+    pin(m, P.RHAND, m.x[P.RHAND], hy - 40);                            // lift one hand and HOLD it still
+    for (let i = 0; i < 30; i++) step(m, 1 / 60, world);
+    expect(m.asleep).toBe(false);                                      // was: slept mid-drag (feet on the letter)
+    expect(m.quietTime || 0).toBe(0);
+    unpinAll(m);
+    expect(m.asleep).toBe(false);
+    for (let i = 0; i < 30; i++) step(m, 1 / 60, world);
+    expect(m.y[P.RHAND]).toBeGreaterThan(hy - 40 + 5);                 // the released hand falls (was: frozen in the held pose)
+  });
+  it('applyPose(k=1) is a teleport: prev positions equal the new ones (no fake velocity)', () => {
+    const m = createManikin({ u: 10 });
+    const p = standPose(m, 40, 100, 1, 0);
+    applyPose(m, p, 1);
+    for (let i = 0; i < P.N; i++) {
+      expect(m.x[i]).toBeCloseTo(p.x[i], 9);
+      expect(m.px[i]).toBeCloseTo(m.x[i], 12); expect(m.py[i]).toBeCloseTo(m.y[i], 12);
+    }
+    // and one step carries no kick: nothing moves more than gravity's 1 frame
+    const before = Float64Array.from(m.x);
+    step(m, 1 / 60, world, { noSleep: true });
+    for (let i = 0; i < P.N; i++) expect(Math.abs(m.x[i] - before[i])).toBeLessThan(1.5);
+  });
+  it('letter tops moving a few px UP under a resting ragdoll lands it, does not shove it through the letter', () => {
+    const m = createManikin({ x: 250, y: 150, u: 10 });
+    for (let i = 0; i < 240; i++) step(m, 1 / 60, world);
+    const hipX = m.x[P.HIP], bb0 = bounds(m);
+    expect(bb0.x0).toBeGreaterThan(160); expect(bb0.x1).toBeLessThan(280);   // it lies on the second letter
+    for (const dy of [3, 4, 5]) {
+      const w2 = raisedSkyline(dy);
+      m.asleep = false; m.quietTime = 0;
+      step(m, 1 / 60, w2);
+      expect(Math.abs(m.x[P.HIP] - hipX)).toBeLessThan(m.u);            // was: 49–61 px sideways in ONE frame
+      const bb = bounds(m); expect(bb.x0).toBeGreaterThan(160 - m.u); expect(bb.x1).toBeLessThan(280 + m.u);
+      expect(finite(m.x) && finite(m.y)).toBe(true);
+    }
+  });
+  it('a point pinned a few px under a letter top lands in place when released (no walk-out teleport)', () => {
+    const m = createManikin({ x: 240, y: 150, u: 10 });
+    for (let i = 0; i < 240; i++) step(m, 1 / 60, world);
+    pin(m, P.HEAD, 240, 203);                                          // 3 px under the letter top, mid-letter
+    step(m, 1 / 60, world);
+    const hx = m.x[P.HIP]; unpinAll(m); step(m, 1 / 60, world);
+    expect(Math.abs(m.x[P.HIP] - hx)).toBeLessThan(m.u);
+  });
+  it('ticksFor: 60 Hz jitter → exactly one tick per frame; 120 Hz → one tick per two frames; hitch capped at 3', () => {
+    const acc = { t: 0 };
+    let ticks = 0, zeros = 0, twos = 0;
+    for (let f = 0; f < 600; f++) { const n = ticksFor(acc, TICK + (((f * 7919) % 11) - 5) * 0.0001); ticks += n; if (n === 0) zeros++; if (n === 2) twos++; }
+    expect(ticks).toBe(600); expect(zeros).toBe(0); expect(twos).toBe(0);
+    const acc2 = { t: 0 }; let t2 = 0;
+    for (let f = 0; f < 120; f++) t2 += ticksFor(acc2, 1 / 120);
+    expect(t2).toBe(60);
+    const acc3 = { t: 0 };
+    expect(ticksFor(acc3, 0.5)).toBe(3); expect(acc3.t).toBe(0);       // backlog dropped, not burst
+    expect(ticksFor({ t: 0 }, 0)).toBe(0);
+  });
+  it('a throw travels the same distance whether the display runs at 60 or 120 Hz (fixed ticks)', () => {
+    const run = (frameDt, frames) => {
+      const m = createManikin({ x: 60, y: 150, u: 10 });
+      for (let i = 0; i < 120; i++) step(m, TICK, world);
+      const x0 = m.x[P.HIP]; const acc = { t: 0 }; impulse(m, 300, -300);
+      for (let f = 0; f < frames; f++) { const n = ticksFor(acc, frameDt); for (let k = 0; k < n; k++) step(m, TICK, world); }
+      return m.x[P.HIP] - x0;
+    };
+    const d60 = run(1 / 60, 18), d120 = run(1 / 120, 36);
+    expect(d60).toBeGreaterThan(20);
+    expect(Math.abs(d60 - d120) / d60).toBeLessThan(0.1);
   });
 });

@@ -71,6 +71,20 @@ describe('scramble', () => {
     expect(el.dataset.textFx).toBe('Test')
   })
 
+  it('skips elements with child markup (meta spans, links, CTA arrows) instead of flattening them', () => {
+    const meta = document.createElement('p')
+    meta.className = 'project-card__meta'
+    meta.innerHTML = '<span>LP Group</span><span class="sep">·</span><a href="#x">Setpoint Studio</a>'
+    document.body.appendChild(meta)
+    const before = meta.innerHTML
+    scramble(meta, { duration: 100 })
+    expect(requestAnimationFrame).not.toHaveBeenCalled()
+    expect(meta.innerHTML).toBe(before)
+    expect(meta.querySelectorAll('span, a').length).toBe(3)
+    expect(meta.dataset.textFx).toBeUndefined()
+    meta.remove()
+  })
+
   it('does not overwrite an existing data-text-fx (idempotent stash)', () => {
     el.dataset.textFx = 'Original'
     el.textContent = 'Modified'

@@ -22,10 +22,15 @@
 import { onPointerMove } from '../pointer.js?v=20260530-pm';
 import {
   Skyline, LayeredSkyline, P, PROP, CONTACT_R, createManikin, standPose, sitPose, walkPose, crouchPose, hangPose, applyPose,
-  step, drive, gainsPreset, reachHand, mixPose, pin, unpinAll, nearestPoint, bounds, impulse,
-} from './manikin-physics.js?v=20260530-st2';
+  step, drive, gainsPreset, reachHand, mixPose, pin, unpinAll, nearestPoint, bounds, impulse, TICK, ticksFor,
+} from './manikin-physics.js?v=20260530-st3';
 
 const INK = '#161310', OX = '#B8323F', PAPER = '#EDE6D6';
+/** States that keep animating under prefers-reduced-motion: they are the tail
+ *  end of a USER throw (ragdoll → getup → climb back onto the letters). One
+ *  set for both the skip and the keep-looping test so the lists can't drift
+ *  (a 'climb' left out of one froze a thrown manikin crouched on the floor). */
+const USER_INITIATED = new Set(['ragdoll', 'getup', 'climb']);
 /** weighted random pick from [[name, weight], ...] with r in [0,1) */
 function weighted(items, r) { const tot = items.reduce((a, [, w]) => a + w, 0) || 1; let acc = 0; for (const [n, w] of items) { acc += w / tot; if (r < acc) return n; } return items[items.length - 1][0]; }
 const GRAB_PX = 22;
@@ -253,15 +258,21 @@ export class ManikinScene {
     this._onDown = (e) => {
       if (e.button !== undefined && e.button !== 0) return;
       if (this.suspended) return;                       // arcade mode: clicks are for shooting
+      if (this.grab) return;                            // one grab at a time: a 2nd finger must not re-grab (orphaned pins + leaked touchmove preventDefault)
       const p = this._toLocal(e.clientX, e.clientY);
       let best = null, bi = -1, bd = GRAB_PX;
       for (const m of this.manikins) { const n = nearestPoint(m, p.x, p.y); if (n.d < bd) { bd = n.d; best = m; bi = n.i; } }
       if (!best) return;
       e.preventDefault(); e.stopPropagation();
-      this._startGrab(best, bi, p);
+      this._startGrab(best, bi, p, e.pointerId);
     };
     document.addEventListener('pointerdown', this._onDown, { capture: true });
-    this._onUp = () => { if (this.grab) this._endGrab(); };
+    // release only for the pointer that grabbed (a 2nd finger lifting must not
+    // drop the 1st finger's manikin); pointercancel always releases
+    this._onUp = (e) => {
+      if (!this.grab) return;
+      if (e.type === 'pointercancel' || e.pointerId === undefined || this.grab.pointerId === undefined || e.pointerId === this.grab.pointerId) this._endGrab();
+    };
     window.addEventListener('pointerup', this._onUp); window.addEventListener('pointercancel', this._onUp);
     // touch: same via pointer events (pointerdown fires for touch)
   }
@@ -293,18 +304,27 @@ export class ManikinScene {
     document.querySelector('.cursor-ring')?.classList.toggle('is-hover', on);
     document.body.style.cursor = on ? 'grab' : '';
   }
-  _startGrab(m, i, p) {
-    this.grab = { m, i };
+  _startGrab(m, i, p, pointerId) {
+    this.grab = { m, i, pointerId };
     m.state = 'ragdoll'; m.grabbed = true; m.restTime = 0; m.quietTime = 0;
+    this._clearIntents(m);
     // prefer grabbing the head or a hand — reads better than the hip
     pin(m, i, p.x, p.y);
     document.querySelector('.hero')?.classList.add('is-dragging');
     document.querySelector('.cursor-ring')?.classList.add('is-grab');
     document.body.style.cursor = 'grabbing';
     // touch: while a manikin is held, the finger must move it, not scroll the page
+    if (this._noScroll) document.removeEventListener('touchmove', this._noScroll);   // never leak a previous one
     this._noScroll = (ev) => ev.preventDefault();
     document.addEventListener('touchmove', this._noScroll, { passive: false });
     this._loop();
+  }
+  /** Drop every per-state leftover when a manikin is yanked out of whatever it
+   *  was doing (grab, resize, NaN re-seat): a stale grapple kept drawing its
+   *  rope forever, a stale `napping` made a thrown body lie 6–12 s, a stale
+   *  goalX/fleeAfterStandup hijacked the next walk/standup. */
+  _clearIntents(m) {
+    m.grapple = null; m.napping = false; m.hop = false; m.goalX = undefined; m.fleeAfterStandup = 0; m.tripped = false;
   }
   _endGrab() {
     const { m } = this.grab; unpinAll(m); m.grabbed = false; this.grab = null;
@@ -338,13 +358,20 @@ export class ManikinScene {
       if (m.state === 'sit' || m.state === 'sitdown' || m.state === 'climb') {
         const e = this._edgeNear(x, m.spot?.side || 1, layerTop) || this._nearestEdgeAny(x);
         if (e) { m.spot = e; m.layerTop = this._layerTopFor(e.y); m.state = 'sit'; applyPose(m, sitPose(m, e.x, e.y, e.side, m.t, 1), 1); }
-      } else if (m.state === 'walk' || m.state === 'stand' || m.state === 'standup' || m.state === 'getup') {
+      } else if (m.state !== 'ragdoll') {
+        // every kinematic state (walk/stand/standup/getup, and the one-shots
+        // jump/peek/flee/trip/climbdown/grapple whose spot/jumpTo/anchor are
+        // pre-resize coordinates) → re-seat standing at the equivalent x,
+        // dropping the stale intent (else it stands on old letters / swings
+        // around an anchor that is no longer a letter for several seconds)
+        this._clearIntents(m);
         m.walkX = x; m.run = this._runAt(x, layerTop);
         if (!m.run) { const e = this._nearestEdgeAny(x); if (e) { m.state = 'sit'; m.spot = e; m.layerTop = this._layerTopFor(e.y); applyPose(m, sitPose(m, e.x, e.y, e.side, 0, 1), 1); continue; } }
-        m.state = 'stand'; m.brain && (m.brain.act = null);
+        m.state = 'stand'; m.t = 0; m.brain && (m.brain.act = null);
         applyPose(m, standPose(m, x, this.sky.topAt(x, layerTop - 1), m.dir || 1, m.t), 1);
       } else {
         // ragdoll: scale positions in place, physics takes it from here
+        this._clearIntents(m);
         for (let i = 0; i < P.N; i++) { m.x[i] *= kx; m.px[i] *= kx; }
         m.asleep = false;
       }
@@ -368,10 +395,14 @@ export class ManikinScene {
     for (const m of this.manikins) {
       m.t += dt;
       if (!m.brain) this._initBrain(m);
+      // physics runs in fixed 1/60 s ticks (gains/damping/friction are per-tick
+      // constants — measured 2× throws on 120 Hz, half on 30 Hz); brain and
+      // timers run once per frame with the real dt
+      m.ticks = ticksFor(m._acc || (m._acc = { t: 0 }), dt);
       try {
         this._gaze(m, dt);
         this._blink(m, dt);
-        if (!this.animate && m.state !== 'ragdoll' && m.state !== 'getup') continue;   // reduced motion: static
+        if (!this.animate && !USER_INITIATED.has(m.state)) continue;   // reduced motion: static, but a throw still plays out
         this._think(m, dt);
         this._act(m, dt);
       } catch (err) {
@@ -382,7 +413,7 @@ export class ManikinScene {
     }
     this._render();
     if (this.grab || this.hover) this._label();
-    const anyMoving = this.animate || this.manikins.some((m) => m.state === 'ragdoll' || m.state === 'getup');
+    const anyMoving = this.animate || this.manikins.some((m) => USER_INITIATED.has(m.state));
     if (anyMoving && this.visible && !document.hidden) this.rafId = requestAnimationFrame((t) => this._frame(t));
   }
 
@@ -487,9 +518,13 @@ export class ManikinScene {
       // the calm one bolts sooner; the curious one gives it a moment first
       // "coming at me": smoothed distance is shrinking while the pointer moves.
       // (raw per-frame comparison failed with coalesced/irregular move events)
-      b.nearS = b.nearS === undefined || !p.inside ? near : b.nearS * 0.75 + near * 0.25;
-      const approaching = p.inside && (p.speed || 0) > 200 && near < b.nearS - 0.2;
-      const retreating = !p.inside || near > b.nearS + 0.2;
+      // (near is Infinity while the pointer is outside: never let that into the
+      // EMA or it sticks at Infinity for the session → "approaching" fires on
+      // ANY motion and chaseT never decays — measured)
+      if (!p.inside || !Number.isFinite(near)) b.nearS = undefined;
+      else b.nearS = b.nearS === undefined || !Number.isFinite(b.nearS) ? near : b.nearS * 0.75 + near * 0.25;
+      const approaching = p.inside && b.nearS !== undefined && (p.speed || 0) > 200 && near < b.nearS - 0.2;
+      const retreating = !p.inside || b.nearS === undefined || near > b.nearS + 0.2;
       if (approaching && near < u * 14) b.chaseT = (b.chaseT || 0) + dt;
       else if (retreating) b.chaseT = Math.max(0, (b.chaseT || 0) - dt * 1.2);
       b.fleeCd = (b.fleeCd || 0) - dt;
@@ -524,7 +559,7 @@ export class ManikinScene {
           const run = this._runAt(ox, myTop), myRun = this._runAt(m.walkX ?? m.x[P.HIP], myTop);
           if (run && myRun && run.x0 === myRun.x0) {
             const goal = ox - Math.sign(ox - m.x[P.HIP]) * u * 3.2;
-            if (m.state === 'sit') { m.state = 'standup'; m.t = 0; }
+            if (m.state === 'sit') { m.state = 'standup'; m.t = 0; m.fleeAfterStandup = 0; }
             else { m.state = 'walk'; m.t = 0; m.phase = 0; m.speedK = 0; }
             m.goalX = goal; m.dir = Math.sign(goal - (m.walkX ?? m.x[P.HIP])) || 1; m.walkX = m.walkX ?? m.x[P.HIP];
             return;
@@ -548,14 +583,14 @@ export class ManikinScene {
       const pick = weighted(menu, rnd);
       const durs = { kick: 1.6, scratch: 1.4, leanback: 2.6, stretch: 1.6, slouch: 5 + Math.random() * 5, lookaround: 2.2, standup: 0.01, nap: 0 };
       if (pick === 'nap') { m.state = 'ragdoll'; m.napping = true; m.napLen = 6 + Math.random() * 6; m.t = 0; }
-      else if (pick === 'standup') { m.state = 'standup'; m.t = 0; }
+      else if (pick === 'standup') { m.state = 'standup'; m.t = 0; m.fleeAfterStandup = 0; m.goalX = undefined; }
       else b.act = { name: pick, t: 0, dur: durs[pick] };
       b.idleT = 0;
     } else if (m.state === 'stand') {
       if (b.idleT < 0.8) return;
       const pick = weighted([['walk', 0.6 * b.energy + 0.15], ['weightshift', 0.3], ['lookaround', 0.25], ['sitdown', 0.2], ['grapple', 0.22 * b.energy + 0.05]], rnd);
       if (pick === 'grapple') { const g = this._grappleTarget(m); if (g) { this._startGrapple(m, g); b.idleT = 0; return; } b.act = { name: 'lookaround', t: 0, dur: 1.2 }; b.idleT = 0; return; }
-      if (pick === 'walk') { m.state = 'walk'; m.t = 0; m.phase = 0; m.walkT = 0; m.jog = undefined; m.dir = m.dir || m.facing || 1; m.speedK = 0; if (Math.random() < 0.5) m.dir = m.gazeDir || m.dir; }
+      if (pick === 'walk') { m.state = 'walk'; m.t = 0; m.phase = 0; m.walkT = 0; m.jog = undefined; m.goalX = undefined; m.dir = m.dir || m.facing || 1; m.speedK = 0; if (Math.random() < 0.5) m.dir = m.gazeDir || m.dir; }
       else if (pick === 'sitdown') { const x0 = m.walkX ?? m.x[P.HIP]; const e = this._edgeNear(x0, m.dir || 1, m.layerTop) || this._edgeNear(x0, -(m.dir || 1), m.layerTop); if (e) { m.state = 'sitdown'; m.spot = e; m.t = 0; } }
       else b.act = { name: pick, t: 0, dur: 1.8 + Math.random() };
       b.idleT = 0;
@@ -723,7 +758,8 @@ export class ManikinScene {
             m.asleep = false;
           }
         }
-        const rest = step(m, dt, sky);
+        let rest = false;
+        for (let k = 0; k < m.ticks; k++) rest = step(m, TICK, sky);
         if (!m.grabbed && rest && m.restTime > (m.napping ? m.napLen : 0.9 + 0.6 * b.calm)) {
           m.state = 'getup'; m.t = 0; m.napping = false;
           m.getupX = m.x[P.HIP]; m.getupY = sky.topAt(m.getupX, m.y[P.HIP] - u);
@@ -975,8 +1011,8 @@ export class ManikinScene {
     pose.x[P.HEAD] += m.look * hr * 1.1; pose.y[P.HEAD] += m.lookY * hr * 0.6;
     pose.x[P.NECK] += m.look * hr * 0.35;                       // the shoulders turn a little too
     if (b.shake > 0) { b.shake -= dt; pose.x[P.HEAD] += Math.sin(b.shake * 40) * u * 0.25 * b.shake; }
-    drive(m, pose, gainsPreset(gains), 0.14);
-    step(m, dt, sky, { noSleep: true, gravity });
+    const g = gainsPreset(gains);
+    for (let k = 0; k < m.ticks; k++) { drive(m, pose, g, 0.14); step(m, TICK, sky, { noSleep: true, gravity }); }
     if (!Number.isFinite(m.x[P.HIP]) || !Number.isFinite(m.y[P.HIP])) this._reseat(m);
   }
 
@@ -984,7 +1020,8 @@ export class ManikinScene {
    *  manikin vanish for good; instead sit it back down on the nearest edge. */
   _reseat(m) {
     const e = this._nearestEdgeAny(this.W / 2) || { x: this.W / 2, y: this.sky.ground, side: 1 };
-    m.state = 'sit'; m.spot = e; m.layerTop = this._layerTopFor(e.y); m.t = 0; m.phase = 0; m.walkX = e.x; m.dir = e.side; m.facing = e.side; m.goalX = undefined;
+    m.state = 'sit'; m.spot = e; m.layerTop = this._layerTopFor(e.y); m.t = 0; m.phase = 0; m.walkX = e.x; m.dir = e.side; m.facing = e.side;
+    this._clearIntents(m); m.grabbed = false;
     if (m.brain) m.brain.act = null;
     applyPose(m, sitPose(m, e.x, e.y, e.side, 0, 1), 1);
     for (let i = 0; i < P.N; i++) { m.px[i] = m.x[i]; m.py[i] = m.y[i]; m.pinned[i] = 0; }
@@ -1131,6 +1168,7 @@ export class ManikinScene {
   _stopHard(m, keep = 0.15) {
     for (let i = 0; i < P.N; i++) { m.px[i] = m.x[i] - (m.x[i] - m.px[i]) * keep; m.py[i] = m.y[i] - (m.y[i] - m.py[i]) * keep; }
     m.walkX = m.x[P.HIP]; m.speedK = 0; m.jog = undefined;
+    m.goalX = undefined; m.fleeAfterStandup = 0;      // an interrupted approach/flee is over
   }
   _nearestEdgeAny(x) {
     const es = this.sky.edges(this.DROP, this.STEP, this.u * 2.2);
@@ -1158,7 +1196,7 @@ export class ManikinScene {
   /** Grapple rope: from the throwing hand (or both hands while hanging) to the
    *  hook, drawn as a slightly slack ink line with a small hook at the tip. */
   _drawRope(c, m) {
-    const g = m.grapple; if (!g || !g.ropeTip) return;
+    const g = m.grapple; if (!g || !g.ropeTip || m.state !== 'grapple') return;   // tied to the state: no phantom rope after a grab/re-seat
     const u = m.u; const tip = g.ropeTip;
     const fromX = g.phase === 'throw' ? m.x[P.RHAND] : (m.x[P.LHAND] + m.x[P.RHAND]) / 2;
     const fromY = g.phase === 'throw' ? m.y[P.RHAND] : (m.y[P.LHAND] + m.y[P.RHAND]) / 2;

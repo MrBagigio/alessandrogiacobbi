@@ -133,6 +133,22 @@ describe('springs', () => {
     expect(tipSettledAt).not.toBeNull();
     expect(tipSettledAt).toBeGreaterThan(baseSettledAt);
   });
+  it('root heading takes the short arc: a target crossing the −X axis behind the root does not whip the tail 360°', () => {
+    const c = buildChain(proceduralSpec());
+    solveFK(c); c.ikBlend = 1;
+    solveIK(c, -1.5, 0.01); settle(c); forward(c);            // heading ≈ +π
+    solveIK(c, -1.5, -0.01);                                   // heading ≈ −π: goal jumps by ~2π
+    let sweep = 0, maxTipStep = 0, prev = c.theta[1]; forward(c); let pt = tipOf(c);
+    for (let s = 0; s < 120; s++) {
+      stepSprings(c, 1 / 60); forward(c);
+      // settle() may snap θ1 by 2πk (no visual change) — measure the wrapped delta
+      let d = c.theta[1] - prev; d = Math.atan2(Math.sin(d), Math.cos(d)); sweep += Math.abs(d); prev = c.theta[1];
+      const t = tipOf(c); maxTipStep = Math.max(maxTipStep, Math.hypot(t.x - pt.x, t.y - pt.y)); pt = t;
+    }
+    expect(sweep).toBeLessThan(0.5);                           // was: ~6.3 rad (362° sweep over 2 s)
+    expect(maxTipStep).toBeLessThan(0.02);                     // tip never jumps (chain length ≈ 1)
+    expect(noNaN(c.theta)).toBe(true);
+  });
 });
 
 describe('loadSpec (Maya sidecar JSON)', () => {

@@ -115,6 +115,7 @@ export class AlienShip {
     }
 
     takeDamage(damage) {
+        if (this.shouldBeRemoved) return null;   // already dead this frame
         this.health -= damage;
         if (this.health <= 0) {
             this.shouldBeRemoved = true;

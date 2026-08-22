@@ -391,6 +391,10 @@ export function applyPose(m, pose, k = 0.35) {
     m.x[i] += (pose.x[i] - m.x[i]) * k;
     m.y[i] += (pose.y[i] - m.y[i]) * k;
   }
+  // a SNAP (k=1) is a teleport, not a motion: prev must land on the new
+  // position too, or the next step() reads the whole jump as one frame of
+  // velocity (measured 35 px/frame → spawn kick, resize "explosion")
+  if (k >= 1) { m.px.set(m.x); m.py.set(m.y); }
 }
 
 /* ───────────────────────────── physics ───────────────────────────── */
@@ -412,7 +416,8 @@ export function step(m, dt, world, opts = {}) {
   // A grounded ragdoll otherwise flickers ~1 px/frame forever where a knee
   // is wedged between a strut, a bone and the floor (measured 68 px/s on one
   // point) — invisible, but it would never count as "at rest".
-  if (m.asleep && !noSleep) { let anyPin = 0; for (let i = 0; i < N; i++) anyPin |= m.pinned[i]; if (!anyPin) { m.restTime += dt; return true; } m.asleep = false; }
+  let anyPin = 0; for (let i = 0; i < N; i++) anyPin |= m.pinned[i];
+  if (m.asleep && !noSleep) { if (!anyPin) { m.restTime += dt; return true; } m.asleep = false; }
   if (noSleep) m.asleep = false;
   const g = GRAVITY * gScale * dt * dt;
   // integrate
@@ -440,7 +445,10 @@ export function step(m, dt, world, opts = {}) {
   }
   // "quiet" = nothing moved more than ~1.5 px this frame while touching a
   // surface; 0.25 s of quiet → freeze (asleep) and report resting.
-  const nearly = maxV < 90 && anyGround === 1;
+  // Never while held (pinned): a body dangling still from the cursor is not
+  // "at rest" — it used to fall asleep mid-drag and stay frozen in the held
+  // pose after release (velocities zeroed every frame, restTime accruing).
+  const nearly = maxV < 90 && anyGround === 1 && !anyPin;
   m.quietTime = nearly ? (m.quietTime || 0) + dt : 0;
   if (m.quietTime > 0.25 && !noSleep) {
     for (let i = 0; i < N; i++) { m.px[i] = m.x[i]; m.py[i] = m.y[i]; }
@@ -492,12 +500,21 @@ function collide(m, world, awake = false) {
         m.px[i] = m.x[i] - vx;
         m.py[i] = m.y[i];               // kill vertical bounce
         m.onGround[i] = 1;
+      } else if (world.topAt(m.px[i], m.py[i] + r - m.u * 0.6) - r < m.y[i]) {
+        // prev position is ALREADY inside this column (the surface moved under
+        // a resting point — resize re-rasterised the letters a few px higher):
+        // it did not come from the side, so land it instead of walking it out.
+        // The old "walk until headroom" loop shoved the whole body up to 16·dx
+        // per iteration in an arbitrary direction (measured: 100 px sideways
+        // teleport through the letter on a 3 px font-size change).
+        m.y[i] = surf;
+        let vx = (m.x[i] - m.px[i]) * FRICTION;
+        if (!awake && Math.abs(vx) < 0.35) vx = 0;
+        m.px[i] = m.x[i] - vx; m.py[i] = m.y[i];
+        m.onGround[i] = 1;
       } else {
-        // wall: step back out horizontally to where there is headroom
-        const dir = m.x[i] - m.px[i] >= 0 ? -1 : 1;
-        let x = m.px[i], tries = 0;
-        while (world.topAt(x, m.py[i] + r - m.u * 0.6) - r < m.y[i] && tries++ < 8) x += dir * world.dx * 2;
-        m.x[i] = x; m.px[i] = x;
+        // wall: it slid in from the side → revert x to where there was headroom
+        m.x[i] = m.px[i];
       }
     }
     // soft horizontal bounds
@@ -559,8 +576,8 @@ export function gainsPreset(kind = 'stand') {
 
 /** Pin point i to (x, y) (grab). */
 export function pin(m, i, x, y) { m.pinned[i] = 1; m.pinX[i] = x; m.pinY[i] = y; m.asleep = false; m.quietTime = 0; m.restTime = 0; }
-export function unpin(m, i) { m.pinned[i] = 0; }
-export function unpinAll(m) { m.pinned.fill(0); }
+export function unpin(m, i) { m.pinned[i] = 0; m.asleep = false; m.quietTime = 0; }
+export function unpinAll(m) { m.pinned.fill(0); m.asleep = false; m.quietTime = 0; }
 
 /** Nearest point of the manikin to (x, y): {i, d} */
 export function nearestPoint(m, x, y) {
@@ -576,8 +593,29 @@ export function bounds(m) {
   return { x0, y0, x1, y1 };
 }
 
-/** Give the whole body a velocity kick (px/s). */
-export function impulse(m, vx, vy) {
+/** Give the whole body a velocity kick (px/s). `dt` = the tick length the
+ *  caller steps with (default 1/60 — the scene steps in fixed 1/60 ticks). */
+export function impulse(m, vx, vy, dt = 1 / 60) {
   m.asleep = false; m.quietTime = 0; m.restTime = 0;
-  for (let i = 0; i < P.N; i++) { if (m.pinned[i]) continue; m.px[i] -= vx / 60; m.py[i] -= vy / 60; }
+  for (let i = 0; i < P.N; i++) { if (m.pinned[i]) continue; m.px[i] -= vx * dt; m.py[i] -= vy * dt; }
+}
+
+/** Fixed physics tick (s). Velocities, damping, gains and friction in this
+ *  module are tuned PER TICK, so the scene must integrate in 1/60 s ticks
+ *  (accumulator) regardless of the display refresh — see ticksFor(). */
+export const TICK = 1 / 60;
+/**
+ * Turn a measured frame dt into a number of fixed ticks. Snaps dt to the tick
+ * when within ±2 ms (60 Hz rAF jitter would otherwise yield 0/2-tick frames —
+ * a visible stutter ~1/s on the displays that are smooth today), caps at 3
+ * ticks (tab switch / hitch must not explode into a burst of physics), and
+ * returns the accumulator remainder in `acc.t`.
+ */
+export function ticksFor(acc, dt) {
+  if (Math.abs(dt - TICK) < 0.002) dt = TICK;
+  acc.t = (acc.t || 0) + Math.max(0, dt);
+  let n = 0;
+  while (acc.t >= TICK - 1e-9 && n < 3) { acc.t -= TICK; n++; }
+  if (acc.t >= TICK) acc.t = 0;          // hitch: drop the backlog instead of bursting
+  return n;
 }

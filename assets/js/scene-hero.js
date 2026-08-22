@@ -17,7 +17,7 @@
  * Optional Maya sidecar: assets/data/tail_rig.json (see tail-chain.loadSpec).
  * If absent or invalid → procedural log-spiral coil, silently.
  */
-import { TailScene, loadTailSpec } from './rig/tail-scene.js?v=20260530-arc5';
+import { TailScene, loadTailSpec } from './rig/tail-scene.js?v=20260530-arc9';
 
 export class HeroScene {
   /**

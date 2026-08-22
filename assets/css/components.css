@@ -175,9 +175,12 @@ body.is-arcade .cursor-dot, body.is-arcade .cursor-ring { display: none !importa
 
 /* ── Magnetic cursor (dot + ring) ── */
 
-/* Hide the native OS cursor wherever the custom one is active */
+/* Hide the native OS cursor ONLY where the custom one actually exists —
+   cursor.js adds html.has-custom-cursor when it mounts (it doesn't under
+   prefers-reduced-motion or on a narrow window, and those users would
+   otherwise have no cursor at all: measured). */
 @media (pointer: fine) and (min-width: 640px) {
-  *, *::before, *::after { cursor: none !important; }
+  html.has-custom-cursor *, html.has-custom-cursor *::before, html.has-custom-cursor *::after { cursor: none !important; }
 }
 
 .cursor-dot,

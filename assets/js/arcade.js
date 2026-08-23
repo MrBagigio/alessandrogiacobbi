@@ -19,7 +19,19 @@
  * Desktop fine-pointer only; off under prefers-reduced-motion.
  */
 const CANVAS_ID = 'asteroid-cursor';
-const V = '?v=20260530-arc9';
+const V = '?v=20260530-arc10';
+
+/** The `A` hotkey — a plain, non-repeated, un-consumed 'a' outside editable
+ *  fields. Key auto-repeat used to flip the arcade on/off at ~30 Hz while the
+ *  key was held, and the closing 'a' of the Konami code switched it on too. */
+export function isArcadeHotkey(e) {
+  if (!e || e.repeat || e.defaultPrevented) return false;
+  if (typeof e.key !== 'string' || e.key.toLowerCase() !== 'a') return false;
+  if (e.ctrlKey || e.metaKey || e.altKey) return false;
+  const t = e.target;
+  if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable)) return false;
+  return true;
+}
 
 export function initArcade() {
   const fine = matchMedia('(pointer: fine)').matches;
@@ -59,7 +71,8 @@ export function initArcade() {
       game.startCombatMode();
       // seed the ship at the current pointer so it doesn't fly in from the centre
       const p = window.__lastPointer || { x: innerWidth / 2, y: innerHeight / 2 };
-      game.mouse.x = p.x; game.mouse.y = p.y; game.player.x = p.x; game.player.y = p.y;
+      if (typeof game.seedPointer === 'function') game.seedPointer(p.x, p.y);
+      else { game.mouse.x = p.x; game.mouse.y = p.y; game.player.x = p.x; game.player.y = p.y; }
       // pump pointer/window events into the game's bus
       const onMove = (e) => { bus.emit('global:mousemove', e); };
       const onDown = (e) => { if (e.button === 0) bus.emit('global:mousedown', e); };
@@ -103,8 +116,7 @@ export function initArcade() {
 
   toggle?.addEventListener('click', (e) => { e.preventDefault(); state.on ? stop() : start(); });
   window.addEventListener('keydown', (e) => {
-    if (e.key.toLowerCase() !== 'a' || e.ctrlKey || e.metaKey || e.altKey) return;
-    const t = e.target; if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable)) return;
+    if (!isArcadeHotkey(e)) return;
     state.on ? stop() : start();
   });
   // remember the pointer for seeding the ship

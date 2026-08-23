@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import {
   proceduralSpec, loadSpec, buildChain, solveFK, solveIK, forward,
-  stepSprings, settle, isSettled, restPositions, MAX_STRETCH, CLAMP_RAD, DEFAULT_N,
+  stepSprings, settle, isSettled, restPositions, MAX_STRETCH, CLAMP_RAD, DEFAULT_N, chainToCanvas, canvasToChain,
 } from '../assets/js/rig/tail-chain.js';
 
 const tipOf = (c) => ({ x: c.pos[(c.N - 1) * 2], y: c.pos[(c.N - 1) * 2 + 1] });
@@ -148,6 +148,46 @@ describe('springs', () => {
     expect(sweep).toBeLessThan(0.5);                           // was: ~6.3 rad (362° sweep over 2 s)
     expect(maxTipStep).toBeLessThan(0.02);                     // tip never jumps (chain length ≈ 1)
     expect(noNaN(c.theta)).toBe(true);
+  });
+  it('stretch follows the IK blend: no 12% length pop when ikBlend reaches 0 after a release beyond reach', () => {
+    const c = buildChain(proceduralSpec());
+    solveFK(c);
+    // drag 2 s beyond reach (target 1.3 chain lengths away), blend eased in (tau 0.15)
+    c.dragging = true; c.ikBlend = 0; const dt = 1 / 60;
+    for (let i = 0; i < 120; i++) { c.ikBlend += (1 - c.ikBlend) * (1 - Math.exp(-dt / 0.15)); solveFK(c); solveIK(c, 1.3, 0.2, c.ikBlend); stepSprings(c, dt); forward(c); }
+    expect(c.stretch).toBeGreaterThan(1.1);
+    // release: blend eases out (tau 0.35) and snaps to 0 below 0.01 — like tail-scene
+    c.dragging = false; let maxDStretch = 0, jumpAtSnap = -1, prevStretch = c.stretch, prevPos = Float32Array.from(c.pos);
+    for (let i = 0; i < 240; i++) {
+      const wasBlending = c.ikBlend > 0;
+      c.ikBlend += (0 - c.ikBlend) * (1 - Math.exp(-dt / 0.35)); if (c.ikBlend < 0.01) c.ikBlend = 0;
+      solveFK(c); if (c.ikBlend > 0) solveIK(c, 1.3, 0.2, c.ikBlend); else c.stretch = 1;
+      stepSprings(c, dt); forward(c);
+      maxDStretch = Math.max(maxDStretch, Math.abs(c.stretch - prevStretch)); prevStretch = c.stretch;
+      if (wasBlending && c.ikBlend === 0) {                    // THE frame where the old code snapped stretch 1.12 → 1
+        let j0 = 0; for (let j = 0; j < c.N; j++) j0 = Math.max(j0, Math.hypot(c.pos[j * 2] - prevPos[j * 2], c.pos[j * 2 + 1] - prevPos[j * 2 + 1]));
+        jumpAtSnap = j0;
+      }
+      prevPos = Float32Array.from(c.pos);
+    }
+    expect(c.stretch).toBe(1);
+    expect(maxDStretch).toBeLessThan(0.01);                    // was a single-frame 0.12 step
+    expect(jumpAtSnap).toBeGreaterThanOrEqual(0);              // the snap frame happened inside the window
+    expect(jumpAtSnap).toBeLessThan(0.01);                     // no joint jump on that frame (chain length ≈ 1; was ≈ 0.06 = 30 px)
+  });
+  it('chainToCanvas/canvasToChain include the root Y tilt and invert each other', () => {
+    const tilt = 12 * Math.PI / 180, rootX = 316, rootY = -395, scale = 501;
+    for (const [x, y] of [[0, 0], [1.12, 0.3], [-0.4, 0.9], [0.7, -0.6]]) {
+      const s = chainToCanvas(rootX, rootY, scale, tilt, x, y);
+      const b = canvasToChain(rootX, rootY, scale, tilt, s.x, s.y);
+      expect(b.x).toBeCloseTo(x, 9); expect(b.y).toBeCloseTo(y, 9);
+      // same as T · Ry(tilt) · S applied to (x, y, 0), projected on x/y (world y up → canvas y down)
+      expect(s.x).toBeCloseTo(rootX + x * scale * Math.cos(tilt), 9);
+      expect(s.y).toBeCloseTo(-(rootY + y * scale), 9);
+    }
+    // the old (tilt-less) mapping was 12+ px off at full extension
+    const noTilt = chainToCanvas(rootX, rootY, scale, 0, 1.12, 0), withTilt = chainToCanvas(rootX, rootY, scale, tilt, 1.12, 0);
+    expect(noTilt.x - withTilt.x).toBeGreaterThan(12);
   });
 });
 

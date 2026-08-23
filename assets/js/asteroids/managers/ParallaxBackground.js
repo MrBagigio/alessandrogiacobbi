@@ -89,9 +89,13 @@ export class ParallaxBackground {
     update(mouseVelocity, player) {
         const viewWidth = window.innerWidth;
         this.stars.forEach(star => star.update(mouseVelocity, viewWidth, player));
-
-        this._expandBounds(player.x, player.y);
-        this._cleanupStars(player.x, player.y);
+        // PAGE space, like the stars themselves (Star.update) and draw(): the
+        // bounds/cleanup were fed the SCREEN-space player, so once the page was
+        // scrolled ~1 viewport the field never expanded down there and every
+        // star got culled — no background below the hero (measured: 0 stars)
+        const cx = player.x + (window.scrollX || 0), cy = player.y + (window.scrollY || 0);
+        this._expandBounds(cx, cy);
+        this._cleanupStars(cx, cy);
     }
 
     _expandBounds(centerX, centerY) {
@@ -137,6 +141,14 @@ export class ParallaxBackground {
         this.stars = this.stars.filter(star => {
             return Math.abs(star.x - centerX) < cleanupDistanceX && Math.abs(star.y - centerY) < cleanupDistanceY;
         });
+        // the bounds must follow the cleanup window: they only ever grew, so they
+        // kept "claiming" regions whose stars had been culled and _expandBounds
+        // never repopulated them (scroll down and back up = empty sky forever)
+        const b = this.bounds;
+        b.left = Math.max(b.left, centerX - cleanupDistanceX);  b.right  = Math.min(b.right,  centerX + cleanupDistanceX);
+        b.top  = Math.max(b.top,  centerY - cleanupDistanceY);  b.bottom = Math.min(b.bottom, centerY + cleanupDistanceY);
+        if (b.right < b.left) b.left = b.right = centerX;       // jumped out of range: collapse, expansion rebuilds next tick
+        if (b.bottom < b.top) b.top = b.bottom = centerY;
     }
 
     draw(ctx) {

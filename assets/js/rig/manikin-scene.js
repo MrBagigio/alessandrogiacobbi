@@ -63,13 +63,14 @@ export class ManikinScene {
     this.ctx = this.canvas.getContext('2d');
 
     this._bind();
-    this._resample().then(() => { this._prevW = this.W; this._prevH = this.H; this._spawn(); this._loop(); });
+    this._resample().then(() => { if (this.disposed) return; this._prevW = this.W; this._prevH = this.H; this._spawn(); this._loop(); });
   }
 
   /* ───────────────────────── skyline from the DOM text ───────────────────────── */
 
   async _resample() {
     if (document.fonts?.ready) { try { await document.fonts.ready; } catch (_) {} }
+    if (this.disposed) return false;             // disposed while waiting for fonts: don't resurrect the canvas
     const h1r = this.h1.getBoundingClientRect();
     const W = Math.max(1, Math.round(h1r.width)), H = Math.max(1, Math.round(h1r.height));
     this.W = W; this.H = H;
@@ -232,7 +233,7 @@ export class ManikinScene {
         // screenshots, scrollbar flicker) — nothing to re-seat
         const r = this.h1.getBoundingClientRect();
         if (Math.round(r.width) === this.W && Math.round(r.height) === this.H) return;
-        this._resample().then(() => this._respawnKeepingStates());
+        this._resample().then((ok) => { if (ok !== false && !this.disposed) this._respawnKeepingStates(); });
       }, 120);
     };
     window.addEventListener('resize', this._onResize, { passive: true });
@@ -1289,7 +1290,10 @@ export class ManikinScene {
   _drawDebug() {
     const c = this.ctx, s = this.sky; if (!s) return;
     c.save(); c.strokeStyle = 'rgba(184,50,63,0.9)'; c.lineWidth = 1; c.beginPath();
-    for (let i = 0; i < s.n; i++) { const t = s.tops[i]; if (!Number.isFinite(t)) continue; const x = s.x0 + i * s.dx; c.moveTo(x, t); c.lineTo(x + s.dx, t); }
+    // the scene's sky is a LayeredSkyline (one Skyline per headline line): draw
+    // every layer's column tops (reading s.n/s.tops on the layered object drew nothing)
+    const skies = s instanceof LayeredSkyline ? s.layers.map((l) => l.sky) : [s];
+    for (const k of skies) for (let i = 0; i < k.n; i++) { const t = k.tops[i]; if (!Number.isFinite(t)) continue; const x = k.x0 + i * k.dx; c.moveTo(x, t); c.lineTo(x + k.dx, t); }
     c.stroke();
     c.strokeStyle = 'rgba(0,120,255,0.8)'; c.beginPath(); c.moveTo(0, s.ground); c.lineTo(this.W, s.ground); c.stroke();
     for (const e of s.edges(this.DROP, this.STEP, this.u * 2.2)) { c.fillStyle = e.side > 0 ? 'rgba(0,160,0,0.9)' : 'rgba(0,0,255,0.9)'; c.fillRect(e.x - 2, e.y - 6, 4, 6); }
@@ -1298,6 +1302,9 @@ export class ManikinScene {
 
   dispose() {
     this.disposed = true;
+    clearTimeout(this._rt);                       // a pending resize would re-append the canvas
+    if (this.grab) this._endGrab();               // removes the touchmove preventDefault, is-dragging, is-grab
+    this.hover = null; this._cursor(false);       // body cursor '' + ring hover off (after _endGrab, which reads hover)
     if (this.rafId) cancelAnimationFrame(this.rafId);
     this._io?.disconnect(); this._unsub?.();
     window.removeEventListener('resize', this._onResize);

@@ -68,6 +68,8 @@ export class Player {
         };
         this.trailParticles = [];
         this.flash = 0;
+        this.hitGrace = 0;        // ticks of post-hit invulnerability after a shield break (no HUD/fire side effects, unlike isRespawning)
+        this._trailTicks = 0;     // sim ticks since the last draw → trail spawn is per TICK, not per rendered frame
     }
 
     setCosmetics(config) {
@@ -114,16 +116,25 @@ export class Player {
             this.angle = Math.atan2(dy, dx);
         }
 
-        if (this.isRespawning && --this.respawnTimer <= 0) {
-            this.isRespawning = false;
-        }
+        // (respawn grace is counted by tickRespawn(), called by the game only on
+        // WORLD ticks — it used to drain here, during the sphere pause after a death)
+        if (this.hitGrace > 0) this.hitGrace--;
+        if (this.flash > 0) this.flash--;        // muzzle flash lifetime in ticks (was per rendered frame: 21 ms at 144 Hz)
+        this._trailTicks = (this._trailTicks || 0) + 1;
 
         this.trailParticles.forEach(p => p.update());
         this.trailParticles = this.trailParticles.filter(p => p.life > 0);
     }
 
+    /** Respawn invulnerability countdown — one call per WORLD tick. */
+    tickRespawn() {
+        if (this.isRespawning && --this.respawnTimer <= 0) this.isRespawning = false;
+    }
+
     draw(ctx, gameTime, mouseVelocity, isShipMode, scale = 1, morph = 1, bank = 0) {
-        if (this.isRespawning && (this.respawnTimer % 20 < 10)) return;
+        // blink on wall time (~3 Hz), not on the tick counter: with the counter
+        // frozen during a pause the cursor could vanish for the whole pause
+        if (this.isRespawning && Math.floor(gameTime / 166) % 2 === 0) return;
         if (scale < 0.01) return;
 
         this.trailParticles.forEach(p => p.draw(ctx));
@@ -166,7 +177,6 @@ export class Player {
         if (this.flash > 0) {
             ctx.save(); ctx.globalAlpha = em * this.flash / 3; ctx.fillStyle = '#B8323F';
             ctx.beginPath(); ctx.moveTo(this.radius + 2, 0); ctx.lineTo(this.radius + 9 + this.flash * 2, -3); ctx.lineTo(this.radius + 12 + this.flash * 2, 0); ctx.lineTo(this.radius + 9 + this.flash * 2, 3); ctx.closePath(); ctx.fill(); ctx.restore();
-            this.flash--;
         }
 
         const thrust = Math.min(Math.hypot(mouseVelocity.x, mouseVelocity.y) * 2, 25);
@@ -180,24 +190,24 @@ export class Player {
             ctx.fillStyle = `rgba(${boostRGB}, ${0.5 + Math.random() * 0.3})`;
             ctx.fill();
 
-            if (Math.random() > 0.5) {
-                const angle = this.angle + Math.PI + (Math.random() - 0.5) * 0.5;
-                const speed = 1 + Math.random();
-                const particleColor = this.cosmetics?.particleColor || 'rgba(184, 50, 63, 0.8)';
-                
-                this.trailParticles.push(new Particle(
-                    this.x - Math.cos(this.angle) * this.radius,
-                    this.y - Math.sin(this.angle) * this.radius,
-                    particleColor,
-                    20,
-                    {
-                        vx: Math.cos(angle) * speed,
-                        vy: Math.sin(angle) * speed,
-                        size: Math.random() * 2 + 1
-                    }
-                ));
+            // one spawn roll per SIM TICK since the last draw (draw runs per rAF
+            // frame: at 144 Hz the trail was 2.8× denser than tuned, at 30 Hz half)
+            for (let k = this._trailTicks || 0; k > 0; k--) {
+                if (Math.random() > 0.5) {
+                    const angle = this.angle + Math.PI + (Math.random() - 0.5) * 0.5;
+                    const speed = 1 + Math.random();
+                    const particleColor = this.cosmetics?.particleColor || 'rgba(184, 50, 63, 0.8)';
+                    this.trailParticles.push(new Particle(
+                        this.x - Math.cos(this.angle) * this.radius,
+                        this.y - Math.sin(this.angle) * this.radius,
+                        particleColor,
+                        20,
+                        { vx: Math.cos(angle) * speed, vy: Math.sin(angle) * speed, size: Math.random() * 2 + 1 }
+                    ));
+                }
             }
         }
+        this._trailTicks = 0;
 
         if (this.powerUpState.shield.active) {
             ctx.beginPath();
@@ -253,11 +263,14 @@ export class Player {
     }
 
     takeDamage() {
-        if (this.isRespawning) return { playerHit: false, shieldBroken: false };
-        
+        if (this.isRespawning || this.hitGrace > 0) return { playerHit: false, shieldBroken: false };
+
         if (this.powerUpState.shield.active) {
             this.powerUpState.shield.active = false;
             this.powerUpState.shield.timer = 0;
+            // short grace: a bomber volley / 3-bullet spread used to strip the
+            // shield AND a life on consecutive ticks (bullets 8 px apart)
+            this.hitGrace = 45;
             return { shieldBroken: true, playerHit: false };
         }
         
@@ -269,21 +282,24 @@ export class Player {
         return { playerHit: true, shieldBroken: false };
     }
 
-    activatePowerUp(type, gameTime) {
+    /** Power-ups last a number of WORLD ticks (1/60 s each), not wall-clock
+     *  ms: a wall-clock expiry kept draining while the game was paused as a
+     *  sphere, so resting the cursor after a pickup silently ate it. */
+    activatePowerUp(type, _gameTime) {
         const state = this.powerUpState[type];
         if (state) {
             state.active = true;
             let duration = CONFIG.POWERUP_DURATION_MS;
             if (type === 'laser') duration = CONFIG.LASER_DURATION_MS;
             if (type === 'shield') duration = CONFIG.SHIELD_DURATION_MS;
-            state.timer = gameTime + duration;
+            state.timer = Math.max(1, Math.round(duration / (1000 / 60)));
         }
     }
 
-    updatePowerUps(gameTime) {
+    updatePowerUps(_gameTime) {
         for (const key in this.powerUpState) {
             const state = this.powerUpState[key];
-            if (state.active && state.timer > 0 && gameTime > state.timer) {
+            if (state.active && --state.timer <= 0) {
                 state.active = false;
                 state.timer = 0;
             }

@@ -21,6 +21,7 @@ import { EVENTS } from './_stubs/constants.js';
 import { loopManager } from './_stubs/LoopManager.js';
 import { hangarService } from './_stubs/HangarService.js';
 import { AudioManager } from './_stubs/AudioManager.js';
+import { laserHits } from './geom.js';
 
 const clamp01 = (value) => Math.min(1, Math.max(0, value));
 const easeInOutCubic = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
@@ -53,7 +54,7 @@ export class AsteroidsGame {
 
         this.abortController = null;
 
-        this.spawnTimeouts = new Set();
+        this.spawnTimeouts = new Map();          // timeoutId → pooled entity waiting to spawn (released if the timer is cleared)
         this.isGameOver = false;
         this.isShipMode = false;
         this.isShooting = false;
@@ -187,8 +188,32 @@ export class AsteroidsGame {
         this.waveManager.reset();
         this.uiManager.reset();
         this.resetMagneticState();
+        // entities parked while the ship was a sphere are pooled too: release
+        // them or every stop/restart leaks a wave out of the pools (measured)
+        this.pendingSpawns.forEach((e) => this._releasePooled(e));
         this.pendingSpawns = []; this.rings = []; this.flash = 0; this.slowmo = 0; this.restPaused = false;
+        // re-entering the arcade (or click-restart) used to keep morph≈1 from the
+        // previous run: the ship flashed and WAVE 1 started with the pointer at rest
+        this.morph = 0; this.bank = 0; this.isShooting = false; this.clickFeedback = null;
+        this.shake.intensity = 0; this.shake.duration = 0;
+        this.prevMouse.x = this.mouse.x; this.prevMouse.y = this.mouse.y;
+        this.mouseVelocity.x = 0; this.mouseVelocity.y = 0;
         // Non avviare la prima ondata qui, ma aspetta che il gioco si attivi
+    }
+
+    /** Put the dot, the ship and the velocity reference at (x, y) — used by
+     *  arcade.js on start and by the game-over click restart, so the ship never
+     *  flies in from the viewport centre nor gets a first-tick velocity jolt. */
+    seedPointer(x, y) {
+        this.mouse.x = this.prevMouse.x = x; this.mouse.y = this.prevMouse.y = y;
+        this.mouseVelocity.x = 0; this.mouseVelocity.y = 0;
+        this.player.x = x; this.player.y = y;
+    }
+
+    _releasePooled(e) {
+        if (e instanceof Bullet) bulletPool.release(e);
+        else if (e instanceof Asteroid) asteroidPool.release(e);
+        else if (e instanceof AlienShip) alienShipPool.release(e);
     }
     
     handleResize() {
@@ -265,7 +290,12 @@ export class AsteroidsGame {
     }
 
     handleMouseUp(e) { if (e.button === 0) this.isShooting = false; }
-    handleClick() { if (this.isGameOver) { this.reset(); this.player.isRespawning = true; this.player.respawnTimer = 120; } }
+    handleClick() {
+        if (!this.isGameOver) return;
+        this.reset();
+        this.seedPointer(this.mouse.x, this.mouse.y);      // restart where the pointer is, not at the viewport centre
+        this.player.isRespawning = true; this.player.respawnTimer = 120;
+    }
 
     addEventListeners() {
         EventBus.on('global:resize', this.handleResize);
@@ -512,6 +542,7 @@ export class AsteroidsGame {
         this.frameNo++;
         if (this.slowmo > 0) { this.slowmo--; if (this.frameNo % 3 !== 0) { this.player.updatePowerUps(this.gameTime); this._tickCosmetics(); return; } }
         this._tickCosmetics();
+        this.player.tickRespawn();                // grace counts WORLD ticks: not drained by the sphere pause after a death
         this.player.updatePowerUps(this.gameTime);
 
         if (!isHangarActive) {
@@ -705,6 +736,35 @@ export class AsteroidsGame {
         }
     }
 
+    /** Everything a kill is worth — sound, score + combo, popup, explosion,
+     *  ring, shake, pickup drop. Shared by bullet kills AND laser kills (laser
+     *  kills used to award nothing: the enemy just vanished). */
+    _onEnemyKilled(enemy) {
+        if (window.audioManager) window.audioManager.onAudioPlay({ name: 'coin' });
+        const baseScore = (enemy instanceof AlienShip)
+            ? 300
+            : (enemy.type === 'large' ? 150 : (enemy.type === 'debris' ? 25 : 100));
+        // Combo System: incrementa moltiplicatore e timer su ogni kill
+        this.comboMultiplier = Math.min(this.comboMultiplier + 0.5, 5.0);
+        this.comboTimer = 180;
+        const effectiveMultiplier = Math.max(1, Math.floor(this.comboMultiplier));
+        const gainedScore = baseScore * effectiveMultiplier;
+        this.score += gainedScore;
+        // score popup: convert page coords to screen coords
+        let popupText = `+${gainedScore}`;
+        if (effectiveMultiplier > 1) popupText += ` x${effectiveMultiplier}`;
+        this.uiManager.addScorePopup(enemy.x - window.scrollX, enemy.y - window.scrollY, popupText);
+        this.createExplosion(enemy.x, enemy.y, enemy.color);
+        this.addRing(enemy.x, enemy.y, (enemy.radius || 20) * 2.6, 'rgba(184,50,63,0.6)');
+        this.triggerShake(6 + (enemy.radius || 20) * 0.12, 8);
+        // Spawn at most one pickup per enemy: prefer power-up, otherwise possibly spawn a coin.
+        let didSpawnPickup = false;
+        if (Math.random() < CONFIG.POWERUP_SPAWN_CHANCE) { this.entities.push(new PowerUp(enemy.x, enemy.y)); didSpawnPickup = true; }
+        if (!didSpawnPickup && Math.random() < CONFIG.COIN_SPAWN_CHANCE) {
+            this.entities.push(new Coin({ x: enemy.x, y: enemy.y, value: CONFIG.COIN_VALUE || 1 }));
+        }
+    }
+
     handleCollisionEvents(events) {
         let playerHitThisFrame = false;
         for (const event of events) {
@@ -720,53 +780,7 @@ export class AsteroidsGame {
                     this.createExplosion(event.bullet.x, event.bullet.y, 'rgba(22,19,16,0.5)', 5);
                     const debris = event.enemy.takeDamage(1);
                     if (debris) this.entities.push(...debris);
-
-                    if (event.enemy.shouldBeRemoved) {
-                        // Play coin sound when enemy is destroyed
-                        if (window.audioManager) {
-                            window.audioManager.onAudioPlay({ name: 'coin' });
-                        }
-
-                        const baseScore = (event.enemy instanceof AlienShip)
-                            ? 300
-                            : (event.enemy.type === 'large'
-                                ? 150
-                                : (event.enemy.type === 'debris' ? 25 : 100));
-
-                        // Combo System: incrementa moltiplicatore e timer su ogni kill
-                        this.comboMultiplier = Math.min(this.comboMultiplier + 0.5, 5.0);
-                        this.comboTimer = 180;
-                        const effectiveMultiplier = Math.max(1, Math.floor(this.comboMultiplier));
-                        const gainedScore = baseScore * effectiveMultiplier;
-                        this.score += gainedScore;
-
-                        // score popup: convert page coords to screen coords
-                        let popupText = `+${gainedScore}`;
-                        if (effectiveMultiplier > 1) {
-                            popupText += ` x${effectiveMultiplier}`;
-                        }
-                        this.uiManager.addScorePopup(
-                                event.enemy.x - window.scrollX,
-                                event.enemy.y - window.scrollY,
-                                popupText
-                        );
-                        this.createExplosion(event.enemy.x, event.enemy.y, event.enemy.color);
-                        this.addRing(event.enemy.x, event.enemy.y, (event.enemy.radius || 20) * 2.6, 'rgba(184,50,63,0.6)');
-                        this.triggerShake(6 + (event.enemy.radius || 20) * 0.12, 8);
-
-                        // Spawn at most one pickup per enemy: prefer power-up, otherwise possibly spawn a coin.
-                        let didSpawnPickup = false;
-                        if (Math.random() < CONFIG.POWERUP_SPAWN_CHANCE) {
-                            this.entities.push(new PowerUp(event.enemy.x, event.enemy.y));
-                            didSpawnPickup = true;
-                        }
-
-                        // Only spawn a coin if we didn't already spawn a power-up from this enemy
-                        if (!didSpawnPickup && Math.random() < CONFIG.COIN_SPAWN_CHANCE) {
-                            const coinValue = CONFIG.COIN_VALUE || 1;
-                            this.entities.push(new Coin({ x: event.enemy.x, y: event.enemy.y, value: coinValue }));
-                        }
-                    }
+                    if (event.enemy.shouldBeRemoved) this._onEnemyKilled(event.enemy);
                     break;
                 }
                 case 'player_hit_enemy': {
@@ -786,7 +800,9 @@ export class AsteroidsGame {
 
                     if (playerState.shieldBroken) {
                         this.uiManager.addHudNotification("SHIELD LOST!", '#B8323F');
-                        this.createExplosion(this.player.x, this.player.y, '#B8323F', 40);
+                        // particles live in PAGE space (drawn under translate(-scroll)): the
+                        // burst used screen coords and rendered scrollY px above the ship
+                        this.createExplosion(this.player.x + window.scrollX, this.player.y + window.scrollY, '#B8323F', 40);
                     }
 
                     if (playerState.playerHit && this.player.lives <= 0) {
@@ -860,7 +876,7 @@ export class AsteroidsGame {
                     this.spawnTimeouts.delete(timeoutId);
                 };
                 timeoutId = setTimeout(callback, spawnEvent.delay);
-                this.spawnTimeouts.add(timeoutId);
+                this.spawnTimeouts.set(timeoutId, spawnEvent.entity);
             });
         }
     }
@@ -873,7 +889,8 @@ export class AsteroidsGame {
     }
 
     clearAllTimeouts() {
-        this.spawnTimeouts.forEach(clearTimeout);
+        // a cleared spawn timer drops a pooled entity: hand it back to its pool
+        for (const [id, ent] of this.spawnTimeouts) { clearTimeout(id); this._releasePooled(ent); }
         this.spawnTimeouts.clear();
     }
 
@@ -917,24 +934,22 @@ export class AsteroidsGame {
 
     applyLaserDamage() {
         const angle = this.player.angle;
+        const ux = Math.cos(angle), uy = Math.sin(angle);
         // Player is in screen coordinates; convert to page coordinates so laser
         // interacts correctly with enemies stored in page-space.
         const baseX = this.player.x + window.scrollX;
         const baseY = this.player.y + window.scrollY;
-        const startX = baseX + Math.cos(angle) * this.player.radius;
-        const startY = baseY + Math.sin(angle) * this.player.radius;
-        const endX = baseX + Math.cos(angle) * 2000;
-        const endY = baseY + Math.sin(angle) * 2000;
+        const startX = baseX + ux * this.player.radius;
+        const startY = baseY + uy * this.player.radius;
+        const LASER_LEN = 2000 - this.player.radius;            // matches drawLaser's end point
         const enemies = this.entities.filter(e => e instanceof Asteroid || e instanceof AlienShip);
         for (const enemy of enemies) {
-            const dist = Math.abs((endY - startY) * enemy.x - (endX - startX) * enemy.y + endX * startY - endY * startX) / Math.hypot(endY - startY, endX - startX);
-            if (dist < enemy.radius) {
-                const damageDealt = enemy.takeDamage(0.25);
-                if (damageDealt) this.entities.push(...damageDealt);
-                if (Math.random() < 0.2) {
-                    this.createExplosion(enemy.x, enemy.y, 'rgba(184,50,63,0.5)', 2);
-                }
-            }
+            if (!laserHits(startX, startY, ux, uy, LASER_LEN, enemy.x, enemy.y, enemy.radius)) continue;
+            const wasAlive = !enemy.shouldBeRemoved;
+            const damageDealt = enemy.takeDamage(0.25);
+            if (damageDealt) this.entities.push(...damageDealt);
+            if (wasAlive && enemy.shouldBeRemoved) this._onEnemyKilled(enemy);   // laser kills score/combo/drop like bullets
+            else if (Math.random() < 0.2) this.createExplosion(enemy.x, enemy.y, 'rgba(184,50,63,0.5)', 2);
         }
     }
 
@@ -1001,6 +1016,7 @@ export class AsteroidsGame {
         }
         // Keep only non-combat entities (coins, powerups)
         this.entities = this.entities.filter(e => !(e instanceof Asteroid) && !(e instanceof AlienShip) && !(e instanceof Bullet));
+        this.pendingSpawns.forEach((e) => this._releasePooled(e));   // parked-while-paused entities are pooled too
         this.particles = []; this.pendingSpawns = []; this.rings = [];
         // Clear any pending spawns
         this.clearAllTimeouts();

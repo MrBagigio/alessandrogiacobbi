@@ -43,6 +43,10 @@ function initKonami() {
     if (key === target) {
       pos++;
       if (pos === KONAMI.length) {
+        // the closing 'a' is consumed by the easter egg: arcade.js checks
+        // e.defaultPrevented so the Konami code doesn't also flip the arcade on
+        const t = e.target;
+        if (!(t && (t.isContentEditable || /^(INPUT|TEXTAREA)$/.test(t.tagName)))) e.preventDefault();
         triggerDebugMode();
         pos = 0;
       }

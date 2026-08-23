@@ -27,7 +27,7 @@ export class CollisionManager {
             }
         }
         
-        if (!player.isRespawning) {
+        if (!player.isRespawning && !(player.hitGrace > 0)) {   // hitGrace: post-shield-break i-frames (no shake/slowmo/combo reset either)
             // 2. Giocatore contro minacce (nemici e proiettili nemici)
             const threats = [...enemies, ...enemyBullets];
             for (const threat of threats) {

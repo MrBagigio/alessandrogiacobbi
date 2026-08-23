@@ -2,17 +2,19 @@
  * Bootstrap — entry point.
  * Loads GSAP via CDN, initializes scenes, cursor, lazy, scroll triggers.
  */
-import { HeroScene } from './scene-hero.js?v=20260530-arc9';
+import { HeroScene } from './scene-hero.js?v=20260530-arc10';
 import { BgScene } from './scene-bg.js?v=20260516-perf';
 import { Cursor } from './cursor.js?v=20260530-arc9';
 import { initLazyMedia } from './lazy.js?v=20260530-audit3';
 import { initTextFx } from './text-fx.js?v=20260530-arc10';
 import { initMagneticAuto } from './magnetic-letters.js?v=20260530-fx';
-import { initInteractions } from './interactions.js?v=20260530-audit3';
+import { initInteractions } from './interactions.js?v=20260530-arc10';
 import { initVideoHud } from './video-hud.js?v=20260516-perf';
 import { initXrayLens } from './xray-lens.js?v=20260516-perf';
 import { initAboutStats } from './about-stats.js?v=20260530-audit4';
-import { initArcade } from './arcade.js?v=20260530-arc9';
+import { initArcade } from './arcade.js?v=20260530-arc10';
+import { initAnchorLinks } from './anchors.js?v=20260530-arc10';
+import { initClock } from './clock.js?v=20260530-arc10';
 
 const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -42,17 +44,9 @@ window.addEventListener('load', () => {
   }
 });
 
-// 2. Clock in meta-bar
-function updateClock() {
-  const el = document.querySelector('.meta-clock');
-  if (!el) return;
-  const d = new Date();
-  const h = String(d.getHours()).padStart(2, '0');
-  const m = String(d.getMinutes()).padStart(2, '0');
-  el.textContent = `${h}:${m} CET`;
-}
-updateClock();
-setInterval(updateClock, 30_000);
+// 2. Clock in meta-bar — Europe/Rome with CET/CEST (was the visitor's local
+//    time labelled "CET")
+initClock();
 
 // 3. Scroll progress bar
 const progress = document.querySelector('.scroll-progress');
@@ -83,7 +77,7 @@ if (heroTitle && window.matchMedia('(min-width: 768px)').matches && !/[?&]maniki
   const debug = /[?&]manikins=debug/.test(location.search);
   const count = window.matchMedia('(min-width: 1024px)').matches ? 2 : 1;
   requestAnimationFrame(() => {
-    import('./rig/manikin-scene.js?v=20260530-arc9').then((m) => {
+    import('./rig/manikin-scene.js?v=20260530-arc10').then((m) => {
       window.__manikins = new m.ManikinScene(heroTitle, { count, animate: !reduced, debug });
     }).catch((e) => console.warn('[hero] manikins unavailable:', e?.message || e));
   });
@@ -130,19 +124,10 @@ if ('IntersectionObserver' in window) {
   revealEls.forEach((el) => io.observe(el));
 }
 
-// 8. Smooth anchor links
-document.querySelectorAll('a[href^="#"]').forEach((a) => {
-  a.addEventListener('click', (e) => {
-    const id = a.getAttribute('href');
-    if (id.length > 1) {
-      const target = document.querySelector(id);
-      if (target) {
-        e.preventDefault();
-        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-    }
-  });
-});
+// 8. In-page anchor links — smooth scroll (not under reduced motion), focus
+//    moved to the target, hash pushed; the skip-link stays native so it really
+//    skips (see anchors.js)
+initAnchorLinks(document, { reduced });
 
 // 9. Magnetic buttons + tilt cards — any fine pointer
 if (!reduced && isFinePointer && isWideScreen) {

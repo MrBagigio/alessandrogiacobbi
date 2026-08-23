@@ -201,10 +201,15 @@ export function forward(c) {
  * in the sign of the rest curl (the tail re-coils its own way). Also sets
  * c.stretch when the target is beyond reach.
  */
-export function solveIK(c, tx, ty) {
+export function solveIK(c, tx, ty, blend = 1) {
   const N = c.N;
   const dist = Math.hypot(tx, ty);
-  c.stretch = Math.max(1, Math.min(MAX_STRETCH, dist / (c.totalLen || 1)));
+  // stretch follows the IK blend like everything else: after a release beyond
+  // reach ikBlend eases out over ~1.6 s while stretch stayed at 1.12 and then
+  // snapped to 1 in ONE frame (30 px joint jump, 12% tube "breathe-in" long
+  // after the recoil had settled — measured)
+  const full = Math.max(1, Math.min(MAX_STRETCH, dist / (c.totalLen || 1)));
+  c.stretch = 1 + (full - 1) * Math.max(0, Math.min(1, blend));
   const L = c.lengths;
   // work buffer starts from current forward pose
   const P = c._ik || (c._ik = new Float32Array(N * 2));
@@ -299,6 +304,21 @@ export function stepSprings(c, dt) {
   c.settled = maxV < 2e-2 && maxErr < 2e-3;
   if (c.settled) settle(c);
   return c.settled;
+}
+
+/**
+ * Chain-space ↔ canvas-space mapping (pure, so the scene's hit-tests and the
+ * IK target can be unit-tested without THREE). The root Group is rotated by
+ * `tiltRad` about Y and scaled by `scale`; world Y is UP (canvas Y is down):
+ *   canvas.x = rootX + x·scale·cos(tilt)      canvas.y = −(rootY + y·scale)
+ * The old mapping dropped the cos factor: at full extension the IK locator
+ * sat 12–15 px short of the cursor (measured 12.3 px at x=1.12, scale 501).
+ */
+export function chainToCanvas(rootX, rootY, scale, tiltRad, x, y) {
+  return { x: rootX + x * scale * Math.cos(tiltRad), y: -(rootY + y * scale) };
+}
+export function canvasToChain(rootX, rootY, scale, tiltRad, px, py) {
+  return { x: (px - rootX) / (scale * Math.cos(tiltRad)), y: (-py - rootY) / scale };
 }
 
 /** Snap springs to their goal instantly (reduced-motion / init). */

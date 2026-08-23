@@ -94,4 +94,7 @@
     --dur-cinema: 0ms;
   }
   *, *::before, *::after { animation: none !important; transition: none !important; }
+  /* base.css sets html{scroll-behavior:smooth}; animated page scrolls are
+     motion too (WCAG 2.3.3) — JS anchors pass behavior:'auto' and inherit this */
+  html { scroll-behavior: auto; }
 }

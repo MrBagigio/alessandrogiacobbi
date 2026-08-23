@@ -43,26 +43,27 @@ export class AlienAI {
         }
 
         if (!player || player.isRespawning) {
+            this.lastTargetX = this.lastTargetY = null;     // no stale history across a respawn teleport
             return null;
         }
+
+        // Player usa coordinate schermo; converti in coordinate pagina per puntare correttamente con la scrollbar
+        const targetX = player.x + window.scrollX;
+        const targetY = player.y + window.scrollY;
+        // per-TICK velocity, sampled every tick (it was sampled once per SHOT:
+        // displacement since the last shot × leadFrames put the ace's lead
+        // point thousands of px off — the hardest variant never hit a moving cursor)
+        const MAX_V = 20;                                    // px/tick
+        const clamp = (v) => Math.max(-MAX_V, Math.min(MAX_V, v));
+        const playerVx = this.lastTargetX == null ? 0 : clamp(targetX - this.lastTargetX);
+        const playerVy = this.lastTargetY == null ? 0 : clamp(targetY - this.lastTargetY);
+        this.lastTargetX = targetX;
+        this.lastTargetY = targetY;
 
         const bullets = [];
 
         // Aggiorna cooldown principale per gli spari mirati
         if (--this.shootCooldown <= 0) {
-            // Player usa coordinate schermo; converti in coordinate pagina per puntare correttamente con la scrollbar
-            const targetX = player.x + window.scrollX;
-            const targetY = player.y + window.scrollY;
-
-            let playerVx = 0;
-            let playerVy = 0;
-            if (this.lastTargetX != null && this.lastTargetY != null) {
-                playerVx = targetX - this.lastTargetX;
-                playerVy = targetY - this.lastTargetY;
-            }
-            this.lastTargetX = targetX;
-            this.lastTargetY = targetY;
-
             const angle = Math.atan2(targetY - this.ship.y, targetX - this.ship.x);
 
 

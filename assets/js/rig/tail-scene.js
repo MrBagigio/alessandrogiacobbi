@@ -14,8 +14,8 @@ import { onPointerMove } from '../pointer.js?v=20260530-pm';
 import { TAIL_VERT, TAIL_FRAG } from './tail-shaders.js?v=20260530-tail13';
 import {
   proceduralSpec, loadSpec, buildChain, solveFK, solveIK, forward,
-  stepSprings, settle, MAX_STRETCH,
-} from './tail-chain.js?v=20260530-tail27';
+  stepSprings, settle, MAX_STRETCH, chainToCanvas, canvasToChain,
+} from './tail-chain.js?v=20260530-tail28';
 
 // Tube tones. NOT the page's paper2/paper3: those were within a few points of
 // the page background, so the lit half of the tube was invisible against it
@@ -26,6 +26,7 @@ const TUBE_LIT = 0xD9CFB6, TUBE_SHADE = 0xC4B899;
 const RADIAL = 16;              // ring vertices
 const RINGS_PER_SEG = 6;
 const TILT_DEG = 12;            // fixed 3/4 tilt of the "plate"
+const TILT_RAD = TILT_DEG * Math.PI / 180, TILT_COS = Math.cos(TILT_RAD);   // screen x = chain x · scale · cos(tilt)
 const HOVER_PX = 22, GRAB_PX = 36;
 const CURL_REST = 0.70, CURL_END = 0.15;
 /** Tube radius at the base as a fraction of total chain length. A real
@@ -232,6 +233,11 @@ export class TailScene {
 
   _layout() {
     const cw = this.canvas.clientWidth || 1, ch = this.canvas.clientHeight || 1;
+    // follow devicePixelRatio changes (browser zoom, window dragged to another
+    // monitor): the ratio was set once at construction, so a zoom-in rendered
+    // the tail at half resolution and a zoom-out kept a 2× buffer (4× overdraw)
+    const pr = Math.min(devicePixelRatio || 1, this.dprCap);
+    if (this.renderer.getPixelRatio() !== pr) this.renderer.setPixelRatio(pr);
     this.renderer.setSize(cw, ch, false);
     // world = CSS px, origin at canvas top-left, y down flipped to y up
     this.camera.left = 0; this.camera.right = cw; this.camera.top = 0; this.camera.bottom = -ch;
@@ -259,7 +265,7 @@ export class TailScene {
     // (cx, cy in css px, y down) maps to world (cx, -cy).
     const cx = ax + aw / 2, cy = ay + ah / 2;
     const bxc = (minx + maxx) / 2, byc = (miny + maxy) / 2;
-    this.root.position.set(cx - bxc * scale, -cy - byc * scale, 0);
+    this.root.position.set(cx - bxc * scale * TILT_COS, -cy - byc * scale, 0);   // the Y tilt foreshortens x
     this.root.scale.set(scale, scale, scale);
     // outline thickness in css px (applied in view space by the shader) +
     // the bind→px scale it needs to cap the offset near the thin tip
@@ -300,6 +306,11 @@ export class TailScene {
 
     this._onDown = (e) => {
       if (this.suspended) return;               // arcade mode: clicks are for shooting
+      // touch: no touch-action:none on the canvas, so the browser claims any
+      // swipe for scrolling and fires pointercancel → the tail lurched toward
+      // the finger for a few frames on every scroll started over it. Touch
+      // keeps the tap-to-pluck below; dragging stays a fine-pointer thing.
+      if (e.pointerType === 'touch') return;
       if (e.button !== undefined && e.button !== 0) return;
       const j = this._nearestJoint(e.clientX, e.clientY);
       const tip = this._nearestTip(e.clientX, e.clientY);
@@ -314,10 +325,11 @@ export class TailScene {
       try { this.canvas.setPointerCapture?.(e.pointerId); } catch (_) {}
       this.requestRender();
     };
-    this._onUp = () => {
+    this._onUp = (e) => {
       if (!this.chain.dragging) return;
       this.chain.dragging = false;
       this.ikBlendTarget = 0;
+      if (e && e.type === 'pointercancel') this.chain.ikBlend = 0;   // browser-cancelled grab: no residual pull
       this.canvas.closest('.hero')?.classList.remove('is-dragging');
       document.querySelector('.cursor-ring')?.classList.remove('is-grab');
       this.requestRender();
@@ -333,20 +345,23 @@ export class TailScene {
       const p = Math.min(1, Math.max(0, -r.top / (r.height || 1)));
       const curl = CURL_REST + (CURL_END - CURL_REST) * p;
       if (Math.abs(curl - this.chain.curl) > 1e-4) { this.chain.curl = curl; this.requestRender(); }
+      if (this.hoverJoint >= 0) this._setLabel(this.hoverJoint);   // the joint moved under a still pointer
     };
     window.addEventListener('scroll', this._onScroll, { passive: true });
 
     // touch pluck (coarse pointers): tap the tail → impulse at the tip
     if (!fine) {
       let t0 = 0, x0 = 0, y0 = 0;
-      this.canvas.addEventListener('touchstart', (e) => { const t = e.touches[0]; t0 = performance.now(); x0 = t.clientX; y0 = t.clientY; }, { passive: true });
-      this.canvas.addEventListener('touchend', (e) => {
+      this._onTouchStart = (e) => { const t = e.touches[0]; t0 = performance.now(); x0 = t.clientX; y0 = t.clientY; };
+      this._onTouchEnd = (e) => {
         const t = e.changedTouches[0];
         if (performance.now() - t0 < 250 && Math.hypot(t.clientX - x0, t.clientY - y0) < 8) {
           const j = this._nearestJoint(t.clientX, t.clientY);
           if (j.i >= 0 && j.dist < 40) { const c = this.chain; for (let i = c.N - 4; i < c.N; i++) c.vel[i] += 6 * (i - (c.N - 4) + 1); this.requestRender(); }
         }
-      }, { passive: true });
+      };
+      this.canvas.addEventListener('touchstart', this._onTouchStart, { passive: true });
+      this.canvas.addEventListener('touchend', this._onTouchEnd, { passive: true });
     }
   }
 
@@ -362,20 +377,25 @@ export class TailScene {
     const names = this.chain.names;
     const isTip = j === this.chain.N - 1;
     el.textContent = isTip ? 'tail_ik_ctrl' : (names ? names[j] : `tail_${String(j + 1).padStart(2, '0')}`);
+    // the label is absolutely positioned inside .hero: convert the joint's
+    // CLIENT coords into its containing block (it drifted by scrollY while the
+    // tail is still hoverable during the first 100vh of scroll — measured)
     const p = this._jointClient(j);
-    el.style.transform = `translate(${Math.round(p.x + 14)}px, ${Math.round(p.y - 22)}px)`;
+    const host = el.offsetParent || this.canvas.closest('.hero') || el.parentElement;
+    const hr = host ? host.getBoundingClientRect() : { left: 0, top: 0 };
+    el.style.transform = `translate(${Math.round(p.x - hr.left + 14)}px, ${Math.round(p.y - hr.top - 22)}px)`;
     el.style.opacity = 1;
   }
 
   /* ───────────────────────── math helpers ───────────────────────── */
 
   _jointClient(i) {
-    // chain → world (root pos/scale, world Y up) → client (canvas rect, Y down).
-    // The root's small Y tilt shifts X by (1-cos) — negligible for hit-tests.
+    // chain → world (root pos/scale, world Y up, root tilted about Y so x is
+    // foreshortened by cos 12°) → client (canvas rect, Y down). Ignoring the
+    // tilt put the IK locator 12–15 px short of the cursor at full extension.
     const c = this.chain; const cr = this.canvas.getBoundingClientRect();
-    const wx = this.root.position.x + c.pos[i * 2] * this.worldScale;
-    const wy = this.root.position.y + c.pos[i * 2 + 1] * this.worldScale;
-    return { x: cr.left + wx, y: cr.top - wy };
+    const p = chainToCanvas(this.root.position.x, this.root.position.y, this.worldScale, TILT_RAD, c.pos[i * 2], c.pos[i * 2 + 1]);
+    return { x: cr.left + p.x, y: cr.top + p.y };
   }
   _nearestJoint(cx, cy) {
     let best = -1, bd = 1e9;
@@ -388,9 +408,8 @@ export class TailScene {
   _setTargetFromClient(cx, cy) {
     // inverse of _jointClient
     const cr = this.canvas.getBoundingClientRect();
-    const wx = cx - cr.left, wy = -(cy - cr.top);
-    this.chain.target.x = (wx - this.root.position.x) / this.worldScale;
-    this.chain.target.y = (wy - this.root.position.y) / this.worldScale;
+    const t = canvasToChain(this.root.position.x, this.root.position.y, this.worldScale, TILT_RAD, cx - cr.left, cy - cr.top);
+    this.chain.target.x = t.x; this.chain.target.y = t.y;
   }
 
   /* ───────────────────────── frame ───────────────────────── */
@@ -420,7 +439,7 @@ export class TailScene {
       if (Math.abs(this.ikBlendTarget - c.ikBlend) < 0.01) c.ikBlend = this.ikBlendTarget; else moving = true;
       if (Math.abs(this.bloomTarget - this.bloom) < 0.01) this.bloom = this.bloomTarget; else moving = true;
       solveFK(c);
-      if (c.ikBlend > 0) solveIK(c, c.target.x, c.target.y); else c.stretch = 1;
+      if (c.ikBlend > 0) solveIK(c, c.target.x, c.target.y, c.ikBlend); else c.stretch = 1;   // stretch eases out with the blend (no 12% pop)
       const settled = stepSprings(c, dt);
       if (!settled) moving = true;
     } else {
@@ -520,10 +539,12 @@ export class TailScene {
     if (ft.length < 90) return;
     const avg = ft.reduce((a, b) => a + b, 0) / ft.length;
     if (avg > 9 && this.hatchOn) { this.hatchOn = 0; ft.length = 0; return; }
-    if (avg > 9 && this.dprCap > 1) { this.dprCap = 1; this.renderer.setPixelRatio(1); this._layout(); ft.length = 0; }
+    if (avg > 9 && this.dprCap > 1) { this.dprCap = 1; this._layout(); ft.length = 0; }   // _layout syncs the pixel ratio
   }
 
   dispose() {
+    if (this.disposed) return;
+    this._onUp?.();                              // mid-grab: drop is-dragging / is-grab
     this.disposed = true;
     if (this.rafId) cancelAnimationFrame(this.rafId);
     this._io?.disconnect();
@@ -532,6 +553,22 @@ export class TailScene {
     window.removeEventListener('scroll', this._onScroll);
     window.removeEventListener('pointerup', this._onUp);
     window.removeEventListener('pointercancel', this._onUp);
+    // the canvas listeners were left alive: the dead scene (procedural one,
+    // replaced by the JSON-spec scene on the SAME canvas) kept grabbing and
+    // could stick the 'grabbing' cursor / hover ring — measured
+    this.canvas.removeEventListener('pointerdown', this._onDown);
+    if (this._onTouchStart) this.canvas.removeEventListener('touchstart', this._onTouchStart);
+    if (this._onTouchEnd) this.canvas.removeEventListener('touchend', this._onTouchEnd);
+    if (this.hoverJoint >= 0) { this._setCursorHover(false); this._setLabel(-1); }
+    // GPU resources: renderer.dispose() only clears caches/programs in r160;
+    // VBOs and the bone texture are freed via the geometry/material/skeleton
+    try {
+      this.fill?.geometry?.dispose();           // shared with hull — once
+      this.joints?.geometry?.dispose(); this.ctrls?.geometry?.dispose();
+      this.fillMat?.dispose(); this.hullMat?.dispose(); this.joints?.material?.dispose(); this.ctrlMat?.dispose();
+      this.skeleton?.dispose?.();
+    } catch (_) { /* best effort */ }
+    if (this.canvas.__tail === this) delete this.canvas.__tail;
     this.renderer.dispose();
   }
 }

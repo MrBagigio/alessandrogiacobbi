@@ -1896,3 +1896,39 @@ section[id] { scroll-margin-top: 6rem; }
   .project-film__play { width: 56px; height: 56px; font-size: 17px; }
   .project-film__cap { font-size: 10px; left: 0.75rem; bottom: 0.75rem; }
 }
+
+/* ── Landscape phone (short + wide) ──────────────────────────────────────────
+   At ≤1023px the rig is order:-1 above the headline at min(38vw, 220px) with a
+   4/5 ratio. On a phone turned sideways (844×390) that is a 320×400 block: the
+   ENTIRE first screen was the tail on empty paper, with pretitle, H1, CTA and
+   meta all below the fold (hero 964px tall in a 390px viewport — measured).
+   Two columns instead: text left, rig right, everything on one screen. */
+@media (max-width: 1199px) and (orientation: landscape) and (max-height: 560px) {
+  .hero {
+    min-height: 100svh;
+    padding-top: 4.25rem;
+    padding-bottom: 3.5rem;              /* room for the absolute meta strip */
+    align-items: center;
+  }
+  .hero__inner {
+    grid-template-columns: minmax(0, 1fr) clamp(110px, 15vw, 160px);
+    column-gap: var(--gap-m);
+    row-gap: 0.5rem;
+    align-items: center;
+  }
+  .hero__pretitle, .hero__title, .hero__cta { grid-column: 1; }
+  .hero__title {
+    font-size: clamp(1.9rem, 4.6vw, 3rem);
+    max-width: none;
+  }
+  .hero__cta { margin-top: 0.5rem; }
+  .hero__cta .btn { padding: 0.7rem 1.1rem; }
+  .hero__rig {
+    order: 0;
+    grid-column: 2; grid-row: 1 / span 3;
+    align-self: center; justify-self: end;
+    width: 100%; margin-bottom: 0;
+  }
+  .hero__meta { bottom: 1rem; gap: 1rem; }
+  .hero__meta-block { gap: 0.15rem; }
+}

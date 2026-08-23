@@ -5,7 +5,7 @@
 import { HeroScene } from './scene-hero.js?v=20260530-arc12';
 import { BgScene } from './scene-bg.js?v=20260516-perf';
 import { Cursor } from './cursor.js?v=20260530-arc11';
-import { initLazyMedia } from './lazy.js?v=20260530-audit3';
+import { initLazyMedia } from './lazy.js?v=20260530-m7';
 import { initTextFx } from './text-fx.js?v=20260530-arc12';
 import { initMagneticAuto } from './magnetic-letters.js?v=20260530-fx';
 import { initInteractions } from './interactions.js?v=20260530-arc12';

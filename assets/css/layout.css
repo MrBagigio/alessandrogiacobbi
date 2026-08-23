@@ -1843,3 +1843,56 @@ a.project-credits__value:hover { color: var(--ox); }
 /* The meta-bar is fixed (~66px): without this it covers the heading of
    whatever section you jump to (#work / #about / #contact). */
 section[id] { scroll-margin-top: 6rem; }
+
+/* Click-to-play facade for a project film (see lazy.js): poster + play button
+   in place of the Vimeo iframe until the visitor asks for it. */
+.project-film__facade {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  display: grid; place-items: center;
+  padding: 0; border: 0; background: var(--ink);
+  cursor: pointer; overflow: hidden;
+}
+.project-film__facade img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: transform var(--dur-base) var(--ease-out);
+}
+/* Scrim: the LP poster is a light frame, so a plain white ring + caption on top
+   of it were unreadable (measured against the light grey background). */
+.project-film__facade::after {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse at center, rgba(22, 19, 16, 0.55) 0%, rgba(22, 19, 16, 0.25) 45%, rgba(22, 19, 16, 0.45) 100%),
+    linear-gradient(to top, rgba(22, 19, 16, 0.75) 0%, transparent 40%);
+  transition: opacity var(--dur-base) var(--ease-out);
+}
+.project-film__facade:hover img, .project-film__facade:focus-visible img { transform: scale(1.02); }
+.project-film__facade:hover::after { opacity: 0.85; }
+.project-film__play {
+  position: relative;
+  z-index: 1;
+  display: grid; place-items: center;
+  width: 68px; height: 68px;
+  border: 1px solid var(--paper);
+  border-radius: 50%;
+  color: var(--paper);
+  font-size: 20px; line-height: 1;
+  padding-left: 4px;                      /* optical centring of the triangle */
+  background: rgba(22, 19, 16, 0.35);
+  transition: background var(--dur-base), border-color var(--dur-base), transform var(--dur-base) var(--ease-out);
+}
+.project-film__facade:hover .project-film__play { background: var(--ox); border-color: var(--ox); transform: scale(1.06); }
+.project-film__cap {
+  position: absolute; left: 1rem; bottom: 1rem; z-index: 1;
+  font-family: var(--fm); font-size: var(--fz-meta);
+  letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--paper);
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.8);
+}
+@media (max-width: 767px) {
+  .project-film__play { width: 56px; height: 56px; font-size: 17px; }
+  .project-film__cap { font-size: 10px; left: 0.75rem; bottom: 0.75rem; }
+}

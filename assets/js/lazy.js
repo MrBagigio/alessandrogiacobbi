@@ -41,4 +41,26 @@ export function initLazyMedia() {
       wrap.replaceChildren(iframe);
     });
   });
+
+  // 3. Click-to-play facade for project films (poster + play button). The
+  //    Vimeo iframe sets third-party cookies (vuid, __cf_bm) and pulls ~1MB of
+  //    player JS the moment it loads, even with dnt=1 — so it is mounted only
+  //    when the visitor actually asks for the film. autoplay=1 keeps it to a
+  //    single click, exactly like the embedded player behaved.
+  document.querySelectorAll('.project-film__facade').forEach((btn) => {
+    const id = btn.dataset.vimeoId;
+    if (!id) return;
+    btn.addEventListener('click', () => {
+      const wrap = btn.closest('.project-film__embed');
+      if (!wrap) return;
+      const iframe = document.createElement('iframe');
+      iframe.src = `https://player.vimeo.com/video/${id}?autoplay=1&dnt=1&title=0&byline=0&portrait=0`;
+      iframe.title = btn.getAttribute('aria-label') || 'Video';
+      iframe.allow = 'autoplay; fullscreen; picture-in-picture';
+      iframe.allowFullscreen = true;
+      iframe.style.cssText = 'position:absolute; inset:0; width:100%; height:100%; border:0;';
+      wrap.replaceChildren(iframe);
+      iframe.focus?.();
+    }, { once: true });
+  });
 }

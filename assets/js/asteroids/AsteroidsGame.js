@@ -545,6 +545,9 @@ export class AsteroidsGame {
         this.player.tickRespawn();                // grace counts WORLD ticks: not drained by the sphere pause after a death
         this.player.updatePowerUps(this.gameTime);
 
+        // GAME OVER with the button still held: isShooting stayed true and
+        // restPaused is false, so the dead ship kept firing and scoring
+        if (this.isGameOver) this.isShooting = false;
         if (!isHangarActive) {
             if (this.player.powerUpState.laser.active && this.isShooting) {
                 this.applyLaserDamage();

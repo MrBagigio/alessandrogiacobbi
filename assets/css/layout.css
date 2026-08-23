@@ -20,7 +20,12 @@ section {
   display: flex;
   align-items: center;
   padding-top: clamp(8rem, 18vh, 12rem);
-  padding-bottom: var(--gap-l);
+  /* .hero__meta is absolute at bottom:2rem (≈2.4rem tall). The bottom padding
+     must reserve that strip, or on a short viewport (1280×620 — a 13" laptop
+     with browser chrome) the vertically centred CTA row runs into it: measured
+     a 7px overlap on both buttons. max() keeps the taller of the two so nothing
+     changes where --gap-l already clears it. */
+  padding-bottom: max(var(--gap-l), 6rem);
   overflow: hidden;
 }
 
@@ -425,7 +430,7 @@ section {
   font-size: var(--fz-meta);
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--mute);
+  color: var(--mute-dark);            /* on --ink: --mute was 2.98:1 */
 }
 
 /* ── Sections — Selected Work ── */
@@ -573,7 +578,7 @@ section {
   font-size: var(--fz-mono);
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--ox);
+  color: var(--ox-dark);             /* on --ink: --ox was 3.04:1 */
   margin-bottom: 1rem;
 }
 
@@ -590,7 +595,7 @@ section {
   font-family: var(--fs);
   font-style: italic;
   font-weight: 400;
-  color: var(--ox);
+  color: var(--ox-dark);             /* on --ink */
 }
 
 .contact__channels {
@@ -607,7 +612,7 @@ section {
 .contact__channel-label {
   font-family: var(--fm);
   font-size: var(--fz-meta);
-  color: var(--mute);
+  color: var(--mute-dark);           /* on --ink: --mute was 2.98:1 */
   text-transform: uppercase;
   letter-spacing: 0.1em;
   margin-bottom: 0.5rem;
@@ -656,7 +661,7 @@ section {
 }
 
 .footer__cta-text .text-meta {
-  color: var(--ox);
+  color: var(--ox-dark);             /* on --ink2: --ox was 2.49:1 */
   display: block;
   margin-bottom: 0.6rem;
 }
@@ -674,7 +679,7 @@ section {
   font-family: var(--fs);
   font-style: italic;
   font-weight: 400;
-  color: var(--ox);
+  color: var(--ox-dark);             /* on --ink2: --ox was 2.4:1, under AA-large (3:1) */
 }
 
 .footer__cta-actions .btn {
@@ -704,12 +709,12 @@ section {
 
 .footer__col-label {
   margin-bottom: 0.5rem;
-  color: var(--ox);
+  color: var(--ox-dark);             /* on --ink2: --ox was 2.49:1 */
 }
 
-.footer__credit { color: var(--mute); }
+.footer__credit { color: var(--mute-dark); }   /* on --ink2: --mute was 2.36:1 */
 .footer__credit a { color: var(--paper); border-bottom: 1px dashed transparent; transition: border var(--dur-base); }
-.footer__credit a:hover { border-bottom-color: var(--ox); color: var(--ox); }
+.footer__credit a:hover { border-bottom-color: var(--ox-dark); color: var(--ox-dark); }
 
 .footer__socials {
   display: flex;
@@ -721,11 +726,11 @@ section {
   display: inline-flex;
   align-items: center;
   gap: 0.7rem;
-  color: var(--mute);
+  color: var(--mute-dark);           /* on --ink2: --mute was 2.36:1 */
   transition: color var(--dur-base);
 }
 
-.footer__social:hover { color: var(--ox); }
+.footer__social:hover { color: var(--ox-dark); }
 
 /* Touch targets: on coarse pointers the 24px social rows and 16px meta-bar
    links were well under the 44px minimum (Lighthouse/WCAG 2.5.8). Grow the
@@ -749,7 +754,7 @@ section {
   height: 24px;
   display: grid;
   place-items: center;
-  border: 1px solid var(--mute);
+  border: 1px solid var(--mute-dark);
   font-family: var(--fd);
   font-size: 10px;
   font-weight: 700;

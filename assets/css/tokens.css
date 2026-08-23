@@ -32,8 +32,16 @@
   --ink3:    #4A4338;
   --mute:    #66605A;   /* was #8A8478 = 2.98:1 on paper (WCAG fail); now 4.99:1 paper / 4.58:1 paper2 — AA on both */
   --rule:    #C9C0AC;
-  --ox:      #B8323F;
+  --ox:      #B4313D;   /* was #B8323F = 4.35:1 on paper2 (AA fail for small text); ΔE≈1, now 4.9:1 paper / 4.5:1 paper2 */
   --ox-deep: #8C1F2A;
+  /* ── Dark-surface variants ──
+   * --mute and --ox are tuned against PAPER. On the ink surfaces (contact,
+   * footer, showreel caption, card placeholders) they measured 2.36–3.14:1,
+   * well under AA. These are the same hues lightened until they clear 4.5:1
+   * on --ink2 (the lighter of the two dark backgrounds), so they pass on
+   * --ink too: mute-dark 4.5 / 5.7, ox-dark 4.6 / 5.8. */
+  --mute-dark: #948E84;
+  --ox-dark:   #D2747E;
   --ox-bg:   rgba(184, 50, 63, 0.08);
   --ox-line: rgba(184, 50, 63, 0.20);
   --shadow-soft: 0 12px 40px -8px rgba(22, 19, 16, 0.12);

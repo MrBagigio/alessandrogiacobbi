@@ -21,6 +21,8 @@ export class Cursor {
     this.y = window.innerHeight / 2;
     this.tx = this.x;
     this.ty = this.y;
+    this._raf = null;
+    this._disposed = false;
 
     this.bind();
     this.animate();
@@ -32,6 +34,7 @@ export class Cursor {
       this.ty = y;
       // Dot tracks pointer 1:1 — no lerp needed
       this.dot.style.transform = `translate(${x}px, ${y}px) translate(-50%, -50%)`;
+      this.animate();                       // wake the ring's easing loop
     });
 
     // Hover targets — ring grows on interactive elements
@@ -42,14 +45,25 @@ export class Cursor {
     });
   }
 
+  /** Ease the ring toward the pointer. The loop STOPS once it has caught up
+   *  (it used to rAF forever at 60 fps for the whole session, re-binding a new
+   *  closure every frame, even with the pointer parked); onPointerMove wakes it. */
   animate() {
-    requestAnimationFrame(this.animate.bind(this));
-    this.x += (this.tx - this.x) * 0.18;
-    this.y += (this.ty - this.y) * 0.18;
-    this.ring.style.transform = `translate(${this.x}px, ${this.y}px) translate(-50%, -50%)`;
+    if (this._raf !== null && this._raf !== undefined) return;
+    const step = () => {
+      this._raf = null;
+      if (this._disposed) return;
+      this.x += (this.tx - this.x) * 0.18;
+      this.y += (this.ty - this.y) * 0.18;
+      this.ring.style.transform = `translate(${this.x}px, ${this.y}px) translate(-50%, -50%)`;
+      if (Math.abs(this.tx - this.x) > 0.05 || Math.abs(this.ty - this.y) > 0.05) this._raf = requestAnimationFrame(step);
+    };
+    this._raf = requestAnimationFrame(step);
   }
 
   dispose() {
+    this._disposed = true;
+    if (this._raf != null) { cancelAnimationFrame(this._raf); this._raf = null; }
     if (this._unsub) this._unsub();
     document.documentElement.classList.remove('has-custom-cursor');
   }

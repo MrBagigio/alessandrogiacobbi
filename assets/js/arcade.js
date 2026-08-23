@@ -19,7 +19,7 @@
  * Desktop fine-pointer only; off under prefers-reduced-motion.
  */
 const CANVAS_ID = 'asteroid-cursor';
-const V = '?v=20260530-arc10';
+const V = '?v=20260530-arc11';
 
 /** The `A` hotkey — a plain, non-repeated, un-consumed 'a' outside editable
  *  fields. Key auto-repeat used to flip the arcade on/off at ~30 Hz while the

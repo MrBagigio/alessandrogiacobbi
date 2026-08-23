@@ -2,19 +2,19 @@
  * Bootstrap — entry point.
  * Loads GSAP via CDN, initializes scenes, cursor, lazy, scroll triggers.
  */
-import { HeroScene } from './scene-hero.js?v=20260530-arc10';
+import { HeroScene } from './scene-hero.js?v=20260530-arc12';
 import { BgScene } from './scene-bg.js?v=20260516-perf';
-import { Cursor } from './cursor.js?v=20260530-arc9';
+import { Cursor } from './cursor.js?v=20260530-arc11';
 import { initLazyMedia } from './lazy.js?v=20260530-audit3';
-import { initTextFx } from './text-fx.js?v=20260530-arc10';
+import { initTextFx } from './text-fx.js?v=20260530-arc12';
 import { initMagneticAuto } from './magnetic-letters.js?v=20260530-fx';
-import { initInteractions } from './interactions.js?v=20260530-arc10';
+import { initInteractions } from './interactions.js?v=20260530-arc12';
 import { initVideoHud } from './video-hud.js?v=20260516-perf';
 import { initXrayLens } from './xray-lens.js?v=20260516-perf';
 import { initAboutStats } from './about-stats.js?v=20260530-audit4';
-import { initArcade } from './arcade.js?v=20260530-arc10';
-import { initAnchorLinks } from './anchors.js?v=20260530-arc10';
-import { initClock } from './clock.js?v=20260530-arc10';
+import { initArcade } from './arcade.js?v=20260530-arc11';
+import { initAnchorLinks } from './anchors.js?v=20260530-arc12';
+import { initClock } from './clock.js?v=20260530-arc12';
 
 const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -77,7 +77,7 @@ if (heroTitle && window.matchMedia('(min-width: 768px)').matches && !/[?&]maniki
   const debug = /[?&]manikins=debug/.test(location.search);
   const count = window.matchMedia('(min-width: 1024px)').matches ? 2 : 1;
   requestAnimationFrame(() => {
-    import('./rig/manikin-scene.js?v=20260530-arc10').then((m) => {
+    import('./rig/manikin-scene.js?v=20260530-arc11').then((m) => {
       window.__manikins = new m.ManikinScene(heroTitle, { count, animate: !reduced, debug });
     }).catch((e) => console.warn('[hero] manikins unavailable:', e?.message || e));
   });

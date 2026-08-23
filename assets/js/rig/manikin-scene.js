@@ -230,9 +230,12 @@ export class ManikinScene {
       clearTimeout(this._rt);
       this._rt = setTimeout(() => {
         // ignore resize events that don't change the headline box (devtools,
-        // screenshots, scrollbar flicker) — nothing to re-seat
+        // screenshots, scrollbar flicker) — nothing to re-seat. A pure DPR
+        // change (window dragged to a monitor with a different scale) keeps
+        // the same CSS box but needs a new backing resolution, so check it too.
         const r = this.h1.getBoundingClientRect();
-        if (Math.round(r.width) === this.W && Math.round(r.height) === this.H) return;
+        const dpr = Math.min(2, devicePixelRatio || 1);
+        if (Math.round(r.width) === this.W && Math.round(r.height) === this.H && dpr === this.dpr) return;
         this._resample().then((ok) => { if (ok !== false && !this.disposed) this._respawnKeepingStates(); });
       }, 120);
     };
@@ -294,12 +297,20 @@ export class ManikinScene {
     if (!m) { this.labelEl.style.opacity = 0; return; }
     const st = m.state === 'ragdoll' ? (m.grabbed ? 'ragdoll · grabbed' : 'ragdoll') : m.state;
     this.labelEl.textContent = `manikin_${String(m.id + 1).padStart(2, '0')} · ${st}`;
-    // position: client coords of the head, offset up-right, relative to .hero
-    const cr = this.canvas.getBoundingClientRect(); const sx = cr.width / (this.W + 2 * this.padX), sy = cr.height / (this.H + this.padTop);
+    // position: client coords of the head, offset up-right, relative to .hero.
+    // Both rects are cached for the frame: reading them after the textContent
+    // write forced two synchronous layouts per frame while hovering/dragging.
+    const cr = this._rectFor('canvas', this.canvas), hr = this._rectFor('hero', this._heroEl || (this._heroEl = document.querySelector('.hero'))) || { left: 0, top: 0 };
+    const sx = cr.width / (this.W + 2 * this.padX), sy = cr.height / (this.H + this.padTop);
     const hx = cr.left + (m.x[P.HEAD] + this.padX) * sx, hy = cr.top + (m.y[P.HEAD] + this.padTop) * sy;
-    const hr = document.querySelector('.hero')?.getBoundingClientRect() || { left: 0, top: 0 };
     this.labelEl.style.transform = `translate(${Math.round(hx - hr.left + 14)}px, ${Math.round(hy - hr.top - 24)}px)`;
     this.labelEl.style.opacity = 1;
+  }
+  /** getBoundingClientRect() cached per rAF frame (see _label / _toLocal). */
+  _rectFor(key, el) {
+    if (!el) return null;
+    if (this._rectFrame !== this._frameNo) { this._rects = {}; this._rectFrame = this._frameNo; }
+    return (this._rects || (this._rects = {}))[key] || (this._rects[key] = el.getBoundingClientRect());
   }
   _cursor(on) {
     document.querySelector('.cursor-ring')?.classList.toggle('is-hover', on);
@@ -390,6 +401,7 @@ export class ManikinScene {
   _frame(now) {
     this.rafId = null;
     if (this.disposed) return;
+    this._frameNo = (this._frameNo || 0) + 1;      // invalidates the per-frame rect cache (_rectFor)
     const dt = Math.min(0.05, (now - this.lastT) / 1000); this.lastT = now;
     const sky = this.sky; if (!sky) return;
     this._perceive(dt);

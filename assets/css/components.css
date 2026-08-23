@@ -176,6 +176,10 @@ body.is-arcade .cursor-dot, body.is-arcade .cursor-ring { display: none !importa
 @media (pointer: fine) {
   body.is-arcade, body.is-arcade *, body.is-arcade *::before, body.is-arcade *::after { cursor: none !important; }
 }
+/* hold-to-fire is a long mouse-down drag: without this it drag-selects the page
+   text under the ship (and a click can start a native image/link drag) */
+body.is-arcade { -webkit-user-select: none; user-select: none; }
+body.is-arcade a, body.is-arcade img { -webkit-user-drag: none; }
 .meta-bar .arcade-toggle { color: var(--ox); letter-spacing: 0.06em; background: none; border: 0; padding: 0; font: inherit; cursor: pointer; }
 .meta-bar .arcade-toggle[aria-pressed="true"] { color: var(--ink); }
 @media (pointer: coarse), (max-width: 767px) { .meta-bar .arcade-toggle { display: none; } }
@@ -335,7 +339,7 @@ body.is-arcade .cursor-dot, body.is-arcade .cursor-ring { display: none !importa
   background:
     radial-gradient(ellipse at 30% 20%, rgba(184, 50, 63, 0.2) 0%, transparent 55%),
     linear-gradient(135deg, #2C2823 0%, #161310 100%);
-  color: var(--mute);
+  color: var(--mute-dark);           /* on the dark placeholder gradient: --mute was 2.36:1 */
   font-family: var(--fm);
   font-size: 11px;
   letter-spacing: 0.12em;

@@ -48,24 +48,33 @@
   <link rel="stylesheet" href="./assets/css/base.css?v=20260530-aaa">
   <link rel="stylesheet" href="./assets/css/components.css?v=20260530-m1">
   <link rel="stylesheet" href="./assets/css/layout.css?v=20260530-m6">
-  <link rel="stylesheet" href="./assets/css/animations.css?v=20260530-aaa">
+  <link rel="stylesheet" href="./assets/css/animations.css?v=20260530-boot3">
 </head>
 <body>
 
   <a href="#main" class="skip-link">Salta al contenuto</a>
 
-  <!-- CRT boot loader removed for instant content (audit: 3.3s boot cost real
-       visitors). To bring it back, set FX_MAXIMAL=true in main.js and restore:
+  <!-- CRT boot: ~1.3s, ONCE PER SESSION. The 3.3s every-load version was cut by
+       an audit ("boot cost real visitors"); this inline script arms it before
+       first paint, so a repeat load (or a return from a project page) never
+       flashes black. Skippable with a tap/click/key. See assets/js/boot.js. -->
+  <script>
+    (function () {
+      try {
+        if (sessionStorage.getItem('bootSeen')) return;
+        if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        sessionStorage.setItem('bootSeen', '1');
+        document.documentElement.classList.add('boot-armed');
+      } catch (e) { /* private mode / storage blocked: no boot, no harm */ }
+    })();
+  </script>
   <div class="loader" aria-hidden="true">
     <div class="loader__boot">
       <div class="loader__boot-line" data-boot="> portfolio.shell · initializing"></div>
-      <div class="loader__boot-line" data-boot="> loading rig controls ........ [247 ok]"></div>
-      <div class="loader__boot-line" data-boot="> injecting magnetic field .... ok"></div>
       <div class="loader__boot-line" data-boot="> mounting three.js scene ..... ok"></div>
       <div class="loader__boot-line loader__boot-line--accent" data-boot="> system ready_"></div>
     </div>
   </div>
-  -->
 
   <div class="cursor-dot" aria-hidden="true"></div>
   <div class="cursor-ring" aria-hidden="true"></div>
@@ -604,7 +613,7 @@
     </div>
   </footer>
 
-  <script type="module" src="./assets/js/main.js?v=20260530-arc14"></script>
+  <script type="module" src="./assets/js/main.js?v=20260530-boot3"></script>
 
 </body>
 </html>

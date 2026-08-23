@@ -31,18 +31,18 @@ const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
  * ────────────────────────────────────────────────────────────────────────── */
 const FX_MAXIMAL = false;
 
-// 1. Boot sequence — typewriter terminal only in maximal mode; otherwise the
-//    loader (if present) just fades fast. Default landing = instant content.
-//    boot.js is dynamically imported so the default path never downloads it.
-window.addEventListener('load', () => {
+// 1. Boot sequence — the ~1.3 s CRT terminal, ONCE PER SESSION. An inline
+//    script in <head> decides before first paint (html.boot-armed): only then
+//    is the loader visible at all, and only then is boot.js downloaded, so a
+//    repeat load costs nothing and never flashes black. Skippable with a tap.
+//    Runs on DOMContentLoaded, not load: waiting for every image/video meant
+//    the black screen outlived the sequence on a slow connection.
+if (document.documentElement.classList.contains('boot-armed') && document.querySelector('.loader__boot')) {
+  import('./boot.js?v=20260530-boot3').then((m) => m.runBootSequence());
+} else {
   const loader = document.querySelector('.loader');
-  if (!loader) return;
-  if (FX_MAXIMAL && document.querySelector('.loader__boot')) {
-    import('./boot.js?v=20260516-perf').then((m) => m.runBootSequence());
-  } else {
-    setTimeout(() => loader.classList.add('is-loaded'), 220);
-  }
-});
+  if (loader) setTimeout(() => loader.classList.add('is-loaded'), 220);
+}
 
 // 2. Clock in meta-bar — Europe/Rome with CET/CEST (was the visitor's local
 //    time labelled "CET")

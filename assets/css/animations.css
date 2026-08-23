@@ -102,21 +102,27 @@ body.is-booting .img-reveal.is-revealed video { transform: scale(1.15); }
 
 /* ── Loader: CRT power-on + boot + shutdown sequence ──
    Phase 1 (power-on, 0-720ms): black, faint scanline grows from center
-   Phase 2 (booting, 720ms+typewriter): terminal flickers in, types lines
-   Phase 3 (shutdown, post-boot 700ms): terminal collapses to a thin
+   Phase 2 (booting, 380ms+typewriter): terminal flickers in, types lines
+   Phase 3 (shutdown, post-boot 380ms): terminal collapses to a thin
      horizontal line, line flashes white, loader fades to reveal page.
    States set by boot.js: .is-on, .is-shutdown, .is-loaded */
 .loader {
+  /* Hidden unless the inline <head> script armed it (first load of the
+     session, motion allowed). Decided BEFORE first paint, so a repeat visitor
+     never sees a flash of black. Phase durations are shared with boot.js. */
+  --boot-poweron: 320ms;
+  --boot-shutdown: 380ms;
+  display: none;
   position: fixed;
   inset: 0;
   z-index: 10000;
   background: #000;
-  display: grid;
   place-items: center;
   pointer-events: all;
   transition: opacity 360ms ease-out;
   overflow: hidden;
 }
+html.boot-armed .loader { display: grid; }
 
 /* CRT vignette + scanlines, fade in with the terminal */
 .loader::before {
@@ -154,7 +160,7 @@ body.is-booting .img-reveal.is-revealed video { transform: scale(1.15); }
 }
 /* Power-on: line shoots out horizontally, terminal flickers in */
 .loader.is-on::after {
-  animation: loader-poweron-line 720ms cubic-bezier(0.5, 0, 0.25, 1) forwards;
+  animation: loader-poweron-line var(--boot-poweron) cubic-bezier(0.5, 0, 0.25, 1) forwards;
 }
 @keyframes loader-poweron-line {
   0%   { transform: translateY(-50%) scaleX(0);   opacity: 0; }
@@ -169,13 +175,13 @@ body.is-booting .img-reveal.is-revealed video { transform: scale(1.15); }
   opacity: 0;
   transform: scaleY(0.04);
   transform-origin: center;
-  transition: opacity 240ms ease-out 500ms,
-              transform 460ms cubic-bezier(0.22, 1, 0.36, 1) 380ms;
+  transition: opacity 160ms ease-out 200ms,
+              transform 260ms cubic-bezier(0.22, 1, 0.36, 1) 150ms;
 }
 .loader.is-on .loader__boot {
   opacity: 1;
   transform: scaleY(1);
-  animation: loader-boot-flicker 0.6s steps(2, end) 950ms;
+  animation: loader-boot-flicker 0.36s steps(2, end) 420ms;
 }
 @keyframes loader-boot-flicker {
   0%, 100% { opacity: 1; }
@@ -189,13 +195,13 @@ body.is-booting .img-reveal.is-revealed video { transform: scale(1.15); }
 /* Shutdown phase: terminal collapses vertically to a line,
    horizontal line stretches across, white flash, loader fades */
 .loader.is-shutdown .loader__boot {
-  transition: transform 420ms cubic-bezier(0.65, 0, 0.35, 1),
-              opacity 240ms ease-in 300ms;
+  transition: transform 260ms cubic-bezier(0.65, 0, 0.35, 1),
+              opacity 160ms ease-in 140ms;
   transform: scaleY(0.02);
   opacity: 0;
 }
 .loader.is-shutdown::after {
-  animation: loader-shutdown-line 560ms cubic-bezier(0.22, 1, 0.36, 1) 280ms forwards;
+  animation: loader-shutdown-line 320ms cubic-bezier(0.22, 1, 0.36, 1) 120ms forwards;
 }
 @keyframes loader-shutdown-line {
   0%   { transform: translateY(-50%) scaleX(0.7); opacity: 0; background: var(--ox); }

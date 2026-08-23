@@ -1800,3 +1800,46 @@ a.project-credits__value:hover { color: var(--ox); }
 @media (max-width: 767px) {
   .project-next__inner { flex-direction: column; align-items: flex-start; }
 }
+
+/* ──────────────────────────────────────────────────────────────────────────
+ * MOBILE PASS (≤767px) — fixes from a visual sweep on a 390×844 phone.
+ * ────────────────────────────────────────────────────────────────────────── */
+@media (max-width: 767px) {
+  /* Showreel: the frame is 16/9, i.e. 219px tall at 390px wide, but the CTA
+     stack (tag + title + sub + button) needs ~230px. It was clipped by
+     overflow:hidden AND the button landed on top of the caption, which itself
+     hung half outside the black box. Let the frame follow its content. */
+  .showreel__frame { aspect-ratio: auto; }
+  .showreel__placeholder { position: relative; inset: auto; min-height: 42vh; }
+  .showreel__inner-cta { padding: 2.5rem 1.5rem; gap: 0.75rem; }
+  .showreel__caption {
+    position: static;
+    padding: 0.9rem var(--pad-side) 1.25rem;
+    text-align: center;
+  }
+
+  /* Contact: --gap-2xl is 12rem top AND bottom — ~450px of empty black before
+     the title on a phone. */
+  .contact__inner { padding: var(--gap-l) var(--pad-side); }
+
+  /* Hero: trim the dead paper between the meta-bar and the rig */
+  .hero { padding-top: 5rem; }
+
+  /* Footer identity line was a 160×15 tap target */
+  .footer__credit a { display: inline-block; padding: 0.35rem 0; }
+
+  /* Card meta: at gap:1rem the 3-item row was ~352px against 350px of usable
+     width, so it wrapped after every card. A tighter gap keeps it on one line
+     (and the ::before separator means a wrap never dangles a "·"). */
+  .project-card__meta { gap: 0.5rem; }
+
+  /* Vertical rhythm: --gap-l top AND bottom per section plus --gap-l under
+     every heading is ~370px of empty paper between two sections on a phone. */
+  section, .work { padding: var(--gap-m) 0; }   /* .work has its own --gap-l rule (higher specificity) */
+  .section-heading { margin-bottom: var(--gap-m); }
+  .work__grid { row-gap: var(--gap-m); }
+}
+
+/* The meta-bar is fixed (~66px): without this it covers the heading of
+   whatever section you jump to (#work / #about / #contact). */
+section[id] { scroll-margin-top: 6rem; }

@@ -423,9 +423,12 @@ body.is-arcade a, body.is-arcade img { -webkit-user-drag: none; }
   letter-spacing: 0.06em;
 }
 
-.project-card__meta span:not(:last-child)::after {
-  content: ' · ';
-  margin-left: 1rem;
+/* The separator belongs to the item that FOLLOWS it: as ::after on the
+   preceding item, a wrap left a dangling " ·" at the end of the line
+   (measured on a phone: "LP GROUP · SETPOINT STUDIO ·"). */
+.project-card__meta span:not(:first-child)::before {
+  content: '· ';
+  margin-right: 0.35rem;
   color: var(--ox);
 }
 

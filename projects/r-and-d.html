@@ -30,6 +30,21 @@
   <link rel="stylesheet" href="../assets/css/animations.css?v=20260530-boot3">
 
   <style>
+    /* This page was written against a token vocabulary that does not exist in
+       tokens.css (--gutter, --content-max, --font-display/-mono, --ink-30/40/60).
+       Every declaration using them was invalid at computed-value time and got
+       DROPPED — .rd-hero ended up with padding:0 and the fixed meta-bar covered
+       the breadcrumb and half the title (measured). Aliases to the real tokens: */
+    :root {
+      --gutter: var(--pad-side);
+      --content-max: var(--maxw);
+      --font-display: var(--fd);
+      --font-mono: var(--fm);
+      --ink-30: var(--mute);      /* AA on paper: 4.99:1 */
+      --ink-40: var(--mute);
+      --ink-60: var(--ink3);
+    }
+
     /* ── R&D Gallery styles ─────────────────────────────────────── */
     .rd-hero {
       padding: 6rem var(--gutter) 3rem;

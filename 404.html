@@ -10,8 +10,21 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=PT+Sans:wght@400;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
 
-  <link rel="icon" type="image/webp" href="/alessandrogiacobbi/assets/images/profile/alessandro-sm.webp">
-  <link rel="stylesheet" href="/alessandrogiacobbi/assets/css/tokens.css?v=20260530-arc11">
+  <!-- Self-contained: a 404 is served for ANY missing path, so a relative asset
+       URL resolves against the REQUESTED path and breaks, while an absolute one
+       hard-codes the repo name (dead on localhost and on a custom domain — the
+       page rendered as unstyled black-on-white serif). The handful of tokens it
+       needs are inlined instead; keep them in sync with assets/css/tokens.css. -->
+  <style>
+    :root {
+      --paper: #EDE6D6; --ink: #161310; --mute: #66605A;
+      --ox: #B4313D; --ox-deep: #8C1F2A;
+      --ox-bg: rgba(180, 49, 61, 0.08); --ox-line: rgba(180, 49, 61, 0.20);
+      --fd: 'Big Noodle Titling', 'Bebas Neue', 'Impact', sans-serif;
+      --fb: 'PT Sans', 'Inter', system-ui, -apple-system, sans-serif;
+      --fm: 'Geist Mono', 'JetBrains Mono', ui-monospace, monospace;
+    }
+  </style>
 
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }

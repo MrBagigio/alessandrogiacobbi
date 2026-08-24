@@ -549,5 +549,62 @@ window.addEventListener('load', () => document.getElementById('hero')?.classList
   });
 })();
 </script>
+
+<!-- ── Striscia demo (iniettata dal portfolio) ────────────────────────────────
+     Questi template sono demo complete, con un marchio inventato: serve a farle
+     vedere finite. Senza questa striscia però sembrano il sito di un cliente
+     vero. Fissa in basso (nessun template ha elementi fixed sul fondo, quindi
+     non copre nulla); il padding del body è misurato sulla barra a runtime,
+     perché a 390px va a capo e un'altezza fissa lasciava il fondo pagina
+     coperto (misurato: 110px reali contro 58 riservati). -->
+<style>
+  .sp-demobar {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 2147483000;
+    display: flex; align-items: center; justify-content: center;
+    flex-wrap: wrap; gap: 0.3rem 0.9rem;
+    padding: 0.55rem 1rem;
+    background: #161310; color: #EDE6D6;
+    font-family: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 12px; line-height: 1.35; letter-spacing: 0.04em;
+    text-align: center;
+    box-shadow: 0 -8px 24px rgba(22, 19, 16, 0.18);
+  }
+  .sp-demobar__tag {
+    color: #EDE6D6; background: #B4313D;
+    padding: 0.15rem 0.5rem; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+  }
+  .sp-demobar__txt { color: #948E84; }
+  .sp-demobar__cta {
+    color: #EDE6D6; text-decoration: none;
+    border-bottom: 1px dashed rgba(237, 230, 214, 0.5);
+    /* target da 22px: sotto il minimo AA di 24 (misurato) */
+    display: inline-flex; align-items: center; min-height: 26px;
+    padding: 0.15rem 0;
+    transition: color 200ms, border-color 200ms;
+  }
+  .sp-demobar__cta:hover, .sp-demobar__cta:focus-visible { color: #D2747E; border-bottom-color: #D2747E; }
+  /* stretto: una riga sola, la frase lunga sparisce */
+  @media (max-width: 620px) {
+    .sp-demobar { font-size: 11px; gap: 0.5rem; padding: 0.5rem 0.75rem; }
+    .sp-demobar__txt { display: none; }
+  }
+  @media print { .sp-demobar { display: none; } }
+</style>
+<div class="sp-demobar" role="note">
+  <span class="sp-demobar__tag">Demo</span>
+  <span class="sp-demobar__txt">Template Setpoint &middot; nome, foto e testi sono di esempio</span>
+  <a class="sp-demobar__cta" href="../../index.html#contact">Lo voglio per la mia attivit&agrave; &rarr;</a>
+</div>
+<script>
+  (function () {
+    var bar = document.querySelector('.sp-demobar');
+    if (!bar) return;
+    var sync = function () { document.body.style.paddingBottom = bar.offsetHeight + 'px'; };
+    sync();
+    addEventListener('resize', sync, { passive: true });
+    if (window.ResizeObserver) new ResizeObserver(sync).observe(bar);
+  })();
+</script>
 </body>
 </html>

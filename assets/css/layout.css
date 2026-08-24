@@ -713,8 +713,11 @@ section {
 }
 
 .footer__credit { color: var(--mute-dark); }   /* on --ink2: --mute was 2.36:1 */
-.footer__credit a { color: var(--paper); border-bottom: 1px dashed transparent; transition: border var(--dur-base); }
-.footer__credit a:hover { border-bottom-color: var(--ox-dark); color: var(--ox-dark); }
+/* The dashed rule is VISIBLE at rest: with the surrounding text lightened to
+   --mute-dark, paper-on-mute-dark is only 2.61:1 and the link was distinguished
+   by colour alone (WCAG 1.4.1 / Lighthouse link-in-text-block). */
+.footer__credit a { color: var(--paper); border-bottom: 1px dashed rgba(237, 230, 214, 0.45); transition: border var(--dur-base), color var(--dur-base); }
+.footer__credit a:hover, .footer__credit a:focus-visible { border-bottom-color: var(--ox-dark); color: var(--ox-dark); }
 
 .footer__socials {
   display: flex;

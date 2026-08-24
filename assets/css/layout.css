@@ -1493,9 +1493,12 @@ a.project-credits__value:hover { color: var(--ox); }
 .project-xray__hint {
   position: absolute;
   z-index: 4;
-  top: 50%;
+  /* Il soggetto occupa la fascia y 27%-76% del frame (misurata campionando i
+     fotogrammi): al centro l'invito copriva la faccia, in fondo finiva addosso
+     alla didascalia. Sta nella fascia libera in alto, sotto la riga REC. */
+  top: 20%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translateX(-50%);
   padding: 0.55rem 1rem;
   background: rgba(0,0,0,0.72);
   color: var(--paper);
@@ -1568,7 +1571,11 @@ a.project-credits__value:hover { color: var(--ox); }
     left: 0.45rem;
     font-size: 8px;
     padding: 0.15rem 0.45rem;
-    max-width: 50%;
+    /* era 50%: la didascalia più lunga ne chiedeva 52 e finiva in "…".
+       Il tetto è 58: l'etichetta in basso a destra del tile largo
+       ("FINAL · 48kHz") parte al 63%, e a 62 la didascalia le finiva addosso
+       per 7px (misurato). */
+    max-width: 58%;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;

@@ -1493,14 +1493,19 @@ a.project-credits__value:hover { color: var(--ox); }
 .project-xray__hint {
   position: absolute;
   z-index: 4;
-  /* Il soggetto occupa la fascia y 27%-76% del frame (misurata campionando i
-     fotogrammi): al centro l'invito copriva la faccia, in fondo finiva addosso
-     alla didascalia. Sta nella fascia libera in alto, sotto la riga REC. */
-  top: 20%;
+  /* Dopo lo zoom dell'inquadratura il soggetto riempie l'83% dell'altezza: una
+     fascia libera dove mettere l'invito non esiste più, e la barra opaca in alto
+     tagliava la testa del personaggio. Quindi: al centro, come da convenzione
+     per un "passa sopra per rivelare", ma leggera — semitrasparente e sfocata
+     dietro, così si legge come un velo e non come una banda che taglia il
+     modello. Sparisce comunque al primo movimento. */
+  top: 50%;
   left: 50%;
-  transform: translateX(-50%);
-  padding: 0.55rem 1rem;
-  background: rgba(0,0,0,0.72);
+  transform: translate(-50%, -50%);
+  padding: 0.5rem 0.9rem;
+  background: rgba(22, 19, 16, 0.5);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
   color: var(--paper);
   font-family: var(--fm);
   font-size: 10px;
@@ -1941,4 +1946,22 @@ section[id] { scroll-margin-top: 6rem; }
   }
   .hero__meta { bottom: 1rem; gap: 1rem; }
   .hero__meta-block { gap: 0.15rem; }
+}
+
+/* ── X-ray turnaround: inquadratura ───────────────────────────────────────────
+   Nel render sorgente il camaleonte occupa solo il 36% della larghezza e il 55%
+   dell'altezza del frame (misurato campionando 24 fotogrammi di entrambi i
+   layer sull'intero loop da 5s): il resto è grigio. object-view-box ritaglia la
+   SORGENTE lasciando intatta la geometria dell'elemento — quindi la maschera
+   radiale della lente, che vive nel box dell'elemento, continua a combaciare
+   col cursore senza compensazioni.
+   Il ritaglio è 1.5×, centrato sul soggetto (54.5%, 54.7%): il suo bounding box
+   sull'intero loop resta dentro con ~6% di margine su ogni lato. Le due tracce
+   ricevono lo stesso ritaglio, così geo e rig restano registrate.
+   Dove object-view-box non c'è (Firefox) si vede l'inquadratura di prima. */
+@supports (object-view-box: inset(10% 10% 10% 10%)) {
+  .project-xray__layer--geo,
+  .project-xray__layer--rig {
+    object-view-box: inset(21.35% 12.15% 11.95% 21.15%);
+  }
 }

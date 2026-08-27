@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html lang="it-IT">
 <head>
+<script>document.documentElement.classList.add('js');</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✨</text></svg>">
   <meta name="theme-color" content="#0E0B08">
   <!-- audit-100-100 hardening v1 -->
   <link rel="canonical" href="https://example.com/">
@@ -87,8 +89,10 @@
 
   /* Reveal masks */
   .reveal { overflow: hidden; }
-  .reveal > .reveal-inner { display: inline-block; transform: translateY(110%); opacity: 0; }
+  .reveal > .reveal-inner { display: inline-block; }
+  html.js .reveal:not(.reveal-active) > .reveal-inner { transform: translateY(110%); opacity: 0; }
   .reveal-active > .reveal-inner { transform: translateY(0); opacity: 1; transition: transform 1s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.8s ease; }
+  @media (prefers-reduced-motion: reduce) { html.js .reveal:not(.reveal-active) > .reveal-inner { transform: none; opacity: 1; } }
 
   /* Image reveal */
   .img-reveal { position: relative; overflow: hidden; }
@@ -165,7 +169,7 @@
 
   /* Sticky nav */
   .nav { position: fixed; top: 1.5rem; left: 50%; transform: translateX(-50%); z-index: 100; padding: 0.5rem 0.5rem 0.5rem 1.5rem; background: rgba(14,11,8,0.6); backdrop-filter: blur(20px); border: 1px solid var(--line); border-radius: 999px; display: flex; align-items: center; gap: 2rem; transition: top 0.4s; }
-  @media (max-width: 768px) { .nav { width: calc(100% - 2rem); justify-content: space-between; } .nav-links { display: none; } }
+  @media (max-width: 768px) { .nav { width: calc(100% - 2rem); justify-content: space-between; } .nav .nav-links { display: none; } } /* .nav .nav-links: la regola base display:flex e' dichiarata DOPO e a pari specificita' vinceva -> link sbordavano dalla pill su mobile */
   .nav-links { display: flex; gap: 1.5rem; font-size: 0.85rem; }
   .nav-links a { color: rgba(244,237,226,0.6); text-decoration: none; transition: color 0.3s; }
   .nav-links a:hover { color: var(--cream); }
@@ -594,7 +598,6 @@
   window.addEventListener('load', () => {
     setTimeout(() => {
       document.getElementById('loader').classList.add('gone');
-      gsap.from('.reveal-trigger .reveal-inner, .reveal-active .reveal-inner', { yPercent: 110, opacity: 0, duration: 1, stagger: 0.05, ease: 'power3.out' });
     }, 600);
   });
 
@@ -617,14 +620,16 @@
   gsap.ticker.lagSmoothing(0);
 
   // Reveal text on scroll
+  // Reveal testo via classe CSS (.reveal-active), NON via tween GSAP: GSAP
+  // ri-parsava il transform inline in px come offset y residuo e la hero
+  // restava bloccata a translateY(110%) con il titolo invisibile.
   document.querySelectorAll('.reveal').forEach((el) => {
-    const inner = el.querySelector('.reveal-inner');
-    if (!inner) return;
-    gsap.set(inner, { yPercent: 110, opacity: 0 });
+    if (!el.querySelector('.reveal-inner')) return;
     ScrollTrigger.create({
       trigger: el,
       start: 'top 85%',
-      onEnter: () => gsap.to(inner, { yPercent: 0, opacity: 1, duration: 1, ease: 'power3.out' }),
+      once: true,
+      onEnter: () => el.classList.add('reveal-active'),
     });
   });
 
@@ -731,6 +736,8 @@
     .sp-demobar__txt { display: none; }
   }
   @media print { .sp-demobar { display: none; } }
+  /* tap target: i link del footer misuravano 14-15px (minimo AA: 24) */
+  footer a, form a, nav a { display: inline-block; padding-block: 0.3rem; margin-block: -0.3rem; }
 </style>
 <div class="sp-demobar" role="note">
   <span class="sp-demobar__tag">Demo</span>

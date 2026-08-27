@@ -225,6 +225,62 @@ a{color:inherit;text-decoration:none}
 .reveal.is-revealed{opacity:1;transform:translateY(0)}
 @media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}.hero__title,.hero__sub,.hero__actions,.hero__eyebrow,.hero__rail{opacity:1;transform:none;animation:none}}
 .magnetic{position:relative;display:inline-flex}
+
+/* Nav fissa + ancore interne: senza questo ogni voce di menu porta il titolo
+   della sezione sotto la barra. Le nav vanno da 52 a 66px da scrollate; 6rem
+   copre tutte con un po' d'aria sopra, 4.5rem sul mobile dove la barra e' piu'
+   bassa e lo schermo piu' corto. */
+section[id], main[id] { scroll-margin-top: 6rem; }
+@media (max-width: 760px) { section[id], main[id] { scroll-margin-top: 4.5rem; } }
+</style>
+<!-- ── Striscia demo (iniettata dal portfolio) ─────────────────────────
+     Questi template sono demo complete, con un marchio inventato: serve a farle
+     vedere finite. Senza questa striscia però sembrano il sito di un cliente
+     vero. Fissa in basso; il padding del body è misurato a runtime, perché a
+     390px la barra va a capo e un'altezza fissa lasciava il fondo pagina
+     coperto (misurato: 110px reali contro 58 riservati).
+
+     I template che hanno una loro barra CTA fissa in fondo (.sticky-call) o un
+     bottone WhatsApp flottante finirebbero SOTTO questa striscia: vengono
+     sollevati di --sp-demobar-h, e il padding del body somma le due altezze. -->
+<style>
+  .sp-demobar {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 2147483000;
+    display: flex; align-items: center; justify-content: center;
+    flex-wrap: wrap; gap: 0.3rem 0.9rem;
+    padding: 0.55rem 1rem;
+    background: #161310; color: #EDE6D6;
+    font-family: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 12px; line-height: 1.35; letter-spacing: 0.04em;
+    text-align: center;
+    box-shadow: 0 -8px 24px rgba(22, 19, 16, 0.18);
+  }
+  .sp-demobar__tag {
+    color: #EDE6D6; background: #B4313D;
+    padding: 0.15rem 0.5rem; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+  }
+  .sp-demobar__txt { color: #948E84; }
+  .sp-demobar__cta {
+    color: #EDE6D6; text-decoration: none;
+    border-bottom: 1px dashed rgba(237, 230, 214, 0.5);
+    /* target da 22px: sotto il minimo AA di 24 (misurato) */
+    display: inline-flex; align-items: center; min-height: 26px;
+    padding: 0.15rem 0;
+    transition: color 200ms, border-color 200ms;
+  }
+  .sp-demobar__cta:hover, .sp-demobar__cta:focus-visible { color: #D2747E; border-bottom-color: #D2747E; }
+  /* stretto: una riga sola, la frase lunga sparisce */
+  @media (max-width: 620px) {
+    .sp-demobar { font-size: 11px; gap: 0.5rem; padding: 0.5rem 0.75rem; }
+    .sp-demobar__txt { display: none; }
+  }
+  @media print { .sp-demobar { display: none; } }
+  /* tap target: i link del footer misuravano 14-15px (minimo AA: 24) */
+  footer a, form a, nav a, .meta a, .prova__notes a, .price a { display: inline-block; padding-block: 0.3rem; margin-block: -0.3rem; }
+  /* barre del template sopra la striscia, non sotto */
+  .sticky-call { bottom: var(--sp-demobar-h, 0px); }
+  .whatsapp-fab { bottom: calc(var(--sp-demobar-h, 0px) + 1.25rem); }
 </style>
 </head>
 <body>
@@ -515,50 +571,6 @@ window.addEventListener('load', () => document.getElementById('hero')?.classList
   });
 })();
 </script>
-
-<!-- ── Striscia demo (iniettata dal portfolio) ────────────────────────────────
-     Questi template sono demo complete, con un marchio inventato: serve a farle
-     vedere finite. Senza questa striscia però sembrano il sito di un cliente
-     vero. Fissa in basso (nessun template ha elementi fixed sul fondo, quindi
-     non copre nulla); il padding del body è misurato sulla barra a runtime,
-     perché a 390px va a capo e un'altezza fissa lasciava il fondo pagina
-     coperto (misurato: 110px reali contro 58 riservati). -->
-<style>
-  .sp-demobar {
-    position: fixed; left: 0; right: 0; bottom: 0; z-index: 2147483000;
-    display: flex; align-items: center; justify-content: center;
-    flex-wrap: wrap; gap: 0.3rem 0.9rem;
-    padding: 0.55rem 1rem;
-    background: #161310; color: #EDE6D6;
-    font-family: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
-    font-size: 12px; line-height: 1.35; letter-spacing: 0.04em;
-    text-align: center;
-    box-shadow: 0 -8px 24px rgba(22, 19, 16, 0.18);
-  }
-  .sp-demobar__tag {
-    color: #EDE6D6; background: #B4313D;
-    padding: 0.15rem 0.5rem; font-weight: 700;
-    letter-spacing: 0.1em; text-transform: uppercase;
-  }
-  .sp-demobar__txt { color: #948E84; }
-  .sp-demobar__cta {
-    color: #EDE6D6; text-decoration: none;
-    border-bottom: 1px dashed rgba(237, 230, 214, 0.5);
-    /* target da 22px: sotto il minimo AA di 24 (misurato) */
-    display: inline-flex; align-items: center; min-height: 26px;
-    padding: 0.15rem 0;
-    transition: color 200ms, border-color 200ms;
-  }
-  .sp-demobar__cta:hover, .sp-demobar__cta:focus-visible { color: #D2747E; border-bottom-color: #D2747E; }
-  /* stretto: una riga sola, la frase lunga sparisce */
-  @media (max-width: 620px) {
-    .sp-demobar { font-size: 11px; gap: 0.5rem; padding: 0.5rem 0.75rem; }
-    .sp-demobar__txt { display: none; }
-  }
-  @media print { .sp-demobar { display: none; } }
-  /* tap target: i link del footer misuravano 14-15px (minimo AA: 24) */
-  footer a, form a, nav a { display: inline-block; padding-block: 0.3rem; margin-block: -0.3rem; }
-</style>
 <div class="sp-demobar" role="note">
   <span class="sp-demobar__tag">Demo</span>
   <span class="sp-demobar__txt">Template Setpoint &middot; nome, foto e testi sono di esempio</span>
@@ -568,11 +580,24 @@ window.addEventListener('load', () => document.getElementById('hero')?.classList
   (function () {
     var bar = document.querySelector('.sp-demobar');
     if (!bar) return;
-    var sync = function () { document.body.style.paddingBottom = bar.offsetHeight + 'px'; };
+    var sticky = document.querySelector('.sticky-call');
+    var sync = function () {
+      var h = bar.offsetHeight;
+      document.documentElement.style.setProperty('--sp-demobar-h', h + 'px');
+      // su desktop la barra del template è display:none e misura 0, quindi
+      // la stessa somma vale per entrambi i casi senza un ramo dedicato
+      var s = sticky ? sticky.offsetHeight : 0;
+      document.body.style.paddingBottom = (h + s) + 'px';
+    };
     sync();
     addEventListener('resize', sync, { passive: true });
-    if (window.ResizeObserver) new ResizeObserver(sync).observe(bar);
+    if (window.ResizeObserver) {
+      var ro = new ResizeObserver(sync);
+      ro.observe(bar);
+      if (sticky) ro.observe(sticky);
+    }
   })();
 </script>
+
 </body>
 </html>

@@ -10,7 +10,7 @@
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="robots" content="index,follow,max-image-preview:large">
 <meta name="format-detection" content="telephone=no">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://images.unsplash.com; connect-src 'self'; base-uri 'self'; form-action 'self' mailto:">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self'; img-src 'self' data: https://images.unsplash.com; connect-src 'self'; base-uri 'self'; form-action 'self' mailto:">
 
 <title>Libreria Bertoldi — Libreria e cartoleria a Schio (VI)</title>
 <meta name="description" content="Libreria indipendente e cartoleria a Schio: qualunque titolo ordinato in 24-48 ore, libri scolastici con cedola, consigli di lettura fatti da persone, quaderni e materiale per la scuola, stampe e rilegature.">
@@ -23,12 +23,156 @@
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://images.unsplash.com" crossorigin>
+  <link rel="preload" as="font" type="font/woff2" href="fonts/q5uBsoa5M_tv7IihmnkabARekYNwDQ.woff2" crossorigin>
+  <link rel="preload" as="font" type="font/woff2" href="fonts/q5uDsoa5M_tv7IihmnkabARboYE.woff2" crossorigin>
 <link rel="preload" as="image" href="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=2400&q=80&fm=webp" imagesrcset="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=800&q=80&fm=webp 800w, https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=1200&q=80&fm=webp 1200w, https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=1600&q=80&fm=webp 1600w, https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=2400&q=80&fm=webp 2400w" imagesizes="100vw" fetchpriority="high">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Space+Grotesk:wght@300;400;500;600&display=swap">
+<style>/* Google Fonts inline (solo latin) — il CSS remoto era render-blocking */
+@font-face {
+  font-family: 'Crimson Pro';
+  font-style: italic;
+  font-weight: 300;
+  font-display: swap;
+  src: url(fonts/q5uBsoa5M_tv7IihmnkabARekY1wDfKi.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Crimson Pro';
+  font-style: italic;
+  font-weight: 300;
+  font-display: swap;
+  src: url(fonts/q5uBsoa5M_tv7IihmnkabARekYNwDQ.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Crimson Pro';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url(fonts/q5uBsoa5M_tv7IihmnkabARekY1wDfKi.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Crimson Pro';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url(fonts/q5uBsoa5M_tv7IihmnkabARekYNwDQ.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Crimson Pro';
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src: url(fonts/q5uDsoa5M_tv7IihmnkabARVoYFoCQ.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Crimson Pro';
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src: url(fonts/q5uDsoa5M_tv7IihmnkabARboYE.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Crimson Pro';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(fonts/q5uDsoa5M_tv7IihmnkabARVoYFoCQ.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Crimson Pro';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(fonts/q5uDsoa5M_tv7IihmnkabARboYE.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Crimson Pro';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(fonts/q5uDsoa5M_tv7IihmnkabARVoYFoCQ.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Crimson Pro';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(fonts/q5uDsoa5M_tv7IihmnkabARboYE.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Space Grotesk';
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src: url(fonts/V8mDoQDjQSkFtoMM3T6r8E7mPb94C-s0.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Space Grotesk';
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src: url(fonts/V8mDoQDjQSkFtoMM3T6r8E7mPbF4Cw.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Space Grotesk';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(fonts/V8mDoQDjQSkFtoMM3T6r8E7mPb94C-s0.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Space Grotesk';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(fonts/V8mDoQDjQSkFtoMM3T6r8E7mPbF4Cw.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Space Grotesk';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(fonts/V8mDoQDjQSkFtoMM3T6r8E7mPb94C-s0.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Space Grotesk';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(fonts/V8mDoQDjQSkFtoMM3T6r8E7mPbF4Cw.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Space Grotesk';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(fonts/V8mDoQDjQSkFtoMM3T6r8E7mPb94C-s0.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Space Grotesk';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(fonts/V8mDoQDjQSkFtoMM3T6r8E7mPbF4Cw.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+</style>
 
 <script type="application/ld+json">
 {
@@ -372,7 +516,7 @@ section[id], main[id] { scroll-margin-top: 6rem; }
     <div class="rows">
       <article class="row reveal">
         <div class="row__media">
-          <img src="https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=1000&q=75&fm=webp" alt="Scaffali di legno pieni di libri dal pavimento al soffitto" width="1000" height="750" loading="lazy" decoding="async">
+          <img src="https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=1000&q=62&fm=webp" srcset="https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=480&q=62&fm=webp 480w, https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=700&q=62&fm=webp 700w, https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=1000&q=62&fm=webp 1000w, https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=1400&q=62&fm=webp 1400w" sizes="(min-width: 920px) 46vw, 92vw" alt="Scaffali di legno pieni di libri dal pavimento al soffitto" width="1000" height="750" loading="lazy" decoding="async">
           <span class="row__tag">Libri</span>
         </div>
         <div class="row__copy">
@@ -390,7 +534,7 @@ section[id], main[id] { scroll-margin-top: 6rem; }
 
       <article class="row reveal">
         <div class="row__media">
-          <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=1000&q=75&fm=webp" alt="Libri, quaderni, matite colorate e cubetti dell'alfabeto su un banco" width="1000" height="750" loading="lazy" decoding="async">
+          <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=1000&q=75&fm=webp" srcset="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=480&q=75&fm=webp 480w, https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=700&q=75&fm=webp 700w, https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=1000&q=75&fm=webp 1000w, https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=1400&q=75&fm=webp 1400w" sizes="(min-width: 920px) 46vw, 92vw" alt="Libri, quaderni, matite colorate e cubetti dell'alfabeto su un banco" width="1000" height="750" loading="lazy" decoding="async">
           <span class="row__tag">Cartoleria</span>
         </div>
         <div class="row__copy">
@@ -408,7 +552,7 @@ section[id], main[id] { scroll-margin-top: 6rem; }
 
       <article class="row reveal">
         <div class="row__media">
-          <img src="https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=1000&q=75&fm=webp" alt="Pila di libri dalle copertine colorate" width="1000" height="750" loading="lazy" decoding="async">
+          <img src="https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=1000&q=75&fm=webp" srcset="https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=480&q=75&fm=webp 480w, https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=700&q=75&fm=webp 700w, https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=1000&q=75&fm=webp 1000w, https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=1400&q=75&fm=webp 1400w" sizes="(min-width: 920px) 46vw, 92vw" alt="Pila di libri dalle copertine colorate" width="1000" height="750" loading="lazy" decoding="async">
           <span class="row__tag">Servizi</span>
         </div>
         <div class="row__copy">
@@ -512,7 +656,7 @@ section[id], main[id] { scroll-margin-top: 6rem; }
   <div class="section__inner">
     <div class="school__split">
       <div class="school__media reveal">
-        <img src="https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=1100&q=75&fm=webp" alt="Scaffalatura curva di una biblioteca vista dall'alto" width="1100" height="830" loading="lazy" decoding="async">
+        <img src="https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=1100&q=75&fm=webp" srcset="https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=480&q=75&fm=webp 480w, https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=700&q=75&fm=webp 700w, https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=1000&q=75&fm=webp 1000w, https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=1400&q=75&fm=webp 1400w" sizes="(min-width: 920px) 46vw, 92vw" alt="Scaffalatura curva di una biblioteca vista dall'alto" width="1100" height="830" loading="lazy" decoding="async">
       </div>
       <div class="school__copy reveal">
         <span class="eyebrow">Libri scolastici</span>

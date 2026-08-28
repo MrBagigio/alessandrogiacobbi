@@ -10,7 +10,7 @@
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="robots" content="index,follow,max-image-preview:large">
 <meta name="format-detection" content="telephone=no">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://images.unsplash.com; connect-src 'self'; base-uri 'self'; form-action 'self' mailto:">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self'; img-src 'self' data: https://images.unsplash.com; connect-src 'self'; base-uri 'self'; form-action 'self' mailto:">
 
 <title>Salone Aurora — Parrucchiere d'autore a Vicenza · Taglio, colore, cura</title>
 <meta name="description" content="Salone di parrucchiere a Vicenza. Taglio, colore e balayage, piega, trattamenti su misura. Consulenza d'immagine, prodotti professionali, team formato. Su appuntamento, martedì–sabato.">
@@ -25,12 +25,108 @@
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://images.unsplash.com" crossorigin>
+  <link rel="preload" as="font" type="font/woff2" href="fonts/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7.woff2" crossorigin>
+  <link rel="preload" as="font" type="font/woff2" href="fonts/-nFnOHM81r4j6k0gjAW3mujVU2B2G_Bx0g.woff2" crossorigin>
 <link rel="preload" as="image" href="https://images.unsplash.com/photo-1560066984-138dadb4c035?w=2400&q=80&fm=webp" imagesrcset="https://images.unsplash.com/photo-1560066984-138dadb4c035?w=800&q=80&fm=webp 800w, https://images.unsplash.com/photo-1560066984-138dadb4c035?w=1200&q=80&fm=webp 1200w, https://images.unsplash.com/photo-1560066984-138dadb4c035?w=1600&q=80&fm=webp 1600w, https://images.unsplash.com/photo-1560066984-138dadb4c035?w=2400&q=80&fm=webp 2400w" imagesizes="100vw" fetchpriority="high">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600&display=swap">
+<style>/* Google Fonts inline (solo latin) — il CSS remoto era render-blocking */
+@font-face {
+  font-family: 'DM Serif Display';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url(fonts/-nFhOHM81r4j6k0gjAW3mujVU2B2G_VB3vD212k.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'DM Serif Display';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url(fonts/-nFhOHM81r4j6k0gjAW3mujVU2B2G_VB0PD2.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'DM Serif Display';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(fonts/-nFnOHM81r4j6k0gjAW3mujVU2B2G_5x0ujy.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'DM Serif Display';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(fonts/-nFnOHM81r4j6k0gjAW3mujVU2B2G_Bx0g.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src: url(fonts/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa25L7SUc.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src: url(fonts/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(fonts/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa25L7SUc.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(fonts/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(fonts/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa25L7SUc.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(fonts/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(fonts/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa25L7SUc.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(fonts/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+</style>
 
 <script type="application/ld+json">
 {
@@ -345,7 +441,7 @@ section[id], main[id] { scroll-margin-top: 6rem; }
     <div class="services">
 
       <article class="service reveal">
-        <div class="service__media"><img src="https://images.unsplash.com/photo-1562322140-8baeececf3df?w=1200&q=80&fm=webp" alt="Postazione di taglio del Salone Aurora con poltrona e specchio" width="1200" height="1500" loading="lazy" decoding="async"></div>
+        <div class="service__media"><img src="https://images.unsplash.com/photo-1562322140-8baeececf3df?w=1200&q=80&fm=webp" srcset="https://images.unsplash.com/photo-1562322140-8baeececf3df?w=480&q=80&fm=webp 480w, https://images.unsplash.com/photo-1562322140-8baeececf3df?w=700&q=80&fm=webp 700w, https://images.unsplash.com/photo-1562322140-8baeececf3df?w=1000&q=80&fm=webp 1000w, https://images.unsplash.com/photo-1562322140-8baeececf3df?w=1400&q=80&fm=webp 1400w" sizes="(min-width: 920px) 46vw, 92vw" alt="Postazione di taglio del Salone Aurora con poltrona e specchio" width="1200" height="1500" loading="lazy" decoding="async"></div>
         <div class="service__copy">
           <span class="service__price">Taglio &amp; styling · da € 18</span>
           <h3>Taglio &amp; <em>styling</em></h3>
@@ -359,7 +455,7 @@ section[id], main[id] { scroll-margin-top: 6rem; }
       </article>
 
       <article class="service reveal">
-        <div class="service__media"><img src="https://images.unsplash.com/photo-1492106087820-71f1a00d2b11?w=1200&q=80&fm=webp" alt="Lavorazione del colore tra le ciocche di capelli al Salone Aurora" width="1200" height="1500" loading="lazy" decoding="async"></div>
+        <div class="service__media"><img src="https://images.unsplash.com/photo-1492106087820-71f1a00d2b11?w=1200&q=62&fm=webp" srcset="https://images.unsplash.com/photo-1492106087820-71f1a00d2b11?w=480&q=62&fm=webp 480w, https://images.unsplash.com/photo-1492106087820-71f1a00d2b11?w=700&q=62&fm=webp 700w, https://images.unsplash.com/photo-1492106087820-71f1a00d2b11?w=1000&q=62&fm=webp 1000w, https://images.unsplash.com/photo-1492106087820-71f1a00d2b11?w=1400&q=62&fm=webp 1400w" sizes="(min-width: 920px) 46vw, 92vw" alt="Lavorazione del colore tra le ciocche di capelli al Salone Aurora" width="1200" height="1500" loading="lazy" decoding="async"></div>
         <div class="service__copy">
           <span class="service__price">Colore &amp; balayage · da € 45</span>
           <h3>Colore &amp; <em>balayage</em></h3>
@@ -373,7 +469,7 @@ section[id], main[id] { scroll-margin-top: 6rem; }
       </article>
 
       <article class="service reveal">
-        <div class="service__media"><img src="https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=1200&q=80&fm=webp" alt="Dettaglio di cura e finitura del capello al Salone Aurora" width="1200" height="1500" loading="lazy" decoding="async"></div>
+        <div class="service__media"><img src="https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=1200&q=80&fm=webp" srcset="https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=480&q=80&fm=webp 480w, https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=700&q=80&fm=webp 700w, https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=1000&q=80&fm=webp 1000w, https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=1400&q=80&fm=webp 1400w" sizes="(min-width: 920px) 46vw, 92vw" alt="Dettaglio di cura e finitura del capello al Salone Aurora" width="1200" height="1500" loading="lazy" decoding="async"></div>
         <div class="service__copy">
           <span class="service__price">Trattamenti &amp; cura · da € 35</span>
           <h3>Trattamenti &amp; <em>cura</em></h3>

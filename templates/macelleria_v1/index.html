@@ -27,7 +27,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://images.unsplash.com" crossorigin>
-<link rel="preload" as="image" href="https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?w=2400&q=80&fm=webp" fetchpriority="high">
+<link rel="preload" as="image" href="https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?w=2400&q=80&fm=webp" imagesrcset="https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?w=800&q=80&fm=webp 800w, https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?w=1200&q=80&fm=webp 1200w, https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?w=1600&q=80&fm=webp 1600w, https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?w=2400&q=80&fm=webp 2400w" imagesizes="100vw" fetchpriority="high">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Source+Sans+3:wght@300;400;500;600&display=swap">
 
 <script type="application/ld+json">
@@ -74,7 +74,7 @@
 :root{
   --bg:#20140F;--bg-2:#2A1B14;--bg-3:#35231A;--bg-deep:#170E0A;
   --bone:#F2EBE1;--bone-2:#DECFBB;
-  --ink:#20140F;--ink-soft:rgba(242,235,225,0.8);--ink-mute:rgba(242,235,225,0.54);
+  --ink:#20140F;--ink-soft:rgba(242,235,225,0.8);--ink-mute:rgba(242,235,225,0.65);
   --blood:#B93A32;--blood-soft:rgba(185,58,50,0.16);
   --fat:#E0B65C;--fat-soft:rgba(224,182,92,0.16);
   --hair:rgba(242,235,225,0.12);--hair-2:rgba(242,235,225,0.22);
@@ -235,10 +235,10 @@ section[id], main[id] { scroll-margin-top: 6rem; }
 .footer__top{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:40px}
 @media (max-width:900px){.footer__top{grid-template-columns:1fr 1fr}}
 @media (max-width:560px){.footer__top{grid-template-columns:1fr}}
-.footer__brand h4{margin:0 0 14px;font-family:var(--display);font-weight:700;font-size:25px;text-transform:uppercase;letter-spacing:0.03em;color:var(--bone)}
+.footer__brand h2{margin:0 0 14px;font-family:var(--display);font-weight:700;font-size:25px;text-transform:uppercase;letter-spacing:0.03em;color:var(--bone)}
 .footer__brand p{margin:0 0 18px;font-size:15px;color:var(--ink-mute);line-height:1.72;max-width:40ch;font-weight:300}
 .footer__call{display:inline-flex;align-items:center;gap:10px;font-family:var(--display);font-size:23px;font-weight:700;color:var(--fat)}
-.footer__col h5{margin:0 0 16px;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:var(--ink-mute);font-weight:600}
+.footer__col h3{margin:0 0 16px;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:var(--ink-mute);font-weight:600}
 .footer__col a{display:block;padding:6px 0;font-size:15px;color:var(--ink-soft);transition:color var(--dur-1) var(--ease)}
 .footer__col a:hover{color:var(--fat)}
 .footer__bottom{max-width:1280px;margin:42px auto 0;padding-top:24px;border-top:1px solid var(--hair);display:flex;flex-wrap:wrap;gap:12px 26px;justify-content:space-between;font-size:13px;color:var(--ink-mute);font-weight:300}
@@ -324,7 +324,7 @@ section[id], main[id] { scroll-margin-top: 6rem; }
 <main id="main">
 
 <section class="hero" id="hero">
-  <div class="hero__media"><img src="https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?w=2400&q=80&fm=webp" alt="Tagliere di carni crude assortite con pomodorini e spezie" width="2400" height="1600" fetchpriority="high"></div>
+  <div class="hero__media"><img src="https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?w=2400&q=80&fm=webp" srcset="https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?w=800&q=80&fm=webp 800w, https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?w=1200&q=80&fm=webp 1200w, https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?w=1600&q=80&fm=webp 1600w, https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?w=2400&q=80&fm=webp 2400w" sizes="100vw" alt="Tagliere di carni crude assortite con pomodorini e spezie" width="2400" height="1600" fetchpriority="high"></div>
   <div class="hero__veil" aria-hidden="true"></div>
   <div class="hero__inner">
     <span class="eyebrow hero__eyebrow">Macelleria — Via SS. Trinità, Schio (VI)</span>
@@ -544,26 +544,26 @@ section[id], main[id] { scroll-margin-top: 6rem; }
 <footer class="footer">
   <div class="footer__top">
     <div class="footer__brand">
-      <h4>Macelleria Brazzale</h4>
+      <h2>Macelleria Brazzale</h2>
       <p>Macelleria in Via SS. Trinità a Schio. Carni bovine tracciate da allevamenti del Vicentino, frollature lunghe, preparati pronti da cuocere e spiedo su prenotazione.</p>
       <a href="tel:+390445000000" class="footer__call"><span aria-hidden="true">☎</span>+39&nbsp;0445&nbsp;000&nbsp;000</a>
     </div>
     <div class="footer__col">
-      <h5>Il banco</h5>
+      <h3>Il banco</h3>
       <a href="#banco">Bovino e frollature</a>
       <a href="#banco">Pronti da cuocere</a>
       <a href="#settimana">La settimana</a>
       <a href="#etichetta">L'etichetta</a>
     </div>
     <div class="footer__col">
-      <h5>Servizi</h5>
+      <h3>Servizi</h3>
       <a href="#spiedo">Spiedo su prenotazione</a>
       <a href="#ordina">Ordina e ritira</a>
       <a href="#ordina">Griglia per compagnie</a>
       <a href="#ordina">Orari</a>
     </div>
     <div class="footer__col">
-      <h5>Contatti</h5>
+      <h3>Contatti</h3>
       <a href="tel:+390445000000">+39&nbsp;0445&nbsp;000&nbsp;000</a>
       <a href="mailto:info@macelleriabrazzale.it">info@macelleriabrazzale.it</a>
       <a href="https://www.instagram.com/macelleriabrazzale" target="_blank" rel="noopener">Instagram</a>

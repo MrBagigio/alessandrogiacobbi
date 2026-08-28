@@ -27,7 +27,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://images.unsplash.com" crossorigin>
-<link rel="preload" as="image" href="https://images.unsplash.com/photo-1576602976047-174e57a47881?w=2400&q=80&fm=webp" fetchpriority="high">
+<link rel="preload" as="image" href="https://images.unsplash.com/photo-1576602976047-174e57a47881?w=2000&q=80&fm=webp" imagesrcset="https://images.unsplash.com/photo-1576602976047-174e57a47881?w=800&q=80&fm=webp 800w, https://images.unsplash.com/photo-1576602976047-174e57a47881?w=1200&q=80&fm=webp 1200w, https://images.unsplash.com/photo-1576602976047-174e57a47881?w=1600&q=80&fm=webp 1600w, https://images.unsplash.com/photo-1576602976047-174e57a47881?w=2400&q=80&fm=webp 2400w" imagesizes="(min-width: 900px) 55vw, 100vw" fetchpriority="high">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;500;600;700;800&family=Red+Hat+Text:wght@300;400;500;600&display=swap">
 
 <script type="application/ld+json">
@@ -74,7 +74,7 @@
 <style>
 :root{
   --paper:#F5F8F6;--paper-2:#E9EFEA;--white:#FFFFFF;
-  --ink:#17201B;--ink-soft:rgba(23,32,27,0.76);--ink-mute:rgba(23,32,27,0.52);
+  --ink:#17201B;--ink-soft:rgba(23,32,27,0.76);--ink-mute:rgba(23,32,27,0.65);
   --cross:#1E7A4E;--cross-soft:rgba(30,122,78,0.1);
   --sky:#2C6E8F;--sky-soft:rgba(44,110,143,0.1);
   --deep:#14231B;
@@ -234,10 +234,10 @@ section[id], main[id] { scroll-margin-top: 6rem; }
 .footer__top{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:34px}
 @media (max-width:900px){.footer__top{grid-template-columns:1fr 1fr}}
 @media (max-width:560px){.footer__top{grid-template-columns:1fr}}
-.footer__brand h4{margin:0 0 12px;font-family:var(--display);font-weight:800;font-size:21px;letter-spacing:-0.02em}
+.footer__brand h2{margin:0 0 12px;font-family:var(--display);font-weight:800;font-size:21px;letter-spacing:-0.02em}
 .footer__brand p{margin:0 0 16px;font-size:14.5px;color:rgba(245,248,246,0.62);line-height:1.72;max-width:40ch}
 .footer__call{display:inline-flex;align-items:center;gap:9px;font-family:var(--display);font-size:20px;font-weight:800;color:#7BC49B}
-.footer__col h5{margin:0 0 14px;font-size:10.5px;letter-spacing:0.16em;text-transform:uppercase;color:rgba(245,248,246,0.5);font-weight:700}
+.footer__col h3{margin:0 0 14px;font-size:10.5px;letter-spacing:0.16em;text-transform:uppercase;color:rgba(245,248,246,0.5);font-weight:700}
 .footer__col a{display:block;padding:6px 0;font-size:14.5px;color:rgba(245,248,246,0.82);transition:color var(--dur-1) var(--ease)}
 .footer__col a:hover{color:#7BC49B}
 .footer__bottom{max-width:1200px;margin:38px auto 0;padding-top:22px;border-top:1px solid rgba(245,248,246,0.16);display:flex;flex-wrap:wrap;gap:12px 24px;justify-content:space-between;font-size:12.5px;color:rgba(245,248,246,0.55)}
@@ -338,7 +338,7 @@ section[id], main[id] { scroll-margin-top: 6rem; }
     </div>
   </div>
   <div class="hero__media">
-    <img src="https://images.unsplash.com/photo-1576602976047-174e57a47881?w=2000&q=80&fm=webp" alt="Interno luminoso di una farmacia con scaffali ordinati" width="2000" height="1500" fetchpriority="high">
+    <img src="https://images.unsplash.com/photo-1576602976047-174e57a47881?w=2000&q=80&fm=webp" srcset="https://images.unsplash.com/photo-1576602976047-174e57a47881?w=800&q=80&fm=webp 800w, https://images.unsplash.com/photo-1576602976047-174e57a47881?w=1200&q=80&fm=webp 1200w, https://images.unsplash.com/photo-1576602976047-174e57a47881?w=1600&q=80&fm=webp 1600w, https://images.unsplash.com/photo-1576602976047-174e57a47881?w=2400&q=80&fm=webp 2400w" sizes="(min-width: 900px) 55vw, 100vw" alt="Interno luminoso di una farmacia con scaffali ordinati" width="2000" height="1500" fetchpriority="high">
     <span class="hero__badge">Dott.ssa E. Grandi, titolare · Ordine dei Farmacisti di Vicenza n. [DA VERIFICARE]</span>
   </div>
 </section>
@@ -542,26 +542,26 @@ section[id], main[id] { scroll-margin-top: 6rem; }
 <footer class="footer">
   <div class="footer__top">
     <div class="footer__brand">
-      <h4>Farmacia San Giorgio</h4>
+      <h2>Farmacia San Giorgio</h2>
       <p>Farmacia in Via Val d'Assa a Schio. CUP, autoanalisi, telemedicina, laboratorio galenico, noleggio ausili e consegna a domicilio per persone fragili.</p>
       <a href="tel:+390445000000" class="footer__call"><span aria-hidden="true">☎</span>+39&nbsp;0445&nbsp;000&nbsp;000</a>
     </div>
     <div class="footer__col">
-      <h5>Servizi</h5>
+      <h3>Servizi</h3>
       <a href="#servizi">CUP e referti</a>
       <a href="#servizi">Autoanalisi</a>
       <a href="#telemedicina">ECG e holter</a>
       <a href="#galenica">Laboratorio galenico</a>
     </div>
     <div class="footer__col">
-      <h5>Informazioni</h5>
+      <h3>Informazioni</h3>
       <a href="#turni">Orari e turni</a>
       <a href="#servizi">Noleggio ausili</a>
       <a href="#servizi">Consegna a domicilio</a>
       <a href="#contatti">Prenotazioni</a>
     </div>
     <div class="footer__col">
-      <h5>Contatti</h5>
+      <h3>Contatti</h3>
       <a href="tel:+390445000000">+39&nbsp;0445&nbsp;000&nbsp;000</a>
       <a href="mailto:info@farmaciasangiorgio-schio.it">Scrivici</a>
       <a href="https://www.facebook.com/farmaciasangiorgioschio" target="_blank" rel="noopener">Facebook</a>

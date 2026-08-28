@@ -27,7 +27,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://images.unsplash.com" crossorigin>
-<link rel="preload" as="image" href="https://images.unsplash.com/photo-1574258495973-f010dfbb5371?w=2400&q=80&fm=webp" fetchpriority="high">
+<link rel="preload" as="image" href="https://images.unsplash.com/photo-1574258495973-f010dfbb5371?w=2000&q=80&fm=webp" imagesrcset="https://images.unsplash.com/photo-1574258495973-f010dfbb5371?w=800&q=80&fm=webp 800w, https://images.unsplash.com/photo-1574258495973-f010dfbb5371?w=1200&q=80&fm=webp 1200w, https://images.unsplash.com/photo-1574258495973-f010dfbb5371?w=1600&q=80&fm=webp 1600w, https://images.unsplash.com/photo-1574258495973-f010dfbb5371?w=2400&q=80&fm=webp 2400w" imagesizes="(min-width: 900px) 55vw, 100vw" fetchpriority="high">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Public+Sans:wght@300;400;500;600&display=swap">
 
 <script type="application/ld+json">
@@ -73,7 +73,7 @@
 <style>
 :root{
   --paper:#F7F7F5;--paper-2:#ECECe7;--white:#FFFFFF;
-  --ink:#191A1C;--ink-soft:rgba(25,26,28,0.76);--ink-mute:rgba(25,26,28,0.52);
+  --ink:#191A1C;--ink-soft:rgba(25,26,28,0.76);--ink-mute:rgba(25,26,28,0.65);
   --cobalt:#2447A8;--cobalt-soft:rgba(36,71,168,0.09);
   --amber:#C2851F;--amber-soft:rgba(194,133,31,0.12);
   --deep:#14161C;
@@ -225,10 +225,10 @@ section[id], main[id] { scroll-margin-top: 6rem; }
 .footer__top{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:34px}
 @media (max-width:900px){.footer__top{grid-template-columns:1fr 1fr}}
 @media (max-width:560px){.footer__top{grid-template-columns:1fr}}
-.footer__brand h4{margin:0 0 12px;font-family:var(--display);font-weight:700;font-size:21px;letter-spacing:-0.025em}
+.footer__brand h2{margin:0 0 12px;font-family:var(--display);font-weight:700;font-size:21px;letter-spacing:-0.025em}
 .footer__brand p{margin:0 0 16px;font-size:14.5px;color:rgba(247,247,245,0.6);line-height:1.72;max-width:40ch}
 .footer__call{display:inline-flex;align-items:center;gap:9px;font-family:var(--display);font-size:20px;font-weight:700;color:#7E9BE8}
-.footer__col h5{margin:0 0 14px;font-size:10.5px;letter-spacing:0.16em;text-transform:uppercase;color:rgba(247,247,245,0.5);font-weight:600}
+.footer__col h3{margin:0 0 14px;font-size:10.5px;letter-spacing:0.16em;text-transform:uppercase;color:rgba(247,247,245,0.5);font-weight:600}
 .footer__col a{display:block;padding:6px 0;font-size:14.5px;color:rgba(247,247,245,0.82);transition:color var(--dur-1) var(--ease)}
 .footer__col a:hover{color:#7E9BE8}
 .footer__bottom{max-width:1200px;margin:38px auto 0;padding-top:22px;border-top:1px solid rgba(247,247,245,0.16);display:flex;flex-wrap:wrap;gap:12px 24px;justify-content:space-between;font-size:12.5px;color:rgba(247,247,245,0.55)}
@@ -329,7 +329,7 @@ section[id], main[id] { scroll-margin-top: 6rem; }
     </div>
   </div>
   <div class="hero__media">
-    <img src="https://images.unsplash.com/photo-1574258495973-f010dfbb5371?w=2000&q=80&fm=webp" alt="Occhiali da vista appoggiati su un libro" width="2000" height="1500" fetchpriority="high">
+    <img src="https://images.unsplash.com/photo-1574258495973-f010dfbb5371?w=2000&q=80&fm=webp" srcset="https://images.unsplash.com/photo-1574258495973-f010dfbb5371?w=800&q=80&fm=webp 800w, https://images.unsplash.com/photo-1574258495973-f010dfbb5371?w=1200&q=80&fm=webp 1200w, https://images.unsplash.com/photo-1574258495973-f010dfbb5371?w=1600&q=80&fm=webp 1600w, https://images.unsplash.com/photo-1574258495973-f010dfbb5371?w=2400&q=80&fm=webp 2400w" sizes="(min-width: 900px) 55vw, 100vw" alt="Occhiali da vista appoggiati su un libro" width="2000" height="1500" fetchpriority="high">
     <span class="hero__badge">Ottico abilitato · Optometrista · dal 1979</span>
   </div>
 </section>
@@ -521,26 +521,26 @@ section[id], main[id] { scroll-margin-top: 6rem; }
 <footer class="footer">
   <div class="footer__top">
     <div class="footer__brand">
-      <h4>Ottica Baron</h4>
+      <h2>Ottica Baron</h2>
       <p>Ottica e optometria in Via Roma a Schio dal 1979. Controllo visivo su appuntamento, occhiali completi di lenti su misura, laboratorio interno, lenti a contatto con prova assistita.</p>
       <a href="tel:+390445000000" class="footer__call"><span aria-hidden="true">☎</span>+39&nbsp;0445&nbsp;000&nbsp;000</a>
     </div>
     <div class="footer__col">
-      <h5>Servizi</h5>
+      <h3>Servizi</h3>
       <a href="#controllo">Controllo visivo</a>
       <a href="#lenti">Occhiali e lenti</a>
       <a href="#servizi">Lenti a contatto</a>
       <a href="#servizi">Laboratorio</a>
     </div>
     <div class="footer__col">
-      <h5>Informazioni</h5>
+      <h3>Informazioni</h3>
       <a href="#lenti">Prezzi</a>
       <a href="#chiarezza">Ottico o oculista?</a>
       <a href="#dove">Orari</a>
       <a href="#prenota">Prenota</a>
     </div>
     <div class="footer__col">
-      <h5>Contatti</h5>
+      <h3>Contatti</h3>
       <a href="tel:+390445000000">+39&nbsp;0445&nbsp;000&nbsp;000</a>
       <a href="mailto:info@otticabaron.it">info@otticabaron.it</a>
       <a href="https://www.instagram.com/otticabaron" target="_blank" rel="noopener">Instagram</a>

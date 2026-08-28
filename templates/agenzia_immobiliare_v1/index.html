@@ -29,7 +29,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://images.unsplash.com" crossorigin>
-<link rel="preload" as="image" href="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=2400&q=80&fm=webp" fetchpriority="high">
+<link rel="preload" as="image" href="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=2400&q=80&fm=webp" imagesrcset="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&q=80&fm=webp 800w, https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200&q=80&fm=webp 1200w, https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1600&q=80&fm=webp 1600w, https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=2400&q=80&fm=webp 2400w" imagesizes="100vw" fetchpriority="high">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap">
 
 <script type="application/ld+json">
@@ -80,7 +80,7 @@
 :root{
   --bg:#1A1714;--bg-2:#211D19;--bg-3:#2A2520;--bg-ink:#141110;
   --paper:#F2EBDD;--paper-2:#E3D8C2;
-  --ink:#1A1714;--ink-soft:rgba(242,235,221,0.80);--ink-mute:rgba(242,235,221,0.52);
+  --ink:#1A1714;--ink-soft:rgba(242,235,221,0.80);--ink-mute:rgba(242,235,221,0.65);
   --accent:#9AA888;--accent-2:#B7975A;--accent-soft:rgba(154,168,136,0.18);
   --hair:rgba(242,235,221,0.10);--hair-2:rgba(242,235,221,0.18);
   --display:"Playfair Display",Georgia,"Times New Roman",serif;
@@ -130,7 +130,8 @@ a{color:inherit;text-decoration:none}
 .hero.is-loaded .hero__media img{transform:scale(1.0)}
 .hero__veil{position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(26,23,20,0.62) 0%,rgba(26,23,20,0.28) 38%,rgba(26,23,20,0.92) 100%),radial-gradient(ellipse at 72% 22%,rgba(154,168,136,0.16),transparent 56%)}
 .hero__inner{max-width:1280px;margin:0 auto;width:100%;display:grid;gap:clamp(26px,3vw,46px)}
-.hero__eyebrow{opacity:0;transform:translateY(8px);animation:fadeUp 900ms var(--ease-out) 200ms forwards}
+.hero__eyebrow{opacity:0;transform:translateY(8px);animation:fadeUp 900ms var(--ease-out) 200ms forwards;color:#F0F2EC}
+.hero__eyebrow::before{background:#F0F2EC}
 .hero__title{margin:0;font-family:var(--display);font-weight:500;font-size:var(--t-hero);line-height:0.98;letter-spacing:-0.02em;color:var(--paper);max-width:17ch;opacity:0;transform:translateY(20px);animation:fadeUp 1100ms var(--ease-out) 380ms forwards}
 .hero__title em{font-style:italic;font-weight:400;color:var(--accent-2)}
 .hero__sub{margin:0;max-width:52ch;font-size:clamp(15px,1.15vw,18px);line-height:1.6;color:var(--ink-soft);font-weight:300;opacity:0;transform:translateY(20px);animation:fadeUp 1100ms var(--ease-out) 600ms forwards}
@@ -230,10 +231,10 @@ a{color:inherit;text-decoration:none}
 .footer__top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;max-width:1280px;margin:0 auto 56px}
 @media (max-width:900px){.footer__top{grid-template-columns:1fr 1fr;gap:32px}}
 @media (max-width:520px){.footer__top{grid-template-columns:1fr}}
-.footer__brand h4{margin:0 0 14px;font-family:var(--display);font-weight:500;font-size:21px;letter-spacing:0.01em;color:var(--paper)}
+.footer__brand h2{margin:0 0 14px;font-family:var(--display);font-weight:500;font-size:21px;letter-spacing:0.01em;color:var(--paper)}
 .footer__brand h4 em{font-style:italic;font-weight:400;color:var(--accent-2)}
 .footer__brand p{margin:0;font-size:13px;color:var(--ink-mute);line-height:1.65;max-width:40ch;font-weight:300}
-.footer__col h5{margin:0 0 16px;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--ink-mute);font-weight:500}
+.footer__col h3{margin:0 0 16px;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--ink-mute);font-weight:500}
 .footer__col a{display:block;padding:6px 0;font-size:13px;color:var(--ink-soft);transition:color var(--dur-1) var(--ease)}
 .footer__col a:hover{color:var(--accent)}
 .footer__col span{display:block;padding:6px 0;font-size:13px;color:var(--ink-soft)}
@@ -329,7 +330,7 @@ section[id], main[id] { scroll-margin-top: 6rem; }
 
 <section class="hero" id="hero">
   <div class="hero__media">
-    <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=2400&q=80&fm=webp"
+    <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=2400&q=80&fm=webp" srcset="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&q=80&fm=webp 800w, https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200&q=80&fm=webp 1200w, https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1600&q=80&fm=webp 1600w, https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=2400&q=80&fm=webp 2400w" sizes="100vw"
          alt="Villa contemporanea con grandi vetrate al crepuscolo — Casa Veneta Immobiliare, Vicenza"
          width="2400" height="1600" fetchpriority="high" decoding="async">
   </div>
@@ -547,25 +548,25 @@ section[id], main[id] { scroll-margin-top: 6rem; }
 <footer class="footer">
   <div class="footer__top">
     <div class="footer__brand">
-      <h4>Casa <em>Veneta</em></h4>
+      <h2>Casa <em>Veneta</em></h2>
       <p>Agenzia immobiliare nel vicentino. Vendita, locazione e valutazione di residenze a Vicenza, Thiene, Schio e Bassano del Grappa. Dal 2009, agenti abilitati iscritti al Ruolo Mediatori della CCIAA di Vicenza.</p>
     </div>
     <div class="footer__col">
-      <h5>Servizi</h5>
+      <h3>Servizi</h3>
       <a href="#servizi">Vendita</a>
       <a href="#servizi">Locazione</a>
       <a href="#valuta">Valutazione gratuita</a>
       <a href="#tipologie">Tipologie</a>
     </div>
     <div class="footer__col">
-      <h5>Agenzia</h5>
+      <h3>Agenzia</h3>
       <a href="#perche">Perché noi</a>
       <a href="#tipologie">Il portfolio</a>
       <a href="#valuta">Valutazione</a>
       <a href="https://www.linkedin.com/company/casavenetaimmobiliare" target="_blank" rel="noopener">LinkedIn</a>
     </div>
     <div class="footer__col">
-      <h5>Contatti</h5>
+      <h3>Contatti</h3>
       <a href="tel:+390444000000">+39&nbsp;0444&nbsp;000&nbsp;000</a>
       <a href="mailto:info@casavenetaimmobiliare.it">info@casavenetaimmobiliare.it</a>
       <span>Contrà del Monte 8</span>

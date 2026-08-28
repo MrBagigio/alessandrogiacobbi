@@ -27,7 +27,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://images.unsplash.com" crossorigin>
-<link rel="preload" as="image" href="https://images.unsplash.com/photo-1516734212186-a967f81ad0d7?w=2400&q=80&fm=webp" fetchpriority="high">
+<link rel="preload" as="image" href="https://images.unsplash.com/photo-1516734212186-a967f81ad0d7?w=2000&q=80&fm=webp" imagesrcset="https://images.unsplash.com/photo-1516734212186-a967f81ad0d7?w=800&q=80&fm=webp 800w, https://images.unsplash.com/photo-1516734212186-a967f81ad0d7?w=1200&q=80&fm=webp 1200w, https://images.unsplash.com/photo-1516734212186-a967f81ad0d7?w=1600&q=80&fm=webp 1600w, https://images.unsplash.com/photo-1516734212186-a967f81ad0d7?w=2400&q=80&fm=webp 2400w" imagesizes="(min-width: 900px) 55vw, 100vw" fetchpriority="high">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Nunito:ital,wght@0,300;0,400;0,600;0,700;1,400&display=swap">
 
 <script type="application/ld+json">
@@ -73,9 +73,9 @@
 <style>
 :root{
   --paper:#F8F6F1;--paper-2:#EFEAE0;--white:#FFFFFF;
-  --ink:#2B2620;--ink-soft:rgba(43,38,32,0.75);--ink-mute:rgba(43,38,32,0.52);
+  --ink:#2B2620;--ink-soft:rgba(43,38,32,0.75);--ink-mute:rgba(43,38,32,0.65);
   --honey:#C77E2E;--honey-soft:rgba(199,126,46,0.12);
-  --teal:#2F7E72;--teal-soft:rgba(47,126,114,0.12);
+  --teal:#296F64;--teal-soft:rgba(47,126,114,0.12);
   --deep:#26211B;
   --hair:rgba(43,38,32,0.14);--hair-2:rgba(43,38,32,0.26);
   --display:"Baloo 2",system-ui,-apple-system,"Segoe UI",sans-serif;
@@ -95,7 +95,7 @@ a{color:inherit;text-decoration:none}
 :focus-visible{outline:2px solid var(--teal);outline-offset:3px;border-radius:4px}
 .skip{position:absolute;left:-9999px;top:0;padding:12px 18px;background:var(--teal);color:#fff;font-weight:700;font-size:13px;z-index:300}
 .skip:focus{left:12px;top:12px}
-.eyebrow{font-family:var(--sans);font-weight:700;font-size:var(--t-eyebrow);letter-spacing:0.2em;text-transform:uppercase;color:var(--honey);display:inline-block}
+.eyebrow{font-family:var(--sans);font-weight:700;font-size:var(--t-eyebrow);letter-spacing:0.2em;text-transform:uppercase;color:#96601F;display:inline-block}
 .reveal{opacity:0;transform:translateY(18px);transition:opacity 720ms var(--ease-out),transform 720ms var(--ease-out)}
 .reveal.is-revealed{opacity:1;transform:none}
 @media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}}
@@ -242,10 +242,10 @@ section[id], main[id] { scroll-margin-top: 6rem; }
 .footer__top{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:34px}
 @media (max-width:900px){.footer__top{grid-template-columns:1fr 1fr}}
 @media (max-width:560px){.footer__top{grid-template-columns:1fr}}
-.footer__brand h4{margin:0 0 12px;font-family:var(--display);font-weight:700;font-size:23px;letter-spacing:-0.015em}
+.footer__brand h2{margin:0 0 12px;font-family:var(--display);font-weight:700;font-size:23px;letter-spacing:-0.015em}
 .footer__brand p{margin:0 0 16px;font-size:14.5px;color:rgba(248,246,241,0.6);line-height:1.72;max-width:40ch}
 .footer__call{display:inline-flex;align-items:center;gap:9px;font-family:var(--display);font-size:20px;font-weight:700;color:#7FC4B8}
-.footer__col h5{margin:0 0 14px;font-size:10.5px;letter-spacing:0.16em;text-transform:uppercase;color:rgba(248,246,241,0.5);font-weight:800}
+.footer__col h3{margin:0 0 14px;font-size:10.5px;letter-spacing:0.16em;text-transform:uppercase;color:rgba(248,246,241,0.5);font-weight:800}
 .footer__col a{display:block;padding:6px 0;font-size:14.5px;color:rgba(248,246,241,0.82);transition:color var(--dur-1) var(--ease)}
 .footer__col a:hover{color:#7FC4B8}
 .footer__bottom{max-width:1200px;margin:38px auto 0;padding-top:22px;border-top:1px solid rgba(248,246,241,0.16);display:flex;flex-wrap:wrap;gap:12px 24px;justify-content:space-between;font-size:12.5px;color:rgba(248,246,241,0.55)}
@@ -346,7 +346,7 @@ section[id], main[id] { scroll-margin-top: 6rem; }
     </div>
   </div>
   <div class="hero__media">
-    <img src="https://images.unsplash.com/photo-1516734212186-a967f81ad0d7?w=2000&q=80&fm=webp" alt="Golden retriever che dà la zampa alla toelettatrice" width="2000" height="1500" fetchpriority="high">
+    <img src="https://images.unsplash.com/photo-1516734212186-a967f81ad0d7?w=2000&q=80&fm=webp" srcset="https://images.unsplash.com/photo-1516734212186-a967f81ad0d7?w=800&q=80&fm=webp 800w, https://images.unsplash.com/photo-1516734212186-a967f81ad0d7?w=1200&q=80&fm=webp 1200w, https://images.unsplash.com/photo-1516734212186-a967f81ad0d7?w=1600&q=80&fm=webp 1600w, https://images.unsplash.com/photo-1516734212186-a967f81ad0d7?w=2400&q=80&fm=webp 2400w" sizes="(min-width: 900px) 55vw, 100vw" alt="Golden retriever che dà la zampa alla toelettatrice" width="2000" height="1500" fetchpriority="high">
     <span class="hero__badge">Toelettatrice certificata · dal 2014</span>
   </div>
 </section>
@@ -557,26 +557,26 @@ section[id], main[id] { scroll-margin-top: 6rem; }
 <footer class="footer">
   <div class="footer__top">
     <div class="footer__brand">
-      <h4>Coda Felice</h4>
+      <h2>Coda Felice</h2>
       <p>Toelettatura per cani e gatti in Via Vicenza a Schio. Un animale alla volta, senza gabbie, su appuntamento. Prima visita conoscitiva gratuita.</p>
       <a href="tel:+390445000000" class="footer__call"><span aria-hidden="true">☎</span>+39&nbsp;0445&nbsp;000&nbsp;000</a>
     </div>
     <div class="footer__col">
-      <h5>Servizi</h5>
+      <h3>Servizi</h3>
       <a href="#listino">Bagno e taglio</a>
       <a href="#listino">Stripping</a>
       <a href="#gatti">Gatti</a>
       <a href="#metodo">Il metodo</a>
     </div>
     <div class="footer__col">
-      <h5>Informazioni</h5>
+      <h3>Informazioni</h3>
       <a href="#listino">Prezzi per taglia</a>
       <a href="#metodo">Prima visita gratuita</a>
       <a href="#dove">Orari</a>
       <a href="#prenota">Prenota</a>
     </div>
     <div class="footer__col">
-      <h5>Contatti</h5>
+      <h3>Contatti</h3>
       <a href="tel:+390445000000">+39&nbsp;0445&nbsp;000&nbsp;000</a>
       <a href="mailto:ciao@codafelice.it">ciao@codafelice.it</a>
       <a href="https://www.instagram.com/codafelice" target="_blank" rel="noopener">Instagram</a>

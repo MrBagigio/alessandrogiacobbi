@@ -29,7 +29,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://images.unsplash.com" crossorigin>
-<link rel="preload" as="image" href="https://images.unsplash.com/photo-1452587925148-ce544e77e70d?w=2400&q=80&fm=webp" fetchpriority="high">
+<link rel="preload" as="image" href="https://images.unsplash.com/photo-1452587925148-ce544e77e70d?w=2400&q=80&fm=webp" imagesrcset="https://images.unsplash.com/photo-1452587925148-ce544e77e70d?w=800&q=80&fm=webp 800w, https://images.unsplash.com/photo-1452587925148-ce544e77e70d?w=1200&q=80&fm=webp 1200w, https://images.unsplash.com/photo-1452587925148-ce544e77e70d?w=1600&q=80&fm=webp 1600w, https://images.unsplash.com/photo-1452587925148-ce544e77e70d?w=2400&q=80&fm=webp 2400w" imagesizes="100vw" fetchpriority="high">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap">
 
 <script type="application/ld+json">
@@ -68,7 +68,7 @@
 :root{
   --bg:#14110F;--bg-2:#1A1613;--bg-3:#221C17;--bg-deep:#0F0C0A;
   --paper:#F4EDE1;--paper-2:#E5D7C0;
-  --ink:#14110F;--ink-soft:rgba(244,237,225,0.80);--ink-mute:rgba(244,237,225,0.52);
+  --ink:#14110F;--ink-soft:rgba(244,237,225,0.80);--ink-mute:rgba(244,237,225,0.65);
   --gold:#C9A86A;--gold-soft:rgba(201,168,106,0.16);
   --champ:#D8C39A;
   --hair:rgba(244,237,225,0.10);--hair-2:rgba(244,237,225,0.18);
@@ -220,10 +220,10 @@ a{color:inherit;text-decoration:none}
 .footer__top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;max-width:1280px;margin:0 auto 56px}
 @media (max-width:900px){.footer__top{grid-template-columns:1fr 1fr;gap:32px}}
 @media (max-width:520px){.footer__top{grid-template-columns:1fr}}
-.footer__brand h4{margin:0 0 14px;font-family:var(--display);font-weight:500;font-size:25px;letter-spacing:0.01em;color:var(--paper)}
+.footer__brand h2{margin:0 0 14px;font-family:var(--display);font-weight:500;font-size:25px;letter-spacing:0.01em;color:var(--paper)}
 .footer__brand h4 em{font-style:italic;font-weight:400}
 .footer__brand p{margin:0;font-size:13px;color:var(--ink-mute);line-height:1.65;max-width:38ch;font-weight:300}
-.footer__col h5{margin:0 0 16px;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--ink-mute);font-weight:500}
+.footer__col h3{margin:0 0 16px;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--ink-mute);font-weight:500}
 .footer__col a{display:block;padding:6px 0;font-size:13px;color:var(--ink-soft);transition:color var(--dur-1) var(--ease)}
 .footer__col a:hover{color:var(--gold)}
 .footer__bottom{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;max-width:1280px;margin:0 auto;padding-top:24px;border-top:1px solid var(--hair);font-size:11px;letter-spacing:0.06em;color:var(--ink-mute)}
@@ -318,7 +318,7 @@ section[id], main[id] { scroll-margin-top: 6rem; }
 
 <section class="hero" id="hero">
   <div class="hero__media">
-    <img src="https://images.unsplash.com/photo-1452587925148-ce544e77e70d?w=2400&q=80&fm=webp"
+    <img src="https://images.unsplash.com/photo-1452587925148-ce544e77e70d?w=2400&q=80&fm=webp" srcset="https://images.unsplash.com/photo-1452587925148-ce544e77e70d?w=800&q=80&fm=webp 800w, https://images.unsplash.com/photo-1452587925148-ce544e77e70d?w=1200&q=80&fm=webp 1200w, https://images.unsplash.com/photo-1452587925148-ce544e77e70d?w=1600&q=80&fm=webp 1600w, https://images.unsplash.com/photo-1452587925148-ce544e77e70d?w=2400&q=80&fm=webp 2400w" sizes="100vw"
          alt="Macchina fotografica vintage e stampe fotografiche distese su una mappa, studio di Lucia Marchetti a Treviso"
          width="2400" height="1600" fetchpriority="high" decoding="async">
   </div>
@@ -501,25 +501,25 @@ section[id], main[id] { scroll-margin-top: 6rem; }
 <footer class="footer">
   <div class="footer__top">
     <div class="footer__brand">
-      <h4><em>Studio</em> Marchetti</h4>
+      <h2><em>Studio</em> Marchetti</h2>
       <p>Studio fotografico di Lucia Marchetti a Treviso. Matrimoni, ritratti ed eventi tra Treviso, Venezia e Padova. Luce naturale, racconto autentico, dal 2014.</p>
     </div>
     <div class="footer__col">
-      <h5>Servizi</h5>
+      <h3>Servizi</h3>
       <a href="#lavori">Matrimoni</a>
       <a href="#lavori">Ritratti</a>
       <a href="#lavori">Eventi</a>
       <a href="#contatti">Preventivo</a>
     </div>
     <div class="footer__col">
-      <h5>Studio</h5>
+      <h3>Studio</h3>
       <a href="#metodo">Come lavoro</a>
       <a href="#portfolio">Portfolio</a>
       <a href="#contatti">Contatti</a>
       <a href="#">Gift card</a>
     </div>
     <div class="footer__col">
-      <h5>Contatti</h5>
+      <h3>Contatti</h3>
       <a href="tel:+390422000000">+39&nbsp;0422&nbsp;000&nbsp;000</a>
       <a href="mailto:studio@studiomarchetti.it">studio@studiomarchetti.it</a>
       <a href="https://www.instagram.com/studiomarchetti" target="_blank" rel="noopener">Instagram</a>

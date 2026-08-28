@@ -27,7 +27,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://images.unsplash.com" crossorigin>
-<link rel="preload" as="image" href="https://images.unsplash.com/photo-1542838132-92c53300491e?w=2400&q=80&fm=webp" fetchpriority="high">
+<link rel="preload" as="image" href="https://images.unsplash.com/photo-1542838132-92c53300491e?w=2400&q=80&fm=webp" imagesrcset="https://images.unsplash.com/photo-1542838132-92c53300491e?w=800&q=80&fm=webp 800w, https://images.unsplash.com/photo-1542838132-92c53300491e?w=1200&q=80&fm=webp 1200w, https://images.unsplash.com/photo-1542838132-92c53300491e?w=1600&q=80&fm=webp 1600w, https://images.unsplash.com/photo-1542838132-92c53300491e?w=2400&q=80&fm=webp 2400w" imagesizes="100vw" fetchpriority="high">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Petrona:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Work+Sans:wght@300;400;500;600&display=swap">
 
 <script type="application/ld+json">
@@ -79,7 +79,7 @@
 <style>
 :root{
   --paper:#F6F1E6;--paper-2:#EDE4D2;--paper-3:#FBF8F2;
-  --ink:#211D18;--ink-soft:rgba(33,29,24,0.76);--ink-mute:rgba(33,29,24,0.54);
+  --ink:#211D18;--ink-soft:rgba(33,29,24,0.76);--ink-mute:rgba(33,29,24,0.65);
   --olive:#4A5D34;--olive-soft:rgba(74,93,52,0.12);
   --terra:#B4552F;--terra-soft:rgba(180,85,47,0.12);
   --deep:#232A1B;
@@ -250,10 +250,10 @@ a{color:inherit;text-decoration:none}
 .footer__top{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:40px}
 @media (max-width:900px){.footer__top{grid-template-columns:1fr 1fr}}
 @media (max-width:560px){.footer__top{grid-template-columns:1fr}}
-.footer__brand h4{margin:0 0 14px;font-family:var(--display);font-weight:500;font-size:27px;letter-spacing:-0.015em}
+.footer__brand h2{margin:0 0 14px;font-family:var(--display);font-weight:500;font-size:27px;letter-spacing:-0.015em}
 .footer__brand p{margin:0 0 18px;font-size:14.5px;color:rgba(251,248,242,0.62);line-height:1.72;max-width:40ch;font-weight:300}
 .footer__call{display:inline-flex;align-items:center;gap:10px;font-family:var(--display);font-size:23px;font-weight:600;color:#F0C98A}
-.footer__col h5{margin:0 0 16px;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(251,248,242,0.5);font-weight:600}
+.footer__col h3{margin:0 0 16px;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(251,248,242,0.5);font-weight:600}
 .footer__col a{display:block;padding:6px 0;font-size:14.5px;color:rgba(251,248,242,0.82);transition:color var(--dur-1) var(--ease)}
 .footer__col a:hover{color:#F0C98A}
 .footer__bottom{max-width:1280px;margin:44px auto 0;padding-top:24px;border-top:1px solid rgba(251,248,242,0.16);display:flex;flex-wrap:wrap;gap:12px 26px;justify-content:space-between;font-size:12.5px;color:rgba(251,248,242,0.55);font-weight:300}
@@ -348,7 +348,7 @@ section[id], main[id] { scroll-margin-top: 6rem; }
 <main id="main">
 
 <section class="hero" id="hero">
-  <div class="hero__media"><img src="https://images.unsplash.com/photo-1542838132-92c53300491e?w=2400&q=80&fm=webp" alt="Banco dell'ortofrutta con frutta e verdura in cassetta" width="2400" height="1600" fetchpriority="high"></div>
+  <div class="hero__media"><img src="https://images.unsplash.com/photo-1542838132-92c53300491e?w=2400&q=80&fm=webp" srcset="https://images.unsplash.com/photo-1542838132-92c53300491e?w=800&q=80&fm=webp 800w, https://images.unsplash.com/photo-1542838132-92c53300491e?w=1200&q=80&fm=webp 1200w, https://images.unsplash.com/photo-1542838132-92c53300491e?w=1600&q=80&fm=webp 1600w, https://images.unsplash.com/photo-1542838132-92c53300491e?w=2400&q=80&fm=webp 2400w" sizes="100vw" alt="Banco dell'ortofrutta con frutta e verdura in cassetta" width="2400" height="1600" fetchpriority="high"></div>
   <div class="hero__veil" aria-hidden="true"></div>
   <div class="hero__inner">
     <span class="eyebrow hero__eyebrow">Alimentari e gastronomia — Schio (VI), dal 1978</span>
@@ -418,7 +418,7 @@ section[id], main[id] { scroll-margin-top: 6rem; }
 
       <article class="reparto reveal">
         <div class="reparto__media">
-          <img src="https://images.unsplash.com/photo-1584680226833-0d680d0a0794?w=1000&q=75&fm=webp" alt="Scaffali della dispensa con conserve e bottiglie" width="1000" height="750" loading="lazy" decoding="async">
+          <img src="https://images.unsplash.com/photo-1567306301408-9b74779a11af?w=1000&q=75&fm=webp" alt="Pomodori e basilico su tela di iuta, pronti per la conserva" width="1000" height="750" loading="lazy" decoding="async">
           <span class="reparto__tag">Dispensa e cantina</span>
         </div>
         <div class="reparto__copy">
@@ -624,26 +624,26 @@ section[id], main[id] { scroll-margin-top: 6rem; }
 <footer class="footer">
   <div class="footer__top">
     <div class="footer__brand">
-      <h4>Bottega Sartori</h4>
+      <h2>Bottega Sartori</h2>
       <p>Alimentari e gastronomia in Via Val Leogra a Schio dal 1978. Banco salumi e formaggi, ortofrutta di stagione dai produttori della zona, pane, dispensa e cantina.</p>
       <a href="tel:+390445000000" class="footer__call"><span aria-hidden="true">☎</span>+39&nbsp;0445&nbsp;000&nbsp;000</a>
     </div>
     <div class="footer__col">
-      <h5>Bottega</h5>
+      <h3>Bottega</h3>
       <a href="#reparti">Banco gastronomia</a>
       <a href="#reparti">Ortofrutta</a>
       <a href="#reparti">Dispensa e cantina</a>
       <a href="#oggi">Oggi al banco</a>
     </div>
     <div class="footer__col">
-      <h5>Servizi</h5>
+      <h3>Servizi</h3>
       <a href="#spesa">Spesa su ordinazione</a>
       <a href="#spesa">Consegna a domicilio</a>
       <a href="#produttori">I nostri produttori</a>
       <a href="#ordina">Taglieri e vassoi</a>
     </div>
     <div class="footer__col">
-      <h5>Contatti</h5>
+      <h3>Contatti</h3>
       <a href="tel:+390445000000">+39&nbsp;0445&nbsp;000&nbsp;000</a>
       <a href="mailto:bottega@bottegasartori.it">bottega@bottegasartori.it</a>
       <a href="https://www.facebook.com/bottegasartori" target="_blank" rel="noopener">Facebook</a>

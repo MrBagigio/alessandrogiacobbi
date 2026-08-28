@@ -29,7 +29,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://images.unsplash.com" crossorigin>
-<link rel="preload" as="image" href="https://images.unsplash.com/photo-1535525153412-5a42439a210d?w=2400&q=80&fm=webp" fetchpriority="high">
+<link rel="preload" as="image" href="https://images.unsplash.com/photo-1535525153412-5a42439a210d?w=2400&q=80&fm=webp" imagesrcset="https://images.unsplash.com/photo-1535525153412-5a42439a210d?w=800&q=80&fm=webp 800w, https://images.unsplash.com/photo-1535525153412-5a42439a210d?w=1200&q=80&fm=webp 1200w, https://images.unsplash.com/photo-1535525153412-5a42439a210d?w=1600&q=80&fm=webp 1600w, https://images.unsplash.com/photo-1535525153412-5a42439a210d?w=2400&q=80&fm=webp 2400w" imagesizes="100vw" fetchpriority="high">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap">
 
 <script type="application/ld+json">
@@ -87,8 +87,8 @@
 :root{
   --bg:#0E0C12;--bg-2:#15111C;--bg-3:#1D1727;--bg-deep:#0A0810;
   --paper:#F4EFFA;--paper-2:#E3D7F0;
-  --ink:#120D1A;--ink-soft:rgba(244,239,250,0.80);--ink-mute:rgba(244,239,250,0.50);
-  --accent:#E6249E;--accent-2:#8A3FF0;--accent-soft:rgba(230,36,158,0.16);
+  --ink:#120D1A;--ink-soft:rgba(244,239,250,0.80);--ink-mute:rgba(244,239,250,0.65);
+  --accent:#D01F8E;--accent-2:#8A3FF0;--accent-soft:rgba(230,36,158,0.16);
   --hair:rgba(244,239,250,0.10);--hair-2:rgba(244,239,250,0.18);
   --display:"Unbounded","Inter",system-ui,sans-serif;
   --sans:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
@@ -138,7 +138,8 @@ a{color:inherit;text-decoration:none}
 .hero.is-loaded .hero__media img{transform:scale(1.0)}
 .hero__veil{position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(14,12,18,0.52) 0%,rgba(14,12,18,0.18) 34%,rgba(14,12,18,0.92) 100%),radial-gradient(ellipse at 74% 28%,rgba(230,36,158,0.26),transparent 56%),radial-gradient(ellipse at 12% 84%,rgba(138,63,240,0.22),transparent 54%)}
 .hero__inner{max-width:1280px;margin:0 auto;width:100%;display:grid;gap:clamp(24px,3vw,42px)}
-.hero__eyebrow{opacity:0;transform:translateY(8px);animation:fadeUp 900ms var(--ease-out) 200ms forwards}
+.hero__eyebrow{opacity:0;transform:translateY(8px);animation:fadeUp 900ms var(--ease-out) 200ms forwards;color:#F6F3F7}
+.hero__eyebrow::before{background:#F6F3F7}
 .hero__pulse{width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 12px rgba(230,36,158,0.9);animation:pulseSoft 2.4s ease-in-out infinite}
 .hero__title{margin:0;font-family:var(--display);font-weight:600;font-size:var(--t-hero);line-height:0.92;letter-spacing:-0.02em;color:var(--paper);text-transform:uppercase;max-width:14ch;opacity:0;transform:translateY(20px);animation:fadeUp 1100ms var(--ease-out) 380ms forwards}
 .hero__title em{font-style:normal;font-weight:700}
@@ -212,7 +213,7 @@ a{color:inherit;text-decoration:none}
 .course-card{border:1px solid rgba(18,13,26,0.14);padding:30px 26px;display:grid;gap:10px;transition:border-color var(--dur-1) var(--ease),transform var(--dur-1) var(--ease);background:var(--paper)}
 .course-card:hover{border-color:var(--accent);transform:translateY(-4px)}
 .course-card__num{font-family:var(--display);font-size:11px;letter-spacing:0.16em;color:var(--accent);text-transform:uppercase;font-weight:600}
-.course-card h4{margin:0;font-family:var(--display);font-weight:600;font-size:24px;letter-spacing:-0.01em;line-height:1.04;text-transform:uppercase}
+.course-card h3{margin:0;font-family:var(--display);font-weight:600;font-size:24px;letter-spacing:-0.01em;line-height:1.04;text-transform:uppercase}
 .course-card p{margin:0;font-size:13.5px;color:rgba(18,13,26,0.66);line-height:1.55}
 .course-card .meta{margin-top:6px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;color:var(--accent);font-weight:600;font-variant-numeric:tabular-nums}
 
@@ -244,9 +245,9 @@ a{color:inherit;text-decoration:none}
 .footer__top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;max-width:1280px;margin:0 auto 56px}
 @media (max-width:900px){.footer__top{grid-template-columns:1fr 1fr;gap:32px}}
 @media (max-width:520px){.footer__top{grid-template-columns:1fr}}
-.footer__brand h4{margin:0 0 14px;font-family:var(--display);font-weight:600;font-size:19px;letter-spacing:0.01em;color:var(--paper);text-transform:uppercase}
+.footer__brand h2{margin:0 0 14px;font-family:var(--display);font-weight:600;font-size:19px;letter-spacing:0.01em;color:var(--paper);text-transform:uppercase}
 .footer__brand p{margin:0;font-size:13px;color:var(--ink-mute);line-height:1.65;max-width:38ch;font-weight:300}
-.footer__col h5{margin:0 0 16px;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--ink-mute);font-weight:500}
+.footer__col h3{margin:0 0 16px;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--ink-mute);font-weight:500}
 .footer__col a{display:block;padding:6px 0;font-size:13px;color:var(--ink-soft);transition:color var(--dur-1) var(--ease)}
 .footer__col a:hover{color:var(--accent)}
 .footer__bottom{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;max-width:1280px;margin:0 auto;padding-top:24px;border-top:1px solid var(--hair);font-size:11px;letter-spacing:0.05em;color:var(--ink-mute)}
@@ -340,7 +341,7 @@ section[id], main[id] { scroll-margin-top: 6rem; }
 
 <section class="hero" id="hero">
   <div class="hero__media">
-    <img src="https://images.unsplash.com/photo-1535525153412-5a42439a210d?w=2400&q=80&fm=webp"
+    <img src="https://images.unsplash.com/photo-1535525153412-5a42439a210d?w=2400&q=80&fm=webp" srcset="https://images.unsplash.com/photo-1535525153412-5a42439a210d?w=800&q=80&fm=webp 800w, https://images.unsplash.com/photo-1535525153412-5a42439a210d?w=1200&q=80&fm=webp 1200w, https://images.unsplash.com/photo-1535525153412-5a42439a210d?w=1600&q=80&fm=webp 1600w, https://images.unsplash.com/photo-1535525153412-5a42439a210d?w=2400&q=80&fm=webp 2400w" sizes="100vw"
          alt="Ballerina urban in movimento tra le luci al neon della città di notte"
          width="2400" height="1600" fetchpriority="high" decoding="async">
   </div>
@@ -459,42 +460,42 @@ section[id], main[id] { scroll-margin-top: 6rem; }
 
       <article class="course-card reveal">
         <span class="course-card__num">01</span>
-        <h4>Hip Hop</h4>
+        <h3>Hip Hop</h3>
         <p>Old school + new style, dalla foundation alla choreography.</p>
         <span class="meta">4 livelli · 8–60 anni</span>
       </article>
 
       <article class="course-card reveal">
         <span class="course-card__num">02</span>
-        <h4>Funky</h4>
+        <h3>Funky</h3>
         <p>Soul e hip hop fusion. Groove e musicalità, ideale per adulti.</p>
         <span class="meta">2 livelli · 16–60 anni</span>
       </article>
 
       <article class="course-card reveal">
         <span class="course-card__num">03</span>
-        <h4>Heels</h4>
+        <h3>Heels</h3>
         <p>Coreografia sensual e presenza scenica, con o senza tacco.</p>
         <span class="meta">2 livelli · 16–50 anni</span>
       </article>
 
       <article class="course-card reveal">
         <span class="course-card__num">04</span>
-        <h4>Commercial</h4>
+        <h3>Commercial</h3>
         <p>Coreografie da videoclip, look performance, prep audizioni.</p>
         <span class="meta">Open · 14–30 anni</span>
       </article>
 
       <article class="course-card reveal">
         <span class="course-card__num">05</span>
-        <h4>Breaking</h4>
+        <h3>Breaking</h3>
         <p>B-boy / B-girl. Toprock, footwork, freeze e power moves.</p>
         <span class="meta">3 livelli · 10–35 anni</span>
       </article>
 
       <article class="course-card reveal">
         <span class="course-card__num">06</span>
-        <h4>Kids</h4>
+        <h3>Kids</h3>
         <p>Hip hop bambini: coordinazione, ritmo e saggio dedicato.</p>
         <span class="meta">2 fasce · 6–13 anni</span>
       </article>
@@ -570,25 +571,25 @@ section[id], main[id] { scroll-margin-top: 6rem; }
 <footer class="footer">
   <div class="footer__top">
     <div class="footer__brand">
-      <h4>SmoveDance ASD</h4>
+      <h2>SmoveDance ASD</h2>
       <p>Scuola di danza urban a Vicenza e Thiene. Hip hop, funky e heels per ogni livello, insegnanti professionisti, sala attrezzata e saggio finale. Associazione Sportiva Dilettantistica, membro CONI EPS dal 2014.</p>
     </div>
     <div class="footer__col">
-      <h5>Gli stili</h5>
+      <h3>Gli stili</h3>
       <a href="#stili">Hip hop</a>
       <a href="#stili">Funky</a>
       <a href="#stili">Heels</a>
       <a href="#corsi">Tutti i corsi</a>
     </div>
     <div class="footer__col">
-      <h5>La scuola</h5>
+      <h3>La scuola</h3>
       <a href="#perche">Perché Smove</a>
       <a href="#corsi">Orari &amp; sedi</a>
       <a href="#prova">Prova gratuita</a>
       <a href="#prova">Iscrizioni 2026/27</a>
     </div>
     <div class="footer__col">
-      <h5>Contatti</h5>
+      <h3>Contatti</h3>
       <a href="tel:+390444000000">+39&nbsp;0444&nbsp;000&nbsp;000</a>
       <a href="mailto:info@smovedance.it">info@smovedance.it</a>
       <a href="https://www.instagram.com/smovedance" target="_blank" rel="noopener">Instagram</a>

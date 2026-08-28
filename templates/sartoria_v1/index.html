@@ -27,7 +27,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://images.unsplash.com" crossorigin>
-<link rel="preload" as="image" href="https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=2400&q=80&fm=webp" fetchpriority="high">
+<link rel="preload" as="image" href="https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=2400&q=80&fm=webp" imagesrcset="https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=800&q=80&fm=webp 800w, https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=1200&q=80&fm=webp 1200w, https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=1600&q=80&fm=webp 1600w, https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=2400&q=80&fm=webp 2400w" imagesizes="100vw" fetchpriority="high">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Outfit:wght@300;400;500;600&display=swap">
 
 <script type="application/ld+json">
@@ -75,7 +75,7 @@
 :root{
   --bg:#1E1C1A;--bg-2:#262320;--bg-3:#302C28;--bg-deep:#161412;
   --linen:#EFEAE0;--linen-2:#D9D1C0;
-  --ink:#1E1C1A;--ink-soft:rgba(239,234,224,0.78);--ink-mute:rgba(239,234,224,0.52);
+  --ink:#1E1C1A;--ink-soft:rgba(239,234,224,0.78);--ink-mute:rgba(239,234,224,0.65);
   --thread:#B8443C;--thread-soft:rgba(184,68,60,0.16);
   --chalk:#9AA38B;--chalk-soft:rgba(154,163,139,0.14);
   --hair:rgba(239,234,224,0.11);--hair-2:rgba(239,234,224,0.2);
@@ -237,10 +237,10 @@ section[id], main[id] { scroll-margin-top: 6rem; }
 .footer__top{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:40px}
 @media (max-width:900px){.footer__top{grid-template-columns:1fr 1fr}}
 @media (max-width:560px){.footer__top{grid-template-columns:1fr}}
-.footer__brand h4{margin:0 0 14px;font-family:var(--display);font-weight:500;font-size:26px;color:var(--linen)}
+.footer__brand h2{margin:0 0 14px;font-family:var(--display);font-weight:500;font-size:26px;color:var(--linen)}
 .footer__brand p{margin:0 0 18px;font-size:14.5px;color:var(--ink-mute);line-height:1.76;max-width:40ch}
-.footer__call{display:inline-flex;align-items:center;gap:10px;font-family:var(--display);font-size:22px;color:var(--thread)}
-.footer__col h5{margin:0 0 16px;font-size:10.5px;letter-spacing:0.22em;text-transform:uppercase;color:var(--ink-mute);font-weight:500}
+.footer__call{display:inline-flex;align-items:center;gap:10px;font-family:var(--display);font-size:22px;color:#E08A83}
+.footer__col h3{margin:0 0 16px;font-size:10.5px;letter-spacing:0.22em;text-transform:uppercase;color:var(--ink-mute);font-weight:500}
 .footer__col a{display:block;padding:6px 0;font-size:14.5px;color:var(--ink-soft);transition:color var(--dur-1) var(--ease)}
 .footer__col a:hover{color:var(--thread)}
 .footer__bottom{max-width:1280px;margin:44px auto 0;padding-top:24px;border-top:1px solid var(--hair);display:flex;flex-wrap:wrap;gap:12px 26px;justify-content:space-between;font-size:12.5px;color:var(--ink-mute)}
@@ -326,7 +326,7 @@ section[id], main[id] { scroll-margin-top: 6rem; }
 <main id="main">
 
 <section class="hero" id="hero">
-  <div class="hero__media"><img src="https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=2400&q=80&fm=webp" alt="Uomo che si abbottona la giacca di un abito scuro" width="2400" height="1600" fetchpriority="high"></div>
+  <div class="hero__media"><img src="https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=2400&q=80&fm=webp" srcset="https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=800&q=80&fm=webp 800w, https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=1200&q=80&fm=webp 1200w, https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=1600&q=80&fm=webp 1600w, https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=2400&q=80&fm=webp 2400w" sizes="100vw" alt="Uomo che si abbottona la giacca di un abito scuro" width="2400" height="1600" fetchpriority="high"></div>
   <div class="hero__veil" aria-hidden="true"></div>
   <div class="hero__inner">
     <span class="eyebrow hero__eyebrow">Sartoria — Via Btg. Sette Comuni, Schio</span>
@@ -543,26 +543,26 @@ section[id], main[id] { scroll-margin-top: 6rem; }
 <footer class="footer">
   <div class="footer__top">
     <div class="footer__brand">
-      <h4>Sartoria Ferrin</h4>
+      <h2>Sartoria Ferrin</h2>
       <p>Sartoria artigiana a Schio dal 1989. Riparazioni con prezzi esposti, modifiche per cerimonia, rimessa a modello di capi vintage e abiti da uomo su misura in tre prove.</p>
       <a href="tel:+390445000000" class="footer__call"><span aria-hidden="true">☎</span>+39&nbsp;0445&nbsp;000&nbsp;000</a>
     </div>
     <div class="footer__col">
-      <h5>Lavorazioni</h5>
+      <h3>Lavorazioni</h3>
       <a href="#listino">Riparazioni e orli</a>
       <a href="#lavori">Cerimonia</a>
       <a href="#lavori">Rimessa a modello</a>
       <a href="#sumisura">Su misura</a>
     </div>
     <div class="footer__col">
-      <h5>Informazioni</h5>
+      <h3>Informazioni</h3>
       <a href="#listino">Listino</a>
       <a href="#patti">Come lavoriamo</a>
       <a href="#contatto">Appuntamento</a>
       <a href="#contatto">Orari</a>
     </div>
     <div class="footer__col">
-      <h5>Contatti</h5>
+      <h3>Contatti</h3>
       <a href="tel:+390445000000">+39&nbsp;0445&nbsp;000&nbsp;000</a>
       <a href="mailto:info@sartoriaferrin.it">info@sartoriaferrin.it</a>
       <a href="https://www.instagram.com/sartoriaferrin" target="_blank" rel="noopener">Instagram</a>

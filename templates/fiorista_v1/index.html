@@ -27,7 +27,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://images.unsplash.com" crossorigin>
-<link rel="preload" as="image" href="https://images.unsplash.com/photo-1487530811176-3780de880c2d?w=2400&q=80&fm=webp" fetchpriority="high">
+<link rel="preload" as="image" href="https://images.unsplash.com/photo-1487530811176-3780de880c2d?w=2400&q=80&fm=webp" imagesrcset="https://images.unsplash.com/photo-1487530811176-3780de880c2d?w=800&q=80&fm=webp 800w, https://images.unsplash.com/photo-1487530811176-3780de880c2d?w=1200&q=80&fm=webp 1200w, https://images.unsplash.com/photo-1487530811176-3780de880c2d?w=1600&q=80&fm=webp 1600w, https://images.unsplash.com/photo-1487530811176-3780de880c2d?w=2400&q=80&fm=webp 2400w" imagesizes="100vw" fetchpriority="high">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Prata&family=Mulish:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap">
 
 <script type="application/ld+json">
@@ -75,7 +75,7 @@
 <style>
 :root{
   --paper:#FAF7F4;--paper-2:#F1EAE4;--paper-3:#FFFFFF;
-  --ink:#231F1E;--ink-soft:rgba(35,31,30,0.75);--ink-mute:rgba(35,31,30,0.52);
+  --ink:#231F1E;--ink-soft:rgba(35,31,30,0.75);--ink-mute:rgba(35,31,30,0.65);
   --viola:#6D4A6E;--viola-soft:rgba(109,74,110,0.1);
   --leaf:#55673F;--leaf-soft:rgba(85,103,63,0.12);
   --deep:#241E22;
@@ -244,10 +244,10 @@ section[id], main[id] { scroll-margin-top: 6rem; }
 .footer__top{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:40px}
 @media (max-width:900px){.footer__top{grid-template-columns:1fr 1fr}}
 @media (max-width:560px){.footer__top{grid-template-columns:1fr}}
-.footer__brand h4{margin:0 0 14px;font-family:var(--display);font-weight:400;font-size:26px}
+.footer__brand h2{margin:0 0 14px;font-family:var(--display);font-weight:400;font-size:26px}
 .footer__brand p{margin:0 0 18px;font-size:14.5px;color:rgba(250,247,244,0.62);line-height:1.76;max-width:40ch;font-weight:300}
 .footer__call{display:inline-flex;align-items:center;gap:10px;font-family:var(--display);font-size:22px;color:#D9B8D6}
-.footer__col h5{margin:0 0 16px;font-size:10.5px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(250,247,244,0.5);font-weight:600}
+.footer__col h3{margin:0 0 16px;font-size:10.5px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(250,247,244,0.5);font-weight:600}
 .footer__col a{display:block;padding:6px 0;font-size:14.5px;color:rgba(250,247,244,0.82);transition:color var(--dur-1) var(--ease)}
 .footer__col a:hover{color:#D9B8D6}
 .footer__bottom{max-width:1280px;margin:44px auto 0;padding-top:24px;border-top:1px solid rgba(250,247,244,0.16);display:flex;flex-wrap:wrap;gap:12px 26px;justify-content:space-between;font-size:12.5px;color:rgba(250,247,244,0.55);font-weight:300}
@@ -333,7 +333,7 @@ section[id], main[id] { scroll-margin-top: 6rem; }
 <main id="main">
 
 <section class="hero" id="hero">
-  <div class="hero__media"><img src="https://images.unsplash.com/photo-1487530811176-3780de880c2d?w=2400&q=80&fm=webp" alt="Mazzo di rose e fiori misti dai toni rosa e crema" width="2400" height="1600" fetchpriority="high"></div>
+  <div class="hero__media"><img src="https://images.unsplash.com/photo-1487530811176-3780de880c2d?w=2400&q=80&fm=webp" srcset="https://images.unsplash.com/photo-1487530811176-3780de880c2d?w=800&q=80&fm=webp 800w, https://images.unsplash.com/photo-1487530811176-3780de880c2d?w=1200&q=80&fm=webp 1200w, https://images.unsplash.com/photo-1487530811176-3780de880c2d?w=1600&q=80&fm=webp 1600w, https://images.unsplash.com/photo-1487530811176-3780de880c2d?w=2400&q=80&fm=webp 2400w" sizes="100vw" alt="Mazzo di rose e fiori misti dai toni rosa e crema" width="2400" height="1600" fetchpriority="high"></div>
   <div class="hero__veil" aria-hidden="true"></div>
   <div class="hero__inner">
     <span class="eyebrow hero__eyebrow">Fioreria — Via Carducci, Schio (VI)</span>
@@ -589,26 +589,26 @@ section[id], main[id] { scroll-margin-top: 6rem; }
 <footer class="footer">
   <div class="footer__top">
     <div class="footer__brand">
-      <h4>Fioreria Viola</h4>
+      <h2>Fioreria Viola</h2>
       <p>Fioreria in Via Carducci a Schio dal 1995. Mazzi su misura con consegna in giornata, allestimenti per matrimoni e cerimonie, composizioni funebri, piante e abbonamento fiori.</p>
       <a href="tel:+390445000000" class="footer__call"><span aria-hidden="true">☎</span>+39&nbsp;0445&nbsp;000&nbsp;000</a>
     </div>
     <div class="footer__col">
-      <h5>Servizi</h5>
+      <h3>Servizi</h3>
       <a href="#servizi">Mazzi su misura</a>
       <a href="#servizi">Piante</a>
       <a href="#abbonamento">Abbonamento fiori</a>
       <a href="#ordina">Composizioni funebri</a>
     </div>
     <div class="footer__col">
-      <h5>Cerimonie</h5>
+      <h3>Cerimonie</h3>
       <a href="#cerimonie">Matrimoni</a>
       <a href="#cerimonie">Battesimi e feste</a>
       <a href="#come">Come si ordina</a>
       <a href="#ordina">Preventivo</a>
     </div>
     <div class="footer__col">
-      <h5>Contatti</h5>
+      <h3>Contatti</h3>
       <a href="tel:+390445000000">+39&nbsp;0445&nbsp;000&nbsp;000</a>
       <a href="mailto:ciao@fioreriaviola.it">ciao@fioreriaviola.it</a>
       <a href="https://www.instagram.com/fioreriaviola" target="_blank" rel="noopener">Instagram</a>

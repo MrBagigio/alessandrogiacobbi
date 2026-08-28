@@ -48,7 +48,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" integrity="sha384-Z3REaz79l2IaAZqJsSABtTbhjgOUYyV3p90XNnAPCSHg3EMTz1fouunq9WZRtj3d" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  html, body { background: #0E0B08; color: #F4EDE2; font-family: 'Inter Tight', system-ui, sans-serif; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+  html, body { background: #0E0B08; color: #F4EDE2; font-family: 'Inter Tight', system-ui, sans-serif; -webkit-font-smoothing: antialiased; overflow-x: hidden; overflow-x: clip; }
   body { font-feature-settings: 'cv02','cv03','cv04','cv11'; }
   .display { font-family: 'Fraunces', Georgia, serif; font-weight: 400; letter-spacing: -0.025em; }
   .italic-display { font-family: 'Fraunces', serif; font-style: italic; font-weight: 300; }
@@ -190,6 +190,9 @@
   @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
   .whatsapp-fab { position: fixed; bottom: 2rem; right: 2rem; width: 60px; height: 60px; background: #25D366; border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 50; animation: pulse 3s ease-in-out infinite; box-shadow: 0 8px 24px rgba(37,211,102,0.3); }
   @media (max-width: 768px) { .whatsapp-fab { bottom: 1.25rem; right: 1.25rem; width: 52px; height: 52px; } }
+  @media (max-width: 768px) { .listino-grid { grid-template-columns: 1fr !important; gap: 2.5rem !important; } .listino-grid > div:first-child { position: static !important; } }
+  @media (max-width: 768px) { .reviews-grid { grid-template-columns: 1fr !important; } }
+  @media (max-width: 768px) { .chi-grid { grid-template-columns: 1fr !important; gap: 2rem !important; } .footer-grid { grid-template-columns: 1fr 1fr !important; gap: 2rem !important; } }
 
   /* Selection */
   ::selection { background: var(--rust); color: var(--cream); }
@@ -222,7 +225,7 @@
 
 
   /* audit-100-100 phase-2e: prevent horizontal scroll on desktop */
-  html, body { overflow-x: hidden; max-width: 100vw; }
+  html, body { overflow-x: hidden; overflow-x: clip; max-width: 100vw; }
 
   /* Phase 2.I contrast fix — darker text on dark bg */
   body { color: #F8F1E5 !important; }
@@ -633,7 +636,7 @@ section[id], main[id] { scroll-margin-top: 6rem; }
       </div>
     </div>
 
-    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;padding-top:2rem;border-top:1px solid var(--line);font-size:0.8rem;color:rgba(244,237,226,0.4);">
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;padding-top:2rem;border-top:1px solid var(--line);font-size:0.8rem;color:rgba(244,237,226,0.58);">
       <span>© 2026 Bellezza Naturale · Sara Bertelli · P.IVA 04123456789</span>
       <div style="display:flex;gap:2rem;">
         <a href="#" style="color:inherit;text-decoration:none;">Privacy</a>

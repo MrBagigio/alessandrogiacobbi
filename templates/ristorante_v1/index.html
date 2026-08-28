@@ -29,7 +29,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://images.unsplash.com" crossorigin>
-<link rel="preload" as="image" href="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=2400&q=80&fm=webp" fetchpriority="high">
+<link rel="preload" as="image" href="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=2400&q=80&fm=webp" imagesrcset="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&q=80&fm=webp 800w, https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1200&q=80&fm=webp 1200w, https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1600&q=80&fm=webp 1600w, https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=2400&q=80&fm=webp 2400w" imagesizes="100vw" fetchpriority="high">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400&family=Inter:wght@300;400;500;600&display=swap">
 
 <script type="application/ld+json">
@@ -72,8 +72,8 @@
 :root{
   --bg:#1C1611;--bg-2:#221A13;--bg-3:#2A2018;--bg-olive:#1B1D14;
   --paper:#F3EAD9;--paper-2:#E7D8BF;
-  --ink:#1C1611;--ink-soft:rgba(243,234,217,0.80);--ink-mute:rgba(243,234,217,0.52);
-  --terra:#C8703F;--terra-soft:rgba(200,112,63,0.18);
+  --ink:#1C1611;--ink-soft:rgba(243,234,217,0.80);--ink-mute:rgba(243,234,217,0.65);
+  --terra:#AC5527;--terra-soft:rgba(200,112,63,0.18);
   --olive:#9A9A5E;
   --hair:rgba(243,234,217,0.10);--hair-2:rgba(243,234,217,0.18);
   --display:"Fraunces",Georgia,"Times New Roman",serif;
@@ -147,7 +147,7 @@ a{color:inherit;text-decoration:none}
 .section__head h2{margin:0;font-family:var(--display);font-weight:400;font-size:var(--t-display);line-height:1.02;letter-spacing:-0.02em}
 .section__head h2 em{font-style:italic;font-weight:300;color:var(--terra)}
 .section__head p{margin:0;font-size:17px;line-height:1.65;color:var(--ink-soft);font-weight:300}
-.section--paper .section__head p{color:rgba(28,22,17,0.72)}
+.section--paper .section__head p,.exp .section__head p{color:rgba(28,22,17,0.72)}
 
 /* MANIFESTO */
 .manifesto{padding:var(--pad-y) var(--pad-x);background:var(--bg-2);text-align:center}
@@ -227,9 +227,9 @@ a{color:inherit;text-decoration:none}
 .footer__top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;max-width:1280px;margin:0 auto 56px}
 @media (max-width:900px){.footer__top{grid-template-columns:1fr 1fr;gap:32px}}
 @media (max-width:520px){.footer__top{grid-template-columns:1fr}}
-.footer__brand h4{margin:0 0 14px;font-family:var(--display);font-weight:400;font-size:21px;letter-spacing:0.01em;color:var(--paper)}
+.footer__brand h2{margin:0 0 14px;font-family:var(--display);font-weight:400;font-size:21px;letter-spacing:0.01em;color:var(--paper)}
 .footer__brand p{margin:0;font-size:13px;color:var(--ink-mute);line-height:1.65;max-width:36ch;font-weight:300}
-.footer__col h5{margin:0 0 16px;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--ink-mute);font-weight:500}
+.footer__col h3{margin:0 0 16px;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--ink-mute);font-weight:500}
 .footer__col a{display:block;padding:6px 0;font-size:13px;color:var(--ink-soft);transition:color var(--dur-1) var(--ease)}
 .footer__col a:hover{color:var(--terra)}
 .footer__bottom{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;max-width:1280px;margin:0 auto;padding-top:24px;border-top:1px solid var(--hair);font-size:11px;letter-spacing:0.06em;color:var(--ink-mute)}
@@ -322,7 +322,7 @@ section[id], main[id] { scroll-margin-top: 6rem; }
 
 <section class="hero" id="hero">
   <div class="hero__media">
-    <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=2400&q=80&fm=webp"
+    <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=2400&q=80&fm=webp" srcset="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&q=80&fm=webp 800w, https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1200&q=80&fm=webp 1200w, https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1600&q=80&fm=webp 1600w, https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=2400&q=80&fm=webp 2400w" sizes="100vw"
          alt="Tavola apparecchiata al lume di candela nella sala della Corte dei Tigli, Asolo"
          width="2400" height="1600" fetchpriority="high" decoding="async">
   </div>
@@ -527,25 +527,25 @@ section[id], main[id] { scroll-margin-top: 6rem; }
 <footer class="footer">
   <div class="footer__top">
     <div class="footer__brand">
-      <h4>Corte dei Tigli</h4>
+      <h2>Corte dei Tigli</h2>
       <p>Cucina di campagna in una corte del Settecento sui Colli Asolani. Orto e oliveto di proprietà, pasta a mano, fuoco di legna. Conduzione familiare dal 1958.</p>
     </div>
     <div class="footer__col">
-      <h5>La tavola</h5>
+      <h3>La tavola</h3>
       <a href="#portate">Le portate</a>
       <a href="/menu.pdf">Menu in PDF</a>
       <a href="#prenota">Prenota</a>
       <a href="#">Gift card</a>
     </div>
     <div class="footer__col">
-      <h5>La corte</h5>
+      <h3>La corte</h3>
       <a href="#corte">L'orto e il forno</a>
       <a href="#corte">Cantina del Colle</a>
       <a href="#esperienze">Esperienze</a>
       <a href="#">Eventi privati</a>
     </div>
     <div class="footer__col">
-      <h5>Contatti</h5>
+      <h3>Contatti</h3>
       <a href="tel:+390423000000">+39&nbsp;0423&nbsp;000&nbsp;000</a>
       <a href="mailto:prenotazioni@cortedeitigli.it">prenotazioni@cortedeitigli.it</a>
       <a href="https://www.instagram.com/cortedeitigli" target="_blank" rel="noopener">Instagram</a>

@@ -85,7 +85,7 @@
       --ink-3: #221C18;
       --cream: #F4EDE0;
       --cream-2: #DDD0BB;
-      --mute: #8A7A65;
+      --mute: #9C8C75;
       --mute-2: #645540;
       --gold: #D4B574;
       --gold-deep: #97803F;
@@ -95,7 +95,7 @@
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
-    html, body { overflow-x: hidden; max-width: 100vw; }
+    html, body { overflow-x: hidden; overflow-x: clip; max-width: 100vw; }
     body {
       background: var(--ink);
       color: var(--cream);
@@ -440,7 +440,7 @@
       gap: 3rem; margin-bottom: 4rem;
     }
     @media (max-width: 800px) { .footer-grid { grid-template-columns: 1fr 1fr; } }
-    .footer-grid h4 {
+    .footer-grid h2 {
       font-size: 0.7rem; letter-spacing: 0.32em; text-transform: uppercase;
       color: var(--gold); font-family: 'Inter', sans-serif; font-weight: 500;
       margin-bottom: 1.5rem;
@@ -634,7 +634,9 @@ section[id], main[id] { scroll-margin-top: 6rem; }
         <source src="https://res.cloudinary.com/demo/video/upload/sea_turtle.mp4" type="video/mp4">
       </video>
       <div class="cinema-overlay">
-        <p class="eyebrow">Scorri · Lago · Ottobre</p>
+        <!-- VIDEO PLACEHOLDER: sample Cloudinary (tartaruga). Dimostra il video-scrub;
+           alla consegna va sostituito con il girato del cliente (drone/lago). -->
+        <p class="eyebrow">Scorri &middot; L'acqua &middot; Il tempo</p>
         <h2 id="cinema-title">Acqua, vento,<br><em>tempo</em>.</h2>
       </div>
       <div class="cinema-progress-bar"></div>
@@ -846,7 +848,7 @@ section[id], main[id] { scroll-margin-top: 6rem; }
         <p style="margin-top: 1rem; font-size: 0.7rem; letter-spacing: 0.1em;">CIN  · P.IVA </p>
       </div>
       <div>
-        <h4>Resort</h4>
+        <h2>Resort</h2>
         <ul>
           <li><a href="#suite">Suite</a></li>
           <li><a href="#ristorante">Ristorante</a></li>
@@ -854,7 +856,7 @@ section[id], main[id] { scroll-margin-top: 6rem; }
         </ul>
       </div>
       <div>
-        <h4>Concierge</h4>
+        <h2>Concierge</h2>
         <ul>
           <li><a href="tel:+390310000000">+39&nbsp;031&nbsp;000&nbsp;0000</a></li>
           <li><a href="mailto:concierge@villacordillera.it">concierge@villacordillera.it</a></li>
@@ -862,7 +864,7 @@ section[id], main[id] { scroll-margin-top: 6rem; }
         </ul>
       </div>
       <div>
-        <h4>Social</h4>
+        <h2>Social</h2>
         <ul>
           <li><a href="https://www.instagram.com/villacordillera" rel="noopener">Instagram</a></li>
           <li><a href="#">Privacy</a></li>

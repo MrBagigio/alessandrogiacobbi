@@ -27,7 +27,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://images.unsplash.com" crossorigin>
-<link rel="preload" as="image" href="https://images.unsplash.com/photo-1500595046743-cd271d694d30?w=2400&q=80&fm=webp" fetchpriority="high">
+<link rel="preload" as="image" href="https://images.unsplash.com/photo-1500595046743-cd271d694d30?w=2400&q=80&fm=webp" imagesrcset="https://images.unsplash.com/photo-1500595046743-cd271d694d30?w=800&q=80&fm=webp 800w, https://images.unsplash.com/photo-1500595046743-cd271d694d30?w=1200&q=80&fm=webp 1200w, https://images.unsplash.com/photo-1500595046743-cd271d694d30?w=1600&q=80&fm=webp 1600w, https://images.unsplash.com/photo-1500595046743-cd271d694d30?w=2400&q=80&fm=webp 2400w" imagesizes="100vw" fetchpriority="high">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400;0,500;0,700;1,400&family=Alegreya+Sans:wght@300;400;500;700&display=swap">
 
 <script type="application/ld+json">
@@ -74,7 +74,7 @@
 <style>
 :root{
   --paper:#F6F3EA;--paper-2:#ECE6D6;--paper-3:#FCFAF4;
-  --ink:#282419;--ink-soft:rgba(40,36,25,0.76);--ink-mute:rgba(40,36,25,0.52);
+  --ink:#282419;--ink-soft:rgba(40,36,25,0.76);--ink-mute:rgba(40,36,25,0.65);
   --field:#4E6B2E;--field-soft:rgba(78,107,46,0.12);
   --clay:#A65E2E;--clay-soft:rgba(166,94,46,0.12);
   --deep:#232012;
@@ -241,10 +241,10 @@ section[id], main[id] { scroll-margin-top: 6rem; }
 .footer__top{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:40px}
 @media (max-width:900px){.footer__top{grid-template-columns:1fr 1fr}}
 @media (max-width:560px){.footer__top{grid-template-columns:1fr}}
-.footer__brand h4{margin:0 0 14px;font-family:var(--display);font-weight:700;font-size:25px;letter-spacing:-0.01em}
+.footer__brand h2{margin:0 0 14px;font-family:var(--display);font-weight:700;font-size:25px;letter-spacing:-0.01em}
 .footer__brand p{margin:0 0 18px;font-size:15px;color:rgba(252,250,244,0.62);line-height:1.74;max-width:40ch;font-weight:300}
 .footer__call{display:inline-flex;align-items:center;gap:10px;font-family:var(--display);font-size:22px;font-weight:700;color:#E4B57E}
-.footer__col h5{margin:0 0 16px;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(252,250,244,0.5);font-weight:700}
+.footer__col h3{margin:0 0 16px;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(252,250,244,0.5);font-weight:700}
 .footer__col a{display:block;padding:6px 0;font-size:15px;color:rgba(252,250,244,0.82);transition:color var(--dur-1) var(--ease)}
 .footer__col a:hover{color:#E4B57E}
 .footer__bottom{max-width:1280px;margin:44px auto 0;padding-top:24px;border-top:1px solid rgba(252,250,244,0.16);display:flex;flex-wrap:wrap;gap:12px 26px;justify-content:space-between;font-size:13px;color:rgba(252,250,244,0.55);font-weight:300}
@@ -330,7 +330,7 @@ section[id], main[id] { scroll-margin-top: 6rem; }
 <main id="main">
 
 <section class="hero" id="hero">
-  <div class="hero__media"><img src="https://images.unsplash.com/photo-1500595046743-cd271d694d30?w=2400&q=80&fm=webp" alt="Mucche al pascolo al tramonto" width="2400" height="1600" fetchpriority="high"></div>
+  <div class="hero__media"><img src="https://images.unsplash.com/photo-1500595046743-cd271d694d30?w=2400&q=80&fm=webp" srcset="https://images.unsplash.com/photo-1500595046743-cd271d694d30?w=800&q=80&fm=webp 800w, https://images.unsplash.com/photo-1500595046743-cd271d694d30?w=1200&q=80&fm=webp 1200w, https://images.unsplash.com/photo-1500595046743-cd271d694d30?w=1600&q=80&fm=webp 1600w, https://images.unsplash.com/photo-1500595046743-cd271d694d30?w=2400&q=80&fm=webp 2400w" sizes="100vw" alt="Mucche al pascolo al tramonto" width="2400" height="1600" fetchpriority="high"></div>
   <div class="hero__veil" aria-hidden="true"></div>
   <div class="hero__inner">
     <span class="eyebrow hero__eyebrow">Azienda agricola — Giavenale di Schio (VI)</span>
@@ -547,26 +547,26 @@ section[id], main[id] { scroll-margin-top: 6rem; }
 <footer class="footer">
   <div class="footer__top">
     <div class="footer__brand">
-      <h4>Azienda Agricola Pedrotti</h4>
+      <h2>Azienda Agricola Pedrotti</h2>
       <p>Azienda agricola familiare a Giavenale di Schio. Ortaggi di stagione, uova da galline a terra, miele e trasformati. Vendita diretta allo spaccio e cassetta settimanale su prenotazione.</p>
       <a href="tel:+390445000000" class="footer__call"><span aria-hidden="true">☎</span>+39&nbsp;0445&nbsp;000&nbsp;000</a>
     </div>
     <div class="footer__col">
-      <h5>L'azienda</h5>
+      <h3>L'azienda</h3>
       <a href="#campi">Cosa coltiviamo</a>
       <a href="#stagioni">Il calendario</a>
       <a href="#campi">Uova e miele</a>
       <a href="#spaccio">Lo spaccio</a>
     </div>
     <div class="footer__col">
-      <h5>Cassetta</h5>
+      <h3>Cassetta</h3>
       <a href="#cassetta">Come funziona</a>
       <a href="#prenota">Prenota</a>
       <a href="#cassetta">Consegna a domicilio</a>
       <a href="#prenota">Gruppo WhatsApp</a>
     </div>
     <div class="footer__col">
-      <h5>Contatti</h5>
+      <h3>Contatti</h3>
       <a href="tel:+390445000000">+39&nbsp;0445&nbsp;000&nbsp;000</a>
       <a href="mailto:info@agricolapedrotti.it">info@agricolapedrotti.it</a>
       <a href="https://www.instagram.com/agricolapedrotti" target="_blank" rel="noopener">Instagram</a>

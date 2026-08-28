@@ -29,7 +29,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://images.unsplash.com" crossorigin>
-<link rel="preload" as="image" href="https://images.unsplash.com/photo-1585704032915-c3400ca199e7?w=2400&q=80&fm=webp" fetchpriority="high">
+<link rel="preload" as="image" href="https://images.unsplash.com/photo-1585704032915-c3400ca199e7?w=2400&q=80&fm=webp" imagesrcset="https://images.unsplash.com/photo-1585704032915-c3400ca199e7?w=800&q=80&fm=webp 800w, https://images.unsplash.com/photo-1585704032915-c3400ca199e7?w=1200&q=80&fm=webp 1200w, https://images.unsplash.com/photo-1585704032915-c3400ca199e7?w=1600&q=80&fm=webp 1600w, https://images.unsplash.com/photo-1585704032915-c3400ca199e7?w=2400&q=80&fm=webp 2400w" imagesizes="100vw" fetchpriority="high">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zilla+Slab:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap">
 
 <script type="application/ld+json">
@@ -72,7 +72,7 @@
 :root{
   --bg:#0E1620;--bg-2:#121E2B;--bg-3:#172636;--bg-steel:#0B131C;
   --paper:#EEF3F8;--paper-2:#D7E2EC;
-  --ink:#0E1620;--ink-soft:rgba(238,243,248,0.80);--ink-mute:rgba(238,243,248,0.52);
+  --ink:#0E1620;--ink-soft:rgba(238,243,248,0.80);--ink-mute:rgba(238,243,248,0.65);
   --accent:#2E8FE0;--accent-soft:rgba(46,143,224,0.16);
   --warm:#F0822E;--warm-soft:rgba(240,130,46,0.18);
   --hair:rgba(238,243,248,0.10);--hair-2:rgba(238,243,248,0.18);
@@ -111,7 +111,7 @@ a{color:inherit;text-decoration:none}
 .nav__right{display:flex;justify-content:flex-end;align-items:center;gap:18px}
 .nav__lang{font-size:11px;letter-spacing:0.1em;color:var(--ink-mute);font-weight:500}
 .nav__lang strong{color:var(--paper);font-weight:600}
-.nav__cta{display:inline-flex;align-items:center;gap:8px;padding:11px 22px;background:var(--warm);border:1px solid var(--warm);color:#fff;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;font-weight:600;transition:filter var(--dur-1) var(--ease)}
+.nav__cta{display:inline-flex;align-items:center;gap:8px;padding:11px 22px;background:var(--warm);border:1px solid var(--warm);color:#1A1005;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;font-weight:600;transition:filter var(--dur-1) var(--ease)}
 .nav__cta:hover{filter:brightness(1.08)}
 .nav__cta-dot{width:7px;height:7px;border-radius:50%;background:#fff;animation:pulse 1.8s var(--ease) infinite}
 @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.45;transform:scale(0.8)}}
@@ -133,7 +133,7 @@ a{color:inherit;text-decoration:none}
 .hero__sub{margin:0;max-width:50ch;font-size:clamp(15px,1.15vw,18px);line-height:1.6;color:var(--ink-soft);font-weight:300;opacity:0;transform:translateY(20px);animation:fadeUp 1100ms var(--ease-out) 600ms forwards}
 .hero__actions{display:flex;gap:14px;flex-wrap:wrap;align-items:center;opacity:0;transform:translateY(20px);animation:fadeUp 1100ms var(--ease-out) 800ms forwards}
 .btn{display:inline-flex;align-items:center;gap:12px;padding:18px 32px;font-family:var(--sans);font-size:13px;letter-spacing:0.1em;text-transform:uppercase;font-weight:600;border:1px solid var(--warm);transition:all 350ms var(--ease);cursor:pointer;background:transparent;color:var(--paper);min-height:54px}
-.btn--call{background:var(--warm);color:#fff;border-color:var(--warm);font-size:15px;padding:20px 38px}
+.btn--call{background:var(--warm);color:#1A1005;border-color:var(--warm);font-size:15px;padding:20px 38px}
 .btn--call:hover{filter:brightness(1.08)}
 .btn--call .btn__num{font-family:var(--display);font-weight:600;letter-spacing:0.02em;text-transform:none;font-size:18px}
 .btn--ghost{border-color:var(--hair-2);color:var(--paper)}
@@ -241,11 +241,11 @@ a{color:inherit;text-decoration:none}
 .footer__top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;max-width:1280px;margin:0 auto 56px}
 @media (max-width:900px){.footer__top{grid-template-columns:1fr 1fr;gap:32px}}
 @media (max-width:520px){.footer__top{grid-template-columns:1fr}}
-.footer__brand h4{margin:0 0 14px;font-family:var(--display);font-weight:600;font-size:21px;letter-spacing:0.01em;color:var(--paper)}
+.footer__brand h2{margin:0 0 14px;font-family:var(--display);font-weight:600;font-size:21px;letter-spacing:0.01em;color:var(--paper)}
 .footer__brand p{margin:0 0 22px;font-size:13px;color:var(--ink-mute);line-height:1.65;max-width:38ch;font-weight:300}
-.footer__call{display:inline-flex;align-items:center;gap:10px;padding:13px 22px;background:var(--warm);color:#fff;font-family:var(--display);font-weight:600;font-size:17px;letter-spacing:0.01em}
+.footer__call{display:inline-flex;align-items:center;gap:10px;padding:13px 22px;background:var(--warm);color:#1A1005;font-family:var(--display);font-weight:600;font-size:17px;letter-spacing:0.01em}
 .footer__call:hover{filter:brightness(1.08)}
-.footer__col h5{margin:0 0 16px;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--ink-mute);font-weight:500}
+.footer__col h3{margin:0 0 16px;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--ink-mute);font-weight:500}
 .footer__col a{display:block;padding:6px 0;font-size:13px;color:var(--ink-soft);transition:color var(--dur-1) var(--ease)}
 .footer__col a:hover{color:var(--accent)}
 .footer__bottom{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;max-width:1280px;margin:0 auto;padding-top:24px;border-top:1px solid var(--hair);font-size:11px;letter-spacing:0.06em;color:var(--ink-mute)}
@@ -340,7 +340,7 @@ section[id], main[id] { scroll-margin-top: 6rem; }
 
 <section class="hero" id="hero">
   <div class="hero__media">
-    <img src="https://images.unsplash.com/photo-1585704032915-c3400ca199e7?w=2400&q=80&fm=webp"
+    <img src="https://images.unsplash.com/photo-1585704032915-c3400ca199e7?w=2400&q=80&fm=webp" srcset="https://images.unsplash.com/photo-1585704032915-c3400ca199e7?w=800&q=80&fm=webp 800w, https://images.unsplash.com/photo-1585704032915-c3400ca199e7?w=1200&q=80&fm=webp 1200w, https://images.unsplash.com/photo-1585704032915-c3400ca199e7?w=1600&q=80&fm=webp 1600w, https://images.unsplash.com/photo-1585704032915-c3400ca199e7?w=2400&q=80&fm=webp 2400w" sizes="100vw"
          alt="Rubinetteria cromata pulita installata da Idraulica Veloce a Padova"
          width="2400" height="1600" fetchpriority="high" decoding="async">
   </div>
@@ -569,26 +569,26 @@ section[id], main[id] { scroll-margin-top: 6rem; }
 <footer class="footer">
   <div class="footer__top">
     <div class="footer__brand">
-      <h4>Idraulica Veloce</h4>
+      <h2>Idraulica Veloce</h2>
       <p>Idraulico a Padova e provincia. Pronto intervento 24h per perdite, scarichi e caldaie. Sul posto in 60 minuti, preventivo prima di iniziare, garanzia sul lavoro.</p>
       <a href="tel:+390490000000" class="footer__call"><span aria-hidden="true">📞</span>+39&nbsp;049&nbsp;000&nbsp;000</a>
     </div>
     <div class="footer__col">
-      <h5>Interventi</h5>
+      <h3>Interventi</h3>
       <a href="#servizi">Pronto intervento 24h</a>
       <a href="#servizi">Perdite e scarichi</a>
       <a href="#servizi">Caldaie e sanitari</a>
       <a href="#interventi">Interventi tipici</a>
     </div>
     <div class="footer__col">
-      <h5>Zone servite</h5>
+      <h3>Zone servite</h3>
       <a href="#zone">Padova</a>
       <a href="#zone">Abano Terme · Albignasego</a>
       <a href="#zone">Selvazzano · Vigonza</a>
       <a href="#richiesta">Richiedi intervento</a>
     </div>
     <div class="footer__col">
-      <h5>Contatti</h5>
+      <h3>Contatti</h3>
       <a href="tel:+390490000000">+39&nbsp;049&nbsp;000&nbsp;000</a>
       <a href="mailto:info@idraulicaveloce.it">info@idraulicaveloce.it</a>
       <a href="https://www.facebook.com/idraulicaveloce" target="_blank" rel="noopener">Facebook</a>

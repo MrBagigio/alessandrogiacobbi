@@ -29,7 +29,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://images.unsplash.com" crossorigin>
-<link rel="preload" as="image" href="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=2400&q=80&fm=webp" fetchpriority="high">
+<link rel="preload" as="image" href="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=2400&q=80&fm=webp" imagesrcset="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&q=80&fm=webp 800w, https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=1200&q=80&fm=webp 1200w, https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=1600&q=80&fm=webp 1600w, https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=2400&q=80&fm=webp 2400w" imagesizes="100vw" fetchpriority="high">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;0,6..96,600;1,6..96,400;1,6..96,500&family=Inter:wght@300;400;500;600&display=swap">
 
 <script type="application/ld+json">
@@ -81,7 +81,7 @@
 :root{
   --bg:#16140F;--bg-2:#1C1A13;--bg-3:#242117;--bg-dark:#100E0A;
   --paper:#F5F1E8;--paper-2:#E5DECF;
-  --ink:#16140F;--ink-soft:rgba(245,241,232,0.80);--ink-mute:rgba(245,241,232,0.52);
+  --ink:#16140F;--ink-soft:rgba(245,241,232,0.80);--ink-mute:rgba(245,241,232,0.65);
   --accent:#C8FF3D;--accent-2:#B6EE2C;--accent-soft:rgba(200,255,61,0.16);
   --accent-ink:#5E7A00;
   --hair:rgba(245,241,232,0.10);--hair-2:rgba(245,241,232,0.18);
@@ -235,11 +235,11 @@ a{color:inherit;text-decoration:none}
 .footer__top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;max-width:1280px;margin:0 auto 56px}
 @media (max-width:900px){.footer__top{grid-template-columns:1fr 1fr;gap:32px}}
 @media (max-width:520px){.footer__top{grid-template-columns:1fr}}
-.footer__brand h4{margin:0 0 14px;font-family:var(--display);font-weight:500;font-size:21px;letter-spacing:0.01em;color:var(--paper)}
+.footer__brand h2{margin:0 0 14px;font-family:var(--display);font-weight:500;font-size:21px;letter-spacing:0.01em;color:var(--paper)}
 .footer__brand p{margin:0 0 18px;font-size:13px;color:var(--ink-mute);line-height:1.65;max-width:38ch;font-weight:300}
 .footer__certs{display:flex;flex-wrap:wrap;gap:8px;max-width:42ch}
 .footer__cert{font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--ink-soft);border:1px solid var(--hair-2);padding:6px 10px;border-radius:2px;font-weight:500}
-.footer__col h5{margin:0 0 16px;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--ink-mute);font-weight:600}
+.footer__col h3{margin:0 0 16px;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--ink-mute);font-weight:600}
 .footer__col a{display:block;padding:6px 0;font-size:13px;color:var(--ink-soft);transition:color var(--dur-1) var(--ease)}
 .footer__col a:hover{color:var(--accent)}
 .footer__bottom{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;max-width:1280px;margin:0 auto;padding-top:24px;border-top:1px solid var(--hair);font-size:11px;letter-spacing:0.06em;color:var(--ink-mute)}
@@ -332,7 +332,7 @@ section[id], main[id] { scroll-margin-top: 6rem; }
 
 <section class="hero" id="hero">
   <div class="hero__media">
-    <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=2400&q=80&fm=webp"
+    <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=2400&q=80&fm=webp" srcset="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&q=80&fm=webp 800w, https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=1200&q=80&fm=webp 1200w, https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=1600&q=80&fm=webp 1600w, https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=2400&q=80&fm=webp 2400w" sizes="100vw"
          alt="Atleta esegue una serie di crunch in una palestra luminosa durante un allenamento dinamico"
          width="2400" height="1600" fetchpriority="high" decoding="async">
   </div>
@@ -530,7 +530,7 @@ section[id], main[id] { scroll-margin-top: 6rem; }
 <footer class="footer">
   <div class="footer__top">
     <div class="footer__brand">
-      <h4>Sharon Fit Coach</h4>
+      <h2>Sharon Fit Coach</h2>
       <p>Personal trainer a Vicenza, online e in presenza. Programmi su misura, 1-1 in studio e nutrizione con biologa. Valutazione iniziale, programma su misura, check settimanali.</p>
       <div class="footer__certs">
         <span class="footer__cert">FIPE Personal Trainer Senior</span>
@@ -540,21 +540,21 @@ section[id], main[id] { scroll-margin-top: 6rem; }
       </div>
     </div>
     <div class="footer__col">
-      <h5>Programmi</h5>
+      <h3>Programmi</h3>
       <a href="#programmi">12 settimane online</a>
       <a href="#programmi">PT 1-1 in studio</a>
       <a href="#programmi">Nutrizione con biologa</a>
       <a href="#contatti">Valutazione iniziale</a>
     </div>
     <div class="footer__col">
-      <h5>Il metodo</h5>
+      <h3>Il metodo</h3>
       <a href="#metodo">Valutazione iniziale</a>
       <a href="#metodo">Programma su misura</a>
       <a href="#metodo">Check settimanali</a>
       <a href="#adatto">A chi è adatto</a>
     </div>
     <div class="footer__col">
-      <h5>Contatti</h5>
+      <h3>Contatti</h3>
       <a href="tel:+390444000000">+39&nbsp;0444&nbsp;000&nbsp;000</a>
       <a href="mailto:ciao@sharonfitcoach.it">ciao@sharonfitcoach.it</a>
       <a href="https://www.instagram.com/sharonfitcoach" target="_blank" rel="noopener">Instagram</a>

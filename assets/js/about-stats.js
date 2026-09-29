@@ -26,9 +26,10 @@ document.addEventListener('visibilitychange', finalizeAllIfHidden);
 function animate(el, target) {
   const start = performance.now();
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  // data-suffix (e.g. "%") was being silently dropped — the 65% mutation stat
-  // rendered as a bare "65". Append it on every frame, final value included.
-  const suffix = el.dataset.suffix || '';
+  // data-suffix (e.g. "k", "%") is drawn by CSS — .about__stat-num::after,
+  // content: attr(data-suffix), small and oxblood. Writing it into the text as
+  // well rendered it twice ("48kᵏ", measured 2026-09-29).
+  const suffix = '';
   const final = String(target) + suffix;
 
   // No animation when motion is reduced, or when the tab is hidden (rAF would
@@ -60,7 +61,7 @@ export function initAboutStats(root = document) {
   if (!('IntersectionObserver' in window)) {
     nodes.forEach((el) => {
       const target = parseInt(el.dataset.count, 10);
-      if (!Number.isNaN(target)) el.textContent = String(target) + (el.dataset.suffix || '');
+      if (!Number.isNaN(target)) el.textContent = String(target); // suffix: CSS ::after
     });
     return;
   }

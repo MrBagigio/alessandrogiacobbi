@@ -425,7 +425,9 @@ section {
 
 .showreel__caption {
   position: absolute;
-  bottom: 1.5rem; left: 1.5rem;
+  /* inside the 24px frame bracket (::before), not on it: at 1.5rem it sat
+     exactly on the bracket's bottom-left corner */
+  bottom: calc(24px + 0.9rem); left: calc(24px + 1.1rem);
   font-family: var(--fm);
   font-size: var(--fz-meta);
   letter-spacing: 0.1em;

@@ -653,9 +653,11 @@ html:not(.has-custom-cursor) .cursor-ring { display: none; }
 }
 
 .about__inner {
-  max-width: 1320px;
+  /* same container as .work__inner: with its own 1320px + 64px it started
+     64px to the right of every other section heading */
+  max-width: var(--maxw);
   margin: 0 auto;
-  padding: 0 clamp(24px, 5vw, 64px);
+  padding: 0 var(--pad-side);
 }
 
 .about__split {
@@ -766,6 +768,14 @@ html:not(.has-custom-cursor) .cursor-ring { display: none; }
   font-variant-numeric: tabular-nums;
   position: relative;
 }
+/* Big Noodle at negative tracking: where two stems land in the same partly
+   covered pixel the ground bleeds through as a hairline (visible cream-on-ink
+   in the contact title, measured 2026-09-29). A same-colour stroke of ~0.6px
+   at display sizes covers those pixels; em-relative so it vanishes when small. */
+.hero__title,
+.contact__title,
+.section-heading__title { -webkit-text-stroke: 0.004em currentColor; }
+
 .about__stat-num::after {
   content: attr(data-suffix);
   font-size: 0.55em;

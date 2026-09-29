@@ -31,6 +31,17 @@ const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
  * ────────────────────────────────────────────────────────────────────────── */
 const FX_MAXIMAL = false;
 
+/* ──────────────────────────────────────────────────────────────────────────
+ * PLAYFUL — the three toys: the Asteroids arcade, the custom dot+ring cursor
+ * and the manikins living on the headline (fig. 02).
+ *
+ * Hidden for now (brief 29 set 2026): the page leads with the work. Nothing
+ * was deleted — every module is intact and still lazily loaded on demand.
+ * `?playful=1` in the URL brings all three back for a preview; flip the
+ * default to `true` to restore them for everyone.
+ * ────────────────────────────────────────────────────────────────────────── */
+const PLAYFUL = /[?&]playful=1/.test(location.search);
+
 // 1. Boot sequence — the ~1.3 s CRT terminal, ONCE PER SESSION. An inline
 //    script in <head> decides before first paint (html.boot-armed): only then
 //    is the loader visible at all, and only then is boot.js downloaded, so a
@@ -73,7 +84,10 @@ if (!reduced) {
 //     3 tiny lines and there is no room for them. Loaded lazily after first
 //     paint so it never competes with the hero's own LCP.
 const heroTitle = document.querySelector('.hero__title');
-if (heroTitle && window.matchMedia('(min-width: 768px)').matches && !/[?&]manikins=off/.test(location.search)) {
+if (PLAYFUL && heroTitle && window.matchMedia('(min-width: 768px)').matches && !/[?&]manikins=off/.test(location.search)) {
+  // the caption invites the visitor to grab them: only say it when they exist
+  const hint = document.querySelector('.hero__rig-hint');
+  if (hint) hint.insertAdjacentHTML('beforeend', ' &middot; prendi gli omini');
   const debug = /[?&]manikins=debug/.test(location.search);
   const count = window.matchMedia('(min-width: 1024px)').matches ? 2 : 1;
   requestAnimationFrame(() => {
@@ -93,16 +107,22 @@ const isFinePointer = window.matchMedia('(pointer: fine)').matches;
 const isWideScreen = window.matchMedia('(min-width: 640px)').matches;
 
 let cursor = null;
-if (!reduced && isFinePointer && isWideScreen) cursor = new Cursor();
+if (PLAYFUL && !reduced && isFinePointer && isWideScreen) cursor = new Cursor();
 // narrow → wide resize (side-by-side pane restored): mount the cursor late
-if (!reduced && isFinePointer && !cursor) {
+if (PLAYFUL && !reduced && isFinePointer && !cursor) {
   const mq = window.matchMedia('(min-width: 640px)');
   const onWide = (e) => { if (e.matches && !cursor) { cursor = new Cursor(); mq.removeEventListener('change', onWide); } };
   mq.addEventListener('change', onWide);
 }
 
 // 5b. Arcade — the Asteroids cursor game, on demand (▲ arcade / key A / ?arcade=1)
-window.__arcade = initArcade();
+if (PLAYFUL) {
+  window.__arcade = initArcade();
+} else {
+  // no toggle in the meta-bar, no A key, no ?arcade=1
+  document.querySelector('[data-arcade-toggle]')?.setAttribute('hidden', '');
+  window.__arcade = null;
+}
 
 // 6. Lazy load
 initLazyMedia();

@@ -233,6 +233,10 @@ body.is-arcade a, body.is-arcade img { -webkit-user-drag: none; }
 @media (pointer: coarse), (max-width: 639px) {
   .cursor-dot, .cursor-ring { display: none; }
 }
+/* the dot and ring are static markup: when cursor.js does not mount (reduced
+   motion, PLAYFUL off) they would sit frozen in the top-left corner */
+html:not(.has-custom-cursor) .cursor-dot,
+html:not(.has-custom-cursor) .cursor-ring { display: none; }
 
 /* ── Project card — 3D tilt + lift on hover ── */
 .project-card {

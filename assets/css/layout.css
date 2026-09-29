@@ -2124,3 +2124,9 @@ section[id] { scroll-margin-top: 6rem; }
 
 /* barra in alto: la frase intera andava a capo su telefono */
 @media (max-width: 639px) { .meta-bar .meta-long { display: none; } }
+
+/* Titoli di una parola / riga corta: col tracking -0.04em della vecchia frase
+   su tre righe, le aste strette del Big Noodle (I, V, M) si fondevano —
+   "SCRIVIMI." si leggeva "SCRIVML" (29 set 2026). */
+.contact__title { letter-spacing: 0.01em; }
+.hero--rig .hero__inner .hero__title { letter-spacing: -0.005em; }

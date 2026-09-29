@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Alessandro Giacobbi — Character Rigging &amp; Creature TD</title>
-  <meta name="description" content="Character rigging e animation per spot pubblicitari · Maya, Python. Freelance 3D dal 2018 con Setpoint Studio (Veneto). Rig tooling (MUTAGEN) e template web.">
+  <title>Alessandro Giacobbi — Rig e animazione di personaggi 3D</title>
+  <meta name="description" content="Rig e animazione di personaggi per spot pubblicitari, in Maya e Python. Freelance 3D dal 2018 con Setpoint Studio (Veneto). Strumenti per il rig (MUTAGEN) e template web.">
 
-  <meta property="og:title" content="Alessandro Giacobbi — Character Rigging &amp; Creature TD">
-  <meta property="og:description" content="Character rigging e animation per spot pubblicitari · Maya, Python · freelance 3D dal 2018, Veneto.">
+  <meta property="og:title" content="Alessandro Giacobbi — Rig e animazione di personaggi 3D">
+  <meta property="og:description" content="Rig e animazione di personaggi per spot pubblicitari, in Maya e Python · freelance 3D dal 2018, Veneto.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://mrbagigio.github.io/alessandrogiacobbi/">
   <meta property="og:image" content="https://mrbagigio.github.io/alessandrogiacobbi/assets/images/og-cover.jpg">
@@ -25,7 +25,7 @@
     "@type": ["Person","ProfessionalService"],
     "name": "Alessandro Giacobbi",
     "url": "https://mrbagigio.github.io/alessandrogiacobbi/",
-    "jobTitle": "Character Rigging & Creature TD · 3D Artist",
+    "jobTitle": "Rig e animazione di personaggi 3D · Creature TD",
     "address": {"@type":"PostalAddress","streetAddress":"Via Roma 40 Int 2","addressLocality":"Torrebelvicino","addressRegion":"Veneto","postalCode":"36036","addressCountry":"IT"},
     "areaServed": "IT",
     "knowsAbout": ["Maya","Python","Character Rigging","Character Animation","Creature Rigging","Facial Rigging","Mutation Testing","ZBrush","Substance Painter","Arnold","Redshift","ComfyUI"],
@@ -44,10 +44,12 @@
        page's only layout shift (CLS 0.04, hero__inner at ~100ms) -->
   <link rel="preload" href="./assets/fonts/big_noodle_titling.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="./assets/fonts/big_noodle_titling_oblique.ttf" as="font" type="font/ttf" crossorigin>
+  <!-- LCP: the intro reel poster (first frame the visitor sees) -->
+  <link rel="preload" as="image" href="./assets/images/projects/lp/lp-hero-reel-poster.jpg" fetchpriority="high">
   <link rel="stylesheet" href="./assets/css/tokens.css?v=20260530-arc11">
   <link rel="stylesheet" href="./assets/css/base.css?v=20260530-aaa">
   <link rel="stylesheet" href="./assets/css/components.css?v=20260929-fix1">
-  <link rel="stylesheet" href="./assets/css/layout.css?v=20260929-fix1">
+  <link rel="stylesheet" href="./assets/css/layout.css?v=20260929-intro2">
   <link rel="stylesheet" href="./assets/css/animations.css?v=20260530-boot3">
 </head>
 <body>
@@ -70,9 +72,9 @@
   </script>
   <div class="loader" aria-hidden="true">
     <div class="loader__boot">
-      <div class="loader__boot-line" data-boot="> portfolio.shell · initializing"></div>
-      <div class="loader__boot-line" data-boot="> mounting three.js scene ..... ok"></div>
-      <div class="loader__boot-line loader__boot-line--accent" data-boot="> system ready_"></div>
+      <div class="loader__boot-line" data-boot="> portfolio.shell · avvio"></div>
+      <div class="loader__boot-line" data-boot="> caricamento scena three.js ..... ok"></div>
+      <div class="loader__boot-line loader__boot-line--accent" data-boot="> sistema pronto_"></div>
     </div>
   </div>
 
@@ -84,13 +86,13 @@
   <header class="meta-bar">
     <div class="left">
       <span class="meta-dot"></span>
-      Available · Q2 2026
+      Disponibile<span class="meta-long"> per nuovi progetti</span>
     </div>
     <div class="center">Alessandro Giacobbi</div>
     <div class="right">
       <span class="meta-clock">--:-- CET</span>
-      <a href="#about">About</a>
-      <a href="#contact">Contact</a>
+      <a href="#about">Chi sono</a>
+      <a href="#contact">Contatti</a>
       <button type="button" class="arcade-toggle" data-arcade-toggle aria-pressed="false" title="Asteroids: il cursore diventa una navicella (tasto A · Esc per uscire)">▲ arcade</button>
     </div>
   </header>
@@ -99,56 +101,46 @@
 
   <main id="main">
 
-    <!-- HERO -->
-    <section class="hero" aria-label="Intro">
-      <canvas class="hero__canvas" aria-hidden="true"></canvas>
-
-      <div class="hero__inner">
-        <div class="hero__pretitle reveal-up">3D Artist · Veneto, IT</div>
-
-        <h1 class="hero__title">
-          <span class="reveal-mask"><span>Character rigging.</span></span><br>
-          <em class="reveal-mask reveal-mask--paper2"><span>Character animation.</span></em>
-        </h1>
-
-        <div class="hero__cta reveal-up">
-          <a href="#work" class="btn btn--ox">
-            <span>Vedi i lavori</span>
-            <span class="btn-arrow">→</span>
-          </a>
-          <a href="#contact" class="btn btn--ghost">
-            <span>Contattami</span>
-          </a>
+    <!-- INTRO — the first screen is the work: a 17 s loop of the LP chameleon
+         (clay render → geometry turntable → rig turntable), all Alessandro's
+         rig. Replaces the full-screen "CHARACTER RIGGING." headline (brief
+         29 set 2026). The studio reel was not used: it is Setpoint's brand
+         piece, logo in frame, mostly motion graphics and live shows. -->
+    <section class="intro" aria-labelledby="intro-h">
+      <div class="intro__inner">
+        <div class="intro__text">
+          <p class="intro__pretitle reveal-up">Alessandro Giacobbi &middot; artista 3D</p>
+          <h1 class="intro__title" id="intro-h">Rig e animazione <em>dei personaggi.</em></h1>
+          <p class="intro__lead reveal-up">Costruisco i rig dei personaggi per gli spot pubblicitari e li animo: in Maya, dal 2018, con Setpoint Studio.</p>
+          <div class="intro__cta reveal-up">
+            <a href="#work" class="btn btn--ox"><span>Guarda i lavori</span><span class="btn-arrow">&rarr;</span></a>
+            <a href="#contact" class="btn btn--ghost"><span>Scrivimi</span></a>
+          </div>
         </div>
-
-        <!-- Signature piece anchor: the LP chameleon tail rig (WebGL, drawn on
-             the hero canvas underneath) frames itself inside this box. It is
-             pure layout — the canvas renders here; the caption is real text. -->
-        <div class="hero__rig" aria-hidden="true">
-          <!-- static rest-pose poster: first paint + no-WebGL fallback; fades
-               out once the live rig marks .hero.is-live -->
-          <img class="hero__rig-poster" src="./assets/images/hero-tail-rest.svg" alt="" width="400" height="502" decoding="async" fetchpriority="high">
-        </div>
-        <p class="hero__rig-caption reveal-up">
-          <span class="hero__rig-fig">fig. 01</span>
-          LP chameleon &middot; tail_rig &middot; IK/FK &middot; 16 jnt
-          <span class="hero__rig-hint">&middot; trascina il controllo</span>
-        </p>
+        <figure class="intro__reel">
+          <div class="intro__frame">
+            <video class="intro__video" src="./assets/video/lp-hero-reel.mp4" poster="./assets/images/projects/lp/lp-hero-reel-poster.jpg" width="1280" height="720" autoplay muted loop playsinline preload="auto" aria-label="Camaleonte LP: render clay, poi la geometria e il rig che girano sul posto"></video>
+          </div>
+          <figcaption class="intro__caption">
+            <span class="intro__fig">fig. 00</span>
+            Camaleonte LP &middot; render clay, geometria, rig
+            <a class="intro__ask" href="mailto:alessandro@setpointstudio.com?subject=Richiesta%20reel%20completa">&middot; reel completa su richiesta &rarr;</a>
+          </figcaption>
+        </figure>
       </div>
-      <span class="hero__rig-label" aria-hidden="true"></span>
 
-      <div class="hero__meta">
-        <div class="hero__meta-block">
-          <span class="hero__meta-label">Based</span>
-          <span>Torrebelvicino, IT</span>
+      <div class="intro__meta">
+        <div class="intro__meta-block">
+          <span class="intro__meta-label">Base</span>
+          <span>Torrebelvicino, Vicenza</span>
         </div>
-        <div class="hero__meta-block">
-          <span class="hero__meta-label">Studio</span>
+        <div class="intro__meta-block">
+          <span class="intro__meta-label">Studio</span>
           <span>Setpoint Studio S.r.l.</span>
         </div>
-        <div class="hero__meta-block">
-          <span class="hero__meta-label">Focus</span>
-          <span>Character &amp; creature rig</span>
+        <div class="intro__meta-block">
+          <span class="intro__meta-label">Specialit&agrave;</span>
+          <span>Rig di personaggi e creature</span>
         </div>
       </div>
     </section>
@@ -156,32 +148,47 @@
     <!-- TICKER -->
     <div class="ticker" aria-hidden="true">
       <div class="ticker__track">
-        <span class="ticker__item ticker__item--ox">Character Rigging</span><span class="ticker__sep">●</span>
+        <span class="ticker__item ticker__item--ox">Rig di personaggi</span><span class="ticker__sep">●</span>
         <span class="ticker__item">Creature TD</span><span class="ticker__sep">●</span>
         <span class="ticker__item">Maya · Python</span><span class="ticker__sep">●</span>
-        <span class="ticker__item ticker__item--ox">Character Animation</span><span class="ticker__sep">●</span>
-        <span class="ticker__item">Rig Tooling</span><span class="ticker__sep">●</span>
-        <span class="ticker__item ticker__item--ox">Character Rigging</span><span class="ticker__sep">●</span>
+        <span class="ticker__item ticker__item--ox">Animazione</span><span class="ticker__sep">●</span>
+        <span class="ticker__item">Strumenti per il rig</span><span class="ticker__sep">●</span>
+        <span class="ticker__item ticker__item--ox">Rig di personaggi</span><span class="ticker__sep">●</span>
         <span class="ticker__item">Creature TD</span><span class="ticker__sep">●</span>
         <span class="ticker__item">Maya · Python</span><span class="ticker__sep">●</span>
-        <span class="ticker__item ticker__item--ox">Character Animation</span><span class="ticker__sep">●</span>
-        <span class="ticker__item">Rig Tooling</span><span class="ticker__sep">●</span>
+        <span class="ticker__item ticker__item--ox">Animazione</span><span class="ticker__sep">●</span>
+        <span class="ticker__item">Strumenti per il rig</span><span class="ticker__sep">●</span>
       </div>
     </div>
 
-    <!-- SHOWREEL -->
-    <section class="showreel" aria-label="Showreel">
-      <div class="showreel__frame">
-        <a class="showreel__placeholder showreel__placeholder--cta" href="mailto:alessandro@setpointstudio.com?subject=Richiesta%20showreel%202026">
-          <div class="showreel__inner-cta">
-            <span class="showreel__tag">Showreel · Setpoint</span>
-            <span class="showreel__cta-title">Reel privato &mdash; 2018 → 2026</span>
-            <span class="showreel__cta-sub">Disponibile su richiesta · scrivimi e te lo mando entro 24h</span>
-            <span class="showreel__cta-btn">Richiedi accesso &rarr;</span>
-          </div>
-        </a>
-        <div class="showreel__caption">02:14 · CGI commercial · brand work</div>
+    <!-- FIG. 01 — the LP tail rig, posable in the browser (was the hero until
+         29 set 2026; the WebGL scene is unchanged and still keys on .hero /
+         .hero__canvas / .hero__rig / .hero__title). -->
+    <section class="hero hero--rig" aria-labelledby="rig-h">
+      <canvas class="hero__canvas" aria-hidden="true"></canvas>
+
+      <div class="hero__inner">
+        <div class="hero__pretitle reveal-up">Il rig, dal vivo</div>
+
+        <h2 class="hero__title" id="rig-h">
+          <span class="reveal-mask"><span>Muovi la coda.</span></span><br>
+          <em class="reveal-mask reveal-mask--paper2"><span>&Egrave; il rig vero.</span></em>
+        </h2>
+
+        <p class="hero__sub reveal-up">La coda prensile del camaleonte LP, ricostruita nel browser con la stessa catena di giunti del rig in Maya: sedici giunti, IK e FK. Col mouse si afferra il controllo, sul telefono basta toccarla. Lasciata andare si riavvolge da sola; scorrendo la pagina si srotola.</p>
+
+        <!-- the tail rig (WebGL, drawn on the canvas underneath) frames itself
+             inside this box; the caption is real text -->
+        <div class="hero__rig" aria-hidden="true">
+          <img class="hero__rig-poster" src="./assets/images/hero-tail-rest.svg" alt="" width="400" height="502" decoding="async" loading="lazy">
+        </div>
+        <p class="hero__rig-caption reveal-up">
+          <span class="hero__rig-fig">fig. 01</span>
+          camaleonte LP &middot; tail_rig &middot; IK/FK &middot; 16 giunti
+          <span class="hero__rig-hint">&middot; trascina il controllo</span>
+        </p>
       </div>
+      <span class="hero__rig-label" aria-hidden="true"></span>
     </section>
 
     <!-- WORK 01 — CHARACTER RIGGING -->
@@ -199,12 +206,12 @@
           <a href="./projects/lp.html" class="project-card reveal-up">
             <div class="project-card__media img-reveal">
               <span class="project-card__index">01</span>
-              <span class="project-card__role">Full creature rig · Body + Tongue + Tail dynamics</span>
-              <img src="./assets/images/projects/lp/lp-thb.webp" alt="LP Group chameleon character rigging">
+              <span class="project-card__role">Rig completo della creatura &middot; corpo, lingua, dinamica della coda</span>
+              <img src="./assets/images/projects/lp/lp-thb.webp" alt="Il camaleonte di LP Group, di cui ho costruito il rig">
             </div>
-            <h3 class="project-card__title">LP — Chameleon</h3>
+            <h3 class="project-card__title">LP — Camaleonte</h3>
             <div class="project-card__meta">
-              <span>LP Group</span><span>Setpoint Studio</span><span>Character Rigging</span>
+              <span>LP Group</span><span>Setpoint Studio</span><span>Rig del personaggio</span>
             </div>
           </a>
 
@@ -241,7 +248,7 @@
           <a href="https://setpointstudio.com/projects/project_Render_architettonici.html" class="project-card reveal-up" target="_blank" rel="noopener">
             <div class="project-card__media img-reveal">
               <span class="project-card__index">03</span>
-              <span class="project-card__role">Interni ed esterni &middot; still</span>
+              <span class="project-card__role">Interni ed esterni &middot; immagini fisse</span>
               <img src="./assets/images/projects/render/render-architettonici.webp" alt="Collage di render architettonici d'interni: loft, scale, biblioteca" width="800" height="500" loading="lazy" decoding="async">
             </div>
             <h3 class="project-card__title">Render architettonici</h3>
@@ -252,12 +259,12 @@
           <a href="https://setpointstudio.com/projects/project_Beauty_Spa.html" class="project-card reveal-up" target="_blank" rel="noopener">
             <div class="project-card__media img-reveal">
               <span class="project-card__index">04</span>
-              <span class="project-card__role">Product render &middot; cosmetica</span>
+              <span class="project-card__role">Render di prodotto &middot; cosmetica</span>
               <img src="./assets/images/projects/render/beauty-spa.webp" alt="Render di flaconi cosmetici viola su mensola, fondo nero" width="800" height="500" loading="lazy" decoding="async">
             </div>
             <h3 class="project-card__title">Beauty Spa</h3>
             <div class="project-card__meta">
-              <span>Product render</span><span>con Neway</span><span>Setpoint Studio</span>
+              <span>Render di prodotto</span><span>con Neway</span><span>Setpoint Studio</span>
             </div>
           </a>
           <a href="https://setpointstudio.com/projects/project_Alto.html" class="project-card reveal-up" target="_blank" rel="noopener">
@@ -296,7 +303,7 @@
           <a href="https://setpointstudio.com/projects/project_Thermorossi.html" class="project-card reveal-up" target="_blank" rel="noopener">
             <div class="project-card__media img-reveal">
               <span class="project-card__index">08</span>
-              <span class="project-card__role">Full CG &middot; social video</span>
+              <span class="project-card__role">Full CG &middot; video per i social</span>
               <img src="./assets/images/projects/render/thermorossi.webp" alt="Render di una stufa a pellet in un loft con la scritta Thermorossi in 3D" width="800" height="500" loading="lazy" decoding="async">
             </div>
             <h3 class="project-card__title">Thermorossi &mdash; Chic</h3>
@@ -334,7 +341,7 @@
             </div>
             <h3 class="project-card__title">DWS &mdash; XCELL</h3>
             <div class="project-card__meta">
-              <span>Product render</span><span>Formnext</span><span>Setpoint Studio</span>
+              <span>Render di prodotto</span><span>Formnext</span><span>Setpoint Studio</span>
             </div>
           </a>
           <a href="https://setpointstudio.com/projects/project_Luxoro.html" class="project-card reveal-up" target="_blank" rel="noopener">
@@ -356,7 +363,7 @@
             </div>
             <h3 class="project-card__title">Raytec &mdash; Infinity</h3>
             <div class="project-card__meta">
-              <span>Live show</span><span>con Neway</span><span>Setpoint Studio</span>
+              <span>Evento dal vivo</span><span>con Neway</span><span>Setpoint Studio</span>
             </div>
           </a>
 
@@ -373,8 +380,8 @@
 
         <header class="section-heading reveal-up">
           <span class="section-heading__num">03</span>
-          <h2 class="section-heading__title" id="work-rd">R&amp;D</h2>
-          <span class="text-meta">Rigging tooling · Maya · Python</span>
+          <h2 class="section-heading__title" id="work-rd">Ricerca</h2>
+          <span class="text-meta">Strumenti per il rig &middot; Maya &middot; Python</span>
         </header>
 
         <div class="work__grid work__grid--single">
@@ -382,12 +389,12 @@
           <a href="./projects/mutagen.html" class="project-card reveal-up">
             <div class="project-card__media img-reveal">
               <span class="project-card__index">14</span>
-              <span class="project-card__role">Toolkit rig MetaHuman · 40 moduli Maya · 48k test automatici</span>
+              <span class="project-card__role">Toolkit per rig MetaHuman &middot; 40 moduli Maya &middot; 48 mila test automatici</span>
               <img src="./assets/images/projects/rd/mutagen-arnold.webp" alt="Render Arnold del personaggio di prova di MUTAGEN: un sorriso costruito con le action unit FACS" width="800" height="500" loading="lazy" decoding="async">
             </div>
             <h3 class="project-card__title">MUTAGEN</h3>
             <div class="project-card__meta">
-              <span>2024 &rarr;</span><span>Maya &middot; Python &middot; PySide6</span><span>R&amp;D personale</span>
+              <span>2024 &rarr;</span><span>Maya &middot; Python &middot; PySide6</span><span>Ricerca personale</span>
             </div>
           </a>
 
@@ -401,8 +408,8 @@
 
         <header class="section-heading reveal-up">
           <span class="section-heading__num">04</span>
-          <h2 class="section-heading__title" id="work-webdesign">Web Design</h2>
-          <span class="text-meta">Template per settore · single-file, multilingua · demo Setpoint</span>
+          <h2 class="section-heading__title" id="work-webdesign">Siti web</h2>
+          <span class="text-meta">Template per settore &middot; un file solo, multilingua &middot; demo Setpoint</span>
         </header>
 
         <div class="work__grid work__grid--3">
@@ -410,384 +417,384 @@
           <a href="./templates/ristorante_v1/" class="project-card reveal-up" target="_blank" rel="noopener">
             <div class="project-card__media img-reveal">
               <span class="project-card__index">15</span>
-              <span class="project-card__role">Demo live &middot; single-file &middot; multilingua</span>
+              <span class="project-card__role">Demo online &middot; file unico &middot; multilingua</span>
               <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=900&q=70" alt="Template sito per ristorante" loading="lazy">
             </div>
             <h3 class="project-card__title">Ristorante</h3>
             <div class="project-card__meta">
-              <span>Template demo</span><span>Single-file &middot; multilingua</span>
+              <span>Template demo</span><span>File unico &middot; multilingua</span>
             </div>
           </a>
 
           <a href="./templates/hotel_luxury_v1/" class="project-card reveal-up" target="_blank" rel="noopener">
             <div class="project-card__media img-reveal">
               <span class="project-card__index">16</span>
-              <span class="project-card__role">Demo live &middot; single-file &middot; multilingua</span>
+              <span class="project-card__role">Demo online &middot; file unico &middot; multilingua</span>
               <img src="https://images.unsplash.com/photo-1564501049412-61c2a3083791?auto=format&fit=crop&w=900&q=70" alt="Template sito per hotel" loading="lazy">
             </div>
             <h3 class="project-card__title">Hotel</h3>
             <div class="project-card__meta">
-              <span>Template demo</span><span>Single-file &middot; multilingua</span>
+              <span>Template demo</span><span>File unico &middot; multilingua</span>
             </div>
           </a>
 
           <a href="./templates/hotel_3d_premium_v1/" class="project-card reveal-up" target="_blank" rel="noopener">
             <div class="project-card__media img-reveal">
               <span class="project-card__index">17</span>
-              <span class="project-card__role">Demo live &middot; tier premium &middot; 3D cinematic</span>
+              <span class="project-card__role">Demo online &middot; fascia premium &middot; 3D cinematografico</span>
               <img src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=900&q=70" alt="Template sito premium per resort con esperienza 3D" loading="lazy">
             </div>
             <h3 class="project-card__title">Hotel &middot; Premium 3D</h3>
             <div class="project-card__meta">
-              <span>Template demo</span><span>Tier premium &middot; cinematic</span>
+              <span>Template demo</span><span>Fascia premium &middot; cinematografico</span>
             </div>
           </a>
 
           <a href="./templates/fotografo_v1/" class="project-card reveal-up" target="_blank" rel="noopener">
             <div class="project-card__media img-reveal">
               <span class="project-card__index">18</span>
-              <span class="project-card__role">Demo live &middot; single-file &middot; multilingua</span>
+              <span class="project-card__role">Demo online &middot; file unico &middot; multilingua</span>
               <img src="https://images.unsplash.com/photo-1452587925148-ce544e77e70d?auto=format&fit=crop&w=900&q=70" alt="Template sito per studio fotografico" loading="lazy">
             </div>
             <h3 class="project-card__title">Fotografo</h3>
             <div class="project-card__meta">
-              <span>Template demo</span><span>Single-file &middot; multilingua</span>
+              <span>Template demo</span><span>File unico &middot; multilingua</span>
             </div>
           </a>
 
           <a href="./templates/notaio_v1/" class="project-card reveal-up" target="_blank" rel="noopener">
             <div class="project-card__media img-reveal">
               <span class="project-card__index">19</span>
-              <span class="project-card__role">Demo live &middot; single-file &middot; multilingua</span>
+              <span class="project-card__role">Demo online &middot; file unico &middot; multilingua</span>
               <img src="https://images.unsplash.com/photo-1505664194779-8beaceb93744?auto=format&fit=crop&w=900&q=70" alt="Template sito per studio notarile" loading="lazy">
             </div>
             <h3 class="project-card__title">Notaio</h3>
             <div class="project-card__meta">
-              <span>Template demo</span><span>Single-file &middot; multilingua</span>
+              <span>Template demo</span><span>File unico &middot; multilingua</span>
             </div>
           </a>
 
           <a href="./templates/commercialista_v1/" class="project-card reveal-up" target="_blank" rel="noopener">
             <div class="project-card__media img-reveal">
               <span class="project-card__index">20</span>
-              <span class="project-card__role">Demo live &middot; single-file &middot; multilingua</span>
+              <span class="project-card__role">Demo online &middot; file unico &middot; multilingua</span>
               <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=900&q=70" alt="Template sito per studio commercialista" loading="lazy">
             </div>
             <h3 class="project-card__title">Commercialista</h3>
             <div class="project-card__meta">
-              <span>Template demo</span><span>Single-file &middot; multilingua</span>
+              <span>Template demo</span><span>File unico &middot; multilingua</span>
             </div>
           </a>
 
           <a href="./templates/agenzia_immobiliare_v1/" class="project-card reveal-up" target="_blank" rel="noopener">
             <div class="project-card__media img-reveal">
               <span class="project-card__index">21</span>
-              <span class="project-card__role">Demo live &middot; single-file &middot; multilingua</span>
+              <span class="project-card__role">Demo online &middot; file unico &middot; multilingua</span>
               <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=900&q=70" alt="Template sito per agenzia immobiliare" loading="lazy">
             </div>
             <h3 class="project-card__title">Immobiliare</h3>
             <div class="project-card__meta">
-              <span>Template demo</span><span>Single-file &middot; multilingua</span>
+              <span>Template demo</span><span>File unico &middot; multilingua</span>
             </div>
           </a>
 
           <a href="./templates/dentista_v1/" class="project-card reveal-up" target="_blank" rel="noopener">
             <div class="project-card__media img-reveal">
               <span class="project-card__index">22</span>
-              <span class="project-card__role">Demo live &middot; single-file &middot; multilingua</span>
+              <span class="project-card__role">Demo online &middot; file unico &middot; multilingua</span>
               <img src="https://images.unsplash.com/photo-1629909613654-28e377c37b09?auto=format&fit=crop&w=900&q=70" alt="Template sito per studio dentistico" loading="lazy">
             </div>
             <h3 class="project-card__title">Dentista</h3>
             <div class="project-card__meta">
-              <span>Template demo</span><span>Single-file &middot; multilingua</span>
+              <span>Template demo</span><span>File unico &middot; multilingua</span>
             </div>
           </a>
 
           <a href="./templates/estetista_v1/" class="project-card reveal-up" target="_blank" rel="noopener">
             <div class="project-card__media img-reveal">
               <span class="project-card__index">23</span>
-              <span class="project-card__role">Demo live &middot; single-file &middot; multilingua</span>
+              <span class="project-card__role">Demo online &middot; file unico &middot; multilingua</span>
               <img src="https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?auto=format&fit=crop&w=900&q=70" alt="Template sito per centro estetico" loading="lazy">
             </div>
             <h3 class="project-card__title">Estetista</h3>
             <div class="project-card__meta">
-              <span>Template demo</span><span>Single-file &middot; multilingua</span>
+              <span>Template demo</span><span>File unico &middot; multilingua</span>
             </div>
           </a>
 
           <a href="./templates/estetista_premium_v2/" class="project-card reveal-up" target="_blank" rel="noopener">
             <div class="project-card__media img-reveal">
               <span class="project-card__index">24</span>
-              <span class="project-card__role">Demo live &middot; tier premium &middot; boutique</span>
+              <span class="project-card__role">Demo online &middot; fascia premium &middot; boutique</span>
               <img src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=900&q=70" alt="Template sito premium per centro estetico boutique" loading="lazy">
             </div>
             <h3 class="project-card__title">Estetista &middot; Premium</h3>
             <div class="project-card__meta">
-              <span>Template demo</span><span>Tier premium &middot; boutique</span>
+              <span>Template demo</span><span>Fascia premium &middot; boutique</span>
             </div>
           </a>
 
           <a href="./templates/parrucchiere_v1/" class="project-card reveal-up" target="_blank" rel="noopener">
             <div class="project-card__media img-reveal">
               <span class="project-card__index">25</span>
-              <span class="project-card__role">Demo live &middot; single-file &middot; multilingua</span>
+              <span class="project-card__role">Demo online &middot; file unico &middot; multilingua</span>
               <img src="https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=900&q=70" alt="Template sito per parrucchiere" loading="lazy">
             </div>
             <h3 class="project-card__title">Parrucchiere</h3>
             <div class="project-card__meta">
-              <span>Template demo</span><span>Single-file &middot; multilingua</span>
+              <span>Template demo</span><span>File unico &middot; multilingua</span>
             </div>
           </a>
 
           <a href="./templates/coach_fitness_v1/" class="project-card reveal-up" target="_blank" rel="noopener">
             <div class="project-card__media img-reveal">
               <span class="project-card__index">26</span>
-              <span class="project-card__role">Demo live &middot; single-file &middot; multilingua</span>
+              <span class="project-card__role">Demo online &middot; file unico &middot; multilingua</span>
               <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=900&q=70" alt="Template sito per personal trainer" loading="lazy">
             </div>
             <h3 class="project-card__title">Coach Fitness</h3>
             <div class="project-card__meta">
-              <span>Template demo</span><span>Single-file &middot; multilingua</span>
+              <span>Template demo</span><span>File unico &middot; multilingua</span>
             </div>
           </a>
 
           <a href="./templates/scuola_danza_v1/" class="project-card reveal-up" target="_blank" rel="noopener">
             <div class="project-card__media img-reveal">
               <span class="project-card__index">27</span>
-              <span class="project-card__role">Demo live &middot; single-file &middot; multilingua</span>
+              <span class="project-card__role">Demo online &middot; file unico &middot; multilingua</span>
               <img src="https://images.unsplash.com/photo-1535525153412-5a42439a210d?auto=format&fit=crop&w=900&q=70" alt="Template sito per scuola di danza" loading="lazy">
             </div>
             <h3 class="project-card__title">Scuola di Danza</h3>
             <div class="project-card__meta">
-              <span>Template demo</span><span>Single-file &middot; multilingua</span>
+              <span>Template demo</span><span>File unico &middot; multilingua</span>
             </div>
           </a>
 
           <a href="./templates/idraulico_v1/" class="project-card reveal-up" target="_blank" rel="noopener">
             <div class="project-card__media img-reveal">
               <span class="project-card__index">28</span>
-              <span class="project-card__role">Demo live &middot; single-file &middot; multilingua</span>
+              <span class="project-card__role">Demo online &middot; file unico &middot; multilingua</span>
               <img src="https://images.unsplash.com/photo-1585704032915-c3400ca199e7?auto=format&fit=crop&w=900&q=70" alt="Template sito per idraulico" loading="lazy">
             </div>
             <h3 class="project-card__title">Idraulico</h3>
             <div class="project-card__meta">
-              <span>Template demo</span><span>Single-file &middot; multilingua</span>
+              <span>Template demo</span><span>File unico &middot; multilingua</span>
             </div>
           </a>
 
           <a href="./templates/autofficina_v1/" class="project-card reveal-up" target="_blank" rel="noopener">
             <div class="project-card__media img-reveal">
               <span class="project-card__index">29</span>
-              <span class="project-card__role">Demo live &middot; single-file &middot; listino aperto</span>
+              <span class="project-card__role">Demo online &middot; file unico &middot; listino aperto</span>
               <img src="https://images.unsplash.com/photo-1625047509168-a7026f36de04?auto=format&fit=crop&w=900&q=70" alt="Template sito per autofficina e carrozzeria" loading="lazy">
             </div>
             <h3 class="project-card__title">Autofficina &middot; Gommista</h3>
             <div class="project-card__meta">
-              <span>Template demo</span><span>Single-file &middot; listino aperto</span>
+              <span>Template demo</span><span>File unico &middot; listino aperto</span>
             </div>
           </a>
 
           <a href="./templates/alimentari_v1/" class="project-card reveal-up" target="_blank" rel="noopener">
             <div class="project-card__media img-reveal">
               <span class="project-card__index">30</span>
-              <span class="project-card__role">Demo live &middot; single-file &middot; ordini WhatsApp</span>
+              <span class="project-card__role">Demo online &middot; file unico &middot; ordini WhatsApp</span>
               <img src="https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=900&q=70" alt="Template sito per negozio di alimentari e gastronomia" loading="lazy">
             </div>
             <h3 class="project-card__title">Alimentari &middot; Gastronomia</h3>
             <div class="project-card__meta">
-              <span>Template demo</span><span>Single-file &middot; ordini WhatsApp</span>
+              <span>Template demo</span><span>File unico &middot; ordini WhatsApp</span>
             </div>
           </a>
 
           <a href="./templates/abbigliamento_v1/" class="project-card reveal-up" target="_blank" rel="noopener">
             <div class="project-card__media img-reveal">
               <span class="project-card__index">31</span>
-              <span class="project-card__role">Demo live &middot; single-file &middot; lookbook</span>
+              <span class="project-card__role">Demo online &middot; file unico &middot; lookbook</span>
               <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=900&q=70" alt="Template sito per negozio di abbigliamento" loading="lazy">
             </div>
             <h3 class="project-card__title">Abbigliamento</h3>
             <div class="project-card__meta">
-              <span>Template demo</span><span>Single-file &middot; lookbook</span>
+              <span>Template demo</span><span>File unico &middot; lookbook</span>
             </div>
           </a>
 
           <a href="./templates/ferramenta_v1/" class="project-card reveal-up" target="_blank" rel="noopener">
             <div class="project-card__media img-reveal">
               <span class="project-card__index">32</span>
-              <span class="project-card__role">Demo live &middot; single-file &middot; tier essenziale</span>
+              <span class="project-card__role">Demo online &middot; file unico &middot; fascia essenziale</span>
               <img src="https://images.unsplash.com/photo-1426927308491-6380b6a9936f?auto=format&fit=crop&w=900&q=70" alt="Template sito per ferramenta e noleggio attrezzi" loading="lazy">
             </div>
             <h3 class="project-card__title">Ferramenta &middot; Noleggio</h3>
             <div class="project-card__meta">
-              <span>Template demo</span><span>Single-file &middot; tier essenziale</span>
+              <span>Template demo</span><span>File unico &middot; fascia essenziale</span>
             </div>
           </a>
 
           <a href="./templates/gioielleria_v1/" class="project-card reveal-up" target="_blank" rel="noopener">
             <div class="project-card__media img-reveal">
               <span class="project-card__index">33</span>
-              <span class="project-card__role">Demo live &middot; tier boutique &middot; su misura</span>
+              <span class="project-card__role">Demo online &middot; fascia boutique &middot; su misura</span>
               <img src="https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=900&q=70" alt="Template sito per gioielleria e laboratorio orafo" loading="lazy">
             </div>
             <h3 class="project-card__title">Gioielleria &middot; Laboratorio</h3>
             <div class="project-card__meta">
-              <span>Template demo</span><span>Tier boutique &middot; su misura</span>
+              <span>Template demo</span><span>Fascia boutique &middot; su misura</span>
             </div>
           </a>
 
           <a href="./templates/libri_cartoleria_v1/" class="project-card reveal-up" target="_blank" rel="noopener">
             <div class="project-card__media img-reveal">
               <span class="project-card__index">34</span>
-              <span class="project-card__role">Demo live &middot; single-file &middot; ordini in 48h</span>
+              <span class="project-card__role">Demo online &middot; file unico &middot; ordini in 48h</span>
               <img src="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?auto=format&fit=crop&w=900&q=70" alt="Template sito per libreria e cartoleria" loading="lazy">
             </div>
             <h3 class="project-card__title">Libreria &middot; Cartoleria</h3>
             <div class="project-card__meta">
-              <span>Template demo</span><span>Single-file &middot; ordini in 48h</span>
+              <span>Template demo</span><span>File unico &middot; ordini in 48h</span>
             </div>
           </a>
 
           <a href="./templates/concessionaria_v1/" class="project-card reveal-up" target="_blank" rel="noopener">
             <div class="project-card__media img-reveal">
               <span class="project-card__index">35</span>
-              <span class="project-card__role">Demo live &middot; single-file &middot; schede vettura</span>
+              <span class="project-card__role">Demo online &middot; file unico &middot; schede vettura</span>
               <img src="https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?auto=format&fit=crop&w=900&q=70" alt="Template sito per concessionaria di auto usate" loading="lazy">
             </div>
             <h3 class="project-card__title">Concessionaria &middot; Usato</h3>
             <div class="project-card__meta">
-              <span>Template demo</span><span>Single-file &middot; schede vettura</span>
+              <span>Template demo</span><span>File unico &middot; schede vettura</span>
             </div>
           </a>
 
           <a href="./templates/arredo_casalinghi_v1/" class="project-card reveal-up" target="_blank" rel="noopener">
             <div class="project-card__media img-reveal">
               <span class="project-card__index">36</span>
-              <span class="project-card__role">Demo live &middot; single-file &middot; progetto d'arredo</span>
+              <span class="project-card__role">Demo online &middot; file unico &middot; progetto d'arredo</span>
               <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=900&q=70" alt="Template sito per negozio di arredamento e casalinghi" loading="lazy">
             </div>
             <h3 class="project-card__title">Arredamento &middot; Casalinghi</h3>
             <div class="project-card__meta">
-              <span>Template demo</span><span>Single-file &middot; progetto d'arredo</span>
+              <span>Template demo</span><span>File unico &middot; progetto d'arredo</span>
             </div>
           </a>
 
           <a href="./templates/falegname_v1/" class="project-card reveal-up" target="_blank" rel="noopener">
             <div class="project-card__media img-reveal">
               <span class="project-card__index">37</span>
-              <span class="project-card__role">Demo live &middot; tier boutique &middot; su misura</span>
+              <span class="project-card__role">Demo online &middot; fascia boutique &middot; su misura</span>
               <img src="https://images.unsplash.com/photo-1588854337221-4cf9fa96059c?auto=format&fit=crop&w=900&q=70" alt="Template sito per falegnameria e arredi su misura" loading="lazy">
             </div>
             <h3 class="project-card__title">Falegnameria &middot; Su misura</h3>
             <div class="project-card__meta">
-              <span>Template demo</span><span>Tier boutique &middot; su misura</span>
+              <span>Template demo</span><span>Fascia boutique &middot; su misura</span>
             </div>
           </a>
 
           <a href="./templates/tabaccheria_v1/" class="project-card reveal-up" target="_blank" rel="noopener">
             <div class="project-card__media img-reveal">
               <span class="project-card__index">38</span>
-              <span class="project-card__role">Demo live &middot; tier essenziale &middot; servizi</span>
+              <span class="project-card__role">Demo online &middot; fascia essenziale &middot; servizi</span>
               <img src="https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=900&q=70" alt="Template sito per tabaccheria e servizi allo sportello" loading="lazy">
             </div>
             <h3 class="project-card__title">Tabaccheria &middot; Servizi</h3>
             <div class="project-card__meta">
-              <span>Template demo</span><span>Tier essenziale &middot; servizi</span>
+              <span>Template demo</span><span>Fascia essenziale &middot; servizi</span>
             </div>
           </a>
 
           <a href="./templates/fiorista_v1/" class="project-card reveal-up" target="_blank" rel="noopener">
             <div class="project-card__media img-reveal">
               <span class="project-card__index">39</span>
-              <span class="project-card__role">Demo live &middot; single-file &middot; ordini WhatsApp</span>
+              <span class="project-card__role">Demo online &middot; file unico &middot; ordini WhatsApp</span>
               <img src="https://images.unsplash.com/photo-1487530811176-3780de880c2d?auto=format&fit=crop&w=900&q=70" alt="Template sito per fiorista" loading="lazy">
             </div>
             <h3 class="project-card__title">Fiorista</h3>
             <div class="project-card__meta">
-              <span>Template demo</span><span>Single-file &middot; ordini WhatsApp</span>
+              <span>Template demo</span><span>File unico &middot; ordini WhatsApp</span>
             </div>
           </a>
 
           <a href="./templates/azienda_agricola_v1/" class="project-card reveal-up" target="_blank" rel="noopener">
             <div class="project-card__media img-reveal">
               <span class="project-card__index">40</span>
-              <span class="project-card__role">Demo live &middot; single-file &middot; cassetta settimanale</span>
+              <span class="project-card__role">Demo online &middot; file unico &middot; cassetta settimanale</span>
               <img src="https://images.unsplash.com/photo-1500595046743-cd271d694d30?auto=format&fit=crop&w=900&q=70" alt="Template sito per azienda agricola con vendita diretta" loading="lazy">
             </div>
             <h3 class="project-card__title">Azienda agricola</h3>
             <div class="project-card__meta">
-              <span>Template demo</span><span>Single-file &middot; vendita diretta</span>
+              <span>Template demo</span><span>File unico &middot; vendita diretta</span>
             </div>
           </a>
 
           <a href="./templates/sartoria_v1/" class="project-card reveal-up" target="_blank" rel="noopener">
             <div class="project-card__media img-reveal">
               <span class="project-card__index">41</span>
-              <span class="project-card__role">Demo live &middot; tier boutique &middot; listino esposto</span>
+              <span class="project-card__role">Demo online &middot; fascia boutique &middot; listino esposto</span>
               <img src="https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=900&q=70" alt="Template sito per sartoria e riparazioni" loading="lazy">
             </div>
             <h3 class="project-card__title">Sartoria</h3>
             <div class="project-card__meta">
-              <span>Template demo</span><span>Tier boutique &middot; listino esposto</span>
+              <span>Template demo</span><span>Fascia boutique &middot; listino esposto</span>
             </div>
           </a>
 
           <a href="./templates/farmacia_v1/" class="project-card reveal-up" target="_blank" rel="noopener">
             <div class="project-card__media img-reveal">
               <span class="project-card__index">42</span>
-              <span class="project-card__role">Demo live &middot; tier boutique &middot; servizi</span>
+              <span class="project-card__role">Demo online &middot; fascia boutique &middot; servizi</span>
               <img src="https://images.unsplash.com/photo-1576602976047-174e57a47881?auto=format&fit=crop&w=900&q=70" alt="Template sito per farmacia dei servizi" loading="lazy">
             </div>
             <h3 class="project-card__title">Farmacia</h3>
             <div class="project-card__meta">
-              <span>Template demo</span><span>Tier boutique &middot; servizi</span>
+              <span>Template demo</span><span>Fascia boutique &middot; servizi</span>
             </div>
           </a>
 
           <a href="./templates/macelleria_v1/" class="project-card reveal-up" target="_blank" rel="noopener">
             <div class="project-card__media img-reveal">
               <span class="project-card__index">43</span>
-              <span class="project-card__role">Demo live &middot; single-file &middot; tracciabilit&agrave;</span>
+              <span class="project-card__role">Demo online &middot; file unico &middot; tracciabilit&agrave;</span>
               <img src="https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?auto=format&fit=crop&w=900&q=70" alt="Template sito per macelleria con carni tracciate" loading="lazy">
             </div>
             <h3 class="project-card__title">Macelleria</h3>
             <div class="project-card__meta">
-              <span>Template demo</span><span>Single-file &middot; tracciabilit&agrave;</span>
+              <span>Template demo</span><span>File unico &middot; tracciabilit&agrave;</span>
             </div>
           </a>
 
           <a href="./templates/toelettatura_v1/" class="project-card reveal-up" target="_blank" rel="noopener">
             <div class="project-card__media img-reveal">
               <span class="project-card__index">44</span>
-              <span class="project-card__role">Demo live &middot; tier essenziale &middot; prezzi per taglia</span>
+              <span class="project-card__role">Demo online &middot; fascia essenziale &middot; prezzi per taglia</span>
               <img src="https://images.unsplash.com/photo-1516734212186-a967f81ad0d7?auto=format&fit=crop&w=900&q=70" alt="Template sito per toelettatura cani e gatti" loading="lazy">
             </div>
             <h3 class="project-card__title">Toelettatura</h3>
             <div class="project-card__meta">
-              <span>Template demo</span><span>Tier essenziale &middot; prezzi per taglia</span>
+              <span>Template demo</span><span>Fascia essenziale &middot; prezzi per taglia</span>
             </div>
           </a>
 
           <a href="./templates/ottico_v1/" class="project-card reveal-up" target="_blank" rel="noopener">
             <div class="project-card__media img-reveal">
               <span class="project-card__index">45</span>
-              <span class="project-card__role">Demo live &middot; single-file &middot; controllo visivo</span>
+              <span class="project-card__role">Demo online &middot; file unico &middot; controllo visivo</span>
               <img src="https://images.unsplash.com/photo-1574258495973-f010dfbb5371?auto=format&fit=crop&w=900&q=70" alt="Template sito per ottica e optometria" loading="lazy">
             </div>
             <h3 class="project-card__title">Ottica</h3>
             <div class="project-card__meta">
-              <span>Template demo</span><span>Single-file &middot; controllo visivo</span>
+              <span>Template demo</span><span>File unico &middot; controllo visivo</span>
             </div>
           </a>
 
           <a href="./templates/onoranze_funebri_v1/" class="project-card reveal-up" target="_blank" rel="noopener">
             <div class="project-card__media img-reveal">
               <span class="project-card__index">46</span>
-              <span class="project-card__role">Demo live &middot; tier boutique &middot; tono sobrio</span>
+              <span class="project-card__role">Demo online &middot; fascia boutique &middot; tono sobrio</span>
               <img src="https://images.unsplash.com/photo-1602523961358-f9f03dd557db?auto=format&fit=crop&w=900&q=70" alt="Template sito per onoranze funebri" loading="lazy">
             </div>
             <h3 class="project-card__title">Onoranze funebri</h3>
             <div class="project-card__meta">
-              <span>Template demo</span><span>Tier boutique &middot; tono sobrio</span>
+              <span>Template demo</span><span>Fascia boutique &middot; tono sobrio</span>
             </div>
           </a>
 
@@ -796,7 +803,7 @@
         <div class="webdesign-cta reveal-up">
           <p class="webdesign-cta__note">
             Template di design per categoria merceologica &mdash; brand fittizi, non lavori
-            per clienti reali. Mostrano lo stile e lo stack per ciascun settore.
+            per clienti reali. Mostrano lo stile e le soluzioni tecniche per ciascun settore.
             Per un sito su misura per la tua attivit&agrave;:
           </p>
           <a href="#contact" class="btn btn--ox">
@@ -839,28 +846,28 @@
 
           <div class="about__copy">
             <p class="about__lead reveal-up">
-              Faccio <em>character rigging</em> e <em>animation</em> per lo spot pubblicitario.
+              Faccio <em>rig</em> e <em>animazione</em> dei personaggi per lo spot pubblicitario.
               Costruisco il rig, lo animo, e quando serve scrivo il tool che manca &mdash;
               in Python, dentro Maya, testato come software.
             </p>
 
             <p class="about__body reveal-up">
               Collaboro con <strong>Setpoint Studio</strong> (Schio, VI) come freelance dal 2018:
-              VFX, product viz fotorealistico, character rigging Maya. Brand passati per il mio
+              VFX, visualizzazione di prodotto fotorealistica, rig di personaggi in Maya. Brand passati per il mio
               rig: <em>Generali · Profilitec · Qualitas</em>. Dal 2022 P.IVA in proprio,
               regime forfettario 5%. In parallelo sviluppo <strong>MUTAGEN</strong>,
-              un toolkit di 40 moduli per rig MetaHuman in Maya (UI unica, testato come software),
+              un toolkit di 40 moduli per rig MetaHuman in Maya (interfaccia unica, testato come software),
               e realizzo template web per studi e attivit&agrave; italiane.
             </p>
 
             <ul class="about__stats reveal-up" aria-label="Numeri verificati">
               <li>
                 <span class="about__stat-num" data-count="8">0</span>
-                <span class="about__stat-lbl">anni VFX rigging</span>
+                <span class="about__stat-lbl">anni di rig per VFX</span>
               </li>
               <li>
                 <span class="about__stat-num" data-count="4">0</span>
-                <span class="about__stat-lbl">anni P.IVA freelance</span>
+                <span class="about__stat-lbl">anni in partita IVA</span>
               </li>
               <li>
                 <span class="about__stat-num" data-count="40">0</span>
@@ -872,7 +879,7 @@
               </li>
               <li>
                 <span class="about__stat-num" data-count="66">0</span>
-                <span class="about__stat-lbl">FACS action units</span>
+                <span class="about__stat-lbl">action unit FACS</span>
               </li>
             </ul>
 
@@ -884,14 +891,14 @@
 
         </div>
 
-        <ol class="about__timeline reveal-up" aria-label="Milestone di carriera">
+        <ol class="about__timeline reveal-up" aria-label="Tappe della carriera">
           <li class="about__t-step">
             <span class="about__t-year">2018</span>
-            <span class="about__t-event">Setpoint Studio — collaborazione freelance Web &amp; 3D</span>
+            <span class="about__t-event">Setpoint Studio &mdash; collaborazione da freelance, web e 3D</span>
           </li>
           <li class="about__t-step">
             <span class="about__t-year">2022</span>
-            <span class="about__t-event">P.IVA aperta · regime forfettario 5% startup</span>
+            <span class="about__t-event">Partita IVA aperta &middot; regime forfettario al 5%</span>
           </li>
           <li class="about__t-step">
             <span class="about__t-year">2024</span>
@@ -899,11 +906,11 @@
           </li>
           <li class="about__t-step">
             <span class="about__t-year">2025</span>
-            <span class="about__t-event">MUTAGEN: contract test cross-modulo, mutation testing, UI unificata</span>
+            <span class="about__t-event">MUTAGEN: test di contratto fra i moduli, mutation testing, interfaccia unica</span>
           </li>
           <li class="about__t-step about__t-step--active">
             <span class="about__t-year">2026</span>
-            <span class="about__t-event">LP Group chameleon rig + animation · 40 moduli MUTAGEN · template web Editorial</span>
+            <span class="about__t-event">Rig e animazione del camaleonte LP &middot; 40 moduli MUTAGEN &middot; template web</span>
           </li>
         </ol>
 
@@ -926,7 +933,7 @@
 
       <div class="contact__inner">
 
-        <div class="contact__pretitle reveal-up">Let&rsquo;s build something</div>
+        <div class="contact__pretitle reveal-up">Lavoriamo insieme</div>
 
         <h2 class="contact__title" id="contact-h">
           Hai un brand,<br>
@@ -1005,7 +1012,7 @@
     </div>
   </footer>
 
-  <script type="module" src="./assets/js/main.js?v=20260929-fix1"></script>
+  <script type="module" src="./assets/js/main.js?v=20260929-intro1"></script>
 
 </body>
 </html>

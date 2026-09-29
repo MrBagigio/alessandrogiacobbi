@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MUTAGEN — Toolkit rig MetaHuman · Alessandro Giacobbi</title>
-  <meta name="description" content="MUTAGEN: toolkit di produzione per rig MetaHuman in Maya — 40 moduli (FACS, breath, sticky lips, ocular dynamics, wrinkle map, pose generation) sotto una sola UI, ~260k righe Python testate. R&amp;D personale di Alessandro Giacobbi.">
+  <title>MUTAGEN — Toolkit per rig MetaHuman · Alessandro Giacobbi</title>
+  <meta name="description" content="MUTAGEN: toolkit di produzione per rig MetaHuman in Maya — 40 moduli (FACS, respiro, labbra appiccicose, dinamica oculare, wrinkle map, generazione di pose) sotto un'unica interfaccia, circa 260 mila righe di Python testate. Ricerca personale di Alessandro Giacobbi.">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -14,8 +14,8 @@
   <link rel="apple-touch-icon" href="../assets/images/profile/alessandro-thumb.webp">
   <link rel="stylesheet" href="../assets/css/tokens.css?v=20260530-arc11">
   <link rel="stylesheet" href="../assets/css/base.css?v=20260530-aaa">
-  <link rel="stylesheet" href="../assets/css/components.css?v=20260530-m1">
-  <link rel="stylesheet" href="../assets/css/layout.css?v=20260530-m21">
+  <link rel="stylesheet" href="../assets/css/components.css?v=20260929-fix1">
+  <link rel="stylesheet" href="../assets/css/layout.css?v=20260929-intro2">
   <link rel="stylesheet" href="../assets/css/animations.css?v=20260530-boot3">
 
   <style>
@@ -80,7 +80,7 @@
     <div class="center">MUTAGEN</div>
     <div class="right">
       <span class="meta-clock">--:-- CET</span>
-      <a href="../index.html#contact">Contact</a>
+      <a href="../index.html#contact">Contatti</a>
     </div>
   </header>
 
@@ -89,12 +89,12 @@
     <section class="project-hero">
       <div class="project-hero__inner">
         <nav class="project-hero__breadcrumb reveal-up">
-          <a href="../index.html">Portfolio</a> &nbsp;/&nbsp; R&amp;D &middot; Rigging tooling
+          <a href="../index.html">Portfolio</a> &nbsp;/&nbsp; Ricerca &middot; Strumenti per il rig
         </nav>
         <h1 class="project-hero__title reveal-up">MUTAGEN</h1>
-        <p class="project-hero__client reveal-up">Toolkit di produzione per rig MetaHuman in Maya &middot; 40 moduli, <strong>una UI</strong></p>
+        <p class="project-hero__client reveal-up">Toolkit di produzione per rig MetaHuman in Maya &middot; 40 moduli, <strong>un'interfaccia</strong></p>
         <p class="project-hero__nda reveal-up">
-          <span class="project-hero__nda-tag fx-flicker">R&amp;D</span>
+          <span class="project-hero__nda-tag fx-flicker">Ricerca</span>
           Progetto personale, sviluppo continuo dal 2024 &middot; codice privato &middot; qui architettura, moduli e metodo
         </p>
       </div>
@@ -104,15 +104,15 @@
       <div class="project-meta__inner">
         <div class="project-meta__col">
           <span class="project-meta__label">Cos'&egrave;</span>
-          <span class="project-meta__value">Pipeline toolkit &middot; rig MetaHuman</span>
+          <span class="project-meta__value">Toolkit di pipeline &middot; rig MetaHuman</span>
         </div>
         <div class="project-meta__col">
-          <span class="project-meta__label">Stack</span>
+          <span class="project-meta__label">Tecnologie</span>
           <span class="project-meta__value">Maya 2026 &middot; Python 3.11 &middot; PySide6</span>
         </div>
         <div class="project-meta__col">
-          <span class="project-meta__label">Scope</span>
-          <span class="project-meta__value">40 moduli &middot; launcher unico</span>
+          <span class="project-meta__label">Dimensioni</span>
+          <span class="project-meta__value">40 moduli &middot; un solo launcher</span>
         </div>
         <div class="project-meta__col">
           <span class="project-meta__label">Stato</span>
@@ -127,16 +127,16 @@
         <span class="project-split-section__eyebrow">
           <span class="project-split-section__num">01</span>
           <span class="project-split-section__divider" aria-hidden="true"></span>
-          The numbers
+          I numeri
         </span>
-        <h2 class="project-split-section__title">A rigging toolkit written like software</h2>
+        <h2 class="project-split-section__title">Un toolkit per il rig scritto come software</h2>
         <p class="project-split-section__sub">Non una cartella di script: 40 moduli installabili singolarmente o insieme, lanciati da una sola UI, con una suite di test che gira su ogni modifica. I numeri sono misurati sul repository.</p>
       </div>
       <div class="mg-metrics">
         <div class="mg-metric reveal-up"><div class="mg-metric__num">40</div><span class="mg-metric__lbl">moduli Maya</span></div>
-        <div class="mg-metric reveal-up"><div class="mg-metric__num">260<em>k</em></div><span class="mg-metric__lbl">righe Python</span></div>
+        <div class="mg-metric reveal-up"><div class="mg-metric__num">260<em>k</em></div><span class="mg-metric__lbl">righe di Python</span></div>
         <div class="mg-metric reveal-up"><div class="mg-metric__num">48<em>k</em></div><span class="mg-metric__lbl">test automatici</span></div>
-        <div class="mg-metric reveal-up"><div class="mg-metric__num">66</div><span class="mg-metric__lbl">FACS action units</span></div>
+        <div class="mg-metric reveal-up"><div class="mg-metric__num">66</div><span class="mg-metric__lbl">action unit FACS</span></div>
       </div>
     </section>
 
@@ -149,34 +149,34 @@
             <span class="project-split-section__divider" aria-hidden="true"></span>
             Architettura
           </span>
-          <h2 class="project-split-section__title">One hub, forty modules, one contract</h2>
+          <h2 class="project-split-section__title">Un hub, quaranta moduli, un contratto</h2>
           <p class="project-split-section__sub">Il problema che risolve: su un rig facciale complesso ogni sistema scrive attributi su altri sistemi. Senza un contratto esplicito, un rename da una parte rompe l'altra &mdash; e non se ne accorge nessuno finch&eacute; non si anima.</p>
         </div>
 
-        <h3 class="project-content__h3 reveal-up">MUTAGEN &mdash; the launcher</h3>
+        <h3 class="project-content__h3 reveal-up">MUTAGEN &mdash; il launcher</h3>
         <p class="project-content__p reveal-up">
-          Una sola UI dark-glass (PySide6) da cui installare, disinstallare e configurare ogni
-          modulo: catalogo, batch installer a fasi, tema condiviso, node editor per le reti DG
-          procedurali. <code>MutaCore</code> tiene l'infrastruttura comune &mdash; base UI,
+          Un'unica interfaccia (PySide6, tema scuro) da cui installare, disinstallare e configurare
+          ogni modulo: catalogo, installazione a fasi, tema condiviso, node editor per le reti DG
+          procedurali. <code>MutaCore</code> tiene l'infrastruttura comune &mdash; interfaccia di base,
           sticky system, attribute manager, ghost manager, post-validator &mdash; cos&igrave; i
           moduli non reimplementano le stesse primitive quaranta volte.
         </p>
 
-        <h3 class="project-content__h3 reveal-up">Independent modules, explicit contracts</h3>
+        <h3 class="project-content__h3 reveal-up">Moduli indipendenti, contratti espliciti</h3>
         <p class="project-content__p reveal-up">
           Ogni modulo &egrave; installabile da solo su un rig MetaHuman e disinstallabile senza
           lasciare residui. Quando per&ograve; gira insieme agli altri deve risolvere <em>gli stessi</em>
           controlli host dell'hub: chi scrive un attributo e chi lo legge sono verificati insieme,
-          a livello di costanti, non al momento del wiring. Da qui nascono i bridge cross-modulo
+          a livello di costanti, non al momento del collegamento. Da qui nascono i ponti fra moduli
           (FACS &rarr; occhi, blink &rarr; energy, respiro &rarr; testa) che rendono il rig un
           sistema unico invece di sistemi paralleli che si ignorano.
         </p>
 
-        <h3 class="project-content__h3 reveal-up">Physiology, not just controls</h3>
+        <h3 class="project-content__h3 reveal-up">Fisiologia, non solo controlli</h3>
         <p class="project-content__p reveal-up">
           La parte che mi interessa di pi&ugrave;: i moduli non espongono solo slider, simulano
           comportamenti. Tremore fisiologico e jelly-roll dell'occhio, hippus della pupilla con
-          link consensuale, blink a doppio oscillatore con offset asimmetrico, micro-motion della
+          link consensuale, blink a doppio oscillatore con offset asimmetrico, micro-movimento della
           testa guidato dal respiro, micro-movimento cardiaco con onda lub-dub e HRV. Un
           <em>meta-driver</em> unico (<code>MutaEnergy</code>) modula l'intero rig da un solo slider
           di energia &mdash; stanchezza, allerta, calma.
@@ -190,32 +190,32 @@
         <span class="project-split-section__eyebrow">
           <span class="project-split-section__num">03</span>
           <span class="project-split-section__divider" aria-hidden="true"></span>
-          Module map
+          Mappa dei moduli
         </span>
-        <h2 class="project-split-section__title">A selection of the 40</h2>
+        <h2 class="project-split-section__title">Una selezione dei 40</h2>
         <p class="project-split-section__sub">Ogni riga &egrave; un modulo reale del toolkit, con quello che fa davvero.</p>
       </div>
       <div class="mg-modules">
         <div class="mg-mod mg-mod--hub reveal-up"><div class="mg-mod__name">MUTAGEN</div><p class="mg-mod__desc">Launcher centrale, bootstrap, tema, utility condivise. Punto d'ingresso di tutto il toolkit.</p></div>
-        <div class="mg-mod mg-mod--hub reveal-up"><div class="mg-mod__name">MutaCore</div><p class="mg-mod__desc">Infrastruttura condivisa: base UI, sticky system, attribute manager, ghost manager, post-validator.</p></div>
+        <div class="mg-mod mg-mod--hub reveal-up"><div class="mg-mod__name">MutaCore</div><p class="mg-mod__desc">Infrastruttura condivisa: interfaccia di base, sticky system, attribute manager, ghost manager, post-validator.</p></div>
         <div class="mg-mod reveal-up"><div class="mg-mod__name">MutaFACS</div><p class="mg-mod__desc">66 Action Unit, 9 envelope di categoria, preset emotivi, bridge verso gli altri moduli.</p></div>
         <div class="mg-mod reveal-up"><div class="mg-mod__name">MutaEyes</div><p class="mg-mod__desc">Dinamica oculare: tremore fisiologico (volumeNoise) + jelly-roll wobble (frameCache).</p></div>
         <div class="mg-mod reveal-up"><div class="mg-mod__name">MutaPupil</div><p class="mg-mod__desc">Dilatazione e costrizione pupillare con hippus e link consensuale tra i due occhi.</p></div>
         <div class="mg-mod reveal-up"><div class="mg-mod__name">MutaBlink</div><p class="mg-mod__desc">Blink procedurale a doppio oscillatore: speed-scale, offset asimmetrico, enhance gain.</p></div>
-        <div class="mg-mod reveal-up"><div class="mg-mod__name">MutaEyelid</div><p class="mg-mod__desc">Sticky-eyes con grafo per coppia (decomposeMatrix &rarr; blendColors &rarr; remapValue).</p></div>
-        <div class="mg-mod reveal-up"><div class="mg-mod__name">MutaLips</div><p class="mg-mod__desc">Sticky-lips con noise, ghost e lip tweaker: 32 micro-controlli.</p></div>
-        <div class="mg-mod reveal-up"><div class="mg-mod__name">MutaLipSil</div><p class="mg-mod__desc">Silhouette labiale pressure-aware: roll, contract, compound, cap, hold-out.</p></div>
+        <div class="mg-mod reveal-up"><div class="mg-mod__name">MutaEyelid</div><p class="mg-mod__desc">Palpebre appiccicose, un grafo per coppia (decomposeMatrix &rarr; blendColors &rarr; remapValue).</p></div>
+        <div class="mg-mod reveal-up"><div class="mg-mod__name">MutaLips</div><p class="mg-mod__desc">Labbra appiccicose con noise, ghost e lip tweaker: 32 micro-controlli.</p></div>
+        <div class="mg-mod reveal-up"><div class="mg-mod__name">MutaLipSil</div><p class="mg-mod__desc">Silhouette delle labbra sensibile alla pressione: roll, contract, compound, cap, hold-out.</p></div>
         <div class="mg-mod reveal-up"><div class="mg-mod__name">MutaBreath</div><p class="mg-mod__desc">Respirazione procedurale: 8 zone, 13 preset, architettura nodale DG.</p></div>
-        <div class="mg-mod reveal-up"><div class="mg-mod__name">MutaPulse</div><p class="mg-mod__desc">Micro-motion cardiaco sui joint: onda lub-dub, variabilit&agrave; HRV, 6 preset.</p></div>
+        <div class="mg-mod reveal-up"><div class="mg-mod__name">MutaPulse</div><p class="mg-mod__desc">Micro-movimento cardiaco sui giunti: onda lub-dub, variabilit&agrave; HRV, 6 preset.</p></div>
         <div class="mg-mod reveal-up"><div class="mg-mod__name">MutaEnergy</div><p class="mg-mod__desc">Meta-driver da regia: un solo slider di energia modula l'intero rig.</p></div>
-        <div class="mg-mod reveal-up"><div class="mg-mod__name">MutaHeadAlive</div><p class="mg-mod__desc">Micro-motion della testa: sway, guidato dal respiro, layer di noise.</p></div>
-        <div class="mg-mod reveal-up"><div class="mg-mod__name">MutaWrinkleMap</div><p class="mg-mod__desc">Blending rughe FACS-driven: 12 zone, isteresi sulla tensione.</p></div>
-        <div class="mg-mod reveal-up"><div class="mg-mod__name">MutaEars</div><p class="mg-mod__desc">Catena FK orecchie, pose FACS, aim sulla sorgente sonora, twitch a 3 layer, 8 tipi (incl. Na'vi).</p></div>
-        <div class="mg-mod reveal-up"><div class="mg-mod__name">MutaPose</div><p class="mg-mod__desc">Oracle Engine: generazione pose automatica, campionamento LHS/Sobol, export ML Deformer.</p></div>
-        <div class="mg-mod reveal-up"><div class="mg-mod__name">MutaDNA</div><p class="mg-mod__desc">Reader binario DNA/RigLogic (struct.unpack + NPZ) con validazione.</p></div>
-        <div class="mg-mod reveal-up"><div class="mg-mod__name">MutaExtension</div><p class="mg-mod__desc">Attach di mesh custom su MetaHuman: boundary atlas, poly-rivet, fusione topologica, bake DNA.</p></div>
-        <div class="mg-mod reveal-up"><div class="mg-mod__name">MutaEyeShader</div><p class="mg-mod__desc">Shader Arnold hero per occhio Na'vi: scansioni VFace asset-first, tearLine/tearDuct, ~90 parametri auditati.</p></div>
-        <div class="mg-mod reveal-up"><div class="mg-mod__name">MutaTailBuilder</div><p class="mg-mod__desc">Builder coda ibrido FK / Spline-IK con dinamica ragdoll.</p></div>
+        <div class="mg-mod reveal-up"><div class="mg-mod__name">MutaHeadAlive</div><p class="mg-mod__desc">Micro-movimento della testa: oscillazione guidata dal respiro, strati di noise.</p></div>
+        <div class="mg-mod reveal-up"><div class="mg-mod__name">MutaWrinkleMap</div><p class="mg-mod__desc">Fusione delle rughe guidata dal FACS: 12 zone, isteresi sulla tensione.</p></div>
+        <div class="mg-mod reveal-up"><div class="mg-mod__name">MutaEars</div><p class="mg-mod__desc">Catena FK delle orecchie, pose FACS, orientamento verso la sorgente sonora, scatti su 3 livelli, 8 tipi (compreso Na'vi).</p></div>
+        <div class="mg-mod reveal-up"><div class="mg-mod__name">MutaPose</div><p class="mg-mod__desc">Oracle Engine: generazione automatica delle pose, campionamento LHS/Sobol, export verso ML Deformer.</p></div>
+        <div class="mg-mod reveal-up"><div class="mg-mod__name">MutaDNA</div><p class="mg-mod__desc">Lettore binario DNA/RigLogic (struct.unpack e NPZ) con validazione.</p></div>
+        <div class="mg-mod reveal-up"><div class="mg-mod__name">MutaExtension</div><p class="mg-mod__desc">Aggancio di mesh su misura a MetaHuman: boundary atlas, poly-rivet, fusione topologica, bake DNA.</p></div>
+        <div class="mg-mod reveal-up"><div class="mg-mod__name">MutaEyeShader</div><p class="mg-mod__desc">Shader Arnold da primo piano per l'occhio Na'vi: scansioni VFace, tearLine/tearDuct, circa 90 parametri verificati.</p></div>
+        <div class="mg-mod reveal-up"><div class="mg-mod__name">MutaTailBuilder</div><p class="mg-mod__desc">Costruttore di code ibrido FK / Spline-IK con dinamica ragdoll.</p></div>
       </div>
       <p class="mg-more reveal-up">+ altri 19 moduli &mdash; mesh swap, skin transfer, seam fixer, facial transfer, mocap cleanup, head surfacing, console di controllo, node editor, cache, mapper&hellip;</p>
     </section>
@@ -260,12 +260,12 @@
             <span class="project-split-section__divider" aria-hidden="true"></span>
             Metodo
           </span>
-          <h2 class="project-split-section__title">Why 48,000 tests on a rig</h2>
+          <h2 class="project-split-section__title">Perch&eacute; 48.000 test su un rig</h2>
           <p class="project-split-section__sub">Un rig che si rompe in silenzio costa giorni di animazione. La disciplina di test che uso sul toolkit &egrave; la stessa che mi porto sui rig di produzione.</p>
         </div>
         <ul class="project-content__role-list reveal-up">
           <li><strong>Mutation testing</strong> &mdash; non basta che i test passino: si altera il codice (un operatore, un clamp, una condizione) e si verifica che <em>almeno un test</em> se ne accorga. Se il mutante sopravvive, il test &egrave; decorativo e va riscritto.</li>
-          <li><strong>Contract test cross-modulo</strong> &mdash; chi scrive un attributo e chi lo legge stanno nello stesso test. &Egrave; cos&igrave; che si scoprono gli attributi fantasma: un modulo che scrive su un target che nessuno legge, in silenzio, per settimane.</li>
+          <li><strong>Test di contratto fra moduli</strong> &mdash; chi scrive un attributo e chi lo legge stanno nello stesso test. &Egrave; cos&igrave; che si scoprono gli attributi fantasma: un modulo che scrive su un target che nessuno legge, in silenzio, per settimane.</li>
           <li><strong>Parit&agrave; hub / locale</strong> &mdash; un modulo installato da solo e lo stesso modulo dentro l'hub devono risolvere gli stessi controlli. Quando questa parit&agrave; si &egrave; rotta, i bridge FACS saltavano quasi tutti i collegamenti senza un errore.</li>
           <li><strong>Ogni bug reale diventa un test</strong> &mdash; i problemi trovati sul rig in scena (target sbagliato, slot senza driver, occhi in split-mode) rientrano come test anti-regressione, non come nota in un file.</li>
           <li><strong>Il mock non basta</strong> &mdash; 200 test verdi su mock e fallimento sul rig vero: le verifiche finali si fanno in scena, su Maya, con il rig in mano.</li>
@@ -277,15 +277,15 @@
       <div class="project-credits__inner">
         <div class="project-credits__col reveal-up">
           <span class="project-credits__label">Tipo</span>
-          <span class="project-credits__value">R&amp;D personale &middot; codice privato</span>
+          <span class="project-credits__value">Ricerca personale &middot; codice privato</span>
         </div>
         <div class="project-credits__col reveal-up">
-          <span class="project-credits__label">Stack</span>
+          <span class="project-credits__label">Tecnologie</span>
           <span class="project-credits__value">Maya 2026 &middot; Python 3.11 &middot; PySide6 &middot; pytest</span>
         </div>
         <div class="project-credits__col reveal-up">
           <span class="project-credits__label">Dominio</span>
-          <span class="project-credits__value">MetaHuman &middot; facial + creature rig</span>
+          <span class="project-credits__value">MetaHuman &middot; rig facciale e di creature</span>
         </div>
         <div class="project-credits__col reveal-up">
           <span class="project-credits__label">Ruolo</span>
@@ -298,7 +298,7 @@
       <div class="project-next__inner">
         <div>
           <span class="text-meta">Progetto correlato</span>
-          <h3 class="text-h3" style="margin-top: 0.5rem;">LP Group &mdash; Chameleon rig</h3>
+          <h3 class="text-h3" style="margin-top: 0.5rem;">LP Group &mdash; rig del camaleonte</h3>
         </div>
         <a href="./lp.html" class="btn btn--ox">
           <span>Vai al progetto</span>
@@ -316,7 +316,7 @@
     </div>
   </footer>
 
-  <script type="module" src="../assets/js/main.js?v=20260530-m21"></script>
+  <script type="module" src="../assets/js/main.js?v=20260929-intro1"></script>
 
 </body>
 </html>

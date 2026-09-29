@@ -80,6 +80,25 @@ if (!reduced) {
   const bgCanvas = document.querySelector('.contact__canvas');
   if (bgCanvas) new BgScene(bgCanvas);
 }
+// 4a. Intro reel (fig. 00) — muted loop, autoplay in the markup so it starts
+//     before this module runs. Under reduced motion or Save-Data it stops on
+//     the poster and gets native controls; off-screen it pauses (it is 17 s of
+//     1280×720 decoding for nothing once you are past it).
+const introVideo = document.querySelector('.intro__video');
+if (introVideo) {
+  const saveData = !!(navigator.connection && navigator.connection.saveData);
+  if (reduced || saveData) {
+    introVideo.removeAttribute('autoplay');
+    introVideo.pause();
+    introVideo.controls = true;
+  } else if ('IntersectionObserver' in window) {
+    new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) introVideo.play().catch(() => {});
+      else introVideo.pause();
+    }, { threshold: 0.1 }).observe(introVideo);
+  }
+}
+
 // 4b. Manikins on the headline (fig. 02) — ≥768px; on phones the H1 wraps to
 //     3 tiny lines and there is no room for them. Loaded lazily after first
 //     paint so it never competes with the hero's own LCP.

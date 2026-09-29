@@ -1967,3 +1967,160 @@ section[id] { scroll-margin-top: 6rem; }
     object-view-box: inset(21.35% 12.15% 11.95% 21.15%);
   }
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   INTRO — il primo schermo (29 set 2026). Titolo a sinistra, la reel del
+   camaleonte LP a destra, intera (object-fit: contain nei fatti: il frame ha
+   lo stesso 16:9 del video). A pieno schermo i turntable venivano tagliati e il
+   titolo finiva sopra il personaggio.
+   ═══════════════════════════════════════════════════════════════════════════ */
+.intro {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  /* 66px di meta-bar sopra; la striscia .intro__meta (assoluta) sotto */
+  padding: clamp(6.5rem, 13vh, 9rem) 0 7rem;
+}
+.intro__inner {
+  width: 100%;
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 0 var(--pad-side);
+  display: grid;
+  grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr);
+  column-gap: clamp(2rem, 4vw, 4.5rem);
+  align-items: center;
+}
+.intro__text { display: flex; flex-direction: column; gap: 1.4rem; }
+.intro__pretitle {
+  margin: 0;
+  font-family: var(--fm);
+  font-size: var(--fz-mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ox);
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+.intro__pretitle::before { content: ''; width: 32px; height: 1px; background: var(--ox); flex: none; }
+.intro__title {
+  margin: 0;
+  font-family: var(--fd);
+  font-weight: 800;
+  font-size: clamp(3.1rem, 5.4vw, 6.25rem);
+  line-height: var(--lh-tight);
+  letter-spacing: -0.035em;
+  color: var(--ink);
+  -webkit-text-stroke: 0.004em currentColor;
+  text-wrap: balance;
+}
+.intro__title em {
+  display: block;
+  font-family: var(--fs);
+  font-style: italic;
+  font-weight: 400;
+  color: var(--ox);
+  letter-spacing: -0.02em;
+}
+.intro__lead {
+  margin: 0;
+  font-family: var(--fb);
+  font-size: clamp(1.05rem, 1.25vw, 1.25rem);
+  line-height: 1.55;
+  color: var(--ink2);
+  max-width: 40ch;
+}
+.intro__cta { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 0.4rem; }
+
+.intro__reel { margin: 0; min-width: 0; }
+.intro__frame {
+  aspect-ratio: 16 / 9;
+  background: var(--ink);
+  border: 1px solid var(--rule);
+  overflow: hidden;
+  box-shadow: 0 30px 60px -32px rgba(22, 19, 16, 0.38);
+}
+.intro__video { display: block; width: 100%; height: 100%; object-fit: cover; }
+.intro__caption {
+  margin-top: 0.8rem;
+  font-family: var(--fm);
+  font-size: var(--fz-meta);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--mute);
+  line-height: 1.6;
+}
+.intro__fig { color: var(--ox); margin-right: 0.6rem; }
+.intro__ask { color: var(--ink); text-decoration: none; white-space: nowrap; transition: color var(--dur-base, 240ms); }
+.intro__ask:hover, .intro__ask:focus-visible { color: var(--ox); }
+
+.intro__meta {
+  position: absolute;
+  bottom: 2rem;
+  left: var(--pad-side);
+  right: var(--pad-side);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 2rem;
+  font-family: var(--fm);
+  font-size: var(--fz-meta);
+  color: var(--mute);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.intro__meta-block { display: flex; flex-direction: column; gap: 0.3rem; }
+.intro__meta-label { color: var(--ox); }
+
+/* <1024: una colonna, la reel per prima */
+@media (max-width: 1023px) {
+  .intro { min-height: auto; padding: 5.5rem 0 var(--gap-l); justify-content: flex-start; }
+  .intro__inner { grid-template-columns: 1fr; row-gap: var(--gap-m); }
+  .intro__reel { order: -1; }
+  .intro__meta { position: static; margin-top: var(--gap-m); padding: 0 var(--pad-side); }
+}
+@media (max-width: 767px) {
+  .intro__meta { flex-direction: column; align-items: flex-start; gap: 0.85rem; }
+  .intro__cta .btn { flex: 1 1 auto; justify-content: center; }
+}
+/* telefono in orizzontale: testo e reel affiancati, tutto in uno schermo */
+@media (max-width: 1023px) and (orientation: landscape) and (max-height: 560px) {
+  .intro { padding-top: 4.5rem; }
+  .intro__inner { grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); column-gap: var(--gap-m); }
+  .intro__reel { order: 0; }
+  .intro__title { font-size: clamp(1.9rem, 4.6vw, 3rem); }
+  .intro__lead { display: none; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   FIG. 01 — la coda, ora sezione sotto l'intro. Stessa scena WebGL, stesse
+   classi (.hero / .hero__canvas / .hero__rig): cambiano solo le proporzioni.
+   Due classi di specificita' battono tutte le regole .hero dei breakpoint.
+   ═══════════════════════════════════════════════════════════════════════════ */
+.hero.hero--rig {
+  min-height: auto;
+  padding-top: var(--gap-l);
+  padding-bottom: var(--gap-l);
+  border-top: 1px solid var(--rule);
+}
+.hero--rig .hero__inner .hero__title { font-size: clamp(2.6rem, 5vw, 5rem); max-width: 14ch; }
+.hero--rig .hero__sub { margin: 0; }
+@media (min-width: 1200px) {
+  .hero--rig .hero__sub { grid-column: 1; }
+}
+@media (min-width: 1024px) and (max-width: 1199px) {
+  /* la tasca in alto a destra misurava dall'alto della hero a pieno schermo */
+  .hero--rig .hero__rig { top: var(--gap-l); }
+  .hero--rig .hero__rig-caption { top: calc(var(--gap-l) + 24vw * 1.25 + 0.5rem); }
+  .hero--rig .hero__inner { padding-right: calc(24vw + var(--pad-side) + 1.5rem); }
+  .hero.hero--rig { min-height: calc(var(--gap-l) * 2 + 24vw * 1.25 + 3rem); }
+}
+@media (max-width: 767px) {
+  .hero.hero--rig { padding-top: var(--gap-l); }
+}
+
+/* barra in alto: la frase intera andava a capo su telefono */
+@media (max-width: 639px) { .meta-bar .meta-long { display: none; } }

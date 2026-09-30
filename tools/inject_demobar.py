@@ -145,6 +145,7 @@ def build(slug):
     s = re.sub(r'action="mailto:[^"]*"',
                'action="#" onsubmit="event.preventDefault();alert(\'Questa è una demo: il modulo non invia nulla.\')"', s)
     s = re.sub(r'href="https://(?:www\.)?(?:facebook|instagram|linkedin|tiktok)\.com/[^"]*"', 'href="#"', s)
+    s = re.sub(r'href="https://g\.page/[^"]*"', 'href="#"', s)
     s = re.sub(r'"sameAs"\s*:\s*\[[^\]]*\]', '"sameAs":[]', s)
 
     # 3. striscia demo. Il CSS va in <head>: un <style> dentro <body> non e'

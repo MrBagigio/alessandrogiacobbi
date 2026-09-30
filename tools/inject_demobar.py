@@ -9,6 +9,7 @@ Differenze applicate alla copia portfolio:
   1. favicon emoji (data-URI SVG)
   2. striscia demo fissa in fondo + tap target AA
   3. link legali (/privacy, /cookies) neutralizzati a "#": nella demo non esistono
+  3b. mailto, action="mailto:", canonical e link social del marchio inventato tolti
   4. le barre fisse del template (.sticky-call, .whatsapp-fab) sollevate sopra
      la striscia, e il padding del body calcolato su entrambe
   5. font self-hosted: la cartella fonts/ del master copiata accanto
@@ -134,6 +135,17 @@ def build(slug):
 
     # 2. link legali inesistenti nella demo
     s = s.replace('href="/privacy"', 'href="#"').replace('href="/cookies"', 'href="#"')
+
+    # 2b. contatti del marchio inventato: nella demo non devono raggiungere nessuno.
+    #     8 master usavano un dominio che esisteva davvero (codafelice.it, casaeco.it...):
+    #     moduli e mailto scrivevano ad aziende vere. Anche un dominio oggi libero può
+    #     essere registrato domani, quindi si neutralizza tutto, non solo quelli noti.
+    s = re.sub(r'\s*<link rel="canonical"[^>]*>', "", s)
+    s = re.sub(r'href="mailto:[^"]*"', 'href="#" data-demo-contatto', s)
+    s = re.sub(r'action="mailto:[^"]*"',
+               'action="#" onsubmit="event.preventDefault();alert(\'Questa è una demo: il modulo non invia nulla.\')"', s)
+    s = re.sub(r'href="https://(?:www\.)?(?:facebook|instagram|linkedin|tiktok)\.com/[^"]*"', 'href="#"', s)
+    s = re.sub(r'"sameAs"\s*:\s*\[[^\]]*\]', '"sameAs":[]', s)
 
     # 3. striscia demo. Il CSS va in <head>: un <style> dentro <body> non e'
     #    HTML valido (element-permitted-content). Il markup resta in fondo.

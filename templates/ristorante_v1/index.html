@@ -6,7 +6,6 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍽️</text></svg>">
 <meta name="theme-color" content="#1C1611">
 <meta name="color-scheme" content="dark">
-<link rel="canonical" href="https://cortedeitigli.it/">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="robots" content="index,follow,max-image-preview:large">
 <meta name="format-detection" content="telephone=no">
@@ -208,7 +207,7 @@
   ],
   "availableLanguage":["Italian","English","German"],
   "aggregateRating":{"@type":"AggregateRating","ratingValue":"4.8","reviewCount":"286"},
-  "sameAs":["https://www.instagram.com/cortedeitigli","https://www.facebook.com/cortedeitigli"]
+  "sameAs":[]
 }
 </script>
 
@@ -638,7 +637,7 @@ section[id], main[id] { scroll-margin-top: 6rem; }
     <span class="eyebrow reveal">Prenota un tavolo</span>
     <h2 class="reserve__title reveal">La vostra<br><em>sera in corte.</em></h2>
     <p class="reserve__sub reveal">Conferma in giornata. Per tavolate oltre otto coperti e menu dedicati, scriveteci due righe nelle note: vi richiamiamo noi.</p>
-    <form class="reserve__form reveal" action="mailto:prenotazioni@cortedeitigli.it" method="post" enctype="text/plain">
+    <form class="reserve__form reveal" action="#" onsubmit="event.preventDefault();alert('Questa è una demo: il modulo non invia nulla.')" method="post" enctype="text/plain">
       <div class="reserve__field"><label for="data">Data</label><input type="date" id="data" name="data" required></div>
       <div class="reserve__field"><label for="orario">Orario</label>
         <select id="orario" name="orario" required>
@@ -691,9 +690,9 @@ section[id], main[id] { scroll-margin-top: 6rem; }
     <div class="footer__col">
       <h3>Contatti</h3>
       <a href="tel:+390423000000">+39&nbsp;0423&nbsp;000&nbsp;000</a>
-      <a href="mailto:prenotazioni@cortedeitigli.it">prenotazioni@cortedeitigli.it</a>
-      <a href="https://www.instagram.com/cortedeitigli" target="_blank" rel="noopener">Instagram</a>
-      <a href="https://www.facebook.com/cortedeitigli" target="_blank" rel="noopener">Facebook</a>
+      <a href="#" data-demo-contatto>prenotazioni@cortedeitigli.it</a>
+      <a href="#" target="_blank" rel="noopener">Instagram</a>
+      <a href="#" target="_blank" rel="noopener">Facebook</a>
     </div>
   </div>
   <div class="footer__bottom">
